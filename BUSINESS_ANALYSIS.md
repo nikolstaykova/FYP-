@@ -121,12 +121,13 @@ flowchart LR
 
 ## 6. Competitors
 
-| Competitor | What they do |
-|---|---|
-| **Gemini Live, ChatGPT video, Meta AI** | General AI assistants on phones and smart glasses. You point the camera at anything and talk about what it sees |
-| **BILT** | Interactive 3D instructions made from manufacturers' design files. Free for users, paid for by around 300 brands |
-| **TeamViewer Frontline** | AR software for factory workers on smart glasses: guided assembly steps and live help from a remote expert |
-| **Scope AR WorkLink** | AR work instructions for industry, built from companies' CAD files, plus remote expert help |
+| Competitor | What they do | AI-powered |
+|---|---|---|
+| **Gemini Live, ChatGPT video, Meta AI** | General AI assistants on phones and smart glasses. You point the camera at anything and talk about what it sees | ✅ Fully: a large AI model watches and talks for the whole session |
+| **BILT** | Interactive 3D instructions made from manufacturers' design files. Free for users, paid for by around 300 brands | ⚠️ Only behind the scenes: AI helps brands author guides faster; no AI for the user |
+| **TeamViewer Frontline** | AR software for factory workers on smart glasses: guided assembly steps and live help from a remote expert | ✅ Computer vision and image recognition check factory steps |
+| **Scope AR WorkLink** | AR work instructions for industry, built from companies' CAD files, plus remote expert help | ✅ AI-assisted authoring, plus AI detection and validation |
+| **Pinpoint** | AR guide for anything built from components, generated from any tutorial link | ✅ Algorithm first: AI only for small jobs (graph extraction, unclear cases, final check, questions) |
 
 | | Any link in | Watches the real build | AR on the object | Any-order checking | "Different but correct" | Low running cost |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -184,7 +185,7 @@ Breadboards, Arduino and Raspberry Pi pin headers, LEGO baseplates and PCB kits 
 
 ## Sources
 
-- Competitors: [BILT](https://biltapp.com/brands-and-retailers/) · [TeamViewer Frontline](https://www.teamviewer.com/en-us/solutions/frontline/) · [Scope AR (ContinuumAR comparison)](https://www.continuumar.io/resources/compare/best-ar-remote-assistance-software.html)
+- Competitors: [BILT](https://biltapp.com/brands-and-retailers/) · [BILT platform](https://bilt.ai/platform/) · [TeamViewer Frontline Make](https://www.teamviewer.com/en/frontline/xmake/) · [Scope AR: AI + AR](https://www.scopear.com/ai-ar) · [TeamViewer Frontline](https://www.teamviewer.com/en-us/solutions/frontline/) · [Scope AR (ContinuumAR comparison)](https://www.continuumar.io/resources/compare/best-ar-remote-assistance-software.html)
 - Research: [Spatial Blindspot of VLMs](https://arxiv.org/pdf/2601.09954) · [Grid-augmented vision](https://arxiv.org/pdf/2411.18270) · [Visual Position Prompt](https://arxiv.org/pdf/2503.15426) · [SmartBreadboard-3D](https://github.com/sasivaradhansbee25-hue/SmartBreadboard-3D)
 - My project: [CircuitQuest](https://circuitquest.onrender.com)
 - Full research notes: `research-log.md`
