@@ -15,6 +15,7 @@
 | **How it stays cheap** | The core is a plain **algorithm**. AI models are used only for a few small jobs |
 | **Who pays** | **Companies** (Arduino, IKEA, kit makers, internet providers) license it; **users** get a free tier plus a subscription |
 | **First market** | Arduino and Raspberry Pi learners |
+| **Already built** | [**CircuitQuest**](https://circuitquest.onrender.com), my own project: upload a well-written tutorial and get a step-by-step lesson, as a game, for Arduino and Raspberry Pi |
 
 ---
 
@@ -54,6 +55,24 @@ flowchart LR
 > A general AI assistant streams video to a large model the whole time. Pinpoint's cost per build is **close to zero**, so a company can offer it free to all its customers.
 
 **Scope:** things people **build or assemble** that can be described as a few graphs of components, ideally checked by **real laws**, as in electronics.
+
+### Already built: CircuitQuest
+
+**[CircuitQuest](https://circuitquest.onrender.com)** is a project I built that already does the first half of Pinpoint, for **Arduino and Raspberry Pi only**:
+
+- **Upload any well-written tutorial and get a step-by-step lesson** ("Create my own lesson"): the same tutorial → structured lesson idea that Pinpoint generalises.
+- **A game:** a world map of levels you can **play in any order**, with progress tracking.
+- **Parts-aware:** you enter the parts you own, and it unlocks projects you can build with them.
+- **Virtual circuit building:** a 3D breadboard where you drag wires between holes and header pins. It checks the circuit, shows currents, LED brightness and pin readings, and adjusts the Arduino code to the pins you actually used.
+
+**From CircuitQuest to Pinpoint:**
+
+| | CircuitQuest (built) | Pinpoint (proposed) |
+|---|---|---|
+| Domains | Arduino and Raspberry Pi | Anything built from components |
+| Where you build | On screen (virtual 3D breadboard) | On the **real** object, seen through the camera |
+| Guidance | Step-by-step lesson, as a game | Live AR overlay, any order, "different but correct" accepted |
+| Checking | Simulated circuit | Geometry, recognition model and VLM on the real build |
 
 ---
 
@@ -167,4 +186,5 @@ Breadboards, Arduino and Raspberry Pi pin headers, LEGO baseplates and PCB kits 
 
 - Competitors: [BILT](https://biltapp.com/brands-and-retailers/) · [TeamViewer Frontline](https://www.teamviewer.com/en-us/solutions/frontline/) · [Scope AR (ContinuumAR comparison)](https://www.continuumar.io/resources/compare/best-ar-remote-assistance-software.html)
 - Research: [Spatial Blindspot of VLMs](https://arxiv.org/pdf/2601.09954) · [Grid-augmented vision](https://arxiv.org/pdf/2411.18270) · [Visual Position Prompt](https://arxiv.org/pdf/2503.15426) · [SmartBreadboard-3D](https://github.com/sasivaradhansbee25-hue/SmartBreadboard-3D)
+- My project: [CircuitQuest](https://circuitquest.onrender.com)
 - Full research notes: `research-log.md`
