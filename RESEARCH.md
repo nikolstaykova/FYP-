@@ -46,7 +46,7 @@
 | [R15](#r15-first-principles-connection-types-and-part-freedoms) | First principles: connection types and part freedoms (incl. tents) | 🟡 Taxonomy draft |
 | [R16](#r16-a-graph-that-accounts-for-connectors) | A graph that accounts for connectors (screws, wires, pins), part by part | 🟡 Proposal |
 | [R17](#r17-parts-as-nodes-typed-connections-as-edges) | Parts as nodes, typed connections as edges: which edge types? | 🟡 Proposal, backed by literature |
-| [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | 🟡 Proposal: yes, as an overlay |
+| [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | ✅ **Decided: one graph per manual** |
 
 ---
 
@@ -986,7 +986,9 @@ One physical connection can carry **more than one** type: a jumper wire pushed i
 
 ## R18. Many small graphs making bigger ones?
 
-**Date:** 1 October 2026 · **Status:** 🟡 *Proposal: yes, as an overlay on one flat graph.*
+**Date:** 1 October 2026 · **Status:** ✅ *Decided (see below): **one graph per manual**.*
+
+> **Decision (1 October 2026):** each manual produces **exactly one graph**: all its parts as nodes, all its connections as edges. No separate sub-graphs. A sub-assembly from the manual is at most an **optional tag** on the nodes (e.g. `"group": "wheel"`), used for teaching and progress, never for correctness. The analysis below is kept as background.
 
 **Idea (from the user):** build the representation from **many small graphs** that combine into bigger ones, ending in the whole object. For LEGO: small sub-assemblies → bigger sections → the full model.
 
