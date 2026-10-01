@@ -1,6 +1,8 @@
 # Pinpoint — Research Log: Object Representation
 
-> **Focus:** one general **object representation** (a graph of components and connections) that works for all three target areas: **Arduino / robotics**, **IKEA furniture** and **LEGO**. How to create it from instructions, and how to test it.
+> **Focus:** one general **object representation** that works for all three target areas: **Arduino / robotics**, **furniture** and **LEGO**. How to create it from instructions, and how to test it.
+>
+> **Note:** a graph is the leading **candidate**, not a decision. This is an exploration: the goal is whatever representation fits all three cases, which may turn out to be a graph, a set of graphs, or something else.
 >
 > **How to use this file:** add one entry per research question, newest findings inside the matching section. Each entry has a **question**, **findings** (with sources), a **verdict**, and **open points**. Mark anything not yet checked as *hypothesis* or *to verify*.
 >
@@ -18,6 +20,7 @@
 | [R4](#r4-logic-transitivity-does-12-and-23-mean-13) | Logic: does 1–2 and 2–3 mean 1–3? | 🟡 Hypotheses only |
 | [R5](#r5-logic-symmetry-and-reversibility) | Logic: symmetry and reversibility | 🟡 Hypotheses only |
 | [R6](#r6-draft-representation) | Draft general representation | 🟡 Sketch only |
+| [R7](#r7-a-furniture-brand-with-well-written-manuals) | A furniture brand with well-written manuals | ✅ First pass done: **Sauder** |
 
 ---
 
@@ -172,7 +175,7 @@ CircuitQuest already solves the representation problem **for electronics**. Its 
 
 ## R6. Draft representation
 
-**Status:** 🟡 *Sketch to be refined after R4 and R5 are tested.*
+**Status:** 🟡 *Sketch to be refined after R4 and R5 are tested. Written as a graph because that is the leading candidate; other forms stay open.*
 
 ```
 Part        id, type → part card (ports, symmetry, polarity, aliases, reversible?)
@@ -194,8 +197,78 @@ Laws        domain checks: circuit solver · stud geometry and stability · fit 
 
 ---
 
+## R7. A furniture brand with well-written manuals
+
+**Date:** 1 October 2026
+
+**Question:** IKEA manuals are wordless. Is there a furniture brand whose manuals are well written enough to explore how to represent furniture generically?
+
+### Candidates
+
+| Brand / source | Manual style | Structure | Fit |
+|---|---|---|---|
+| **Sauder** (US, flat-pack) | **Text + drawings** on every step | Lettered parts with quantities, numbered hardware shown at actual size, step text naming parts, hardware, counts and tools | ✅ **Best fit** |
+| **Tylko** (made-to-measure shelves) | Drawings only, but **personalised** to each shelf | Every part has a code (`C`, `Cl`, `W1`, `Bn`, `Bh`, `Bs`…), each step lists "the parts you need" with count and box number | ✅ Good second: very structured, no text |
+| **Opendesk** (open-source furniture) | PDF assembly guide + **CAD files** (DXF/DWG) | Exact geometry of every part; CC licences | ⚠️ Useful for geometry; stopped publishing in 2020, now only in archives ([archive.org](https://archive.org/details/opendesk)) |
+| **Ashley** | More written text than IKEA | Not checked in detail | ❓ To check |
+| **Amazon Basics** | IKEA-like, minimal text | — | ❌ Same problem as IKEA |
+| **IKEA** | Wordless | Parts list + drawings | ⚠️ Use **IKEA-Manual** dataset as 3D ground truth (R1) |
+
+Sources: [Sauder manuals (Manuals+)](https://manuals.plus/category/sauder), [Tylko assembly FAQ](https://tylko.com/en-ot/faq/articles/self-assembly-disassembly/how-do-i-assemble-my-tylko-shelf), [Opendesk (Make:)](https://makezine.com/article/digital-fabrication/machining/opendesk-cnc-furniture/), [Ready-to-assemble brands](https://assemblysmart.com/ready-to-assemble-furniture-brands/).
+
+### Checked example: Sauder 2-Cube Organizer (model 430628)
+
+Read in full ([PDF](https://cdn.menardc.com/main/items/media/SAUDE001/Assembly_Instructions/2114705_instruct.PDF), 12 pages, 4 steps).
+
+**Parts list (page 2)**
+- Panels: **B** END ×2, **D** TOP/BOTTOM ×2, **E** SHELF ×1
+- Hardware: **1** wood dowel ×4, **2** applique card ×1, **3** 3-5/16" hex head screw ×8
+- Tool: **4** L-wrench ×1
+
+**Steps (verbatim)**
+1. "Fasten the TOP/BOTTOMS (D) to one of the ENDS (B). Tighten four 3-5/16" HEX HEAD SCREWS (3) using the L-WRENCH (4)."
+2. "Insert two WOOD DOWELS (1) into the END (B). Push the SHELF (E) onto the WOOD DOWELS (1) in the END (B)."
+3. "Insert two WOOD DOWELS (1) into the remaining END (B). Fasten the END (B) to the TOP/BOTTOMS (D) and SHELF (E)… Be sure the WOOD DOWELS in the END insert into the SHELF."
+4. Stick appliques over visible screw heads. (Cosmetic.)
+
+Drawings add orientation hints: "Surface with more holes" / "Surface with fewer holes".
+
+**Why this is ideal:** every step names **which parts**, **which hardware**, **how many**, and **which tool**. That is close to a connection list already, so an LLM can extract it from text, as with Arduino tutorials.
+
+### What the example shows for the representation
+
+| Observation in the manual | Representation idea | Parallel in other areas |
+|---|---|---|
+| "one of the ENDS (B)", B ×2 | The two ends are **interchangeable instances** of one part type | Two identical resistors; two identical LEGO bricks |
+| D TOP/BOTTOM ×2, one label for both | Top and bottom are **symmetric** | Resistor legs (`symmetric_pins`) |
+| "Surface with more / fewer holes" | Panels have **faces**; orientation matters | LED polarity; LEGO stud vs anti-stud |
+| Dowels and screws join panels | **Hardware is a connector**: it joins two panels, like a wire or breadboard strip joins two pins | CircuitQuest drops connectors from the logical nets |
+| Step 1 and step 2 touch different joints | Their **order can be swapped** | Wiring the LED before the resistor |
+| Shelf E must be on its dowels **before** the second end closes the box | A **physical dependency**: the box would block it | Placing a LEGO brick before covering it |
+| B1–D and D–B2 | B1 and B2 end up in **one rigid body** but are **not directly joined** | R4 transitivity: "same group" ≠ "directly connected" |
+
+**Draft logical form of this product:**
+
+```
+Parts        B1, B2 (END) · D1, D2 (TOP/BOTTOM) · E (SHELF)
+Joints       B1–D1  screw ×2      B1–D2  screw ×2      B1–E  dowel ×2
+             B2–D1  screw ×2      B2–D2  screw ×2      B2–E  dowel ×2
+Symmetry     B1 ↔ B2 · D1 ↔ D2
+Orientation  each panel: face with more holes / fewer holes
+Dependency   B1–E before B2 closes (B2–D1, B2–D2, B2–E made together)
+Free order   {B1–D1, B1–D2} and {B1–E} in either order
+Result       one rigid body {B1, B2, D1, D2, E}
+```
+
+*To verify:* whether sauder.com offers manuals by model number for direct download; check 3–5 more Sauder manuals (a drawer unit, a desk) for consistency, especially for moving parts (drawers, doors) that add **conditional** connections, like switches in electronics.
+
+**Verdict:** ✅ Use **Sauder** as the main furniture source for designing the representation (text, lettered parts, explicit hardware). Use **Tylko** as a structured but wordless second case, and **IKEA-Manual** as 3D ground truth.
+
+---
+
 ## Next steps
 
+- [ ] Collect 3–5 more Sauder manuals (include drawers or doors) and write each in the draft form
 - [ ] Download IKEA-Manual and inspect the assembly-tree format
 - [ ] Download 3–5 small LDraw/OMR sets; try deriving stud connections from positions
 - [ ] Check the OMR coverage and LDCad snap metadata
@@ -217,6 +290,11 @@ Laws        domain checks: circuit solver · stud geometry and stability · fit 
 - [LDraw file format specification](https://www.ldraw.org/article/218.html) · [LDraw Official Model Repository](https://library.ldraw.org/omr) · [OMR specification](https://www.ldraw.org/article/593.html)
 - [MEPNet: Translating a Visual LEGO Manual to a Machine-Executable Plan (ECCV 2022)](https://arxiv.org/abs/2207.12572)
 - [BrickGPT / LegoGPT: Generating Physically Stable and Buildable Brick Structures from Text (ICCV 2025)](https://arxiv.org/abs/2505.05469)
+
+**Furniture**
+- [Sauder 2-Cube Organizer 430628 manual (PDF)](https://cdn.menardc.com/main/items/media/SAUDE001/Assembly_Instructions/2114705_instruct.PDF) · [Sauder manuals (Manuals+)](https://manuals.plus/category/sauder)
+- [Tylko: how to assemble](https://tylko.com/en-ot/faq/articles/self-assembly-disassembly/how-do-i-assemble-my-tylko-shelf)
+- [Opendesk CNC furniture (Make:)](https://makezine.com/article/digital-fabrication/machining/opendesk-cnc-furniture/)
 
 **IKEA**
 - [IKEA-Manual: Seeing Shape Assembly Step by Step (NeurIPS 2022)](https://arxiv.org/abs/2302.01881) · [project page and dataset](https://cs.stanford.edu/~rcwang/projects/ikea_manual/)
