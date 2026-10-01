@@ -25,6 +25,7 @@
 | [R9](#r9-can-an-llmvlm-read-a-wordless-ikea-manual) | Can an LLM/VLM read a wordless IKEA manual? | 🟡 One informal test |
 | [R10](#r10-decision-sauder-only-ikea-postponed) | **Decision:** Sauder only; IKEA postponed | ✅ Decided |
 | [R11](#r11-identify-the-users-ikea-product-then-fetch-its-data) | Identify the user's IKEA product, then fetch its data? | ✅ First pass done |
+| [R12](#r12-what-a-lego-manual-looks-like) | What does a LEGO manual look like? Does it have text? | ✅ One manual checked |
 
 ---
 
@@ -374,6 +375,10 @@ The result is then **exact / equivalent / wrong**, as in CircuitQuest.
 
 20 pages: 10 pages of multilingual safety text, 1 tools page, 1 hardware page, 1 "possible layouts" page, 5 steps.
 
+![IKEA LUSTIGT step 1: no text, no part labels](research-assets/ikea-lustigt-step-1.png)
+
+*Step 1 of the LUSTIGT manual: drawings and arrows only; the boards carry no letters or numbers.*
+
 **What Claude could read reliably from the drawings:**
 
 | Item | Read correctly? | Notes |
@@ -487,6 +492,59 @@ This supports the R10 decision. It also defines a clean **future-work path for I
 
 ---
 
+## R12. What a LEGO manual looks like
+
+**Date:** 1 October 2026
+
+**Question:** are LEGO manuals also wordless, like IKEA's? What can be read from them?
+
+### Example: LEGO Classic 10696 (Medium Creative Brick Box)
+
+[Official PDF](https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6114394.pdf), 60 pages, several small models.
+
+**Steps: no words.** Each step is a picture with:
+- a **parts box** showing which pieces to add, with **counts** ("2x");
+- the **step number**;
+- **red arrows** showing where a piece goes.
+
+![LEGO 10696 steps 2 and 3](research-assets/lego-10696-steps-2-3.png)
+
+*Steps 2–3: a parts box (2× slope, 1× 2×2 brick), a red arrow for placement, no text.*
+
+**Sub-assemblies and turning the model** are shown with symbols, not words: a framed box with mini-steps 1–2–3, then an arrow to where the sub-assembly attaches, and a rotate icon.
+
+![LEGO 10696 step 6](research-assets/lego-10696-step-6-subassembly.png)
+
+*Step 6: a sub-assembly built in its own box (mini-steps 1–3), then attached; the circular-arrows icon means "turn the model".*
+
+**But the parts inventory is real text.** The last pages list **every element with its count and Element ID** as selectable text in the PDF, e.g. `4x 300401`, `2x 300101`, `5x 303901`.
+
+![LEGO 10696 parts inventory](research-assets/lego-10696-parts-inventory.png)
+
+*Page 57: the inventory. Each piece has a count and a 6–7 digit Element ID, extractable as text.*
+
+### What this means
+
+| | IKEA (LUSTIGT) | LEGO (10696) | Sauder |
+|---|---|---|---|
+| Step text | ❌ None | ❌ None | ✅ Full sentences |
+| Parts per step | ⚠️ Drawn, unlabelled | ✅ **Parts box with counts** on every step | ✅ Named with letters |
+| Parts inventory | ⚠️ Hardware only | ✅ **Every piece, Element ID + count, as text** | ✅ Letters + quantities |
+| Sub-assemblies | Drawn | ✅ Marked with framed boxes | Text |
+| Machine-readable alternative | ❌ | ✅ **LDraw / OMR** (R1) | — |
+
+**Why LEGO is much easier than IKEA despite having no words:**
+1. **Every piece is identified** by an Element ID in the inventory. Element IDs map to part shape and colour through catalogues such as Rebrickable and BrickLink *(to verify the exact lookup)*. Older 6-digit IDs appear to be the design number plus a colour code (`3004` + `01` = white 1×2 brick); newer 7-digit IDs are not structured that way.
+2. **Each step's parts box** says exactly which pieces are added, so a VLM only has to recognise known pieces, not unknown panels.
+3. **Positions sit on a stud grid**, so "where" is a discrete choice, which suits the grid approach (geometry + labelled grid + VLM) from the earlier research.
+4. **LDraw files** of official sets give parts, positions and steps directly, with no image reading at all.
+
+**Verdict:** ✅ LEGO manuals have no step text, but they are **far more structured** than IKEA's (identified pieces, per-step parts lists, a grid). For the first prototype use **LDraw/OMR files**; reading the PDF is a later option, helped by the text inventory.
+
+*To verify:* whether set 10696 (or another small set) is in the OMR, so the same model can be compared in both forms.
+
+---
+
 ## Next steps
 
 - [ ] Write the Sauder 2-Cube Organizer fully in the R8 format, plus one Arduino lesson and one small LEGO set
@@ -508,6 +566,7 @@ This supports the R10 decision. It also defines a clean **future-work path for I
 - CircuitQuest source: `~/Desktop/CirquitQuest`, live at [circuitquest.onrender.com](https://circuitquest.onrender.com)
 
 **LEGO**
+- [LEGO Classic 10696 building instructions (PDF)](https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6114394.pdf)
 - [LEGO: download building instructions](https://www.lego.com/en-us/service/help-topics/article/how-to-download-building-instructions-online) · [Rebrickable instructions](https://rebrickable.com/help/where-can-i-download-lego-building-instructions/)
 - [LDraw file format specification](https://www.ldraw.org/article/218.html) · [LDraw Official Model Repository](https://library.ldraw.org/omr) · [OMR specification](https://www.ldraw.org/article/593.html)
 - [MEPNet: Translating a Visual LEGO Manual to a Machine-Executable Plan (ECCV 2022)](https://arxiv.org/abs/2207.12572)
