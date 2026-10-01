@@ -47,6 +47,7 @@
 | [R16](#r16-a-graph-that-accounts-for-connectors) | A graph that accounts for connectors (screws, wires, pins), part by part | 🟡 Proposal |
 | [R17](#r17-parts-as-nodes-typed-connections-as-edges) | Parts as nodes, typed connections as edges: which edge types? | 🟡 Proposal, backed by literature |
 | [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | ✅ **Decided: one graph per manual** |
+| [R19](#r19-repeated-sub-assemblies) | Repeated sub-assemblies (the same piece built several times) | 🟡 Proposal |
 
 ---
 
@@ -1064,6 +1065,54 @@ flowchart TB
 1. Can groups **overlap** (a part in two groups), or must they nest strictly? LDraw and manuals nest strictly; derived groups may overlap with manual ones.
 2. When a module is reused, how are instance names generated? (`wheel_fl.tyre`, using the R8 dot convention?)
 3. Should the camera check **group by group** (cheaper, matches the manual) while the final check uses the flat graph?
+
+---
+
+## R19. Repeated sub-assemblies
+
+**Date:** 1 October 2026 · **Status:** 🟡 *Proposal, consistent with "one graph per manual" (R18).*
+
+**Question:** many manuals build **the same sub-assembly several times** (four wheels, two identical legs, "repeat for the other side"). How does one graph per manual handle that?
+
+### How manuals show it *(general knowledge; to confirm on real examples)*
+
+| Area | Typical form |
+|---|---|
+| LEGO | A sub-assembly box with a **multiplier** ("2x", "4x"); sometimes a **mirrored** version for the other side |
+| Sauder / furniture | "**Repeat** steps 3–4 for the other side"; "assemble two legs" |
+| Arduino | The same circuit block several times (e.g. 3 LEDs, each with its own resistor) |
+
+### Proposal
+
+| Stage | What happens |
+|---|---|
+| **1 · Extraction (LLM)** | The LLM writes the sub-assembly **once**, with `"repeat": 4` (and `"mirror": true` if the manual shows a mirrored copy). This keeps its output short and matches the manual |
+| **2 · Expansion (code)** | Code **expands** it into 4 explicit copies in the one graph, with generated names: `wheel1.tyre`, `wheel2.tyre`… Every copy's parts are real nodes, so **counts are exact** (4 tyres, 4 rims) |
+| **3 · Tags** | Each copy's nodes get `"group": "wheel"` and `"copy": 1…4` (the optional tag from R18) |
+| **4 · Checking** | The checker compares graphs **up to symmetry** (R8). Identical copies are **interchangeable as whole groups**: any finished wheel can go on any axle, and swapping two wheels gives an equivalent graph |
+
+**Mirrored copies:** if the manual says left and right are mirror images, the copies are **not** interchangeable with each other (R15: mirror pairs). Copy 1 left can only be swapped with other left copies.
+
+**Consistency check:** after expansion, total part counts must match the manual's **inventory** (LEGO's Element ID list, Sauder's parts list). A forgotten "×4" shows up immediately as a count mismatch.
+
+**Order:** copies can be built in any order, one after another or interleaved. This already follows from "the flat graph is the truth".
+
+### Example
+
+```json
+{"template": {"id": "wheel", "repeat": 4,
+              "parts": [{"id": "tyre", "type": "lego-…"}, {"id": "rim", "type": "lego-…"}],
+              "edges": [{"u": "tyre", "v": "rim", "type": "joined"}]}}
+```
+expands to
+```
+nodes: wheel1.tyre, wheel1.rim, wheel2.tyre, wheel2.rim, wheel3.tyre, wheel3.rim, wheel4.tyre, wheel4.rim
+edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel's edge to the body)
+```
+
+### Open questions
+1. Keep the **template** in the stored file (smaller, shows intent), or store only the expanded graph (simpler)?
+2. Can a repeated copy differ slightly ("same as before, but use the red brick")? If so, copies need **overrides**.
 
 ---
 
