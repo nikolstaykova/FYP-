@@ -49,6 +49,7 @@
 | [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | ✅ **Decided: one graph per manual** |
 | [R19](#r19-repeated-sub-assemblies) | Repeated sub-assemblies (the same piece built several times) | ✅ **Requirement set**; details open until build |
 | [R20](#r20-manual-survey-connections-across-sauder-lego-and-arduino) | Manual survey: connections across Sauder, LEGO and Arduino; do repeated copies differ? | ✅ Done → [`GRAPH_SPEC.md`](./GRAPH_SPEC.md) |
+| [R21](#r21-experiment-can-claude-build-the-graph) | Experiment: can Claude build the graph from 100 LEGO + 100 Arduino manuals? | 🟡 Set up; results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md) |
 
 ---
 
@@ -1158,6 +1159,35 @@ edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel
 - Hardware and verb counts come from keyword matching, so they are approximate.
 - LEGO near-copies were found by comparing part lists (same parts, or all but 1–2 differing); some are coincidental, but the clear left/right and colour cases were checked by hand.
 - 3.9% of LEGO pieces (868) are LDraw parts outside the official library and were not classified.
+
+---
+
+## R21. Experiment: can Claude build the graph?
+
+**Date:** 1 October 2026 · **Status:** 🟡 Set up; results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md) once run.
+
+**Question:** given our spec (connection types, rules, naming) and the catalogue, how well and how fast does Claude turn a real manual into the graph, and can it create part types the first time it meets them (store on demand)? For now the program is given the manual's link or set number directly; identifying the product comes later.
+
+**Code:** [`graphgen/`](./graphgen/). The pipeline per manual:
+1. Send the manual to Claude (structured output = the `ExtractedGraph` schema; spec, hint and catalogue in a cached system prompt).
+2. Add new part types to the catalogue, marked `unverified` (store on demand).
+3. Expand repeats into N real copies, with overrides.
+4. Check the spec rules (unknown parts, missing/over-used ports, incompatible ports, unused parts).
+5. Compute the logical view (nets), score against the answer key, record time, tokens and cost.
+
+**Test sets** (built by `research/scrape/lego_official.py` and `arduino_official.py`):
+
+| Domain | Input Claude reads | Answer key |
+|---|---|---|
+| LEGO (100 sets) | The **official lego.com instructions PDF** (pictures) | Parts: the official set inventory from **Rebrickable**'s public database (element ID → part and colour). Connections: **LDraw** model of the same set; which plain brick/plate/tile designs clutch which, computed from 3D positions |
+| Arduino (100 tutorials) | The **official Arduino tutorial** (markdown from github.com/arduino/docs-content) + up to 2 circuit images | 48 have **CircuitQuest's verified circuit** (electrical nets compared by signature). The rest are scored on the spec rules and on whether every part family the tutorial lists is present |
+
+**Model:** Claude Sonnet 5 (chosen by the user to test cost first), adaptive thinking, effort `high`.
+
+**Known limits of the scoring:**
+- LEGO connections are compared by **design pair** among plain bricks, plates and tiles only; slopes, Technic, minifigures etc. are not scored.
+- The Arduino answer key is CircuitQuest's circuit; where it differs from the tutorial (e.g. an extra LED in Button) those parts are excluded by hand only for known cases.
+- Arduino nets are compared strictly: a resistor placed on the other side of an LED (electrically equivalent) counts as different.
 
 ---
 

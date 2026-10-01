@@ -59,6 +59,8 @@ def flatten_mpd(text, index):
             files[current] = []
         elif current is not None:
             files[current].append(line)
+    if not files:  # a single-model .ldr file without "0 FILE" sections
+        files["main"] = text.splitlines()
     main = next(iter(files))
     out = []
 
@@ -118,3 +120,25 @@ def lego_truth(mpd_text, index, describe):
                 contacts.add(frozenset([a["id"], b["id"]]))
     return {"nodes": nodes, "contacts": contacts, "scoreable": {n["id"] for n in boxy},
             "inventory": dict(collections.Counter(n["part"] for n in nodes))}
+
+
+# --- LEGO from the official PDF ----------------------------------------------------
+def element_map():
+    """Rebrickable element ID -> (part number, colour id), from its public database dump."""
+    import csv
+    import gzip
+    path = pathlib.Path(__file__).resolve().parents[1] / "research" / "raw" / "rebrickable" / "elements.csv.gz"
+    with gzip.open(path, "rt", encoding="utf-8") as f:
+        return {r["element_id"]: (r["part_num"], r["color_id"]) for r in csv.DictReader(f)}
+
+
+def lego_pdf_truth(entry, mpd_text, index, describe):
+    """Answer key for one official manual: Rebrickable inventory (parts) and LDraw geometry
+    (which plain brick/plate/tile designs clutch which), compared at design level because the
+    model sees pictures, not LDraw part ids."""
+    geo = lego_truth(mpd_text, index, describe)
+    design = {n["id"]: n["part"][:-4] if n["part"].endswith(".dat") else n["part"] for n in geo["nodes"]}
+    pairs = collections.Counter(tuple(sorted(design[x] for x in c)) for c in geo["contacts"])
+    return {"inventory": entry["inventory"], "pieces": sum(entry["inventory"].values()),
+            "pairs": pairs, "scoreable_designs": {design[i] for i in geo["scoreable"]},
+            "ldraw_pieces": len(geo["nodes"])}

@@ -20,7 +20,7 @@ def expand(graph):
     for rep in graph.get("repeats", []):
         local = {p["id"] for p in rep["parts"]}
         for n in range(1, rep["times"] + 1):
-            ovs = [o for o in rep.get("overrides", []) if o["copy"] == n]
+            ovs = [o for o in rep.get("overrides", []) if o["copy_number"] == n]
             prefix = f"{rep['group']}{n}."
             types = {p["id"]: p["type"] for p in rep["parts"]}
             props = {p["id"]: _props(p.get("props", [])) for p in rep["parts"]}

@@ -28,8 +28,8 @@ def for_loop_graph():
             "parts": [part("r", "resistor", value="220"), part("led", "led")],
             "edges": block_edges,
             "overrides": [o for n in range(2, 7) for o in (
-                {"copy": n, "kind": "attach", "target": "uno:2", "value": f"uno:{n + 1}"},
-                {"copy": n, "kind": "attach", "target": "bb1:bn.1", "value": f"bb1:bn.{n}"})],
+                {"copy_number": n, "kind": "attach", "target": "uno:2", "value": f"uno:{n + 1}"},
+                {"copy_number": n, "kind": "attach", "target": "bb1:bn.1", "value": f"bb1:bn.{n}"})],
         }],
     }
 

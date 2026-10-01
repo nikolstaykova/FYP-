@@ -55,7 +55,7 @@ class EdgeOut(BaseModel):
 
 
 class Override(BaseModel):
-    copy: int = Field(description="Which copy (1-based) this override applies to")
+    copy_number: int = Field(description="Which copy (1-based) this override applies to")
     kind: OverrideKind
     target: str = Field(description="replace/props/remove: local part id. attach: the external endpoint 'part:port' as written in the template. mirror: ''. add: new local part id")
     value: str = Field(description="replace/add: part type. props: 'key=value'. attach: the endpoint 'part:port' to use for this copy. mirror/remove: ''")
