@@ -94,7 +94,8 @@ def library_index():
             if low.startswith("ldraw/parts/") and low.endswith(".dat") and "/s/" not in low:
                 with z.open(name) as f:
                     first = f.readline().decode("utf-8", "replace")
-                index[low.rsplit("/", 1)[1]] = re.sub(r"^0\s+~?", "", first).strip()
+                # "~" marks sub-parts, "=" aliases, "_" physical colour variants, "|" mirror-only.
+                index[low.rsplit("/", 1)[1]] = re.sub(r"^0\s+[~=_|]*", "", first).strip()
     return index
 
 
