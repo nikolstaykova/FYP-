@@ -16,9 +16,14 @@
 | Mean cost per manual | **$0.089** | **$0.198** |
 | Cost per 100 manuals | **≈ $9** | **≈ $20** |
 | Input / output tokens (mean) | ≈ 16k / 5.6k | ≈ 24k / 12.8k |
-| **Full run** | 117 tutorials: *running* | 100 manuals: *queued* |
+| **Full run** | **117 tutorials** (116 ok, 1 safety false positive) | 100 manuals: *running* |
+| Mean time per manual | **41 s** (median 35, 90th pct 79) | *pending* |
+| Mean cost per manual | **$0.104** (median $0.10, 90th pct $0.16) | *pending* |
+| Cost per 100 manuals | **≈ $10.45** (whole run: $12.12) | *pending* |
+| Input / output tokens (mean) | ≈ 19.7k / 5.9k | *pending* |
+| **With check + repair** (per round, when needed) | repair not triggered after the catalogue fixes | **+25–70 s, +$0.09–0.16** per repair round |
 
-*The full-run row is filled in when the run finishes.*
+*The LEGO full-run rows are filled in when that run finishes.*
 
 ---
 
@@ -67,6 +72,72 @@ The automatic score depends on the answer key. Every pilot graph was also read b
 | First, incomplete draft of a new type (Raspberry Pi with 8 pins) blocked later, fuller drafts | **Unverified** entries now **merge** ports from later manuals |
 | LEGO pieces named by design number scored as 0 | Scored by design number as well as Element ID |
 | Model invented port kinds | Allowed port kinds and compatible pairs added to the prompt |
+
+---
+
+## Full electronics run (117 tutorials)
+
+| | Result |
+|---|---|
+| Succeeded | 116 / 117 (one safety-filter false positive on `tone-keyboard`) |
+| Tutorials with an answer key | 47 |
+| **Strict score:** every net identical to CircuitQuest | 23 / 47 (49%) |
+| Tutorials without an answer key | 69: 96.7% of the part families each tutorial lists are in its graph |
+| Rule warnings | 178, mostly **our catalogue**: CircuitQuest's cards for Leonardo, Mega, Zero, HC-SR04, servo, OLED, DHT22 have no pin list, so every pin used on them was "unknown" |
+
+**Read by hand, the 24 "wrong" tutorials split into:**
+
+| Category | Tutorials | Count |
+|---|---|---:|
+| Answer key differs from the **official** tutorial; Claude followed the tutorial | ADXL3xx, ifStatement, Debounce, StateChangeDetection, Knock (answer key adds an LED), toneMultiple (tutorial: speakers + 100 Ω), Midi (tutorial: two 220 Ω), Ping (same part, different name) | 8 |
+| Valid alternative or electrically equivalent | VirtualColorMixer, SerialCallResponse ×2 ("any analog sensor + 10k"), LED bar graph, Calibration, WhileLoop, PitchFollower (resistor on the other side of the LED) | 7 |
+| **Real model errors** | Button, DigitalReadSerial, KeyboardMessage, InputPullupSerial (**4 × pushbutton legs**), JoystickMouseControl, RowColumnScanning (partly) | 6 |
+| Not verified | ArduinoISP, ArduinoToBreadboard, toneMelody | 3 |
+
+**Adjusted accuracy: ≈ 38 / 47 (≈ 80%) correct or valid; ≈ 13% real errors.**
+
+---
+
+## Check and repair loop
+
+**Flow:** Claude builds the graph → code checks it → if anything fails, the exact problems go back to Claude **in the same conversation** (the manual is not resent) → Claude returns a corrected graph → final check. Every phase is timed and costed separately; the score is kept for both the first and the final graph.
+
+**Checks** ([`graphgen/checks.py`](./graphgen/checks.py)):
+
+| Electronics (circuit laws) | LEGO |
+|---|---|
+| E1 supply shorted to GND · E2 board pin wired straight to 5V/GND · E3 a two-legged part shorted out · E4 a leg connected to nothing · E5 input pin floating (only a button on it, no pull-up/down, unless the code uses `INPUT_PULLUP`) | L1 piece counts differ from the booklet's own parts page · L2 not a real LEGO part number · L3 the build falls apart into separate groups |
+| + the spec rules (V2 unused part, V3 incompatible ports, V4 missing/over-used port) | + the same spec rules |
+
+### Electronics
+
+- **Do the checks catch real errors?** Run on the graphs from the full run: they flag **5 of the 6 real errors** (Button, DigitalReadSerial: E5 floating pin; KeyboardMessage, InputPullupSerial: E2 pin shorted; Joystick: E1 supply shorted) and **nothing** on correct graphs (Blink, Fade, ForLoop). The miss, RowColumnScanning, has pins on the wrong rows: no circuit law can see that.
+- **Catalogue fixes first:** the pushbutton entry now says which legs are joined inside it, and the missing pinouts were added. Re-run on the 6 error tutorials:
+
+| Tutorial | Before | After | Note |
+|---|---|---|---|
+| Button | 1/3 | **3/3 ✅** | fixed on the first build |
+| DigitalReadSerial | 1/3 | **3/3 ✅** | fixed on the first build |
+| KeyboardMessage | 1/3 | **3/3 ✅** | fixed on the first build |
+| InputPullupSerial | 0/4 | 1/4, **correct** | internal pull-up, as the tutorial says; the answer key adds an LED |
+| JoystickMouseControl | 2/8 | 2/8, mostly correct | only the X/Y axes may be swapped (the tutorial is ambiguous); the answer key adds 2 buttons |
+| RowColumnScanning | 19/28 | 19/28 ❌ | pins on the wrong rows of the LED matrix |
+
+  None of the six triggered a repair any more: every first build passed the checks. **The catalogue fix did more than the repair loop**; the loop stays as a safety net (it catches the error types we saw).
+
+### LEGO (5 booklets, up to 2 repair rounds)
+
+| Booklet | Issues build → final | Repair rounds | Build | Repair | Inventory recall | Contact recall |
+|---|---|---:|---|---|---|---|
+| 7268 Crab | 13 → **0** | 1 | 48 s, $0.08 | 51 s, $0.13 | 0.25 → 0.25 | 0.0 → 0.0 |
+| 30103 Car | 13 → **0** | 1 | 71 s, $0.10 | 35 s, $0.11 | 0.11 → 0.11 | – |
+| 4991 | 14 → 1 | 2 | 56 s, $0.10 | 68 + 42 s, $0.30 | 0.85 → **0.89** | 1.0 → 1.0 |
+| 30161 | 3 → **0** | 1 | 53 s, $0.10 | 25 s, $0.09 | 0.16 → **0.22** | 0.25 → 0.25 |
+| 7246 | 8 → **0** | 1 | 67 s, $0.13 | 46 s, $0.14 | 0.09 → 0.09 | – |
+
+- **Issues: 51 → 1.** One repair round almost always clears them (invented part numbers, incompatible ports, missing ports).
+- **Cost of repair:** about **+25–70 s and +$0.09–0.16 per round**, roughly doubling the cost of a small booklet.
+- **Accuracy barely moves** (small gains on 2 of 5): the LEGO checks catch *impossible* graphs, not *plausible but wrong* pieces. These booklets have no parts page, so which piece is which is guessed from small pictures; **giving Claude the official parts list** (from the set number) is the bigger lever for LEGO.
 
 ---
 

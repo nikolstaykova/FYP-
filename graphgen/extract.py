@@ -145,7 +145,7 @@ CLAUDE_CODE_ENV_DROP = ("CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT", "CLAUDE_CODE_SES
 
 
 def extract_claude_code(manual_text, catalogue_text, domain, images=(), pdf=None, model="sonnet", effort="high",
-                        timeout=1800):
+                        timeout=900):
     """Same request through `claude -p` (subscription login instead of an API key).
 
     Structured output via --json-schema; PDF and images as content blocks over stream-json input.
@@ -201,3 +201,133 @@ def extract_claude_code(manual_text, catalogue_text, domain, images=(), pdf=None
              "cache_read_tokens": u.get("cache_read_input_tokens", 0), "output_tokens": u["output_tokens"],
              "cost_usd": round(result.get("total_cost_usd", 0.0), 4), "turns": result.get("num_turns")}
     return parsed.model_dump(), stats
+
+
+# --- Build-then-repair sessions: the repair turn reuses the manual already in context ----------
+def _system_and_content(manual_text, catalogue_text, domain, images, pdf):
+    catalogue_block = ("CATALOGUE (part types that already exist; anything else is new):\n" + catalogue_text
+                       if catalogue_text else "CATALOGUE: empty. Every part type you use is new and must be in new_part_types.")
+    system = SPEC + "\n\n" + HINTS[domain] + "\n\n" + catalogue_block
+    content = [*([_pdf_block(pdf)] if pdf else []), *(_image_block(b, m) for b, m in images),
+               {"type": "text", "text": "MANUAL:\n" + manual_text}]
+    return system, content
+
+
+class SubscriptionSession:
+    """One `claude -p` process kept open (stream-json in/out): turn 1 builds the graph, later turns repair it."""
+
+    def __init__(self, manual_text, catalogue_text, domain, images=(), pdf=None, model="sonnet", effort="high", timeout=900):
+        import json
+        import os
+        import queue
+        import subprocess
+        import tempfile
+        import threading
+
+        self.json, self.timeout, self.model, self.effort = json, timeout, model, effort
+        system, self.first_content = _system_and_content(manual_text, catalogue_text, domain, images, pdf)
+        f = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False)
+        f.write(system)
+        f.close()
+        self.sys_path = f.name
+        env = {k: v for k, v in os.environ.items() if k not in CLAUDE_CODE_ENV_DROP}
+        self.proc = subprocess.Popen(
+            ["claude", "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
+             "--model", model, "--effort", effort, "--no-session-persistence", "--tools", "",
+             "--system-prompt-file", self.sys_path, "--json-schema", json.dumps(ExtractedGraph.model_json_schema())],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env,
+            cwd=tempfile.gettempdir(), bufsize=1)
+        self.lines = queue.Queue()
+        threading.Thread(target=lambda: [self.lines.put(l) for l in self.proc.stdout] + [self.lines.put(None)],
+                         daemon=True).start()
+        self.prev_cost = 0.0
+
+    def _turn(self, content):
+        import queue
+        import subprocess
+        t0 = time.monotonic()
+        self.proc.stdin.write(self.json.dumps({"type": "user", "message": {"role": "user", "content": content}}) + "\n")
+        self.proc.stdin.flush()
+        result = None
+        while result is None:
+            try:
+                line = self.lines.get(timeout=self.timeout)
+            except queue.Empty:
+                self.close()
+                raise subprocess.TimeoutExpired("claude -p", self.timeout)
+            if line is None:
+                raise RuntimeError("claude -p exited: " + self.proc.stderr.read()[-300:])
+            try:
+                event = self.json.loads(line)
+            except ValueError:
+                continue
+            if event.get("type") == "result":
+                result = event
+        if result.get("is_error") or not result.get("structured_output"):
+            raise RuntimeError(f"claude -p failed: {str(result.get('result'))[:300]}")
+        total = result.get("total_cost_usd", 0.0) or 0.0
+        cost = total - self.prev_cost if total >= self.prev_cost else total  # cumulative per session
+        self.prev_cost = max(total, self.prev_cost)
+        u = result["usage"]
+        stats = {"model": next(iter(result.get("modelUsage") or {}), self.model), "effort": self.effort,
+                 "route": "claude-code subscription", "seconds": round(time.monotonic() - t0, 1),
+                 "input_tokens": u["input_tokens"] + u.get("cache_creation_input_tokens", 0) + u.get("cache_read_input_tokens", 0),
+                 "cache_read_tokens": u.get("cache_read_input_tokens", 0), "output_tokens": u["output_tokens"],
+                 "cost_usd": round(cost, 4)}
+        return ExtractedGraph.model_validate(result["structured_output"]).model_dump(), stats
+
+    def first(self):
+        return self._turn(self.first_content)
+
+    def repair(self, message):
+        return self._turn([{"type": "text", "text": message}])
+
+    def close(self):
+        import os
+        try:
+            self.proc.stdin.close()
+            self.proc.wait(timeout=10)
+        except Exception:
+            self.proc.kill()
+        if os.path.exists(self.sys_path):
+            os.unlink(self.sys_path)
+
+
+class ApiSession:
+    """Same two-turn flow on the Anthropic API (needs ANTHROPIC_API_KEY)."""
+
+    def __init__(self, manual_text, catalogue_text, domain, images=(), pdf=None, model=MODEL, effort="high", max_tokens=64000):
+        self.client = anthropic.Anthropic()
+        system, content = _system_and_content(manual_text, catalogue_text, domain, images, pdf)
+        self.system = [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}]
+        self.messages = [{"role": "user", "content": content}]
+        self.model, self.effort, self.max_tokens = model, effort, max_tokens
+
+    def _turn(self):
+        extra = {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"} if self.model in FALLBACK_MODELS else {}
+        t0 = time.monotonic()
+        with self.client.beta.messages.stream(model=self.model, max_tokens=self.max_tokens, **extra,
+                                              thinking={"type": "adaptive"}, output_config={"effort": self.effort},
+                                              output_format=ExtractedGraph, system=self.system, messages=self.messages) as s:
+            final = s.get_final_message()
+        if final.stop_reason in ("refusal", "max_tokens"):
+            raise RuntimeError(f"stopped: {final.stop_reason}")
+        text = next(b.text for b in final.content if b.type == "text")
+        self.messages.append({"role": "assistant", "content": [{"type": "text", "text": text}]})
+        u = final.usage
+        pin, pout = PRICE.get(final.model, PRICE.get(self.model, (0, 0)))
+        cr, cw = getattr(u, "cache_read_input_tokens", 0) or 0, getattr(u, "cache_creation_input_tokens", 0) or 0
+        stats = {"model": final.model, "effort": self.effort, "route": "api", "seconds": round(time.monotonic() - t0, 1),
+                 "input_tokens": u.input_tokens + cr + cw, "cache_read_tokens": cr, "output_tokens": u.output_tokens,
+                 "cost_usd": round((u.input_tokens * pin + cw * pin * 1.25 + cr * pin * 0.1 + u.output_tokens * pout) / 1e6, 4)}
+        return ExtractedGraph.model_validate_json(text).model_dump(), stats
+
+    def first(self):
+        return self._turn()
+
+    def repair(self, message):
+        self.messages.append({"role": "user", "content": message})
+        return self._turn()
+
+    def close(self):
+        pass

@@ -15,9 +15,10 @@ Test sets (built by research/scrape/):
 
 Catalogue: Arduino starts from the verified CircuitQuest catalogue (`--catalogue empty` to start
 from nothing); LEGO starts empty, so every piece type is created the first time a manual uses it
-and later manuals reuse it. Manuals run in waves of `--workers`; the catalogue grows between waves.
+and later manuals reuse it. `--workers` manuals are always in flight; each new call sees the catalogue as it stands.
 """
 import argparse
+import collections
 import concurrent.futures
 import datetime
 import json
@@ -69,8 +70,19 @@ def arduino_manual(path, with_images=True):
     return md, images
 
 
-def process(case, graph, stats, catalogue, out):
-    """Everything after the model call: catalogue, expansion, rules, scoring."""
+def score_graph(case, flat, catalogue):
+    if case["domain"] == "arduino":
+        if case.get("cq_lesson"):
+            return score.score_arduino(flat, logical.nets(flat, catalogue), truth.arduino_truth(case["cq_lesson"]),
+                                       DROP.get(case["cq_lesson"], ()))
+        return score.score_hardware(flat, case.get("hardware", []))
+    return score.score_lego_pdf(flat, case["truth"], case["elements"], case["part_nums"])
+
+
+def process(case, saved, catalogue, out):
+    """Everything after the model: catalogue, expansion, rules, scoring (final graph, and the first
+    draft before repair so the repair's effect can be measured)."""
+    graph, stats = saved["graph"], saved["stats"]
     t0 = time.monotonic()
     before = set(catalogue.entries)
     new_drafts = [d for d in graph["new_part_types"] if d["type"] not in before]
@@ -81,16 +93,16 @@ def process(case, graph, stats, catalogue, out):
          "edges": len(flat["edges"]), "repeats": [{"group": x["group"], "times": x["times"], "overrides": len(x["overrides"])}
                                                   for x in graph["repeats"]],
          "new_types_declared": len(graph["new_part_types"]), "new_types_added": len(added),
-         "problems": [list(p) for p in problems], "notes": graph["notes"]}
+         "problems": [list(p) for p in problems], "notes": graph["notes"],
+         "phases": saved.get("phases", [{"phase": "build", **stats}]),
+         "issues_first": saved.get("issues_first"), "issues_final": saved.get("issues_final")}
+    r["score"] = score_graph(case, flat, catalogue)
+    if saved.get("graph_initial") is not None and saved["graph_initial"] is not graph:
+        tmp = cat.Catalogue(catalogue.entries)
+        tmp.add_drafts(saved["graph_initial"]["new_part_types"])
+        r["score_initial"] = score_graph(case, expand.expand(saved["graph_initial"]), tmp)
     if case["domain"] == "arduino":
-        if case.get("cq_lesson"):
-            r["score"] = score.score_arduino(flat, logical.nets(flat, catalogue), truth.arduino_truth(case["cq_lesson"]),
-                                             DROP.get(case["cq_lesson"], ()))
-        else:
-            r["score"] = score.score_hardware(flat, case.get("hardware", []))
         r["drafts"] = score.score_drafts(new_drafts, cat.arduino_seed())
-    else:
-        r["score"] = score.score_lego_pdf(flat, case["truth"], case["elements"], case["part_nums"])
     r["postprocess_ms"] = round((time.monotonic() - t0) * 1000, 1)
     d = out / case["id"]
     d.mkdir(parents=True, exist_ok=True)
@@ -99,33 +111,69 @@ def process(case, graph, stats, catalogue, out):
     return r
 
 
-def call(case, catalogue_text, cfg, out):
-    from .extract import extract as api_extract
-    from .extract import extract_claude_code
-
-    def extract(*args, model, effort, max_tokens=None, **kw):
-        if cfg.route == "subscription":
-            return extract_claude_code(*args, model=model, effort=effort, **kw)
-        return api_extract(*args, model=model, effort=effort, **({"max_tokens": max_tokens} if max_tokens else {}), **kw)
+def call(case, entries, cfg, out):
+    """Build -> check -> repair (up to cfg.repair_rounds) -> final check, each phase timed and costed."""
+    from . import checks
+    from .extract import ApiSession, SubscriptionSession
 
     d = out / case["id"]
     d.mkdir(parents=True, exist_ok=True)
     if cfg.replay and (cfg.replay / case["id"] / "response.json").exists():
         saved = json.loads((cfg.replay / case["id"] / "response.json").read_text())
-        graph, stats = saved["graph"], saved["stats"]
-    elif case["domain"] == "arduino" and case.get("manual_file"):  # Raspberry Pi projects, saved locally
+        (d / "response.json").write_text(json.dumps(saved, indent=1))
+        return saved
+
+    pdf, images, manual = None, [], ""
+    if case["domain"] == "arduino" and case.get("manual_file"):
         manual = (ROOT / case["manual_file"]).read_text()
         images = [] if cfg.no_images else [((ROOT / i["file"]).read_bytes(), i["media"]) for i in case["images"]]
-        graph, stats = extract(manual, catalogue_text, "arduino", images=images, model=cfg.model, effort=cfg.effort)
     elif case["domain"] == "arduino":
         manual, images = arduino_manual(case["path"], not cfg.no_images)
-        graph, stats = extract(manual, catalogue_text, "arduino", images=images, model=cfg.model, effort=cfg.effort)
     else:
         pdf = (ROOT / "research" / "raw" / "lego_pdf" / f"{case['id']}.pdf").read_bytes()
-        graph, stats = extract(f"LEGO set {case['id']}: {case['name']} (official instructions attached).", catalogue_text,
-                               "lego-pdf", pdf=pdf, model=cfg.model, effort=cfg.effort, max_tokens=128000)
-    (d / "response.json").write_text(json.dumps({"graph": graph, "stats": stats}, indent=1))
-    return graph, stats
+        manual = f"LEGO set {case['id']}: {case['name']} (official instructions attached)."
+    domain = case["domain"] if case["domain"] == "arduino" else "lego-pdf"
+    text = cat.Catalogue(entries).prompt_text() if entries else ""
+    Session = SubscriptionSession if cfg.route == "subscription" else ApiSession
+    booklet = checks.booklet_inventory(pdf) if pdf else None
+
+    def check(graph):
+        t0 = time.monotonic()
+        tmp = cat.Catalogue(entries)
+        tmp.add_drafts(graph["new_part_types"])
+        found = checks.run(expand.expand(graph), tmp, case["domain"], manual, case.get("part_nums", frozenset()), booklet)
+        return found, round(time.monotonic() - t0, 2)
+
+    import subprocess
+    for attempt in range(2):  # a stalled session is retried once from the start
+        session = Session(manual, text, domain, images=images, pdf=pdf, model=cfg.model, effort=cfg.effort)
+        try:
+            graph, st = session.first()
+            graph_initial, phases = graph, [{"phase": "build", **st}]
+            issues, secs = check(graph)
+            phases[-1].update(check_seconds=secs, issues=len(issues), issue_rules=dict(collections.Counter(i[0] for i in issues)))
+            issues_first = len(issues)
+            for n in range(cfg.repair_rounds):
+                if not issues:
+                    break
+                graph, st = session.repair(checks.repair_message(issues))
+                issues, secs = check(graph)
+                phases.append({"phase": f"repair{n + 1}", **st, "check_seconds": secs, "issues": len(issues),
+                               "issue_rules": dict(collections.Counter(i[0] for i in issues))})
+            break
+        except subprocess.TimeoutExpired:
+            if attempt:
+                raise
+        finally:
+            session.close()
+    total = {"model": phases[0]["model"], "effort": cfg.effort, "route": phases[0]["route"],
+             "seconds": round(sum(p["seconds"] + p["check_seconds"] for p in phases), 1),
+             "input_tokens": sum(p["input_tokens"] for p in phases), "output_tokens": sum(p["output_tokens"] for p in phases),
+             "cost_usd": round(sum(p["cost_usd"] for p in phases), 4), "repair_rounds_used": len(phases) - 1}
+    saved = {"graph": graph, "graph_initial": graph_initial, "stats": total, "phases": phases,
+             "issues_first": issues_first, "issues_final": len(issues), "final_issue_list": [list(i) for i in issues]}
+    (d / "response.json").write_text(json.dumps(saved, indent=1))
+    return saved
 
 
 def load_cases(cfg):
@@ -163,6 +211,7 @@ def main():
     ap.add_argument("--no-images", action="store_true")
     ap.add_argument("--arduino-only", action="store_true", help="Electronics: leave out the Raspberry Pi projects")
     ap.add_argument("--replay", type=pathlib.Path)
+    ap.add_argument("--repair-rounds", type=int, default=1, help="Check-and-repair rounds after the first build (0 = off)")
     cfg = ap.parse_args()
     cfg.model = cfg.model or ("sonnet" if cfg.route == "subscription" else "claude-sonnet-5")
     cfg.catalogue = cfg.catalogue or ("seeded" if cfg.domain == "arduino" else "empty")
@@ -177,22 +226,26 @@ def main():
     catalogue = cat.Catalogue(cat.arduino_seed() if cfg.domain == "arduino" and cfg.catalogue == "seeded" else {})
     results, failures, t_run = [], [], time.monotonic()
 
-    for start in range(0, len(cases), cfg.workers):
-        wave = cases[start:start + cfg.workers]
-        text = catalogue.prompt_text() if catalogue.entries else ""
-        with concurrent.futures.ThreadPoolExecutor(cfg.workers) as pool:
-            futures = {pool.submit(call, c, text, cfg, out): c for c in wave}
-            for fut in concurrent.futures.as_completed(futures):
-                c = futures[fut]
+    # Keep `workers` calls in flight; each new call sees the catalogue as it is when it starts.
+    pending, inflight = list(cases), {}
+    with concurrent.futures.ThreadPoolExecutor(cfg.workers) as pool:
+        while pending or inflight:
+            while pending and len(inflight) < cfg.workers:
+                c = pending.pop(0)
+                inflight[pool.submit(call, c, json.loads(json.dumps(catalogue.entries)), cfg, out)] = c
+            done, _ = concurrent.futures.wait(inflight, return_when=concurrent.futures.FIRST_COMPLETED)
+            for fut in done:
+                c = inflight.pop(fut)
                 try:
-                    graph, stats = fut.result()
-                    r = process(c, graph, stats, catalogue, out)
+                    saved = fut.result()
+                    stats = saved["stats"]
+                    r = process(c, saved, catalogue, out)
                     results.append(r)
                     with open(out / "results.jsonl", "a") as f:
                         f.write(json.dumps(r) + "\n")
                     print(f"[{len(results) + len(failures):3d}/{len(cases)}] {c['id']:28s} {stats['seconds']:6.1f}s "
                           f"${stats['cost_usd']:.3f}  parts {r['parts']:4d}  new types {r['new_types_added']:3d}  "
-                          f"problems {len(r['problems']):3d}", flush=True)
+                          f"issues {r['issues_first']}->{r['issues_final']}  repairs {stats.get('repair_rounds_used', 0)}", flush=True)
                 except Exception as e:
                     failures.append({"case": c["id"], "error": f"{type(e).__name__}: {e}"})
                     (out / "failures.json").write_text(json.dumps(failures, indent=1))

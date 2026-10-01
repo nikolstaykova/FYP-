@@ -65,6 +65,12 @@ def section(results, failures, config):
                       f"symmetry right {sum(d['symmetric_ok'] for d in drafts)}/{len(drafts)}, "
                       f"port count right {sum(d['port_count_ok'] for d in drafts)}/{len(drafts)}.", ""]
     else:
+        empty = [r for r in results if r["parts"] == 0]
+        if empty:
+            lines += [f"**{len(empty)} PDF(s) contained no building instructions** (e.g. advent-calendar covers); Claude returned an "
+                      f"empty graph instead of inventing parts. Left out of the accuracy below: "
+                      + ", ".join(f"`{r['case']}`" for r in empty) + ".", ""]
+        results = [r for r in results if r["parts"] > 0]
         sc = [r["score"] for r in results]
         lines += ["| Measure | Mean | Median |", "|---|---:|---:|",
                   f"| Pieces built ÷ pieces in the set | {_mean(s['pieces_built'] / s['pieces_expected'] for s in sc)} | {_q([s['pieces_built'] / s['pieces_expected'] for s in sc], .5):.2f} |",
@@ -89,6 +95,36 @@ def section(results, failures, config):
                              f"{_mean(r['score']['inventory_recall'] for r in rs)} | {_mean(r['score']['contact_recall'] for r in rs)} |")
         lines.append("")
 
+    if any(r.get("issues_first") is not None for r in results):
+        rr = [r for r in results if r.get("issues_first") is not None]
+        needed = [r for r in rr if r["issues_first"]]
+        fixed = [r for r in needed if not r["issues_final"]]
+        phase = collections.defaultdict(list)
+        for r in rr:
+            for p in r["phases"]:
+                phase[p["phase"]].append(p)
+        lines += ["### Check and repair loop", "",
+                  f"Build → check → repair → final check. **{len(needed)}/{len(rr)}** manuals had check failures after the first build; "
+                  f"**{len(fixed)}** of those were fully fixed by the repair. Issues in total: "
+                  f"{sum(r['issues_first'] for r in rr)} → {sum(r['issues_final'] for r in rr)}.", "",
+                  "| Phase | Runs | Mean seconds | Mean cost | Mean check seconds |", "|---|---:|---:|---:|---:|"]
+        for name, ps in sorted(phase.items()):
+            lines.append(f"| {name} | {len(ps)} | {_mean(p['seconds'] for p in ps)} | {_mean(p['cost_usd'] for p in ps)} | "
+                         f"{_mean(p.get('check_seconds') for p in ps)} |")
+        both = [r for r in rr if "score_initial" in r]
+        if both and domain == "arduino":
+            keyed = [r for r in both if "nets_expected" in r["score"]]
+            if keyed:
+                lines += ["", f"**Accuracy before → after repair** ({len(keyed)} tutorials with an answer key that were repaired): "
+                          f"all nets correct {sum(r['score_initial']['all_nets_correct'] for r in keyed)} → "
+                          f"{sum(r['score']['all_nets_correct'] for r in keyed)}; mean net recall "
+                          f"{_mean(r['score_initial']['net_recall'] for r in keyed)} → {_mean(r['score']['net_recall'] for r in keyed)}."]
+        elif both:
+            lines += ["", f"**Accuracy before → after repair** ({len(both)} booklets repaired): inventory recall "
+                      f"{_mean(r['score_initial']['inventory_recall'] for r in both)} → {_mean(r['score']['inventory_recall'] for r in both)}; "
+                      f"contact recall {_mean(r['score_initial']['contact_recall'] for r in both)} → {_mean(r['score']['contact_recall'] for r in both)}; "
+                      f"contact precision {_mean(r['score_initial']['contact_precision'] for r in both)} → {_mean(r['score']['contact_precision'] for r in both)}."]
+        lines.append("")
     rules = collections.Counter(p[0] for r in results for p in r["problems"])
     clean = sum(1 for r in results if not r["problems"])
     reps = [r for r in results if r["repeats"]]

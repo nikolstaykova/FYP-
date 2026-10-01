@@ -45,6 +45,10 @@ def arduino_seed():
         through = [pins[:2]] if len(pins) == 2 and not card.get("connector_only") else []
         if len(pins) == 3 and sub == "potentiometer":
             through = [["GND", "SIG"], ["SIG", "VCC"]]
+        if not pins and card.get("pin_domains"):  # boards: header pins from the card's pin domains
+            doms = card["pin_domains"]
+            pins = [p for dom in doms.values() for p in dom] + ["GND.1", "GND.2", "GND.3", "5V", "3.3V", "VIN", "RESET"]
+            kind = "header-socket"
         entries[cid] = _entry(
             cid, card.get("display_name", cid), sub or card.get("type", "part"), [(p, kind) for p in pins],
             through=through, symmetric=card.get("symmetric_pins", []), polarized=bool(card.get("polarized")),
@@ -61,6 +65,15 @@ def arduino_seed():
                   "Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip).")
     entries["jumper-wire"] = _entry("jumper-wire", "Jumper wire", "wire", [("a", "wire-end"), ("b", "wire-end")],
                                     conducts=[["a", "b"]], connector=True)
+    # Modules whose cards have no pin list (Wokwi pin names).
+    for mid, name, pins in [("hc-sr04", "HC-SR04 ultrasonic sensor", ["VCC", "TRIG", "ECHO", "GND"]),
+                            ("servo", "Hobby servo", ["PWM", "V+", "GND"]),
+                            ("dht22", "DHT22 temperature/humidity sensor", ["VCC", "SDA", "NC", "GND"]),
+                            ("oled-ssd1306", "SSD1306 OLED (I2C)", ["GND", "VCC", "SCL", "SDA"]),
+                            ("neopixel", "NeoPixel (WS2812)", ["VDD", "DOUT", "VSS", "DIN"]),
+                            ("ir-receiver", "IR receiver", ["GND", "VCC", "DAT"])]:
+        if mid in entries:
+            entries[mid]["ports"] = [{"name": p, "kind": "header-pin"} for p in pins]
     entries["jumper-wire-mf"] = _entry("jumper-wire-mf", "Jumper wire, male to female", "wire",
                                        [("a", "wire-end"), ("b", "wire-end")], conducts=[["a", "b"]], connector=True)
     entries["alligator-clip-wire"] = _entry("alligator-clip-wire", "Alligator clip lead", "wire",
@@ -69,7 +82,11 @@ def arduino_seed():
     entries["pushbutton"] = _entry("pushbutton", "Pushbutton", "button",
                                    [("1.l", "lead"), ("1.r", "lead"), ("2.l", "lead"), ("2.r", "lead")],
                                    through=[["1", "2"]], symmetric=[["1", "2"]],
-                                   alias={"mode": "prefix", "prefixes": ["1", "2"]})
+                                   alias={"mode": "prefix", "prefixes": ["1", "2"]},
+                                   note="4 legs in two pairs: 1.l and 1.r are ALWAYS joined inside (side 1), 2.l and 2.r "
+                                        "are ALWAYS joined (side 2); pressing joins side 1 to side 2. Wire the input pin to one "
+                                        "side and the supply to the OTHER side; a pull-down/pull-up resistor goes on the SAME "
+                                        "side as the input pin.")
     return entries
 
 
@@ -143,7 +160,8 @@ class Catalogue:
             flags = [f for f, on in (("polarized", e["polarized"]), ("connector", e["connector"])) if on]
             if e["symmetric"]:
                 flags.append("symmetric " + "/".join("=".join(g) for g in e["symmetric"]))
-            lines.append(f"- {t} | {e['name']} | ports: {ports}" + (f" | {', '.join(flags)}" if flags else ""))
+            lines.append(f"- {t} | {e['name']} | ports: {ports}" + (f" | {', '.join(flags)}" if flags else "")
+                         + (f" | NOTE: {e['note']}" if e.get("note") else ""))
         return "\n".join(lines)
 
     def to_json(self):
