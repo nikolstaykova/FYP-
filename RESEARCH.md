@@ -46,6 +46,7 @@
 | [R15](#r15-first-principles-connection-types-and-part-freedoms) | First principles: connection types and part freedoms (incl. tents) | 🟡 Taxonomy draft |
 | [R16](#r16-a-graph-that-accounts-for-connectors) | A graph that accounts for connectors (screws, wires, pins), part by part | 🟡 Proposal |
 | [R17](#r17-parts-as-nodes-typed-connections-as-edges) | Parts as nodes, typed connections as edges: which edge types? | 🟡 Proposal, backed by literature |
+| [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | 🟡 Proposal: yes, as an overlay |
 
 ---
 
@@ -983,6 +984,87 @@ One physical connection can carry **more than one** type: a jumper wire pushed i
 
 ---
 
+## R18. Many small graphs making bigger ones?
+
+**Date:** 1 October 2026 · **Status:** 🟡 *Proposal: yes, as an overlay on one flat graph.*
+
+**Idea (from the user):** build the representation from **many small graphs** that combine into bigger ones, ending in the whole object. For LEGO: small sub-assemblies → bigger sections → the full model.
+
+### Evidence that real builds are hierarchical
+
+| Source | Hierarchy it shows |
+|---|---|
+| **LEGO manuals** | Framed **sub-assembly boxes** with their own mini-steps, then attached to the main model (10696 step 6, R12) |
+| **LDraw MPD files** | A model is split into **submodels** (`0 FILE wheel.ldr`). The main model references them; a submodel can be **used several times** and **nested** ([LDraw MPD](https://wiki.ldraw.org/wiki/MPD)) |
+| **IKEA-Manual** | Assembly plans are **trees** of sub-assemblies (R1) |
+| **Sauder** | Steps 1 and 2 build two separate pieces that step 3 joins (R7) |
+| **Electronics** | Modules and shields: a motor-driver board is a small circuit used as one part |
+| **Engineering literature** | The **Hierarchical Attributed Liaison Graph (HALG)** describes a product as layers of sub-assemblies, each layer a liaison graph, with connection attributes such as type, direction and stability ([Springer, 2005](https://link.springer.com/article/10.1007/s00170-005-0036-7)) |
+
+### Benefits
+
+| Benefit | Example |
+|---|---|
+| **Reuse** | Define a LEGO wheel assembly once, use it 4 times (as LDraw already does) |
+| **Matches how manuals teach** | One sub-assembly = one teaching chunk ("build the wing, then attach it") |
+| **Smaller problems** | Checking a 500-piece set is easier as 20 checks of 25 pieces |
+| **Parallel work** | Sub-assemblies can be built in any order, even by two people |
+| **Natural for the LLM** | Extract one sub-assembly at a time from the manual |
+| **Progress** | "Wing: done ✅, body: 60%" |
+
+### The catch: people don't always build the manual's way
+
+A builder may skip the sub-assembly and **attach parts straight onto the main model**. The result is identical, but the manual's hierarchy was never followed. If correctness were tied to the hierarchy, a correct build would be marked **wrong**, the exact problem the project exists to fix.
+
+**Rule:** the hierarchy is a **suggestion for teaching and tracking**, **not** part of correctness, **unless physics requires it** (e.g. a part that cannot be reached once the model is closed). That case is already covered by **dependencies** (`blocks` edges, R17).
+
+### Proposal: one flat graph plus a hierarchy overlay
+
+```mermaid
+flowchart TB
+    subgraph M["Whole model"]
+        subgraph W1["Wheel assembly ×4 (one definition)"]
+            t1[tyre] --- r1[rim] --- a1[axle]
+        end
+        subgraph B["Body"]
+            p1[plate] --- p2[brick] --- p3[brick]
+        end
+        W1 ===|interface: axle → body hole| B
+    end
+```
+
+1. **Flat graph = the truth.** All parts and all connections (R17). The checker always compares flat graphs, so any build route is accepted.
+2. **Groups = the overlay.** A group is a named set of nodes that can contain other groups (a tree, or a DAG when reused):
+   - `kind: "manual"`: a sub-assembly from the manual, used for teaching and progress;
+   - `kind: "module"`: a reusable definition used several times (the wheel ×4), expanded into the flat graph at load time;
+   - `kind: "required"`: must really be built first (physics), backed by a dependency;
+   - `kind: "derived"` *(computed)*: what is actually connected right now (rigid bodies / nets), used to track what the user has built.
+3. **Interfaces.** A group lists the **edges that leave it** ("wheel attaches to body via axle → hole"). From outside, a group then behaves like a single part with ports, which is how a module or shield works in electronics.
+
+**Example (JSON sketch):**
+```json
+{
+  "groups": [
+    {"id": "wheel",  "kind": "module", "nodes": ["tyre", "rim", "axle"], "interface": [{"node": "axle", "port": "end.b"}]},
+    {"id": "wheel_fl", "instance_of": "wheel"},
+    {"id": "wheel_fr", "instance_of": "wheel"},
+    {"id": "body",   "kind": "manual", "nodes": ["p1", "p2", "p3"]},
+    {"id": "model",  "kind": "manual", "groups": ["body", "wheel_fl", "wheel_fr"]}
+  ]
+}
+```
+
+### Verdict
+
+**Good idea, with one condition:** the small graphs must be an **overlay on one flat graph**, not the only representation. Then we get reuse, teaching chunks, smaller checks and progress tracking, without rejecting builders who take a different route.
+
+### Open questions
+1. Can groups **overlap** (a part in two groups), or must they nest strictly? LDraw and manuals nest strictly; derived groups may overlap with manual ones.
+2. When a module is reused, how are instance names generated? (`wheel_fl.tyre`, using the R8 dot convention?)
+3. Should the camera check **group by group** (cheaper, matches the manual) while the final check uses the flat graph?
+
+---
+
 ## Next steps
 
 - [ ] Settle the R14 questions, then write one Arduino lesson and one small LEGO set in the chosen structure
@@ -1028,6 +1110,8 @@ One physical connection can carry **more than one** type: a jumper wire pushed i
 - [Designing assembly instructions without words (Cadasio)](https://www.cadasio.com/post/designing-assembly-instructions-without-words)
 
 **Assembly representation**
+- [A hierarchical approach to disassembly sequence planning (HALG), Springer 2005](https://link.springer.com/article/10.1007/s00170-005-0036-7)
+- [LDraw MPD (multi-part document) format](https://wiki.ldraw.org/wiki/MPD)
 - [Whitney: Kinematic constraint in assembly (MIT OCW 2.875)](https://ocw.mit.edu/courses/2-875-mechanical-assembly-and-its-role-in-product-development-fall-2004/5baabc86dc23c4bfaedad8bdb64aa0c8_cls6_7cnstrnt04.pdf)
 - [Bonino et al.: Liaison-Based Enriched CAD Model Representation for Assembly Tasks (CAD journal, 2024)](https://cad-journal.net/files/vol_21/CAD_21(6)_2024_1045-1062.pdf)
 - [Fusion 360 Gallery assembly joint dataset](https://github.com/AutodeskAILab/Fusion360GalleryDataset/blob/master/docs/assembly_joint.md) · [JoinABLe (CVPR 2022)](https://arxiv.org/abs/2111.12772)
