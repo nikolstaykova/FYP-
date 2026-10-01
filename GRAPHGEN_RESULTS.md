@@ -21,9 +21,53 @@
 | Mean cost per manual | **$0.104** (median $0.10, 90th pct $0.16) | *pending* |
 | Cost per 100 manuals | **≈ $10.45** (whole run: $12.12) | *pending* |
 | Input / output tokens (mean) | ≈ 19.7k / 5.9k | *pending* |
-| **With check + repair** (per round, when needed) | repair not triggered after the catalogue fixes | **+25–70 s, +$0.09–0.16** per repair round |
+| **v2 (check + repair)** | **117/117, 44 s, $0.122** per tutorial (see below) | *running* |
 
 *The LEGO full-run rows are filled in when that run finishes.*
+
+---
+
+## Latest: re-run with the new logic (v2)
+
+**v2 = improved catalogue** (pushbutton explanation, missing pinouts) **+ allowed port kinds in the prompt + build → check → up to 2 repair rounds → final check.** Same 117 electronics tutorials, same model (Sonnet, effort high, subscription route). Compared with v1 (build only, old catalogue):
+
+| Measure | v1: build only | **v2: build + check + repair** |
+|---|---:|---:|
+| Succeeded | 116 / 117 | **117 / 117** (2 safety-filter false positives passed on a retry) |
+| Mean seconds per tutorial | 40.8 | 44.3 |
+| Median seconds per tutorial | 34.8 | 35.0 |
+| Mean cost per tutorial | $0.104 | **$0.122** |
+| Cost per 100 tutorials | $10.45 | **$12.21** |
+| Tutorials with rule problems | 30 | **0** |
+| Rule problems in total | 210 | **0** |
+| Answer-key tutorials, every net identical (strict) | 23 / 47 | **27 / 47** |
+| Mean net precision / recall | 0.65 / 0.62 | **0.72 / 0.70** |
+| Other tutorials: listed parts present | 0.97 | 0.96 |
+| Needed a repair round | – | 22 / 115 |
+| Check issues: first build → final | – | **67 → 2** |
+
+**Phases in v2:**
+
+| Phase | Runs | Mean time | Mean cost |
+|---|---:|---:|---:|
+| Build | 115 | 38.9 s | $0.103 |
+| Repair round 1 | 22 | 25.7 s | $0.091 |
+| Repair round 2 | 3 | 17.7 s | $0.048 |
+| Checks (code) | every phase | < 0.01 s | free |
+
+**What changed in accuracy:** Button, DigitalReadSerial, KeyboardMessage and toneMelody went from wrong to **exactly right**; nothing that was right became wrong. The 20 tutorials that still differ from the answer key were read by hand (the 4 whose graph changed were re-checked against the official tutorial):
+
+| Category | Tutorials | Count |
+|---|---|---:|
+| Answer key differs from the official tutorial; Claude follows the tutorial | ADXL3xx, ifStatement, Debounce, StateChangeDetection, Knock, toneMultiple, Midi, Ping, InputPullupSerial | 9 |
+| Valid alternative / electrically equivalent | Calibration, LED bar graph, PitchFollower, SerialCallResponse ×2, VirtualColorMixer, WhileLoop | 7 |
+| **Real error** | RowColumnScanning (LED-matrix pins on the wrong rows) | 1 |
+| Ambiguous | JoystickMouseControl (X/Y axes possibly swapped; the tutorial is unclear) | 1 |
+| Not verified | ArduinoISP, ArduinoToBreadboard | 2 |
+
+**Adjusted accuracy v2: ≈ 43 / 47 (≈ 91%) correct or valid**, against ≈ 80% in v1. **The price: +$0.018 and +3.6 s per tutorial on average**; 81% of tutorials need no repair at all.
+
+*LEGO v2 results are added when that run finishes.*
 
 ---
 

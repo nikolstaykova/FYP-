@@ -146,7 +146,11 @@ def call(case, entries, cfg, out):
 
     import subprocess
     for attempt in range(2):  # a stalled session is retried once from the start
-        session = Session(manual, text, domain, images=images, pdf=pdf, model=cfg.model, effort=cfg.effort)
+        # Per-turn limit: 10 min, plus ~4 s per piece for big LEGO booklets (a 216-piece set took 11 min); a stalled
+        # turn is then retried from the start instead of waiting.
+        limit = min(2400, max(600, 4 * case.get("pieces", 0))) if pdf else 600
+        kw = {"timeout": limit} if cfg.route == "subscription" else {}
+        session = Session(manual, text, domain, images=images, pdf=pdf, model=cfg.model, effort=cfg.effort, **kw)
         try:
             graph, st = session.first()
             graph_initial, phases = graph, [{"phase": "build", **st}]
@@ -163,6 +167,9 @@ def call(case, entries, cfg, out):
             break
         except subprocess.TimeoutExpired:
             if attempt:
+                raise
+        except RuntimeError as e:  # safety-filter false positives are random: retry once from the start
+            if attempt or "safeguards" not in str(e):
                 raise
         finally:
             session.close()
