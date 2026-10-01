@@ -48,6 +48,7 @@
 | [R17](#r17-parts-as-nodes-typed-connections-as-edges) | Parts as nodes, typed connections as edges: which edge types? | 🟡 Proposal, backed by literature |
 | [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | ✅ **Decided: one graph per manual** |
 | [R19](#r19-repeated-sub-assemblies) | Repeated sub-assemblies (the same piece built several times) | ✅ **Requirement set**; details open until build |
+| [R20](#r20-manual-survey-connections-across-sauder-lego-and-arduino) | Manual survey: connections across Sauder, LEGO and Arduino; do repeated copies differ? | ✅ Done → [`GRAPH_SPEC.md`](./GRAPH_SPEC.md) |
 
 ---
 
@@ -1114,7 +1115,49 @@ edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel
 
 ### Open questions
 1. Keep the **template** in the stored file (smaller, shows intent), or store only the expanded graph (simpler)?
-2. Can a repeated copy differ slightly ("same as before, but use the red brick")? If so, copies need **overrides**.
+2. Can a repeated copy differ slightly ("same as before, but use the red brick")? If so, copies need **overrides**. **→ Answered in R20: yes, in all three areas.**
+
+---
+
+## R20. Manual survey: connections across Sauder, LEGO and Arduino
+
+**Date:** 1 October 2026 · **Status:** ✅ Done. Output: **[`GRAPH_SPEC.md`](./GRAPH_SPEC.md)** (naming, connection types, rules). Scripts and data: [`research/`](./research/).
+
+**Questions:** (1) what kinds of connection appear in real manuals, and (2) **do repeated copies of a sub-assembly ever differ** (R19 open question)?
+
+### What was scraped
+
+| Area | Source | Size |
+|---|---|---|
+| Sauder | Sauder's own booklets, retailer-hosted (sauder.com blocks bots) | 13 manuals, 543 sentences |
+| LEGO | LDraw models of 30 official sets + LDraw parts library | 22,423 pieces |
+| Arduino | CircuitQuest lessons (48 of 53 from docs.arduino.cc) + part library | 1,090 connections |
+
+### Connections found
+
+**Sauder:** the actions are **Fasten** (162), **Insert** (34), **Push** (31), **Slide** (14), **Turn** (10), **Peel/stick** (7). The hardware is screws (126 mentions), **cam locks** (55), back panels (46), **drawer slides** (32), brackets (31), metal pins (25), dowels (22), **anti-tip straps** (18), handles (13), **hinges** (12), nails (8), glides, interlock tracks and cam dowels. New compared with earlier entries: **cam locks** (twist to lock), **grooves** (a panel slides into grooves in three other panels, with no hardware), **anchoring to the wall**, and **conditions** ("unit must be squared up", "equal margins").
+
+**LEGO (by piece count):** studs on bricks/plates 7,733 · **Technic pins 3,930** · Technic beams 2,190 · **axles 1,557** · tiles (no top studs) 1,040 · axle joiners and bushes 919 · **flexible** hoses, tubes and chains 822 · minifigure parts 731 · wheels/tyres 542 · gears and turntables 444 · **hinges 410** · doors/windows 371 · **clips and bars 209** · **ball joints 19** · **stickers 12**. So LEGO **does have pure connectors** (pins, axles, joiners), and several **moving** joints.
+
+**Arduino:** legs in breadboard holes 609 · board pin ↔ breadboard via wire 301 · breadboard ↔ breadboard via wire 180. Connector parts in the library: jumper wire (two kinds), alligator clip wire, breadboard, solder, heat-shrink, USB cable. Placement rules already in the library: `legs_placed_together` (59 cards), `straddles_center_gap` (20), `pin_domains` (12).
+
+### Do repeated copies differ? **Yes, in every area.**
+
+| Difference | Sauder | LEGO | Arduino |
+|---|---|---|---|
+| Identical | "Repeat… for the remaining DRAWERS" (16 of 21 repeats) | 165 reused sub-models in 18 of 30 sets, up to ×8 | 6 identical LED blocks (`arrays`) |
+| **Different part** | "Repeat… for the small drawers **using the SMALL DRAWER FRONTS (K)**…" | Beam 13 ↔ Beam 9; round plate ↔ round plate with tabs | 10 kΩ vs 220 Ω in the same block (`calibration`) |
+| **Different colour** | — | Red car ↔ white car, identical parts (6753); one sub-model in two colours (10001) | Red / yellow / green LEDs (traffic light) |
+| **Mirrored** | "Repeat… for the **RIGHT DOOR** (H)" | Left/right windows, doors, bed sides; Wing 2×3 **left ↔ right** | — |
+| **Where it attaches** | each drawer in its own opening | each copy at its own position | each LED block on its own pin |
+
+**Decision for the spec:** copies are expanded to N real copies (R19), with **overrides** for `replace`, `props` (colour, value), `mirror`, `add`/`remove` and `attach`. See GRAPH_SPEC §8.
+
+### Limits
+- Sauder PDFs came from retailers' servers, not sauder.com (source policy).
+- Hardware and verb counts come from keyword matching, so they are approximate.
+- LEGO near-copies were found by comparing part lists (same parts, or all but 1–2 differing); some are coincidental, but the clear left/right and colour cases were checked by hand.
+- 3.9% of LEGO pieces (868) are LDraw parts outside the official library and were not classified.
 
 ---
 
