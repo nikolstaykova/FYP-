@@ -47,7 +47,7 @@
 | [R16](#r16-a-graph-that-accounts-for-connectors) | A graph that accounts for connectors (screws, wires, pins), part by part | 🟡 Proposal |
 | [R17](#r17-parts-as-nodes-typed-connections-as-edges) | Parts as nodes, typed connections as edges: which edge types? | 🟡 Proposal, backed by literature |
 | [R18](#r18-many-small-graphs-making-bigger-ones) | Many small graphs making bigger ones (hierarchy)? | ✅ **Decided: one graph per manual** |
-| [R19](#r19-repeated-sub-assemblies) | Repeated sub-assemblies (the same piece built several times) | 🟡 Proposal |
+| [R19](#r19-repeated-sub-assemblies) | Repeated sub-assemblies (the same piece built several times) | ✅ **Requirement set**; details open until build |
 
 ---
 
@@ -1070,7 +1070,9 @@ flowchart TB
 
 ## R19. Repeated sub-assemblies
 
-**Date:** 1 October 2026 · **Status:** 🟡 *Proposal, consistent with "one graph per manual" (R18).*
+**Date:** 1 October 2026 · **Status:** ✅ *Requirement set; details open until we build it.*
+
+> **Requirement (1 October 2026):** when a manual says a sub-assembly is made **N times**, the final graph **must contain N separate copies** (N× every part, N× every connection), never one. How the LLM writes it, templates, mirroring and overrides stay **open until we try building it**. The proposal below is background.
 
 **Question:** many manuals build **the same sub-assembly several times** (four wheels, two identical legs, "repeat for the other side"). How does one graph per manual handle that?
 
@@ -1126,6 +1128,7 @@ edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel
 - [ ] Collect 5 well-written Arduino tutorials and 2–3 robotics kit builds
 - [ ] Build test cases for transitivity (R4) and symmetry (R5) in all three areas
 - [ ] Refine the draft representation (R6)
+- [ ] Test: a manual with a repeated sub-assembly ("4x") must produce a graph with 4 copies; check total part counts against the manual's parts list
 - [ ] *(Postponed, R10)* IKEA: VLM extraction on 5–10 manuals scored against IKEA-Manual; inspect its assembly-tree format
 
 ---
