@@ -45,6 +45,7 @@
 | [R14](#r14-brainstorm-graph-or-another-structure) | Brainstorm: graph or another structure? | 🟡 Brainstorm |
 | [R15](#r15-first-principles-connection-types-and-part-freedoms) | First principles: connection types and part freedoms (incl. tents) | 🟡 Taxonomy draft |
 | [R16](#r16-a-graph-that-accounts-for-connectors) | A graph that accounts for connectors (screws, wires, pins), part by part | 🟡 Proposal |
+| [R17](#r17-parts-as-nodes-typed-connections-as-edges) | Parts as nodes, typed connections as edges: which edge types? | 🟡 Proposal, backed by literature |
 
 ---
 
@@ -879,6 +880,109 @@ Logical:    beam1 ↔ beam2  {via: pin1, freedom: rigid | rotates}
 
 ---
 
+## R17. Parts as nodes, typed connections as edges
+
+**Date:** 1 October 2026 · **Status:** 🟡 *Proposal, backed by literature.*
+
+**Idea (from the user):** **every physical part is a node**, including screws, dowels, wires and Technic pins. **Edges are connections, each with a type** (contact, or whatever other kinds exist). Which edge types do we need?
+
+### Is this an established approach?
+
+**Yes.** It is the classic **liaison graph** from assembly engineering, usually extended with **attributes on the edges**:
+
+| Source | What it says |
+|---|---|
+| **Whitney, *Mechanical Assemblies* (2004)** | In the **liaison diagram**, nodes are parts and lines are joints. He separates a **mate** (a joint that **fixes position**) from a **contact** (touching, but **not locating**) ([MIT OCW notes](https://ocw.mit.edu/courses/2-875-mechanical-assembly-and-its-role-in-product-development-fall-2004/5baabc86dc23c4bfaedad8bdb64aa0c8_cls6_7cnstrnt04.pdf)) |
+| **Bonino et al. (CAD journal, 2024)** | Each part is a node; information goes **"in the edges and in their attributes"**. Two standard graphs: the **Liaison Graph** (contacts) and the **Blocking/Precedence Graph** (which part blocks another's path, used for **order**). Edges can be **weighted by contact type** ([paper](https://cad-journal.net/files/vol_21/CAD_21(6)_2024_1045-1062.pdf)) |
+| **Fusion 360 Gallery assembly dataset (Autodesk)** | 8,251 real CAD assemblies stored as **NetworkX node-link graphs**. Joint types: **rigid, revolute, slider, cylindrical, pin-slot, planar, ball** ([dataset docs](https://github.com/AutodeskAILab/Fusion360GalleryDataset/blob/master/docs/assembly_joint.md), [JoinABLe, CVPR 2022](https://arxiv.org/abs/2111.12772)) |
+
+**Verdict:** ✅ "Parts as nodes, typed and attributed edges" is the standard representation. It is also **simpler and more readable** than R16's ports-as-nodes. **The same information fits**: the ports move into **edge attributes**, and each part's **inside behaviour** (a wire conducts end to end; a resistor does not) moves into the **part catalogue**.
+
+### Proposed edge types
+
+A **small, fixed set of types**, each with **open attributes** (the R15 lesson: new domains add attribute values, not new types).
+
+| Edge type | Meaning | Examples | Literature |
+|---|---|---|---|
+| **`joined`** | Held together; fixes relative position | LEGO stud in anti-stud; screw in panel; dowel in hole; wire in breadboard hole; Technic pin in beam | Whitney's **mate** |
+| **`contact`** | Touching, **not** fastened | A shelf resting on shelf pins; two bricks side by side; a panel against the wall | Whitney's **contact** |
+| **`electrical`** | Current can flow between them | Wire end ↔ breadboard hole; header pin ↔ socket; screw terminal | Netlist |
+| **`blocks`** | **Not touching**, but one is in the way of the other being added | END B2 blocks shelf E once closed; a top brick blocks a bottom one | Blocking/precedence graph |
+| **`relation`** *(optional)* | A spatial rule that is not a joint | "aligned with", "over", "facing" | (from R15; mostly tents, kept for later) |
+
+One physical connection can carry **more than one** type: a jumper wire pushed into a breadboard is both **`joined`** (held by friction) and **`electrical`**. The graph is a **multigraph**: the same two parts may have several edges.
+
+### Edge attributes
+
+| Attribute | Values | Example |
+|---|---|---|
+| `ports` | which feature on each part | `{"b2": "stud.1.1", "b7": "anti.1.1"}`; `{"wire1": "a", "bb1": "3b.g"}` |
+| `method` | how it is made | insert · screw · snap · slide · place · glue · solder · nail |
+| `holds_by` | what keeps it together | friction · form · force · material · gravity |
+| `freedom` | motion left (Fusion 360 joint types) | rigid · revolute · slider · cylindrical · ball |
+| `reversible` | can it be undone | hand · tool · damaging · permanent |
+| `direction` | which side goes into which | `null` or `{"from": "dowel1", "into": "end1"}` |
+| `tool` | tool needed | L-wrench · screwdriver · none |
+| `state` | only in some states (switches, drawers) | `null` or `"pressed"` |
+
+### What lives in the part catalogue, not in the graph
+
+| Inside behaviour of a part | Example | Used for |
+|---|---|---|
+| Which ports **conduct** to each other | Wire end a ↔ end b; breadboard strip holes; `uno:GND.1` ↔ `uno:GND.2` | Computing **nets** |
+| Which ports are joined **through** a component | Resistor `1` → `2`; LED `A` → `C` (directed) | Circuit laws, not nets |
+| Which ports are **interchangeable** | Resistor legs; a 2×4 brick rotated 180° | "Different but correct" |
+| Faces, polarity, mirror pair | Sauder "more holes" face; LED polarity; left/right panels | Orientation checks |
+
+**Pure connectors** (wire, screw, dowel, Technic pin) are then just parts whose catalogue says "everything passes straight through". The logical view (R16 level 2) is computed by **contracting** them, with no special edge type needed.
+
+### Worked example (JSON, NetworkX-style)
+
+```json
+{
+  "nodes": [
+    {"id": "uno",   "type": "arduino-uno"},
+    {"id": "bb1",   "type": "breadboard-half"},
+    {"id": "wire1", "type": "jumper-wire"},
+    {"id": "r1",    "type": "resistor-220"},
+    {"id": "b2",    "type": "lego-3001"},
+    {"id": "b7",    "type": "lego-3001"},
+    {"id": "end1",  "type": "sauder-430628-end", "label": "B"},
+    {"id": "topbot1","type": "sauder-430628-topbot", "label": "D"},
+    {"id": "screw1","type": "hw-hex-screw-3-5-16", "label": "3"}
+  ],
+  "edges": [
+    {"u": "wire1", "v": "uno",  "type": "joined",     "ports": {"wire1": "a", "uno": "13"}, "method": "insert", "reversible": "hand"},
+    {"u": "wire1", "v": "uno",  "type": "electrical", "ports": {"wire1": "a", "uno": "13"}},
+    {"u": "wire1", "v": "bb1",  "type": "joined",     "ports": {"wire1": "b", "bb1": "3b.g"}, "method": "insert"},
+    {"u": "wire1", "v": "bb1",  "type": "electrical", "ports": {"wire1": "b", "bb1": "3b.g"}},
+    {"u": "b7",    "v": "b2",   "type": "joined",     "ports": {"b7": "anti.1.1", "b2": "stud.1.1"}, "method": "insert", "holds_by": "friction", "freedom": "rigid"},
+    {"u": "screw1","v": "end1", "type": "joined",     "ports": {"end1": "hole.t1"}, "method": "screw", "tool": "l-wrench", "reversible": "tool"},
+    {"u": "screw1","v": "topbot1","type": "joined",   "ports": {"topbot1": "hole.l1"}, "method": "screw"}
+  ]
+}
+```
+
+### Trade-off against R16 (ports as nodes)
+
+| | **Parts as nodes (R17)** | Ports as nodes (R16) |
+|---|---|---|
+| Readability | ✅ One node per real object | ❌ Many nodes per object |
+| What an LLM writes | ✅ Natural ("screw1 joins end1") | ⚠️ Verbose |
+| Matches literature and tools | ✅ Liaison graph; Fusion 360 / NetworkX | ⚠️ Less common |
+| Computing nets and rigid bodies | ⚠️ Needs the catalogue's inside rules (one extra step) | ✅ Plain graph search |
+| Same information? | ✅ Yes: ports are edge attributes | ✅ Yes |
+
+**Recommendation:** use **parts as nodes** as the stored representation. Expand to ports internally only when computing nets or rigid bodies.
+
+### Open questions
+1. **LEGO edge granularity:** one `joined` edge per stud, or one per brick pair with a list of studs in `ports`? *(Same question as R16.)*
+2. **`electrical` as its own edge or as an attribute** of `joined`? Separate edges make "show me all electrical connections" trivial; one edge keeps counts simple.
+3. **`blocks` edges:** written by the LLM from the manual, or derived from geometry (LDraw) where available?
+4. Do we need **`contact`** in v1, or only `joined` + `electrical`?
+
+---
+
 ## Next steps
 
 - [ ] Settle the R14 questions, then write one Arduino lesson and one small LEGO set in the chosen structure
@@ -924,6 +1028,9 @@ Logical:    beam1 ↔ beam2  {via: pin1, freedom: rigid | rotates}
 - [Designing assembly instructions without words (Cadasio)](https://www.cadasio.com/post/designing-assembly-instructions-without-words)
 
 **Assembly representation**
+- [Whitney: Kinematic constraint in assembly (MIT OCW 2.875)](https://ocw.mit.edu/courses/2-875-mechanical-assembly-and-its-role-in-product-development-fall-2004/5baabc86dc23c4bfaedad8bdb64aa0c8_cls6_7cnstrnt04.pdf)
+- [Bonino et al.: Liaison-Based Enriched CAD Model Representation for Assembly Tasks (CAD journal, 2024)](https://cad-journal.net/files/vol_21/CAD_21(6)_2024_1045-1062.pdf)
+- [Fusion 360 Gallery assembly joint dataset](https://github.com/AutodeskAILab/Fusion360GalleryDataset/blob/master/docs/assembly_joint.md) · [JoinABLe (CVPR 2022)](https://arxiv.org/abs/2111.12772)
 - [Coleman Evanston 6 tent setup guide (PDF)](https://needhamlibrary.org/wp-content/uploads/2022/10/LoT-user-guide-ColemanEvanston6PersonDomeTent.pdf)
 - [DIN 8593-0: Manufacturing processes, joining (overview)](https://www.dinmedia.de/en/standard/din-8593-0/65031206)
 - [Kinematic pair (Wikipedia)](https://en.wikipedia.org/wiki/Kinematic_pair)
