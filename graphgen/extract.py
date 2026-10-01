@@ -246,21 +246,28 @@ class SubscriptionSession:
         import queue
         import subprocess
         t0 = time.monotonic()
+        deadline = t0 + self.timeout  # hard limit per turn: status events must not keep a stuck turn alive
         self.proc.stdin.write(self.json.dumps({"type": "user", "message": {"role": "user", "content": content}}) + "\n")
         self.proc.stdin.flush()
-        result = None
+        result, recent = None, []
         while result is None:
             try:
-                line = self.lines.get(timeout=self.timeout)
+                line = self.lines.get(timeout=max(1.0, deadline - time.monotonic()))
             except queue.Empty:
+                line = ""
+            if time.monotonic() > deadline:
                 self.close()
-                raise subprocess.TimeoutExpired("claude -p", self.timeout)
+                self.last_stall = recent[-8:]
+                raise subprocess.TimeoutExpired("claude -p", self.timeout, output=str(recent[-8:]))
+            if line == "":
+                continue
             if line is None:
                 raise RuntimeError("claude -p exited: " + self.proc.stderr.read()[-300:])
             try:
                 event = self.json.loads(line)
             except ValueError:
                 continue
+            recent.append(f"{event.get('type')}/{event.get('subtype', '')}")
             if event.get("type") == "result":
                 result = event
         if result.get("is_error") or not result.get("structured_output"):
@@ -289,6 +296,10 @@ class SubscriptionSession:
             self.proc.wait(timeout=10)
         except Exception:
             self.proc.kill()
+            try:
+                self.proc.wait(timeout=10)
+            except Exception:
+                pass
         if os.path.exists(self.sys_path):
             os.unlink(self.sys_path)
 

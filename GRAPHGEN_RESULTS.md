@@ -21,7 +21,8 @@
 | Mean cost per manual | **$0.104** (median $0.10, 90th pct $0.16) | *pending* |
 | Cost per 100 manuals | **≈ $10.45** (whole run: $12.12) | *pending* |
 | Input / output tokens (mean) | ≈ 19.7k / 5.9k | *pending* |
-| **v2 (check + repair)** | **117/117, 44 s, $0.122** per tutorial (see below) | *running* |
+| **v1 full run (build only)** | see above | **34 booklets** before it was stopped: 221 s, $0.55 mean (median 180 s); big sets up to 650 s / $1.40 |
+| **v2 (check + repair)** | **117/117, 44 s, $0.122** per tutorial (see below) | **in progress** (10 of 100 so far): 136 s, $0.41 mean |
 
 *The LEGO full-run rows are filled in when that run finishes.*
 
@@ -67,7 +68,33 @@
 
 **Adjusted accuracy v2: ≈ 43 / 47 (≈ 91%) correct or valid**, against ≈ 80% in v1. **The price: +$0.018 and +3.6 s per tutorial on average**; 81% of tutorials need no repair at all.
 
-*LEGO v2 results are added when that run finishes.*
+### LEGO v2 (in progress: 10 of 100 booklets so far)
+
+*Updated 1 October 2026 while the run continues; the full table replaces this when it finishes.*
+
+**v1 baseline (build only, 34 booklets before it was stopped):** mean 221 s and $0.55 per booklet (median 180 s; the 200+-piece sets took 8–11 min and $1.2–1.5). Piece count 98% right; inventory by design: recall 0.73, precision 0.72; brick contacts: recall 0.53, precision 0.44. Larger booklets did better on inventory because they have a parts page with Element IDs.
+
+**Same 10 booklets, v1 vs v2:**
+
+| Measure | v1: build only | v2: build + check + repair |
+|---|---:|---:|
+| Mean seconds per booklet | 92 | 136 |
+| Mean cost per booklet | $0.19 | **$0.41** |
+| Booklets with rule problems | 10 / 10 | **0 / 10** |
+| Rule problems in total | 102 | **0** |
+| Needed a repair round | – | 10 / 10 |
+| Check issues: first build → final | – | 110 → 7 |
+| Pieces built ÷ pieces in set | 0.96 | 0.98 |
+| Inventory recall / precision (by design) | 0.44 / 0.41 | 0.41 / 0.37 |
+| Contact recall / precision | 0.25 / 0.29 | 0.17 / 0.08 |
+
+**What this means:**
+- **The repair fixes form, not content.** First-build issues were port names (V3 ×31, V4 ×50) and invented part numbers (L2 ×27); repair cleared 110 → 7. But **contacts were identical before and after repair** in every booklet, so the repair neither helped nor hurt accuracy.
+- **The accuracy difference between v1 and v2 is noise.** It comes from the first build (Claude does not give the same answer twice) and the samples are tiny: 0–11 checkable contacts per booklet, and 4 of these 10 have none.
+- **The cost doubles** because every LEGO booklet needs a repair round, while 81% of electronics tutorials need none.
+- **Conclusion so far:** for LEGO the check-and-repair loop is worth it only for clean, valid output (real part numbers, valid ports), not for accuracy. Accuracy needs a better input: **the official parts list for the set**, which would also remove most part-number issues before they happen.
+
+
 
 ---
 

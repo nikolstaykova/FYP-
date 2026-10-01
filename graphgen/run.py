@@ -165,7 +165,9 @@ def call(case, entries, cfg, out):
                 phases.append({"phase": f"repair{n + 1}", **st, "check_seconds": secs, "issues": len(issues),
                                "issue_rules": dict(collections.Counter(i[0] for i in issues))})
             break
-        except subprocess.TimeoutExpired:
+        except subprocess.TimeoutExpired as e:
+            with open(out / "stalls.log", "a") as f:  # what the session was doing when it stalled
+                f.write(f"{case['id']} attempt {attempt + 1}: no result after {e.timeout}s; last events {e.output}\n")
             if attempt:
                 raise
         except RuntimeError as e:  # safety-filter false positives are random: retry once from the start
