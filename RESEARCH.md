@@ -44,6 +44,7 @@
 | [R13](#r13-decisions-ldraw-and-sauder-scope) | **Decisions:** LDraw as an extension; Sauder scope | ✅ Decided |
 | [R14](#r14-brainstorm-graph-or-another-structure) | Brainstorm: graph or another structure? | 🟡 Brainstorm |
 | [R15](#r15-first-principles-connection-types-and-part-freedoms) | First principles: connection types and part freedoms (incl. tents) | 🟡 Taxonomy draft |
+| [R16](#r16-a-graph-that-accounts-for-connectors) | A graph that accounts for connectors (screws, wires, pins), part by part | 🟡 Proposal |
 
 ---
 
@@ -774,6 +775,107 @@ flowchart LR
 - Should colour coding be a part property (identity) or a matching rule between features?
 - How are layering relations ("over") checked by the camera?
 - Which properties can an LLM reliably extract from a manual, and which need the part catalogue?
+
+---
+
+## R16. A graph that accounts for connectors
+
+**Date:** 1 October 2026 · **Status:** 🟡 *Proposal. Tents are paused for simplicity; scope is Arduino, LEGO and (design-only) Sauder.*
+
+**Question:** what graph can represent **every** connection, part by part (every LEGO brick, every screw, every wire), including parts that only act as **connectors**?
+
+### Do connectors exist in every area?
+
+| Area | Pure connectors (their only job is to join) | Parts that are also connectors |
+|---|---|---|
+| **Arduino** | Jumper wires; breadboard strips; header sockets | The board itself: its GND pins are joined inside it |
+| **Sauder** | Screws, dowels, cam locks, nails | — |
+| **LEGO (System)** | None: bricks join directly, stud to anti-stud | **Every brick**: a plate laid across two bricks joins them |
+| **LEGO (Technic)** | **Technic pins, axles, axle joiners, bushings** | Beams |
+
+**Finding:** "connector" is **a role, not a category**. A wire and a screw are pure connectors, but a LEGO plate can be a structural part *and* the thing holding two other bricks together. The graph must not depend on labelling parts as connectors in advance.
+
+### Proposal: three levels of the same graph
+
+```mermaid
+flowchart LR
+    A["<b>1 · Physical graph</b><br/>every object is a node,<br/>incl. wires, screws, pins<br/>(what the camera sees)"] -->|"merge through<br/>connectors"| B["<b>2 · Logical graph</b><br/>connectors folded away<br/>(what must be true)"]
+    B -->|"group"| C["<b>3 · Groups</b><br/>nets · rigid bodies"]
+```
+
+1. **Physical graph:** **every object is a node**, including every wire, screw, dowel and Technic pin, so counts match the parts list. Edges are **contacts between ports** ("this screw is in this hole"). This is part by part and is what the camera sees. Wokwi's `diagram.json` is already at this level (it includes the breadboard and wires).
+2. **Logical graph:** the physical graph with connectors **folded away**: "end1 joined to topbot1 (2 screws)", "uno:13 and r1:1 are one net". This is what the build must achieve, and where **different but correct** is decided: two different wiring routes give the same logical graph.
+3. **Groups:** computed from the logical graph: electrical **nets** and mechanical **rigid bodies**.
+
+### The trick: ports as nodes, with internal edges
+
+To fold connectors away without special-casing them, **make every port a node** and describe what happens **inside** each part with internal edges:
+
+| Edge | Between | Meaning | Examples |
+|---|---|---|---|
+| **contact** | ports of **different** parts | They touch or are joined | `screw1:shank ↔ end1:hole.t1`; `b7:anti.1.1 ↔ b2:stud.1.1`; `wire1:a ↔ uno:13` |
+| **internal · conducts** | ports of the **same** part | Electrically one node | Wire end to end; all holes in a breadboard strip; `uno:GND.1 ↔ uno:GND.2` |
+| **internal · through** | ports of the **same** part | Joined, but **not** one node (a component in between) | `r1:1 → r1:2` (resistor); `led1:A → led1:C` (directed) |
+| **internal · rigid** | ports of the **same** part | Part of one solid object | All studs and anti-studs of a brick; a screw's head and shank; a panel's holes |
+| **internal · moves** | ports of the **same** part | Joined but free to move | A non-friction Technic pin (rotates); a hinge |
+
+Then everything is plain graph search, the same for every area:
+- **Nets** = connected groups of ports over `contact` + `internal · conducts` edges. *(Transitive, R4.)*
+- **Rigid bodies** = connected groups over `contact` + `internal · rigid` edges.
+- **Logical graph** = contract every **pure connector** (a part whose ports are all linked by `conducts` or `rigid`, and that has no other role) into the edge it creates.
+
+A **connector** is then simply a part whose internal edges pass straight through, which is exactly what CircuitQuest's `connector_only` and `pin_aliases` already do for wires and breadboards.
+
+### Worked examples
+
+**Arduino: LED + resistor on a breadboard**
+```
+Physical:   uno:13 —contact— wire1:a ═conducts═ wire1:b —contact— bb1:3b.g ═conducts═ bb1:3b.h —contact— r1:1
+            r1:1 ─through─ r1:2 —contact— bb1:6b.h ═conducts═ bb1:6b.i —contact— led1:A ─through→ led1:C …
+Logical:    net{uno:13, r1:1}   net{r1:2, led1:A}   net{led1:C, uno:GND}
+```
+Moving the resistor to another breadboard row changes the **physical** graph, but not the **logical** one, so it is **equivalent**.
+
+**Sauder: END joined to TOP with two screws**
+```
+Physical:   screw1:shank —contact— end1:hole.t1     screw1:shank —contact— topbot1:hole.l1
+            screw2:shank —contact— end1:hole.t2     screw2:shank —contact— topbot1:hole.l2
+            (each screw: head ═rigid═ shank; each panel: holes ═rigid═ each other)
+Logical:    end1 ↔ topbot1  {via: screw ×2}
+Groups:     body{end1, topbot1, screw1, screw2}
+```
+
+**LEGO System: brick b7 on brick b2, part by part**
+```
+Physical:   b7:anti.1.1 —contact— b2:stud.1.1    b7:anti.1.2 —contact— b2:stud.1.2   (… one edge per stud)
+Logical:    b7 ↔ b2  {studs: 2×2 overlap}
+```
+No connector part: bricks join directly, so physical and logical are almost the same, and a **plate bridging two bricks** naturally becomes the thing that puts them in one rigid body.
+
+**LEGO Technic: two beams joined by a pin**
+```
+Physical:   pin1:end.a —contact— beam1:hole.3     pin1:end.b —contact— beam2:hole.1
+            friction pin: end.a ═rigid═ end.b     non-friction pin: end.a ═moves(rotate)═ end.b
+Logical:    beam1 ↔ beam2  {via: pin1, freedom: rigid | rotates}
+```
+
+### Why this fits the earlier findings
+
+| Earlier finding | How this graph handles it |
+|---|---|
+| Transitivity depends on the connection (R4) | `conducts` and `rigid` are traversed for groups; `through` is not |
+| Connectors must be counted (R8, R11) | Every screw, wire and pin is a node |
+| Different but correct (R8) | Compare **logical** graphs, after symmetry folding |
+| Symmetry and polarity (R5, R15) | Internal edges: `through` can be directed (LED) or not (resistor); symmetric ports are listed in the part catalogue |
+| Reversibility, freedom, direction (R15) | Properties on `contact` and `internal` edges |
+| Separate sub-assemblies (R14) | The graph may have several components until the end |
+| Order (R14) | Preconditions sit on logical connections, kept separately |
+
+### Open questions
+1. **LEGO granularity:** one `contact` edge per stud (exact, many edges) or one per brick pair with a list of studs? Per stud is easier to check from the camera on a grid; per brick pair is easier to read.
+2. **Where internal edges come from:** the part catalogue (library cards, as CircuitQuest does), never from the LLM.
+3. **Size:** a 500-piece LEGO set has thousands of stud ports. Is that fine for the checker (probably yes), and for the LLM (it should output logical connections only, and the physical level is derived)?
+4. **Is a breadboard a connector?** It is a pure connector electrically, but it also holds parts in place mechanically. Do we need both layers at once?
 
 ---
 
