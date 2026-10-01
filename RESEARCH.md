@@ -21,6 +21,8 @@
 
 **Not official, flagged:** **LDraw / OMR** files are made by the LDraw **community**, not by LEGO. They are open and widely used, but are not an official LEGO source. Manual sites such as ManualsLib and Manuals+ are also third party.
 
+**Exception (decided, R13):** LDraw is allowed as an **optional extension**: the official LEGO PDF is always the main source, and if the same set exists in LDraw, that file is used to make extraction easier and more precise.
+
 ---
 
 ## Contents
@@ -39,6 +41,8 @@
 | [R10](#r10-decision-sauder-only-ikea-postponed) | **Decision:** Sauder only; IKEA postponed | ✅ Decided |
 | [R11](#r11-identify-the-users-ikea-product-then-fetch-its-data) | Identify the user's IKEA product, then fetch its data? | ✅ First pass done |
 | [R12](#r12-what-a-lego-manual-looks-like) | What does a LEGO manual look like? Does it have text? | ✅ One manual checked |
+| [R13](#r13-decisions-ldraw-and-sauder-scope) | **Decisions:** LDraw as an extension; Sauder scope | ✅ Decided |
+| [R14](#r14-brainstorm-graph-or-another-structure) | Brainstorm: graph or another structure? | 🟡 Brainstorm |
 
 ---
 
@@ -572,9 +576,98 @@ This supports the R10 decision. It also defines a clean **future-work path for I
 
 ---
 
+## R13. Decisions: LDraw and Sauder scope
+
+**Date:** 1 October 2026 · **Status:** ✅ Decided
+
+1. **LEGO: official PDF first, LDraw as an extension.** The official lego.com PDF is the primary source. **If the set is available in LDraw** (e.g. in the OMR), the LDraw file is used as well, giving the LLM exact parts, positions and steps instead of reading pictures.
+2. **Sauder: shape the design, don't implement yet.** Sauder is **considered when designing the representation** (screws and dowels as connectors, panel faces, interchangeable parts, physical dependencies), so the structure will fit furniture later. It is **not implemented** in the first version.
+3. **First implementation targets:** Arduino / robotics and LEGO.
+
+---
+
+## R14. Brainstorm: graph or another structure?
+
+**Date:** 1 October 2026 · **Status:** 🟡 *Brainstorm. Options and trade-offs; no decision yet.*
+
+### What the structure must handle
+
+Collected from R1–R13:
+
+| # | Requirement | Example |
+|---|---|---|
+| 1 | **Connections that join many points at once** | A breadboard strip with 3 legs; a screw through 2 panels; one stud row |
+| 2 | **Symmetry and interchangeable parts** | Resistor legs; two identical END panels; a 2×4 brick rotated 180° |
+| 3 | **Any valid order**, plus real dependencies | Wire the LED or the resistor first; the shelf before the second end |
+| 4 | **Separate pieces during the build** | Sub-assemblies (LEGO step 6 box; Sauder steps 1 and 2) |
+| 5 | **Conditional connections** | Button pressed; drawer open |
+| 6 | **Checkable by laws** | Circuit solver; stud geometry; hardware counts |
+| 7 | **An LLM can write it reliably** | From a tutorial, a Sauder manual, an LDraw file |
+| 8 | **The camera can fill it in** | Detected connections map onto the same structure |
+| 9 | **Geometry when available** | LDraw positions |
+| 10 | **One structure for all areas** | Arduino, LEGO, later Sauder |
+
+### Candidate structures
+
+| Structure | Idea | Strengths | Weaknesses |
+|---|---|---|---|
+| **A. Simple graph** (liaison graph) | Parts = nodes, connections = edges | Simple; well known | Can't say **which point** of a part; can't join 3+ points in one connection (req. 1) |
+| **B. Port graph** (R8 draft) | Parts have named ports; edges join ports | Says exactly where (`r1:2`, `b7:stud.2.1`); matches Wokwi/CircuitQuest | A 3-way connection needs several edges or a special rule |
+| **C. Hypergraph** | One connection (hyperedge) can join **any number** of ports | Fits nets, screws and stud rows naturally (req. 1) | Less familiar; fewer ready-made tools |
+| **D. Bipartite graph** (parts ↔ joints) | **Two kinds of node**: parts, and **joints**. A joint links to every port it joins | Same power as a hypergraph, but an ordinary graph, so standard tools work. Hardware (screws, wires) can sit on the joint | Slightly more nodes |
+| **E. Tree** (assembly tree) | Sub-assemblies nested inside each other | Matches manuals and LDraw sub-models (req. 4) | Encodes **one** order; can't express "any order" (req. 3) |
+| **F. AND/OR graph** | Every valid way to split the product into sub-assemblies | The formal answer to "any order" | Grows very fast; hard for an LLM to write |
+| **G. Goal state + preconditions** (planning style, like PDDL) | The build is a **set of facts** that must be true at the end; each fact may list **preconditions** | "Any order" comes for free: whatever satisfies the preconditions is valid. Easy for an LLM ("this joint needs X first") | Needs a separate view for structure and geometry |
+| **H. Constraint model** (CSP) | Variables = where each part goes; constraints = laws | "Different but correct" = **any solution** that satisfies the constraints | Heavier to solve; harder to explain to the user |
+| **I. Scene graph** (positions) | Each part's position and rotation (LDraw, glTF) | Exact geometry; matches the camera's view | **No connections** (R1); they must be derived |
+| **J. Triples / knowledge graph** | `subject – relation – object` statements | Very flexible; natural for an LLM to output | Too loose on its own; needs a schema |
+
+### Emerging idea: not one structure, but one core plus views
+
+No single structure meets all ten requirements. A promising combination:
+
+```mermaid
+flowchart LR
+    subgraph Core["Core: bipartite graph"]
+        P1[Part r1] --- J1((Joint j1))
+        P2[Part led1] --- J1
+        P3[Part end1] --- J2((Joint j2))
+        P4[Part topbot1] --- J2
+        H[screw1] -.via.- J2
+    end
+    Core --> G["Goal state<br/>set of joints that must exist"]
+    G --> O["Order<br/>preconditions per joint"]
+    Core --> L["Laws<br/>circuit · studs · counts"]
+    Core -.optional.-> S["Geometry<br/>LDraw positions"]
+```
+
+1. **Core: a bipartite graph of parts and joints (D).** Joints are first-class: a joint lists the ports it connects, its `kind` (merge / link / join / conditional, R8), and the hardware used (screw, dowel, wire). This covers requirements 1, 2, 5, 8 and 10.
+2. **Goal = the set of joints that must exist (G).** Checking a build means comparing the **set** of joints the camera sees with the goal set, not a sequence. Any order is accepted by default (req. 3).
+3. **Order only where physics demands it:** each joint may have **preconditions** ("j9 needs j5"). No preconditions = any order (req. 3, 4).
+4. **Laws run on the core** (req. 6). **Geometry is optional** and attached when LDraw exists (req. 9).
+5. **What the LLM writes is plain JSON lists** (parts, joints, preconditions), close to triples (J), which is easy to generate and validate (req. 7).
+
+**Same core, three areas:**
+
+| Area | Parts | Example joint | Kind | Precondition |
+|---|---|---|---|---|
+| Arduino | `r1`, `led1`, `uno` | `j1: {r1:2, led1:A}` | merge (one net) | — |
+| LEGO | `b2`, `b7` | `j4: {b2:stud.1.1, b2:stud.1.2, b7:anti.1.1, b7:anti.1.2}` | join | `j3` (b2 must be placed first) |
+| Sauder *(design only)* | `end1`, `topbot1` | `j2: {end1:hole.t1, topbot1:hole.l1}` via `screw1` | join | — |
+
+### Questions to settle next
+1. **Joints as nodes (bipartite) or as hyperedges?** Same meaning; the choice is about tooling. Bipartite works with standard graph libraries (e.g. NetworkX).
+2. **How fine is a LEGO joint?** One joint per stud, or one joint per brick-on-brick contact (listing all studs)? The second is closer to how people think.
+3. **Where do symmetry rules live:** only in the part catalogue, or can a build override them?
+4. **Do preconditions point to joints or to states?** "j9 needs j5" vs "j9 needs body {end1, shelf1} to exist".
+5. **Is a step still useful?** Steps could become just suggested groupings of joints for teaching, not part of correctness.
+
+---
+
 ## Next steps
 
-- [ ] Write the Sauder 2-Cube Organizer fully in the R8 format, plus one Arduino lesson and one small LEGO set
+- [ ] Settle the R14 questions, then write one Arduino lesson and one small LEGO set in the chosen structure
+- [ ] Find a small LEGO set available both as an official PDF and in LDraw (R13)
 - [ ] Collect 3–5 more Sauder manuals (include drawers or doors) and write each in the draft form
 - [ ] Download 3–5 small LDraw/OMR sets; try deriving stud connections from positions
 - [ ] Check the OMR coverage and LDCad snap metadata
