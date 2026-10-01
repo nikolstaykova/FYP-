@@ -10,8 +10,10 @@ COMPATIBLE = {
     frozenset(["wire-end", "header-socket"]), frozenset(["header-pin", "header-socket"]),
     frozenset(["header-pin", "breadboard-hole"]), frozenset(["lead", "header-socket"]),
     frozenset(["wire-end", "lead"]), frozenset(["wire-end", "header-pin"]), frozenset(["lug", "wire-end"]),
+    frozenset(["lug", "breadboard-hole"]),  # breadboard potentiometers have pins, though the card says lug
     frozenset(["lead"]),  # legs twisted, clipped or soldered together (CircuitQuest build_methods)
     frozenset(["wire-end"]),
+    frozenset(["axle", "pin-hole"]), frozenset(["clip", "bar"]), frozenset(["ball", "socket"]), frozenset(["hinge"]),
 }
 SINGLE_USE = {"stud", "anti-stud", "breadboard-hole", "header-socket", "pin-hole"}
 

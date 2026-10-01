@@ -69,7 +69,11 @@ def main():
         has_circuit = re.search(r"#+\s*(Circuit|Schematic|Wiring|Connections?|Setting up the circuit)", md, re.I)
         if not hw or not has_circuit or len(COMPONENTS.findall(" ".join(hw))) < 1:
             continue
-        slug = re.sub(r"[^a-z0-9]+", "-", path.rsplit("/", 2)[-2].lower()).strip("-")
+        parts = path.split("/")
+        board = parts[parts.index("boards") + 1] if "boards" in parts else ""
+        slug = re.sub(r"[^a-z0-9]+", "-", f"{board}-{parts[-2]}".lower()).strip("-")
+        if any(c["id"] == f"docs-{slug}" for c in chosen):
+            slug += f"-{len(chosen)}"
         chosen.append({"id": f"docs-{slug}", "path": path, "url": "https://github.com/arduino/docs-content/blob/main/" + path,
                        "cq_lesson": None, "hardware": hw})
         print(len(chosen), path, hw[:4], flush=True)

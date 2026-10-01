@@ -90,7 +90,7 @@ def process(case, graph, stats, catalogue, out):
             r["score"] = score.score_hardware(flat, case.get("hardware", []))
         r["drafts"] = score.score_drafts(new_drafts, cat.arduino_seed())
     else:
-        r["score"] = score.score_lego_pdf(flat, case["truth"], case["elements"])
+        r["score"] = score.score_lego_pdf(flat, case["truth"], case["elements"], case["part_nums"])
     r["postprocess_ms"] = round((time.monotonic() - t0) * 1000, 1)
     d = out / case["id"]
     d.mkdir(parents=True, exist_ok=True)
@@ -100,7 +100,13 @@ def process(case, graph, stats, catalogue, out):
 
 
 def call(case, catalogue_text, cfg, out):
-    from .extract import extract
+    from .extract import extract as api_extract
+    from .extract import extract_claude_code
+
+    def extract(*args, model, effort, max_tokens=None, **kw):
+        if cfg.route == "subscription":
+            return extract_claude_code(*args, model=model, effort=effort, **kw)
+        return api_extract(*args, model=model, effort=effort, **({"max_tokens": max_tokens} if max_tokens else {}), **kw)
 
     d = out / case["id"]
     d.mkdir(parents=True, exist_ok=True)
@@ -133,11 +139,11 @@ def load_cases(cfg):
         return cases
     sys.path.insert(0, str(ROOT / "research" / "scrape"))
     import lego_ldraw
-    index, elements = lego_ldraw.library_index(), truth.element_map()
+    index, elements, part_nums = lego_ldraw.library_index(), truth.element_map(), truth.part_numbers()
     cases = []
     for c in json.loads((ROOT / "research" / "data" / "lego_dataset.json").read_text()):
         mpd = (ROOT / "research" / "raw" / "lego" / f"{c['set']}.mpd").read_text(errors="replace")
-        cases.append({**c, "id": c["set"], "domain": "lego", "elements": elements,
+        cases.append({**c, "id": c["set"], "domain": "lego", "elements": elements, "part_nums": part_nums,
                       "truth": truth.lego_pdf_truth(c, mpd, index, lego_ldraw.describe)})
     return cases
 
@@ -147,17 +153,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--domain", choices=["arduino", "lego"], required=True)
     ap.add_argument("--catalogue", choices=["seeded", "empty"], default=None)
-    ap.add_argument("--model", default="claude-sonnet-5")
+    ap.add_argument("--route", choices=["api", "subscription"], default="api",
+                    help="api: Anthropic API key (.env). subscription: headless Claude Code on your Claude plan")
+    ap.add_argument("--model", default=None, help="Default: claude-sonnet-5 (api) / sonnet (subscription)")
     ap.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
     ap.add_argument("--limit", type=int, help="First N manuals of the test set")
+    ap.add_argument("--cases", nargs="*", help="Only these manual ids")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--no-images", action="store_true")
     ap.add_argument("--arduino-only", action="store_true", help="Electronics: leave out the Raspberry Pi projects")
     ap.add_argument("--replay", type=pathlib.Path)
     cfg = ap.parse_args()
+    cfg.model = cfg.model or ("sonnet" if cfg.route == "subscription" else "claude-sonnet-5")
     cfg.catalogue = cfg.catalogue or ("seeded" if cfg.domain == "arduino" else "empty")
 
-    cases = load_cases(cfg)[: cfg.limit]
+    cases = load_cases(cfg)
+    if cfg.cases:
+        cases = [c for c in cases if c["id"] in cfg.cases]
+    cases = cases[: cfg.limit]
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     out = ROOT / "experiments" / "graphgen" / f"{stamp}-{cfg.domain}-{cfg.model}-{cfg.effort}-{cfg.catalogue}"
     out.mkdir(parents=True, exist_ok=True)

@@ -36,6 +36,13 @@ NAMING
   breadboard '12t.c'). For a part type you create, choose clear port names and list them.
 - Use catalogue types where they exist. A resistor is type `resistor` with a `value` prop (e.g. value=220).
 
+PORT KINDS (use only these for a port's kind)
+- electronics: lead, header-pin, header-socket, breadboard-hole, wire-end, lug
+- LEGO: stud, anti-stud, pin, pin-hole, axle, axle-hole, clip, bar, ball, socket, hinge
+- furniture: hole, screw, dowel, cam, groove, edge
+Compatible joins: stud/anti-stud, pin/pin-hole, axle/axle-hole, axle/pin-hole (turns), clip/bar, ball/socket,
+hinge/hinge, lead or wire-end or header-pin into breadboard-hole or header-socket, lead/lead (twisted or soldered).
+
 NEW PART TYPES
 - If a part is not in the catalogue, add ONE entry to new_part_types (not one per copy) with its ports,
   inside behaviour (conducts / through), symmetry, polarity, connector flag, mirror twin and rotation symmetry.
@@ -130,4 +137,67 @@ def extract(manual_text, catalogue_text, domain, images=(), pdf=None, model=MODE
              "input_tokens": u.input_tokens + cache_read + cache_write, "cache_read_tokens": cache_read,
              "output_tokens": u.output_tokens, "cost_usd": round(cost, 4),
              "request_id": getattr(final, "_request_id", None)}
+    return parsed.model_dump(), stats
+
+
+# --- Route 2: headless Claude Code on the user's Claude subscription -------------------
+CLAUDE_CODE_ENV_DROP = ("CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT", "CLAUDE_CODE_SESSION_ID", "CLAUDE_CODE_CHILD_SESSION")
+
+
+def extract_claude_code(manual_text, catalogue_text, domain, images=(), pdf=None, model="sonnet", effort="high",
+                        timeout=1800):
+    """Same request through `claude -p` (subscription login instead of an API key).
+
+    Structured output via --json-schema; PDF and images as content blocks over stream-json input.
+    No tools, Claude Code's default system prompt replaced by ours. `cost_usd` is Claude Code's
+    estimate at API list prices: what the call would cost on the API, not what the subscription charges."""
+    import json
+    import os
+    import subprocess
+    import tempfile
+
+    catalogue_block = ("CATALOGUE (part types that already exist; anything else is new):\n" + catalogue_text
+                       if catalogue_text else "CATALOGUE: empty. Every part type you use is new and must be in new_part_types.")
+    system = SPEC + "\n\n" + HINTS[domain] + "\n\n" + catalogue_block
+    content = [*([_pdf_block(pdf)] if pdf else []), *(_image_block(b, m) for b, m in images),
+               {"type": "text", "text": "MANUAL:\n" + manual_text}]
+    schema = json.dumps(ExtractedGraph.model_json_schema())
+    env = {k: v for k, v in os.environ.items() if k not in CLAUDE_CODE_ENV_DROP}
+    with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False) as f:
+        f.write(json.dumps({"type": "user", "message": {"role": "user", "content": content}}) + "\n")
+        msg_path = f.name
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as f:
+        f.write(system)
+        sys_path = f.name
+    cmd = ["claude", "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
+           "--model", model, "--effort", effort, "--no-session-persistence", "--tools", "",
+           "--system-prompt-file", sys_path, "--json-schema", schema]
+    t0 = time.monotonic()
+    try:
+        with open(msg_path) as stdin:
+            proc = subprocess.run(cmd, stdin=stdin, capture_output=True, text=True, env=env, timeout=timeout, cwd=tempfile.gettempdir())
+    finally:
+        os.unlink(msg_path)
+        os.unlink(sys_path)
+    seconds = time.monotonic() - t0
+    result = None
+    for line in proc.stdout.splitlines():
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if event.get("type") == "result":
+            result = event
+    if not result or result.get("is_error") or not result.get("structured_output"):
+        detail = (result or {}).get("result") or proc.stderr[-500:] or proc.stdout[-500:]
+        raise RuntimeError(f"claude -p failed: {str(detail)[:300]}")
+    parsed = ExtractedGraph.model_validate(result["structured_output"])
+    u = result["usage"]
+    used = next(iter(result.get("modelUsage") or {}), model)
+    stats = {"model": used, "effort": effort, "route": "claude-code subscription", "seconds": round(seconds, 1),
+             "api_seconds": round(result.get("duration_api_ms", 0) / 1000, 1),
+             "first_token_seconds": round(result.get("ttft_ms", 0) / 1000, 1) or None,
+             "input_tokens": u["input_tokens"] + u.get("cache_creation_input_tokens", 0) + u.get("cache_read_input_tokens", 0),
+             "cache_read_tokens": u.get("cache_read_input_tokens", 0), "output_tokens": u["output_tokens"],
+             "cost_usd": round(result.get("total_cost_usd", 0.0), 4), "turns": result.get("num_turns")}
     return parsed.model_dump(), stats

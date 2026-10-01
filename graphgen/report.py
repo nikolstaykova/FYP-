@@ -68,9 +68,11 @@ def section(results, failures, config):
         sc = [r["score"] for r in results]
         lines += ["| Measure | Mean | Median |", "|---|---:|---:|",
                   f"| Pieces built ÷ pieces in the set | {_mean(s['pieces_built'] / s['pieces_expected'] for s in sc)} | {_q([s['pieces_built'] / s['pieces_expected'] for s in sc], .5):.2f} |",
-                  f"| Inventory precision (pieces that are in the set) | {_mean(s['inventory_precision'] for s in sc)} | {_q([s['inventory_precision'] for s in sc], .5)} |",
-                  f"| Inventory recall (set pieces found) | {_mean(s['inventory_recall'] for s in sc)} | {_q([s['inventory_recall'] for s in sc], .5)} |",
+                  f"| Exact pieces (part + colour, needs an inventory page) | {_mean(s.get('exact_recall') for s in sc)} | {_q([s.get('exact_recall') for s in sc], .5)} |",
+                  f"| Inventory precision, by design (pieces that are in the set) | {_mean(s['inventory_precision'] for s in sc)} | {_q([s['inventory_precision'] for s in sc], .5)} |",
+                  f"| Inventory recall, by design (set pieces found) | {_mean(s['inventory_recall'] for s in sc)} | {_q([s['inventory_recall'] for s in sc], .5)} |",
                   f"| Contact precision (brick/plate/tile pairs) | {_mean(s['contact_precision'] for s in sc)} | {_q([s['contact_precision'] for s in sc], .5)} |",
+                  f"| Booklets with no checkable contacts (no plain bricks/plates/tiles) | {sum(1 for s in sc if s['contact_recall'] is None)} | |",
                   f"| Contact recall | {_mean(s['contact_recall'] for s in sc)} | {_q([s['contact_recall'] for s in sc], .5)} |", "",
                   "*Contacts are compared by design pair (e.g. 2×4 brick on 2×2 plate), only for plain bricks, plates and tiles, "
                   "because the model reads pictures and cannot give LDraw positions.*", ""]

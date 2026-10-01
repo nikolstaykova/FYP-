@@ -123,6 +123,15 @@ def lego_truth(mpd_text, index, describe):
 
 
 # --- LEGO from the official PDF ----------------------------------------------------
+def part_numbers():
+    """Every Rebrickable part number (design), to recognise `lego-<design>` types."""
+    import csv
+    import gzip
+    path = pathlib.Path(__file__).resolve().parents[1] / "research" / "raw" / "rebrickable" / "parts.csv.gz"
+    with gzip.open(path, "rt", encoding="utf-8") as f:
+        return {r["part_num"] for r in csv.DictReader(f)}
+
+
 def element_map():
     """Rebrickable element ID -> (part number, colour id), from its public database dump."""
     import csv

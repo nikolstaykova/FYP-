@@ -16,7 +16,7 @@ FAMILIES = [("board", r"arduino|uno"), ("breadboard", r"breadboard"), ("wire", r
 
 
 def family(type_):
-    t = (type_ or "").lower()
+    t = re.sub(r"^(cq|wokwi)-", "", (type_ or "").lower())  # answer key uses Wokwi/CircuitQuest type names
     for fam, pattern in FAMILIES:
         if re.search(pattern, t):
             return fam
@@ -134,21 +134,33 @@ def _element_id(node):
     return None
 
 
-def score_lego_pdf(flat, truth_, elements):
-    """Parts: model pieces (by Element ID -> Rebrickable part/colour) vs the official inventory.
+def score_lego_pdf(flat, truth_, elements, part_nums=frozenset()):
+    """Parts: the model's pieces vs the official inventory, at two levels:
+      exact  = part + colour, via the Element ID (only when the booklet has an inventory page);
+      design = part shape only, via the Element ID or a `lego-<design number>` type.
     Connections: design-level pairs among plain bricks/plates/tiles vs LDraw geometry."""
-    built = collections.Counter()
+    exact, design = collections.Counter(), collections.Counter()
     design_of, unmapped = {}, 0
     for n in flat["nodes"]:
         el = _element_id(n)
         part = elements.get(el) if el else None
         if part:
-            built[f"{part[0]}/{part[1]}"] += 1
+            exact[f"{part[0]}/{part[1]}"] += 1
             design_of[n["id"]] = part[0]
         else:
-            unmapped += 1
-    want = collections.Counter(truth_["inventory"])
-    matched = sum((want & built).values())
+            m = re.match(r"^lego-([0-9a-z]+)$", n["type"].lower())
+            if m and m.group(1) in part_nums:
+                design_of[n["id"]] = m.group(1)
+            else:
+                unmapped += 1
+                continue
+        design[design_of[n["id"]]] += 1
+    want_exact = collections.Counter(truth_["inventory"])
+    want_design = collections.Counter()
+    for key, q in truth_["inventory"].items():
+        want_design[key.split("/")[0]] += q
+    m_exact = sum((want_exact & exact).values())
+    m_design = sum((want_design & design).values())
     pairs = collections.Counter()
     s = truth_["scoreable_designs"]
     for e in flat["edges"]:
@@ -158,13 +170,15 @@ def score_lego_pdf(flat, truth_, elements):
                 pairs[tuple(sorted((a, b)))] += 1
     gold = truth_["pairs"]
     tp = sum((gold & pairs).values())
-    return {"pieces_expected": truth_["pieces"], "pieces_built": len(flat["nodes"]), "pieces_unmapped": unmapped,
-            "inventory_matched": matched,
-            "inventory_precision": round(matched / sum(built.values()), 3) if built else 0.0,
-            "inventory_recall": round(matched / truth_["pieces"], 3) if truth_["pieces"] else 0.0,
+    built = len(flat["nodes"])
+    return {"pieces_expected": truth_["pieces"], "pieces_built": built, "pieces_unmapped": unmapped,
+            "inventory_matched": m_design, "exact_matched": m_exact,
+            "inventory_precision": round(m_design / built, 3) if built else 0.0,
+            "inventory_recall": round(m_design / truth_["pieces"], 3) if truth_["pieces"] else 0.0,
+            "exact_recall": round(m_exact / truth_["pieces"], 3) if truth_["pieces"] else 0.0,
             "joined_edges": sum(1 for e in flat["edges"] if e["type"] == "joined"),
             "contacts_expected": sum(gold.values()), "contacts_predicted": sum(pairs.values()), "contacts_correct": tp,
-            "contact_precision": round(tp / sum(pairs.values()), 3) if pairs else 0.0,
+            "contact_precision": round(tp / sum(pairs.values()), 3) if pairs else None,
             "contact_recall": round(tp / sum(gold.values()), 3) if gold else None}
 
 

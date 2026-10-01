@@ -61,6 +61,10 @@ def arduino_seed():
                   "Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip).")
     entries["jumper-wire"] = _entry("jumper-wire", "Jumper wire", "wire", [("a", "wire-end"), ("b", "wire-end")],
                                     conducts=[["a", "b"]], connector=True)
+    entries["jumper-wire-mf"] = _entry("jumper-wire-mf", "Jumper wire, male to female", "wire",
+                                       [("a", "wire-end"), ("b", "wire-end")], conducts=[["a", "b"]], connector=True)
+    entries["alligator-clip-wire"] = _entry("alligator-clip-wire", "Alligator clip lead", "wire",
+                                            [("a", "wire-end"), ("b", "wire-end")], conducts=[["a", "b"]], connector=True)
     entries["led"] = _entry("led", "LED", "led", [("A", "lead"), ("C", "lead")], through=[["A", "C"]], polarized=True)
     entries["pushbutton"] = _entry("pushbutton", "Pushbutton", "button",
                                    [("1.l", "lead"), ("1.r", "lead"), ("2.l", "lead"), ("2.r", "lead")],
@@ -111,11 +115,16 @@ class Catalogue:
         return self.entries.get(type_)
 
     def add_drafts(self, drafts):
-        """Add model-drafted entries for types not already present (store on demand)."""
+        """Add model-drafted entries for types not already present (store on demand).
+        A later draft of an existing *unverified* type adds the ports the first draft missed."""
         added = []
         for d in drafts:
             d = dict(d)
-            if d["type"] in self.entries:
+            have = self.entries.get(d["type"])
+            if have:
+                if have.get("status") == "unverified":
+                    names = {p["name"] for p in have["ports"]}
+                    have["ports"] += [p for p in d["ports"] if p["name"] not in names]
                 continue
             d.update(alias=None, status="unverified")
             self.entries[d["type"]] = d
