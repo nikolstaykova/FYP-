@@ -22,9 +22,9 @@
 | Cost per 100 manuals | **≈ $10.45** (whole run: $12.12) | *pending* |
 | Input / output tokens (mean) | ≈ 19.7k / 5.9k | *pending* |
 | **v1 full run (build only)** | see above | **34 booklets** before it was stopped: 221 s, $0.55 mean (median 180 s); big sets up to 650 s / $1.40 |
-| **v2 (check + repair)** | **117/117, 44 s, $0.122** per tutorial (see below) | **in progress** (10 of 100 so far): 136 s, $0.41 mean |
+| **v2 (check + repair)** | **117/117, 44 s, $0.122** per tutorial (see below) | **100/100** (99 valid): **457 s** mean (median 410, 90th pct 890), **$1.48** mean, ≈ $148 per 100 |
 
-*The LEGO full-run rows are filled in when that run finishes.*
+*The v1 LEGO full run was stopped at 34 booklets, so v1 has no 100-booklet row; v1 and v2 are compared on those booklets below.*
 
 ---
 
@@ -68,11 +68,72 @@
 
 **Adjusted accuracy v2: ≈ 43 / 47 (≈ 91%) correct or valid**, against ≈ 80% in v1. **The price: +$0.018 and +3.6 s per tutorial on average**; 81% of tutorials need no repair at all.
 
-### LEGO v2 (in progress: 10 of 100 booklets so far)
+### LEGO v2: full run (100 booklets)
 
-*Updated 1 October 2026 while the run continues; the full table replaces this when it finishes.*
+Same settings (Sonnet, effort high, subscription route, 4 in parallel, up to 2 repair rounds). Raw results: `experiments/graphgen/20261002-225230-lego-sonnet-high-empty/` (the run was resumed four times with `--replay` after session limits and sleep; finished booklets were carried over, not re-run).
 
-**v1 baseline (build only, 34 booklets before it was stopped):** mean 221 s and $0.55 per booklet (median 180 s; the 200+-piece sets took 8–11 min and $1.2–1.5). Piece count 98% right; inventory by design: recall 0.73, precision 0.72; brick contacts: recall 0.53, precision 0.44. Larger booklets did better on inventory because they have a parts page with Element IDs.
+- **3316** (Friends advent calendar) is left out: the downloaded PDF is only a back cover and a product page. Claude returned an empty graph and said so, as in v1.
+- **Timing excludes 3930 and 60066:** the Mac slept during their sessions, which inflated their times (3930, 45 pieces, logged 474 s). They count for cost and accuracy.
+
+**Overall (99 booklets):**
+
+| Measure | Result |
+|---|---:|
+| Mean / median / 90th pct seconds per booklet | 457 / 410 / 890 (max 1,969: 40413, 366 pieces) |
+| Mean / median / 90th pct cost per booklet | $1.48 / $1.36 / $2.80 (whole run $146.67) |
+| Input / output tokens (mean) | ≈ 425k / 78k |
+| Pieces built ÷ pieces in set | 1.00 |
+| Inventory recall / precision (by design) | 0.76 / 0.75 |
+| Contact recall / precision | 0.44 / 0.39 (83 booklets with checkable contacts: 1,080 of 1,955 found) |
+| Repair rounds used | 0: 1 booklet · 1: 32 · 2: 66 |
+| Check issues: first build → final | 2,327 → 125 (44 booklets end fully clean) |
+| Rule problems after repair | 31, in 10 booklets |
+
+**Time, cost and accuracy by set size** (seconds per piece stays at ≈ 3–5 s, so time grows roughly linearly with pieces):
+
+| Pieces | Booklets | Mean time | Mean cost | Inventory R / P | Contact R / P |
+|---|---:|---:|---:|---:|---:|
+| under 50 | 25 | 131 s | $0.53 | 0.40 / 0.43 | 0.20 / 0.25 |
+| 50–119 | 39 | 360 s | $1.17 | 0.86 / 0.81 | 0.48 / 0.39 |
+| 120–199 | 13 | 594 s | $1.94 | 0.96 / 0.95 | 0.63 / 0.41 |
+| 200+ | 22 | 897 s | $2.84 | 0.87 / 0.89 | 0.50 / 0.45 |
+
+Small booklets score worst on inventory: they have no parts page, so pieces are guessed from pictures.
+
+**Where the time goes:**
+
+| Phase | Runs | Mean time | Mean cost |
+|---|---:|---:|---:|
+| Build | 97 | 273 s | $0.83 |
+| Repair round 1 | 96 | 118 s | $0.42 |
+| Repair round 2 | 64 | 102 s | $0.36 |
+
+The build is 60% of the time (56% of the cost); **repair is the other 40%** and buys no accuracy:
+
+| Before → after repair (99 booklets) | First build | Final |
+|---|---:|---:|
+| Inventory recall / precision | 0.75 / 0.74 | 0.76 / 0.75 |
+| Contact recall / precision | 0.44 / 0.38 | 0.44 / 0.39 |
+
+First-build issues were mostly port problems (V4 ×1,522, V3 ×543) and invented part numbers (L2 ×124); what is left after repair is mostly L2 ×43, L3 (build in separate groups) ×36 and V3 ×24.
+
+**v1 vs v2 on the 33 booklets both completed (3316 left out):**
+
+| Measure | v1: build only | v2: build + check + repair |
+|---|---:|---:|
+| Mean / median seconds per booklet | 227 / 184 | **374 / 375** |
+| Mean cost per booklet | $0.56 | **$1.11** |
+| Booklets with rule problems | 33 / 33 | **0 / 33** |
+| Rule problems in total | 939 | **0** |
+| Pieces built ÷ pieces in set | 0.98 | 0.98 |
+| Inventory recall / precision | 0.73 / 0.72 | 0.72 / 0.71 |
+| Contact recall / precision | 0.53 / 0.44 | 0.44 / 0.39 |
+
+v2's own first build already scores 0.43 / 0.37 on contacts on these booklets, so the drop from v1 comes from the first build (Claude does not give the same answer twice), not from the repair.
+
+**Conclusion:** on LEGO, v2 makes the output valid (rule problems 939 → 0) at **1.6× the time and 2× the cost**, with no gain in accuracy. Time is driven by piece count in the build and by repairs that almost every booklet needs. The levers for v3: avoid the repairs (give Claude the set's parts and valid port names up front, so V3/V4/L2 do not happen) and shorten the build output for big sets.
+
+### LEGO v2: first 10 booklets (1 October, kept for reference)
 
 **Same 10 booklets, v1 vs v2:**
 

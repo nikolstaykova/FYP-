@@ -261,6 +261,10 @@ def main():
                     print(f"[{len(results) + len(failures):3d}/{len(cases)}] {c['id']:28s} FAILED {type(e).__name__}: {str(e)[:120]}",
                           flush=True)
                     traceback.print_exc(limit=1)
+                    if pending and re.search(r"(session|usage|rate) limit", str(e), re.I):
+                        # Out of subscription quota: every later call would fail too. Stop here; --replay <this run> resumes.
+                        print(f"limit reached, {len(pending)} manuals not started; resume with --replay {out}", flush=True)
+                        pending.clear()
 
     (out / "catalogue_after.json").write_text(json.dumps(catalogue.to_json(), indent=1))
     from .report import write_report

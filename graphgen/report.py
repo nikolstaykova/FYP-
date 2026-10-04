@@ -138,7 +138,7 @@ def section(results, failures, config):
     for i, r in enumerate(results, 1):
         total += r["new_types_added"]
         growth.append((i, r["new_types_added"], total))
-    marks = sorted({1, 2, 5, 10, 25, 50, 75, n} & set(range(1, n + 1)))
+    marks = sorted({1, 2, 5, 10, 25, 50, 75, len(growth)} & set(range(1, len(growth) + 1)))
     lines += ["### Store on demand (catalogue growth)", "",
               "| After manual | New types in that manual | Catalogue additions so far |", "|---:|---:|---:|"]
     lines += [f"| {i} | {g[1]} | {g[2]} |" for i in marks for g in [growth[i - 1]]]
