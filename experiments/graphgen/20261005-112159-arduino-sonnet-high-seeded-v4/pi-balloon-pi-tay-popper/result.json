@@ -1,0 +1,87 @@
+{
+ "case": "pi-balloon-pi-tay-popper",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 59.0,
+  "input_tokens": 23404,
+  "output_tokens": 8951,
+  "cost_usd": 0.1622,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 54,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Circuit built from the first (complete) image and the text: one balloon (GPIO2 / transistor 1). The text's optional second balloon (GPIO3, second transistor, 330\u03a9 resistor and second 12\u03a9 resistor) is not shown in the images and is not included.",
+  "The 12\u03a9 balloon resistor and its 2 m speaker cable are not drawn in the image; they are modelled as r2 with two cable cores (jumper-wire parts twisted to its legs). Per the text, one core goes to the 9V power strip (column 6, same strip as the red jumper) and the other to the transistor collector strip (column 11). Exact holes are assumed. The balloon itself is not a graph node.",
+  "Breadboard rows in the image (1-30) are mapped to catalogue columns; a-e = bank t, f-j = bank b. Button legs are assumed at e/f holes straddling the centre gap: side 1 at column 1 (ground), side 2 at column 3 (GPIO14).",
+  "Left-hand power rails are assumed to be single continuous strips named tp (red, +) and tn (blue/black, ground); hole indices (tn.1, tn.2, tn.8, tp.5, tp.25, tn.25) are arbitrary positions on those strips.",
+  "Pi GND pin (physical pin 6) assumed to be GND.1. GPIO14 and GPIO2 are as labelled in the image (GP14 / GP2).",
+  "BC635 pinout (flat side facing the ground rail): emitter in column 10, collector in column 11, base in column 12; the emitter is grounded via wire6, the base fed from GPIO2 through the 330\u03a9 resistor (columns 12 to 16, green wire in column 16).",
+  "The 9V battery with its snap is modelled as one new part type battery-9v (POS red lead to + rail, NEG black lead to ground rail).",
+  "Several MCP connectors (Gmail, Calendar, Drive) require authorization via claude.ai connector settings; they were not needed here."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 59.0,
+   "input_tokens": 23404,
+   "cache_read_tokens": 5507,
+   "output_tokens": 8951,
+   "cost_usd": 0.1622,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "resistor",
+   "transistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "bc635",
+   "family": "bc635",
+   "checked": false
+  },
+  {
+   "type": "battery-9v",
+   "family": "battery-9v",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 21.5
+}

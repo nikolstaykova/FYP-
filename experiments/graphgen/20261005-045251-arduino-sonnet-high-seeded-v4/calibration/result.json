@@ -1,0 +1,310 @@
+{
+ "case": "calibration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 48.7,
+  "input_tokens": 19004,
+  "output_tokens": 5737,
+  "cost_usd": 0.0911,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The tutorial's part list matched 'analog sensor' to ntc-temperature-sensor, but the circuit image shows a photoresistor, so the catalogue type 'photoresistor' is used.",
+  "Breadboard hole names follow the catalogue convention (bank 'b' = rows f-j, bank 't' = rows a-e). The image draws rows j-f in the upper half, so those holes are named with bank 'b'. Rail hole numbers (tp/tn.N) are approximate positions read from the image; the whole rail is one strip, so only the rail matters electrically.",
+  "Circuit: 5V rail -> photoresistor (6-10) -> junction column 10 to A0 and 10k resistor -> GND rail. Pin 9 -> LED anode (col 22) -> LED cathode (col 23) -> 220 ohm resistor -> GND rail. The image puts the LED before the resistor, while the schematic puts the resistor first. The two are electrically equivalent in series, and the image is used.",
+  "The LED's longer, bent leg (left, column 22) is taken as the anode, because the blue pin-9 wire joins that column.",
+  "Arduino GND.1 was chosen for the GND wire; any GND pin on the power header is equivalent.",
+  "Resistor values: r1 = 10k ohm, r2 = 220 ohm (value props in ohms)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 9.8,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 7,
+   "matched": 7,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "LED",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "analog sensor (a photoresistor will do)",
+     "card": "ntc-temperature-sensor",
+     "skipped": false
+    },
+    {
+     "item": "10k ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "220 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.9,
+   "input_tokens": 19004,
+   "cache_read_tokens": 11120,
+   "output_tokens": 5737,
+   "cost_usd": 0.0911,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.3
+}

@@ -1,0 +1,79 @@
+{
+ "case": "pi-rpi-physical-connect-motor-controller",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 31.3,
+  "input_tokens": 24617,
+  "output_tokens": 4223,
+  "cost_usd": 0.1198,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 22,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The board is a CamJam EduKit motor controller that plugs onto the first 26 pins of the Pi's 40-pin header. Its terminal blocks are Motor A, Motor B, VIN/GND, and a separate 'V' block for the other motor. The manual says it uses GPIO 7, 8, 9 and 10.",
+  "The photos show the red/black battery wires in the VIN/GND block and the two motors in the Motor A and Motor B blocks. The first photo's labels are hard to read. I took the block next to the VIN/GND pair to be Motor B and the remaining one to be Motor A.",
+  "The Pi's header ground pin at the left end of the board (physical pin 25) is mapped to GND.5. This assumes the catalogue numbers GND.1..GND.8 in header order. Only the pins the board uses are modelled (GPIO7-10 and one GND), not the full 26-pin footprint.",
+  "Motor A is assumed to use GPIO9 and GPIO10, and Motor B GPIO7 and GPIO8, as in the CamJam EduKit 3 documentation. This pairing and the internal 'through' links are not shown in the manual.",
+  "The motors can be connected either way round. The battery wires have no connectors, so they are modelled as wire-end ports on the battery pack, screwed into the board's terminals. The battery pack's ON/OFF switch must be off while wiring, and the Pi is powered separately and switched on afterwards."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.3,
+   "input_tokens": 24617,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4223,
+   "cost_usd": 0.1198,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "camjam-motor-controller",
+   "family": "camjam-motor-controller",
+   "checked": false
+  },
+  {
+   "type": "battery-pack-4xaa",
+   "family": "battery-pack-4xaa",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.5
+}

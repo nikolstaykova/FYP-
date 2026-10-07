@@ -1,0 +1,71 @@
+{
+ "case": "docs-projects-make-it-rain-clap-machine",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 86.6,
+  "input_tokens": 27293,
+  "output_tokens": 15200,
+  "cost_usd": 0.2406,
+  "repair_rounds_used": 0
+ },
+ "parts": 36,
+ "edges": 137,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The schematic image was not available, so the wiring is derived from the text: I2S mic on A6 (SD), 2 (SCK), 3 (FS/WS); DC motor driven by an N-MOSFET with a 2.2k pull-down on the gate and a flyback diode across the motor; servo signal through an N-MOSFET level shifter (gate to 3.3V, 2.2k pull-up to 5V); 0.1uF and 100uF capacitors across 5V/GND.",
+  "The MKR Zero pins for the motor MOSFET gate (4) and servo signal (5) are assumptions; the manual does not state them.",
+  "The MKR Zero 3.3V pin is the 'VCC' port in the catalogue; the mic VDD and the level-shifter gate use it. 5V comes from the 5V pin (USB powered).",
+  "The N-MOSFETs in the photo are TO-220 parts; the catalogue 2n7000 type is used as the nearest N-channel MOSFET. Pin order on the breadboard is assumed.",
+  "ICS43432 L/R pin is tied to GND (assumed). Microphone is assumed placed on the breadboard (breakout with 6 pins).",
+  "The motor and servo wires are shown as jumper wires between the component terminals and the breadboard. The 'rubber-band' part is not in the catalogue and is not given a draft type; it only contacts the wheel on the DC motor. The laser-cut MDF box, wheel, lifting arm and card stock are mechanical and not modelled.",
+  "Medium breadboard used as in the text although the diagram uses a full-size board; hole positions are my own layout. Resistor value 2200 ohms; capacitor c2 is 100uF using the capacitor-10uf type with a value prop."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 86.6,
+   "input_tokens": 27293,
+   "cache_read_tokens": 5414,
+   "output_tokens": 15200,
+   "cost_usd": 0.2406,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "diode",
+   "motor",
+   "resistor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ics43432",
+   "family": "ics43432",
+   "checked": false
+  },
+  {
+   "type": "diode",
+   "family": "diode",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 19.1
+}

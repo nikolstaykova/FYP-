@@ -1,0 +1,60 @@
+{
+ "case": "docs-yun-rev2-temperature-web-panel",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 25.7,
+  "input_tokens": 18131,
+  "output_tokens": 3687,
+  "cost_usd": 0.0632,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Arduino Y\u00fan and TMP36 are not in the catalogue, so they are new part types.",
+  "The Fritzing image is the authority: the TMP36 Vout goes to A1, matching the text. The schematic shows A0, but the text and the sketch (analogRead(A1)) both use A1.",
+  "The mini breadboard is mapped onto catalogue breadboard strips. Each horizontal row of 5 holes in the image is treated as one strip (10t, 11t, 12t, holes a-e). The wire is in hole a and the TMP36 leg is in hole e.",
+  "TMP36 pins: 1=+Vs (red wire, 5V), 2=Vout (yellow wire, A1), 3=GND (black wire, GND). The red wire is on the Y\u00fan header pin right after 3.3V, which is 5V, and the black wire is on the first GND pin.",
+  "The SD card or USB stick is required by the tutorial but is not drawn in the circuit, so it is left out. The sketch's optional use of A0/A2 as power and ground for the sensor is not wired."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.7,
+   "input_tokens": 18131,
+   "cache_read_tokens": 12157,
+   "output_tokens": 3687,
+   "cost_usd": 0.0632,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "tmp36",
+   "family": "tmp36",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.2
+}

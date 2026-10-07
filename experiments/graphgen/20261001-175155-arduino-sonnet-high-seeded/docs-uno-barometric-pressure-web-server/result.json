@@ -1,0 +1,51 @@
+{
+ "case": "docs-uno-barometric-pressure-web-server",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 33.9,
+  "api_seconds": 29.5,
+  "first_token_seconds": 11.6,
+  "input_tokens": 17056,
+  "cache_read_tokens": 10590,
+  "output_tokens": 5471,
+  "cost_usd": 0.0827,
+  "turns": 2
+ },
+ "parts": 10,
+ "edges": 42,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The Ethernet shield is stacked on top of the Arduino Uno (per the manual's note); the shield's pass-through header pins are modelled as joined+electrical to the matching Uno ports, and jumper wires plug into the shield's top sockets.",
+  "SPI wiring follows the circuit image and schematic: D13=SCK, D12=MOSI, D11=MISO (the code comment lists MOSI 11 / MISO 12, which conflicts; images are the authority).",
+  "DRDY goes to D6 and CSB to D7, as in the text and schematic (the schematic's crossed lines).",
+  "Sensor powered from the shield's 3.3V; common ground via the shield's Gnd pin (red and black wires).",
+  "The Ethernet cable to the network and the USB cable to the computer are not modelled as they are not drawn in the circuit; no breadboard is used.",
+  "The SCP1000 breakout's header pins are treated as header-pin ports that the jumper wire ends join onto."
+ ],
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ethernet-shield",
+   "family": "ethernet-shield",
+   "checked": false
+  },
+  {
+   "type": "scp1000",
+   "family": "scp1000",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 9.2
+}

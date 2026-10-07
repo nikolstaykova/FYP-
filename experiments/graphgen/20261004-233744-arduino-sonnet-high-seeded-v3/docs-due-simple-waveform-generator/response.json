@@ -1,0 +1,2617 @@
+{
+ "graph": {
+  "title": "Arduino Due Simple Waveform Generator",
+  "source_id": "https://docs.arduino.cc/tutorials/due/simple-waveform-generator",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "due",
+    "type": "arduino-due",
+    "label": "Arduino Due",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "10K potentiometer",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Push button (pin 2)",
+    "props": []
+   },
+   {
+    "id": "btn2",
+    "type": "pushbutton",
+    "label": "Push button (pin 3)",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "10K pull-down",
+    "props": [
+     {
+      "key": "value",
+      "value": "10000"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "10K pull-down",
+    "props": [
+     {
+      "key": "value",
+      "value": "10000"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3.3V to rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "power rail link",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "ground rail link",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "pot power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "pot ground",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "pot wiper to A0",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "D2 to button 1",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire9",
+    "type": "jumper-wire",
+    "label": "D3 to button 2",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire10",
+    "type": "jumper-wire",
+    "label": "button 1 power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire11",
+    "type": "jumper-wire",
+    "label": "button 2 power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "3V3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "GND1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "GND1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.14",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.14",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "15t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "15t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "16t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "16t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "22t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "22t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "22b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "22b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "24t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "24t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "24b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "24b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "27t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "27t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "27b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "27b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "29t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "29t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "24t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "24t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.22",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.22",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.27",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.27",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "24b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "24b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.24",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.24",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "29b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "29b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.29",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.29",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Exact breadboard hole positions are estimated from the image. Connectivity follows the manual's text and the circuit image.",
+   "The 3.3V pin is wired to the power rail (tp) and GND to the ground rail (tn). Long red and black wires carry power and ground to the bottom rails (bp, bn).",
+   "Each button has its input side (1.l/1.r) on the column holding the digital-pin wire (D2 or D3) and the 10K pull-down resistor to ground. The other side (2.l/2.r) goes to 3.3V from the bottom power rail.",
+   "Potentiometer: VCC to 3.3V, GND to ground, wiper (SIG) to A0 via the yellow wire. Its outer legs are interchangeable.",
+   "The DAC0 and DAC1 outputs are not wired because the tutorial only mentions an optional oscilloscope.",
+   "The resistor value is given as 10000 ohms, per the manual (10K). The catalogue default shows 100 ohms.",
+   "Wire colours are taken from the image.",
+   "Checker error E2 (due 5V, 5V2 and 5V3 'wired straight' together) is not caused by this graph, so I left the graph unchanged. No edge touches any Due 5V, 5V2 or 5V3 port, and no wire or part joins those pins. They are tied together only inside the board's catalogue entry, and I added no edge between them. The manual says to use 3.3V, and the image shows the red wire on the 3V3 header pin. The Due's I/O is 3.3V only, so moving the supply to 5V would be a real fault."
+  ]
+ },
+ "graph_initial": {
+  "title": "Arduino Due Simple Waveform Generator",
+  "source_id": "https://docs.arduino.cc/tutorials/due/simple-waveform-generator",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "due",
+    "type": "arduino-due",
+    "label": "Arduino Due",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "10K potentiometer",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Push button (pin 2)",
+    "props": []
+   },
+   {
+    "id": "btn2",
+    "type": "pushbutton",
+    "label": "Push button (pin 3)",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "10K pull-down",
+    "props": [
+     {
+      "key": "value",
+      "value": "10000"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "10K pull-down",
+    "props": [
+     {
+      "key": "value",
+      "value": "10000"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3.3V to rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "power rail link",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "ground rail link",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "pot power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "pot ground",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "pot wiper to A0",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "D2 to button 1",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire9",
+    "type": "jumper-wire",
+    "label": "D3 to button 2",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire10",
+    "type": "jumper-wire",
+    "label": "button 1 power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire11",
+    "type": "jumper-wire",
+    "label": "button 2 power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "3V3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "GND1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "GND1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.14",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.14",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "15t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "15t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "16t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "16t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "22t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "22t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "22b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "22b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "24t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "24t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "24b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "24b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "27t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "27t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "27b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "27b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "29t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "29t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "24t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "24t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "due",
+    "v_port": "D3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.22",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.22",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.27",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bp.27",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "24b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "24b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.24",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.24",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "29b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "29b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.29",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.29",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Exact breadboard hole positions are estimated from the image. Connectivity follows the manual's text and the circuit image.",
+   "The 3.3V pin is wired to the power rail (tp) and GND to the ground rail (tn). Long red and black wires carry power and ground to the bottom rails (bp, bn).",
+   "Each button has its input side (1.l/1.r) on the column holding the digital-pin wire (D2 or D3) and the 10K pull-down resistor to ground. The other side (2.l/2.r) goes to 3.3V from the bottom power rail.",
+   "Potentiometer: VCC to 3.3V, GND to ground, wiper (SIG) to A0 via the yellow wire. Its outer legs are interchangeable.",
+   "The DAC0 and DAC1 outputs are not wired because the tutorial only mentions an optional oscilloscope.",
+   "The resistor value is given as 10000 ohms, per the manual (10K). The catalogue default shows 100 ohms.",
+   "Wire colours are taken from the image."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 199.1,
+  "input_tokens": 107462,
+  "output_tokens": 27050,
+  "cost_usd": 0.4581,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 62.1,
+   "input_tokens": 35981,
+   "output_tokens": 3728,
+   "cost_usd": 0.1099,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 6,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Due",
+     "type": "arduino-due",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-giga-r1-wifi.html (This page sells the Arduino Giga R1 WiFi (SparkFun WRL-23319), not the Arduino D)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-mega-2560-r3.html (This page sells the Arduino Mega 2560 R3 (SparkFun DEV-11061, ATmega2560, 8-bit )"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/2193"
+      ]
+     ],
+     "seconds": 55.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.3,
+   "input_tokens": 14713,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9232,
+   "cost_usd": 0.1302,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.0,
+   "input_tokens": 24754,
+   "cache_read_tokens": 14711,
+   "output_tokens": 7053,
+   "cost_usd": 0.1136,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.7,
+   "input_tokens": 32014,
+   "cache_read_tokens": 24752,
+   "output_tokens": 7037,
+   "cost_usd": 0.1044,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "final_issue_list": [
+  [
+   "E2",
+   "board pin ['due:5V2', 'due:5V3'] is wired straight to ['5V'] with nothing in between: ['due:5V', 'due:5V2', 'due:5V3']"
+  ]
+ ],
+ "cards": {
+  "arduino-due": {
+   "type": "arduino-due",
+   "name": "Arduino Due",
+   "category": "board",
+   "ports": [
+    {
+     "name": "NC",
+     "kind": "header-socket"
+    },
+    {
+     "name": "IOREF",
+     "kind": "header-socket"
+    },
+    {
+     "name": "RESET",
+     "kind": "header-socket"
+    },
+    {
+     "name": "3V3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "5V",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "VIN",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A0",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A4",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A5",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A6",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A7",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A8",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A9",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A10",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A11",
+     "kind": "header-socket"
+    },
+    {
+     "name": "DAC0",
+     "kind": "header-socket"
+    },
+    {
+     "name": "DAC1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "CANRX",
+     "kind": "header-socket"
+    },
+    {
+     "name": "CANTX",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D0",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D4",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D5",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D6",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D7",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D8",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D9",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D10",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D11",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D12",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D13",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "AREF",
+     "kind": "header-socket"
+    },
+    {
+     "name": "SDA",
+     "kind": "header-socket"
+    },
+    {
+     "name": "SCL",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D14",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D15",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D16",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D17",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D18",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D19",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D20",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D21",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D22",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D23",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D24",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D25",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D26",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D27",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D28",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D29",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D30",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D31",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D32",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D33",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D34",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D35",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D36",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D37",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D38",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D39",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D40",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D41",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D42",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D43",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D44",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D45",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D46",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D47",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D48",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D49",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D50",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D51",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D52",
+     "kind": "header-socket"
+    },
+    {
+     "name": "D53",
+     "kind": "header-socket"
+    },
+    {
+     "name": "5V2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "5V3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND4",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND5",
+     "kind": "header-socket"
+    }
+   ],
+   "conducts": [
+    [
+     "GND1",
+     "GND2",
+     "GND3",
+     "GND4",
+     "GND5"
+    ],
+    [
+     "5V",
+     "5V2",
+     "5V3"
+    ],
+    [
+     "SDA",
+     "D20"
+    ],
+    [
+     "SCL",
+     "D21"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "pololu",
+    "url": "https://www.pololu.com/product/2193",
+    "title": "Arduino Due"
+   }
+  },
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "potentiometer-10k": {
+   "type": "potentiometer-10k",
+   "name": "10k Ohm Potentiometer (linear, \"B10K\")",
+   "category": "potentiometer",
+   "ports": [
+    {
+     "name": "GND",
+     "kind": "lug"
+    },
+    {
+     "name": "SIG",
+     "kind": "lug"
+    },
+    {
+     "name": "VCC",
+     "kind": "lug"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "GND",
+     "SIG"
+    ],
+    [
+     "SIG",
+     "VCC"
+    ]
+   ],
+   "symmetric": [
+    [
+     "GND",
+     "VCC"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "pushbutton": {
+   "type": "pushbutton",
+   "name": "Pushbutton",
+   "category": "button",
+   "ports": [
+    {
+     "name": "1.l",
+     "kind": "lead"
+    },
+    {
+     "name": "1.r",
+     "kind": "lead"
+    },
+    {
+     "name": "2.l",
+     "kind": "lead"
+    },
+    {
+     "name": "2.r",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": {
+    "mode": "prefix",
+    "prefixes": [
+     "1",
+     "2"
+    ]
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "note": "4 legs in two pairs: 1.l and 1.r are ALWAYS joined inside (side 1), 2.l and 2.r are ALWAYS joined (side 2); pressing joins side 1 to side 2. Wire the input pin to one side and the supply to the OTHER side; a pull-down/pull-up resistor goes on the SAME side as the input pin."
+  },
+  "resistor": {
+   "type": "resistor",
+   "name": "100\u03a9 Resistor",
+   "category": "resistor",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Arduino Due",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "arduino-due",
+   "search_query": "Arduino Due",
+   "category": "board"
+  },
+  {
+   "label": "10K \u03a9 potentiometer",
+   "quantity": 1,
+   "catalogue_type": "potentiometer-10k",
+   "new_type": null,
+   "search_query": null,
+   "category": "potentiometer"
+  },
+  {
+   "label": "Push button",
+   "quantity": 2,
+   "catalogue_type": "pushbutton",
+   "new_type": null,
+   "search_query": null,
+   "category": "button"
+  },
+  {
+   "label": "10K \u03a9 resistor",
+   "quantity": 2,
+   "catalogue_type": "resistor",
+   "new_type": null,
+   "search_query": null,
+   "category": "resistor"
+  },
+  {
+   "label": "Jumper wires",
+   "quantity": 1,
+   "catalogue_type": "jumper-wire",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  },
+  {
+   "label": "Breadboard",
+   "quantity": 1,
+   "catalogue_type": "breadboard",
+   "new_type": null,
+   "search_query": null,
+   "category": "breadboard"
+  }
+ ]
+}

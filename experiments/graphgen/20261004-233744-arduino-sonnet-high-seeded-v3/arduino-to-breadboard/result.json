@@ -1,0 +1,266 @@
+{
+ "case": "arduino-to-breadboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 77.4,
+  "input_tokens": 20173,
+  "output_tokens": 12788,
+  "cost_usd": 0.1669,
+  "repair_rounds_used": 0
+ },
+ "parts": 19,
+ "edges": 120,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Built the first diagram (burning the bootloader with Arduino as ISP). The second diagram (USB-serial upload with the microcontroller removed from the Arduino) and the minimal no-crystal variant are not included.",
+  "Wiring: Arduino pin 10 -> ATmega RESET (pin 1), 11 -> MOSI (pin 17), 12 -> MISO (pin 18), 13 -> SCK (pin 19). 5V and GND go to the breadboard rails; VCC (7), AVCC (20) to + rail; GND (8, 22) to - rail.",
+  "The 10k pull-up resistor goes from RESET (pin 1) to the + rail. The crystal sits across pins 9 and 10, each with a 22 pF capacitor to ground. The resistor value is set to 10000 even though the catalogue entry is labelled 100 ohm.",
+  "Chip orientation: pins 1-14 in the lower bank (row f, columns 5-18), pins 15-28 in the upper bank (row e, columns 18-5). Breadboard hole positions and rail indices are estimated from the picture.",
+  "The manual lists 10 jumper wires. The picture shows only some of the power wires, so I used 12 to give every chip power and ground pin a route (AVCC and the second GND included). The two blue on-board wires in the picture are assumed to be the crystal connections, which I made with the crystal legs directly."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.6,
+   "input_tokens": 8873,
+   "output_tokens": 459,
+   "cost_usd": 0.0193,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 7,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 70.8,
+   "input_tokens": 11300,
+   "cache_read_tokens": 5507,
+   "output_tokens": 12329,
+   "cost_usd": 0.1476,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 8,
+  "nets_matched": 1,
+  "net_precision": 0.125,
+  "net_recall": 0.143,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor-ceramic": 2,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal-16mhz": 1,
+   "resistor": 1,
+   "capacitor-22pf": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor-ceramic",
+     "1"
+    ],
+    [
+     "capacitor-ceramic",
+     "2"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor-ceramic",
+     "2"
+    ],
+    [
+     "crystal",
+     "1"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor-ceramic",
+     "1"
+    ],
+    [
+     "crystal",
+     "2"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor-22pf",
+     "2"
+    ],
+    [
+     "capacitor-22pf",
+     "2"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor-22pf",
+     "1"
+    ],
+    [
+     "crystal-16mhz",
+     "1"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor-22pf",
+     "1"
+    ],
+    [
+     "crystal-16mhz",
+     "2"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 16.7
+}

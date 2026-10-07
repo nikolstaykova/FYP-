@@ -1,0 +1,1134 @@
+{
+ "graph": {
+  "title": "MKR Motor Carrier: Reading LiPo Battery Levels",
+  "source_id": "MKR Motor Carrier Tutorial 1 (MKRMOTORCARRIER_T1): Reading Battery Levels",
+  "new_part_types": [
+   {
+    "type": "mkr-motor-carrier",
+    "name": "Arduino MKR Motor Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "14",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     },
+     {
+      "name": "BATT_VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "BATT_GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M1+",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M1-",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M2+",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M2-",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M3+",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M3-",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M4+",
+      "kind": "header-socket"
+     },
+     {
+      "name": "M4-",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "BATT_VIN",
+      "VIN"
+     ],
+     [
+      "BATT_GND",
+      "GND"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "carrier1",
+    "type": "mkr-motor-carrier",
+    "label": "MKR Motor Carrier",
+    "props": []
+   },
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "Arduino MKR family board",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "lipo-battery",
+    "label": "LiPo Battery (3S, 11.1V)",
+    "props": [
+     {
+      "key": "cells",
+      "value": "3S"
+     }
+    ]
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "DC motor (optional)",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "micro USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VCC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VCC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "VIN",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "11",
+    "v": "carrier1",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "11",
+    "v": "carrier1",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "12",
+    "v": "carrier1",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "12",
+    "v": "carrier1",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "6",
+    "v": "carrier1",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "6",
+    "v": "carrier1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "BATT_VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "BATT_VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "NEG",
+    "v": "carrier1",
+    "v_port": "BATT_GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "NEG",
+    "v": "carrier1",
+    "v_port": "BATT_GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "M1+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "M1+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "carrier1",
+    "v_port": "M1-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "carrier1",
+    "v_port": "M1-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial says 'Arduino MKR family board' without naming a model; the image looks like an MKR WiFi 1010 (the code comments mention MKR1000), so arduino-mkr-wifi-1010 is assumed. Any MKR board fits the same headers.",
+   "The MKR Motor Carrier is not in the catalogue, so it is a new part type. It has female header sockets for the MKR board and screw terminals for the battery (VIN/GND) and the motor outputs (M1-M4).",
+   "Fix for the validation errors: the carrier's screw-terminal ports are now kind 'header-socket' instead of 'lug'. The LiPo battery and DC motor expose 'lead' ports, and lead into a socket is a compatible join. The clamping action is still recorded as method=screw, reversible=tool.",
+   "The manual says the battery goes on the male pins or on the blue terminal block (VIN and GND). The terminal block is used here, with the lipo-battery bare leads screwed in. The catalogue lipo-battery has a JST connector.",
+   "The DC motor on M1+/M1- is optional but is included in the graph, as the circuit image shows.",
+   "Only the header pins the sketch relies on get port-specific edges: power (5V, VIN, VCC, GND) and the I2C and interrupt lines (11, 12, 6). The whole-board joined edge covers the remaining pins.",
+   "The carrier's on/off slide switch is flipped to ON. It is part of the carrier board, so it is not a separate node.",
+   "The micro USB cable plugs into the MKR board, with no host computer shown, so the cable has a joined edge with no ports named.",
+   "The optional bench power supply is an alternative to the LiPo battery and is not modelled."
+  ]
+ },
+ "graph_initial": {
+  "title": "MKR Motor Carrier: Reading LiPo Battery Levels",
+  "source_id": "MKR Motor Carrier Tutorial 1 (MKRMOTORCARRIER_T1): Reading Battery Levels",
+  "new_part_types": [
+   {
+    "type": "mkr-motor-carrier",
+    "name": "Arduino MKR Motor Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "14",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     },
+     {
+      "name": "BATT_VIN",
+      "kind": "lug"
+     },
+     {
+      "name": "BATT_GND",
+      "kind": "lug"
+     },
+     {
+      "name": "M1+",
+      "kind": "lug"
+     },
+     {
+      "name": "M1-",
+      "kind": "lug"
+     },
+     {
+      "name": "M2+",
+      "kind": "lug"
+     },
+     {
+      "name": "M2-",
+      "kind": "lug"
+     },
+     {
+      "name": "M3+",
+      "kind": "lug"
+     },
+     {
+      "name": "M3-",
+      "kind": "lug"
+     },
+     {
+      "name": "M4+",
+      "kind": "lug"
+     },
+     {
+      "name": "M4-",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [
+     [
+      "BATT_VIN",
+      "VIN"
+     ],
+     [
+      "BATT_GND",
+      "GND"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "carrier1",
+    "type": "mkr-motor-carrier",
+    "label": "MKR Motor Carrier",
+    "props": []
+   },
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "Arduino MKR family board",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "lipo-battery",
+    "label": "LiPo Battery (3S, 11.1V)",
+    "props": [
+     {
+      "key": "cells",
+      "value": "3S"
+     }
+    ]
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "DC motor (optional)",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "micro USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VCC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VCC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "VIN",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "11",
+    "v": "carrier1",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "11",
+    "v": "carrier1",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "12",
+    "v": "carrier1",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "12",
+    "v": "carrier1",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "6",
+    "v": "carrier1",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "6",
+    "v": "carrier1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "BATT_VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "BATT_VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "NEG",
+    "v": "carrier1",
+    "v_port": "BATT_GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "NEG",
+    "v": "carrier1",
+    "v_port": "BATT_GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "M1+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "M1+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "carrier1",
+    "v_port": "M1-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "carrier1",
+    "v_port": "M1-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial says 'Arduino MKR family board' without naming a model; the image looks like an MKR WiFi 1010 (the code comments mention MKR1000), so arduino-mkr-wifi-1010 is assumed. Any MKR board fits the same headers.",
+   "The MKR Motor Carrier is not in the catalogue, so it is a new part type. It has female header sockets for the MKR board and screw terminals (lugs) for the battery (VIN/GND) and the motor outputs (M1-M4).",
+   "The manual says the battery goes on the male pins or on the blue terminal block (VIN and GND). The terminal block is used here, with the lipo-battery bare leads screwed in. The catalogue lipo-battery has a JST connector.",
+   "The DC motor on M1+/M1- is optional but is included in the graph, as the circuit image shows.",
+   "Only the header pins the sketch relies on get port-specific edges: power (5V, VIN, VCC, GND) and the I2C and interrupt lines (11, 12, 6). The whole-board joined edge covers the remaining pins.",
+   "The carrier's on/off slide switch is flipped to ON. It is part of the carrier board, so it is not a separate node.",
+   "The micro USB cable plugs into the MKR board, with no host computer shown, so the cable has a joined edge with no ports named.",
+   "The optional bench power supply is an alternative to the LiPo battery and is not modelled."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 137.8,
+  "input_tokens": 79455,
+  "output_tokens": 10529,
+  "cost_usd": 0.2062,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 82.8,
+   "check_seconds": 0.0,
+   "input_tokens": 27394,
+   "output_tokens": 1620,
+   "cost_usd": 0.05,
+   "listed": 7,
+   "matched": 2,
+   "looked_up": 2,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "ArduinoMotorCarrier library installed.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "MKR Motor Carrier (link to store).",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-moto-bit-micro-bit-carrier-board-qwiic.html (The content describes the SparkFun moto:bit (DEV-15713), a micro:bit carrier boa)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CONNECTOR-CARRIER-GROVE-COMPATIBLE.html (The page describes the Arduino MKR Connector Carrier (Grove compatible), a shiel)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 17.0
+    },
+    {
+     "item": "Arduino MKR family board (link to store)",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield, an add-on shield that plugs on)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 9.4
+    },
+    {
+     "item": "LiPo Battery (2S or 3S).",
+     "card": "lipo-battery",
+     "skipped": false
+    },
+    {
+     "item": "DC motor (optional).",
+     "card": "dc-motor",
+     "skipped": false
+    },
+    {
+     "item": "Power Supply (optional).",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.4,
+   "input_tokens": 23544,
+   "cache_read_tokens": 13587,
+   "output_tokens": 4515,
+   "cost_usd": 0.0877,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.6,
+   "input_tokens": 28517,
+   "cache_read_tokens": 23542,
+   "output_tokens": 4394,
+   "cost_usd": 0.0685,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 18.7,
+  "cost_usd": 0.0436,
+  "types": [
+   {
+    "type": "mkr-motor-carrier",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "no search result"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/5688 (Content describes the Pololu MP6602 Stepper Motor Driver Carrier (item 5688), no)"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CONNECTOR-CARRIER-GROVE-COMPATIBLE.html (The page describes the Arduino MKR Connector Carrier (Grove compatible, SKU 1039)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,63 @@
+{
+ "case": "docs-nano-33-iot-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 33.7,
+  "input_tokens": 21597,
+  "output_tokens": 5429,
+  "cost_usd": 0.0988,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The circuit image draws the I2C bus lines and the two 4.7 k\u03a9 pull-up resistors as plain lines with no breadboard. The manual lists mini breadboards and jumper wires, so I put the SDA bus (column 5t), the SCL bus (column 8t) and the 3.3 V rail (tp) on one breadboard. The exact hole positions are my own choice.",
+  "I used one breadboard, not the two mini breadboards in the parts list, because the image shows no board layout.",
+  "Wiring follows the image. A4 (SDA, yellow) of both boards joins one bus, and A5 (SCL, teal) of both boards joins another. Each bus has a 4.7 k\u03a9 pull-up to the reader's 3V pin. GND of the two boards is joined directly.",
+  "Only the reader's 3V pin is wired to the pull-ups. The writer's 3V pin is not connected.",
+  "The parts list says 10 jumper wires, but only 6 are needed for the drawn circuit.",
+  "Both boards are powered and serial-connected through USB cables to a computer. The computer is not in the catalogue, so it is not modelled and the USB cables have no ports.",
+  "The Nano 33 IoT is a new part type. Its built-in LED (LED_BUILTIN) is internal to the board, so I did not model it separately.",
+  "The image labels the supply pin '3V'. I mapped it to port 3.3V."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.7,
+   "input_tokens": 21597,
+   "cache_read_tokens": 11025,
+   "output_tokens": 5429,
+   "cost_usd": 0.0988,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-33-iot",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.4
+}

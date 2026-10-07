@@ -1,0 +1,145 @@
+{
+ "tutorial": "docs-mkr-smart-garden-project",
+ "anchor": {
+  "id": "mkr1",
+  "type": "arduino-mkr1000-wifi",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/hero-image.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/cloud-dashboard.gif",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/relay-connection.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/thing-overview.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/dashboard-overview.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/soil-sensor.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/smart-garden-setup.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-iot-carrier/tutorials/smart-garden-project/assets/cloud-dashboard.gif"
+ ],
+ "legs_and_ends": 4,
+ "with_position": 0,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "mkr1",
+     "type": "arduino-mkr1000-wifi",
+     "label": "MKR WiFi 1010"
+    },
+    {
+     "id": "carrier1",
+     "type": "arduino-mkr-iot-carrier",
+     "label": "MKR IoT Carrier"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "grove1",
+     "type": "grove-cable-4pin-grove",
+     "label": "Grove cable",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "A1",
+       "part": "carrier1",
+       "port": "A6",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "moist1",
+     "type": "grove-moisture-sensor",
+     "label": "Soil moisture sensor",
+     "props": {},
+     "polarised": false,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "pump1",
+     "type": "pump-5v",
+     "label": "5V submersible pump",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "carrier1",
+       "port": "RELAY1_COM",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "usbadapter1",
+     "type": "usb-power-adapter",
+     "label": "USB adapter with at least 2 USB ports",
+     "props": {},
+     "polarised": false,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "usbcable1",
+     "type": "usb-cable",
+     "label": "Micro-USB cable",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "mkr1",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "usbcable2",
+     "type": "usb-cable-open-ended",
+     "label": "Open ended USB cable",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "positive",
+       "part": "carrier1",
+       "port": "RELAY1_NO",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

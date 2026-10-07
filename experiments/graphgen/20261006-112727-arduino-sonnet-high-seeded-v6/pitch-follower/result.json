@@ -1,0 +1,232 @@
+{
+ "case": "pitch-follower",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 35.8,
+  "input_tokens": 55544,
+  "output_tokens": 5602,
+  "cost_usd": 0.0994,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts are unchanged: all 10 parts are kept and none added or dropped.",
+  "Circuit: pin 9 -> 100 ohm resistor -> speaker -> GND. 5V -> photoresistor -> A0 junction -> 4.7K resistor -> GND.",
+  "The speaker's own leads are used. Lead 1 (red in the image) goes to the breadboard column shared with the 100 ohm resistor. Lead 2 (black) goes straight to an Arduino GND header. The speaker is not polarised, so the lead assignment is arbitrary.",
+  "Exact breadboard holes are my reading of the image: the 100 ohm resistor and photoresistor each straddle the centre gap (columns 9 and 21), and the 4.7K resistor sits in the lower half between columns 21 and 23.",
+  "The speaker's GND lead uses GND.1 (next to AREF). The 4.7K resistor's GND wire uses GND.2 (power header). All Arduino GND pins are the same node."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.3,
+   "input_tokens": 27035,
+   "cache_read_tokens": 20023,
+   "output_tokens": 1291,
+   "cost_usd": 0.045,
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.5,
+   "input_tokens": 28509,
+   "cache_read_tokens": 27033,
+   "output_tokens": 4311,
+   "cost_usd": 0.0544,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 1,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker-8ohm": 1,
+   "photoresistor": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "2"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 1,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker-8ohm": 1,
+   "photoresistor": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "2"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.8
+}

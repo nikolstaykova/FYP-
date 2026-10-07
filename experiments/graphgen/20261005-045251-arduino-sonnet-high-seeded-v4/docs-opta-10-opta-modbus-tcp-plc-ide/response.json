@@ -1,0 +1,748 @@
+{
+ "graph": {
+  "title": "Modbus TCP between two Opta devices using Arduino PLC IDE",
+  "source_id": "https://docs.arduino.cc/tutorials/opta/modbus-tcp-plc-ide",
+  "new_part_types": [
+   {
+    "type": "lan-hub",
+    "name": "Ethernet Switch (network hub)",
+    "category": "network",
+    "ports": [
+     {
+      "name": "P1",
+      "kind": "socket"
+     },
+     {
+      "name": "P2",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "P1",
+      "P2"
+     ]
+    ],
+    "symmetric": [
+     [
+      "P1",
+      "P2"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "rj45-cable",
+    "name": "RJ-45 LAN cable",
+    "category": "cable",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "ball"
+     },
+     {
+      "name": "b",
+      "kind": "ball"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "opta1",
+    "type": "arduino-opta-lite",
+    "label": "Opta Slave (Server)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Server"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.2"
+     }
+    ]
+   },
+   {
+    "id": "opta2",
+    "type": "arduino-opta-lite",
+    "label": "Opta Master (Client)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Client"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.1"
+     }
+    ]
+   },
+   {
+    "id": "lanhub1",
+    "type": "lan-hub",
+    "label": "Ethernet Switch (Optional)",
+    "props": []
+   },
+   {
+    "id": "pc1",
+    "type": "laptop",
+    "label": "Computer - PLC IDE",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C Cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB-C Cable",
+    "props": []
+   },
+   {
+    "id": "rj1",
+    "type": "rj45-cable",
+    "label": "RJ-45 Cable",
+    "props": []
+   },
+   {
+    "id": "rj2",
+    "type": "rj45-cable",
+    "label": "RJ-45 Cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "rj1",
+    "u_port": "a",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj1",
+    "u_port": "a",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rj1",
+    "u_port": "b",
+    "v": "lanhub1",
+    "v_port": "P1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj1",
+    "u_port": "b",
+    "v": "lanhub1",
+    "v_port": "P1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rj2",
+    "u_port": "a",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj2",
+    "u_port": "a",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rj2",
+    "u_port": "b",
+    "v": "lanhub1",
+    "v_port": "P2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj2",
+    "u_port": "b",
+    "v": "lanhub1",
+    "v_port": "P2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Ethernet switch is a network device, not a pushbutton or switch contact. The earlier E5 and E3 checks treated it as a button because of its type name and port behaviour. It is now a `lan-hub` type with a through-connection between P1 and P2 and no shared node. The Opta ETH ports have no pull-up or pull-down circuit, because the tutorial has none. I treat the E5 and E3 findings as false positives for this manual.",
+   "The Ethernet switch is optional in the tutorial. It is included because the main diagram and the hardware list use it. Without it, one RJ-45 cable would link the two Optas directly.",
+   "The diagram shows an optional Modbus TCP compatible device and an onward network link. The required hardware list does not include them, so they are left out.",
+   "Both USB-C cables run to the same computer in the diagram. The catalogue laptop has a single USB port, and a single-use port can only be used once. The first cable uses pc1:USB. The second cable joins pc1 with no port named, because a real computer has several USB ports.",
+   "The usb-cable catalogue entry has no ports, so the cable-side port is null on the USB edges.",
+   "The Opta ETH port is a socket kind, so the RJ-45 cable ends use the ball kind and the switch jacks use the socket kind. This is the only compatible plug/socket pairing the allowed port kinds offer. These kinds are placeholders for an RJ-45 plug and jack.",
+   "The tutorial gives no power wiring, so none is modelled. Opta is powered over USB here. The static IPs (192.168.1.2 server and 192.168.1.1 client) are stored as props."
+  ]
+ },
+ "graph_initial": {
+  "title": "Modbus TCP between two Opta devices using Arduino PLC IDE",
+  "source_id": "https://docs.arduino.cc/tutorials/opta/modbus-tcp-plc-ide",
+  "new_part_types": [
+   {
+    "type": "ethernet-switch",
+    "name": "Ethernet Switch",
+    "category": "network",
+    "ports": [
+     {
+      "name": "P1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P2",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "P1",
+      "P2"
+     ]
+    ],
+    "symmetric": [
+     [
+      "P1",
+      "P2"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "rj45-cable",
+    "name": "RJ-45 LAN cable",
+    "category": "cable",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "opta1",
+    "type": "arduino-opta-lite",
+    "label": "Opta Slave (Server)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Server"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.2"
+     }
+    ]
+   },
+   {
+    "id": "opta2",
+    "type": "arduino-opta-lite",
+    "label": "Opta Master (Client)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Client"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.1"
+     }
+    ]
+   },
+   {
+    "id": "switch1",
+    "type": "ethernet-switch",
+    "label": "Ethernet Switch (Optional)",
+    "props": []
+   },
+   {
+    "id": "pc1",
+    "type": "laptop",
+    "label": "Computer - PLC IDE",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C Cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB-C Cable",
+    "props": []
+   },
+   {
+    "id": "rj1",
+    "type": "rj45-cable",
+    "label": "RJ-45 Cable",
+    "props": []
+   },
+   {
+    "id": "rj2",
+    "type": "rj45-cable",
+    "label": "RJ-45 Cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "rj1",
+    "u_port": "a",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj1",
+    "u_port": "a",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rj1",
+    "u_port": "b",
+    "v": "switch1",
+    "v_port": "P1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj1",
+    "u_port": "b",
+    "v": "switch1",
+    "v_port": "P1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rj2",
+    "u_port": "a",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj2",
+    "u_port": "a",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rj2",
+    "u_port": "b",
+    "v": "switch1",
+    "v_port": "P2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rj2",
+    "u_port": "b",
+    "v": "switch1",
+    "v_port": "P2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Ethernet switch is optional in the tutorial; it is included because the main diagram and the hardware list use it. Without it, one RJ-45 cable would link the two Optas directly.",
+   "The diagram also shows an optional Modbus TCP compatible device and an onward network link on the switch. The tutorial's required hardware does not list them, so they are left out.",
+   "Both USB-C cables go to the single computer, which is modelled with one USB port. The diagram shows both cables running to the computer.",
+   "The usb-cable catalogue entry has no ports, so the USB cable edges leave the cable-side port null.",
+   "The tutorial gives no power wiring, so none is modelled. Opta is powered over USB here.",
+   "The Ethernet switch and RJ-45 cable are new types. The RJ-45 jacks are modelled as header-socket ports because no better port kind is allowed. The Optas' static IPs (192.168.1.2 server and 192.168.1.1 client) are stored as props."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 87.1,
+  "input_tokens": 115621,
+  "output_tokens": 10489,
+  "cost_usd": 0.2845,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 27.6,
+   "check_seconds": 0.0,
+   "input_tokens": 25628,
+   "output_tokens": 1772,
+   "cost_usd": 0.0602,
+   "listed": 4,
+   "matched": 0,
+   "looked_up": 2,
+   "found": 1,
+   "items": [
+    {
+     "item": "Opta\u2122 (x2)",
+     "card": "arduino-opta-lite",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-opta-lite.html"
+      ]
+     ],
+     "seconds": 11.9
+    },
+    {
+     "item": "USB-C\u00ae cable (x2)",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "RJ-45 LAN cable (x2)",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Ethernet Switch (Recommended) (x1)",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/usb-c-extension-cable-with-power-switch-1m.html (The content describes a SparkFun USB-C extension cable with a power switch (CAB-)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/accessories-for-cm4-ethernet-carrier-board.html (The content is a generic Seeed Studio category page (Accessories for CM4 Etherne)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 15.7
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.3,
+   "input_tokens": 24347,
+   "cache_read_tokens": 3203,
+   "output_tokens": 2825,
+   "cost_usd": 0.1135,
+   "check_seconds": 0.01,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 2,
+    "V4": 1,
+    "E5": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.3,
+   "input_tokens": 31108,
+   "cache_read_tokens": 24345,
+   "output_tokens": 3171,
+   "cost_usd": 0.0636,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E5": 1,
+    "E3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.9,
+   "input_tokens": 34538,
+   "cache_read_tokens": 31106,
+   "output_tokens": 2721,
+   "cost_usd": 0.0472,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 66.0,
+  "cost_usd": 0.0727,
+  "types": [
+   {
+    "type": "lan-hub",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/rj45-ethernet-magjack-compatible.html (The page describes a single-port RJ45 MagJack connector (PRT-08534) with integra)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/accessories-for-cm4-ethernet-carrier-board.html (The page is a Seeed Studio category listing for CM4 Ethernet Carrier Board acces)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   },
+   {
+    "type": "rj45-cable",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/raspberry-pi-gpio-ribbon-cable-40-pin-6-rpi-3-rpi2-b.html (The content describes a 40-pin 2x20 GPIO ribbon cable for Raspberry Pi (SparkFun)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/Khadas-VIM2-Max-Open-Source-SBC-TV-Box-3GB-64GB-Wi-Fi-Gigabit-LAN-with-WOL-Multi-System-Compatibility-4K-p-3190.html (The content describes the Khadas VIM2 Max single-board computer, not an RJ-45 LA)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "case": "docs-nano-33-iot-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 39.2,
+  "input_tokens": 41422,
+  "output_tokens": 4268,
+  "cost_usd": 0.1308,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The circuit image shows the boards wired directly with the two 4.7 k\u03a9 pull-ups drawn as free resistors. I modelled the pull-ups and the shared SDA/SCL/3V3 nodes on one mini breadboard (bb1) using jumper wires. The manual lists two mini breadboards, but the image doesn't show how the second one is used, so I left it out.",
+  "SDA is on A4 and SCL on A5 for both boards, as the manual states. A4 goes to A4 and A5 goes to A5.",
+  "Both pull-ups go to the 3.3 V pin of the reader board, labelled '3V' in the image. The Nano 33 IoT is 3.3 V logic and not 5 V tolerant, so 3V3 is the correct supply.",
+  "GND goes directly between the two boards by one jumper wire.",
+  "Both boards are powered and programmed over USB from the computer. The computer is not modelled as a part, so the USB cables have only the board-side edge.",
+  "The built-in LED of the reader board is not a separate part. The 3V3 pin of the writer is not connected."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.2,
+   "input_tokens": 41422,
+   "cache_read_tokens": 20416,
+   "output_tokens": 4268,
+   "cost_usd": 0.1308,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 12.0
+}

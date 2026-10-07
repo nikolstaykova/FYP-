@@ -1,0 +1,120 @@
+{
+ "case": "40181-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 527.2,
+  "input_tokens": 328856,
+  "output_tokens": 97271,
+  "cost_usd": 1.5686,
+  "repair_rounds_used": 2
+ },
+ "parts": 139,
+ "edges": 142,
+ "repeats": [],
+ "new_types_declared": 30,
+ "new_types_added": 29,
+ "problems": [],
+ "notes": [
+  "The booklet really builds three separate models: the pizza shop (steps 1-24), the white delivery van (pages 18-19) and the brown truck (pages 20-21). Page 22 shows them standing side by side but nothing fastens them together. The three groups are intentionally left unconnected, so the L3 'separate groups' finding is not a real problem here.",
+  "The pizza piece is typed lego-81867, exactly as printed on the parts page (1x 81867). That keeps the inventory matching. The id looks truncated and may be a longer element number in reality. My earlier guess of 6081867 is not on the page, so I removed it.",
+  "Element IDs in the PDF text are otherwise used as printed, with new types where the catalogue had no match. Some printed ids look garbled (e.g. 302401 vs 3024).",
+  "Inventory 4167842 (7x) and 302301 (3x) are both white plates 1x2. The manual does not say which step uses which, so 302301 is assigned to the van base plate and both truck plates. 4167842 is used elsewhere.",
+  "Catalogue entry lego-6029946 is labelled a 'claw plate', but here it is the single red curved slope in step 17. I used the catalogue id as given.",
+  "Catalogue entries 4632571 and 4121715 have different port sets from the real parts. Wheel-holder to wheel joins use a null port on the holder.",
+  "Each stud port carries at most one joined part, except the base plate b1 (303626). It has 24 real studs but the catalogue names only stud.1-4, so stud numbers repeat there. New types got extra stud ports.",
+  "Part-to-part attachment points are inferred from small isometric pictures. Which stud a piece sits on, the awning slopes, the roof plate arrangement and the van's plate layout are best guesses. Parts and counts follow the inventory.",
+  "The van's 1x4 top row (step 5) is represented as two 1x2 plates (b121 on holder b115, b122 on plate b116). The booklet does not show how the plates overlap."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 269.2,
+   "input_tokens": 68867,
+   "cache_read_tokens": 5507,
+   "output_tokens": 43851,
+   "cost_usd": 0.693,
+   "check_seconds": 0.01,
+   "issues": 22,
+   "issue_rules": {
+    "V4": 20,
+    "L2": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 153.2,
+   "input_tokens": 114960,
+   "cache_read_tokens": 68865,
+   "output_tokens": 29857,
+   "cost_usd": 0.4967,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 104.8,
+   "input_tokens": 145029,
+   "cache_read_tokens": 114958,
+   "output_tokens": 23563,
+   "cost_usd": 0.3789,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "L2": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 22,
+ "issues_final": 2,
+ "score": {
+  "pieces_expected": 139,
+  "pieces_built": 139,
+  "pieces_unmapped": 1,
+  "inventory_matched": 138,
+  "exact_matched": 138,
+  "inventory_precision": 0.993,
+  "inventory_recall": 0.993,
+  "exact_recall": 0.993,
+  "joined_edges": 142,
+  "contacts_expected": 36,
+  "contacts_predicted": 44,
+  "contacts_correct": 29,
+  "contact_precision": 0.659,
+  "contact_recall": 0.806
+ },
+ "score_initial": {
+  "pieces_expected": 139,
+  "pieces_built": 139,
+  "pieces_unmapped": 1,
+  "inventory_matched": 138,
+  "exact_matched": 138,
+  "inventory_precision": 0.993,
+  "inventory_recall": 0.993,
+  "exact_recall": 0.993,
+  "joined_edges": 143,
+  "contacts_expected": 36,
+  "contacts_predicted": 46,
+  "contacts_correct": 29,
+  "contact_precision": 0.63,
+  "contact_recall": 0.806
+ },
+ "postprocess_ms": 14.7
+}

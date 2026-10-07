@@ -1,0 +1,76 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 37.7,
+  "input_tokens": 18213,
+  "output_tokens": 6001,
+  "cost_usd": 0.0912,
+  "repair_rounds_used": 0
+ },
+ "parts": 39,
+ "edges": 148,
+ "repeats": [
+  {
+   "group": "ledblock",
+   "times": 12,
+   "overrides": 66
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Each LED branch: Mega pin (2-13) -> jumper -> bottom bank column -> 220 ohm resistor across the centre gap -> top bank column -> LED anode; LED cathode goes into the top ground rail (tn), which a black wire ties to Mega GND. Exact breadboard hole positions are simplified from the image (the image routes cathodes via black jumpers) but connectivity matches the schematic.",
+  "Copy k of the repeat uses breadboard column k and Mega pin k+1 (pins 2..13).",
+  "Mega GND port name assumed to be GND.1, following the catalogue naming of other boards.",
+  "Resistors are 220 ohm and LEDs red, per the manual; all catalogue parts, so no new part types."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.7,
+   "input_tokens": 18213,
+   "cache_read_tokens": 10956,
+   "output_tokens": 6001,
+   "cost_usd": 0.0912,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 24.9
+}

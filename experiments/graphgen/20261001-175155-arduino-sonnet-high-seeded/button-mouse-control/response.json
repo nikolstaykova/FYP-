@@ -1,0 +1,653 @@
+{
+ "graph": {
+  "title": "Button Mouse Control (Arduino Leonardo, five pushbuttons)",
+  "source_id": "https://www.arduino.cc/en/Tutorial/ButtonMouseControl",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-leonardo",
+    "label": "Arduino Leonardo",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "micro-USB cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "5V wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "uno",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.29",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.29",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [
+   {
+    "group": "btn",
+    "times": 5,
+    "parts": [
+     {
+      "id": "sw",
+      "type": "pushbutton",
+      "label": "Pushbutton",
+      "props": []
+     },
+     {
+      "id": "r",
+      "type": "resistor",
+      "label": "10k pulldown resistor",
+      "props": [
+       {
+        "key": "value",
+        "value": "10k"
+       }
+      ]
+     },
+     {
+      "id": "wpwr",
+      "type": "jumper-wire",
+      "label": "5V rail to button",
+      "props": [
+       {
+        "key": "colour",
+        "value": "red"
+       }
+      ]
+     },
+     {
+      "id": "wsig",
+      "type": "jumper-wire",
+      "label": "signal wire to Arduino pin",
+      "props": [
+       {
+        "key": "colour",
+        "value": "blue"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "sw",
+      "u_port": "1.l",
+      "v": "bb1",
+      "v_port": "6b.f",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "sw",
+      "u_port": "1.l",
+      "v": "bb1",
+      "v_port": "6b.f",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "sw",
+      "u_port": "1.r",
+      "v": "bb1",
+      "v_port": "8b.f",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "sw",
+      "u_port": "1.r",
+      "v": "bb1",
+      "v_port": "8b.f",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "sw",
+      "u_port": "2.l",
+      "v": "bb1",
+      "v_port": "6t.e",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "sw",
+      "u_port": "2.l",
+      "v": "bb1",
+      "v_port": "6t.e",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "sw",
+      "u_port": "2.r",
+      "v": "bb1",
+      "v_port": "8t.e",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "sw",
+      "u_port": "2.r",
+      "v": "bb1",
+      "v_port": "8t.e",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "1",
+      "v": "bb1",
+      "v_port": "6t.a",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "1",
+      "v": "bb1",
+      "v_port": "6t.a",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "2",
+      "v": "bb1",
+      "v_port": "bn.6",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "2",
+      "v": "bb1",
+      "v_port": "bn.6",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wpwr",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "tp.8",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wpwr",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "tp.8",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wpwr",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "8b.h",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wpwr",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "8b.h",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wsig",
+      "u_port": "a",
+      "v": "uno",
+      "v_port": "6",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wsig",
+      "u_port": "a",
+      "v": "uno",
+      "v_port": "6",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wsig",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "6t.d",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wsig",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "6t.d",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:6b.f",
+      "value": "bb1:11b.f"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:8b.f",
+      "value": "bb1:13b.f"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:6t.e",
+      "value": "bb1:11t.e"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:8t.e",
+      "value": "bb1:13t.e"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:6t.a",
+      "value": "bb1:11t.a"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:bn.6",
+      "value": "bb1:bn.11"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:tp.8",
+      "value": "bb1:tp.13"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:8b.h",
+      "value": "bb1:13b.h"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:6t.d",
+      "value": "bb1:11t.d"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "uno:6",
+      "value": "uno:5"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:6b.f",
+      "value": "bb1:16b.f"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:8b.f",
+      "value": "bb1:18b.f"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:6t.e",
+      "value": "bb1:16t.e"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:8t.e",
+      "value": "bb1:18t.e"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:6t.a",
+      "value": "bb1:16t.a"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:bn.6",
+      "value": "bb1:bn.16"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:tp.8",
+      "value": "bb1:tp.18"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:8b.h",
+      "value": "bb1:18b.h"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:6t.d",
+      "value": "bb1:16t.d"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "uno:6",
+      "value": "uno:4"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:6b.f",
+      "value": "bb1:21b.f"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:8b.f",
+      "value": "bb1:23b.f"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:6t.e",
+      "value": "bb1:21t.e"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:8t.e",
+      "value": "bb1:23t.e"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:6t.a",
+      "value": "bb1:21t.a"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:bn.6",
+      "value": "bb1:bn.21"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:tp.8",
+      "value": "bb1:tp.23"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:8b.h",
+      "value": "bb1:23b.h"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:6t.d",
+      "value": "bb1:21t.d"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "uno:6",
+      "value": "uno:3"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:6b.f",
+      "value": "bb1:26b.f"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:8b.f",
+      "value": "bb1:28b.f"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:6t.e",
+      "value": "bb1:26t.e"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:8t.e",
+      "value": "bb1:28t.e"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:6t.a",
+      "value": "bb1:26t.a"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:bn.6",
+      "value": "bb1:bn.26"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:tp.8",
+      "value": "bb1:tp.28"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:8b.h",
+      "value": "bb1:28b.h"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:6t.d",
+      "value": "bb1:26t.d"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "uno:6",
+      "value": "uno:2"
+     }
+    ]
+   }
+  ],
+  "notes": [
+   "The catalogue entry for arduino-leonardo lists no ports; I used the pin labels printed on the board (2-6, 5V, GND.1), following the arduino-uno naming.",
+   "Bank mapping: the circuit image labels the top half of the breadboard rows j-f and the bottom half rows e-a. I therefore used bank 'b' (rows f-j) for the top half and bank 't' (rows a-e) for the bottom half. The rails are the top rail 'tp' (+, 5V) and the bottom rail 'bn' (GND).",
+   "Column positions were estimated from the image. Each button straddles the centre gap on columns 6/8, 11/13, 16/18, 21/23 and 26/28. Its right-hand column takes 5V from a red jumper from the top + rail. Its left-hand column in the lower half carries the signal wire and the pulldown resistor to the GND rail. Rail hole numbers are approximate.",
+   "Button to pin mapping, taken from the image and schematic: buttons 1-5 go to pins 6, 5, 4, 3 and 2. Per the sketch, pin 2 is up, 3 is down, 4 is left, 5 is right and 6 is the mouse click.",
+   "The pulldown resistors are 10k ohm. The pushbutton's pin 1 is taken as the upper (rows f-j) side and pin 2 as the lower side. The two right-hand legs are on the same side as the 5V jumper.",
+   "The micro-USB cable to the computer is included as a part with unspecified ports."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 55.1,
+  "api_seconds": 52.0,
+  "first_token_seconds": 31.7,
+  "input_tokens": 17872,
+  "cache_read_tokens": 9602,
+  "output_tokens": 8045,
+  "cost_usd": 0.1154,
+  "turns": 2
+ }
+}

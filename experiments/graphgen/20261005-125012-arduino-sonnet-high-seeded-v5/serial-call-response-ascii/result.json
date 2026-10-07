@@ -1,0 +1,216 @@
+{
+ "case": "serial-call-response-ascii",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 82.6,
+  "input_tokens": 40115,
+  "output_tokens": 11922,
+  "cost_usd": 0.1581,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct; no parts added or dropped.",
+  "Breadboard orientation: the image labels its upper half f-j and its lower half a-e, so the image's upper half is bank 'b' (rows f-j) and the lower half is bank 't' (rows a-e). The rails next to each half follow: upper rails are bp/bn and lower rails are tp/tn. In the image, the lower rail row nearer the board edge is the black line, so it is the negative rail. The red-line row is the positive rail.",
+  "Rail hole numbers are approximate, read from the image. Each rail is one strip, so the numbers do not change the electrical result.",
+  "Power: Uno 5V goes to the upper + rail (bp) and Uno GND goes to the upper - rail (bn). Two vertical jumpers on the right link the upper rails to the lower rails (bn to tn, bp to tp).",
+  "Button: pushbutton legs sit in columns 5 and 7 across the centre gap. Side 1 (column 5) is wired to + via wire3 (5V). Side 2 (column 7) goes to Uno pin 2 via the blue wire, and also to the 10K pull-down resistor r3. r3 runs from column 7 to column 10, and column 10 goes to the - rail via the black wire.",
+  "Sensor 1: the divider node is column 6 (bottom half). It holds FSR1 leg 1, r1 pin 1 and the A1 yellow wire. FSR1 leg 2 goes to the lower + rail. r1 pin 2 goes to the lower - rail.",
+  "Sensor 2: the divider node is column 16 (bottom half). It holds FSR2 leg 1, r2 pin 1 and the A0 yellow wire. FSR2 leg 2 goes to the lower + rail. r2 pin 2 goes to the lower - rail.",
+  "The image shows the A0 wire (outer loop) ending at column 16, the right-hand sensor, and the A1 wire (inner loop) ending at column 6, the left-hand sensor. I followed the image, although the schematic draws A0 with the left sensor.",
+  "Each resistor shares a strip with its FSR leg but sits in a different row, so no two leads share a hole. The exact rows are approximate.",
+  "The Uno GND wire is assigned to GND.2, the second GND pin in the power header."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.2,
+   "input_tokens": 19129,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1639,
+   "cost_usd": 0.0468,
+   "check_seconds": 0.0,
+   "parts_listed": 17,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 68.4,
+   "input_tokens": 20986,
+   "cache_read_tokens": 19127,
+   "output_tokens": 10283,
+   "cost_usd": 0.1113,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.2,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 2,
+   "button": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 13.3
+}

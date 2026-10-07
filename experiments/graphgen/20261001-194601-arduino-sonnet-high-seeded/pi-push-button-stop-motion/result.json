@@ -1,0 +1,66 @@
+{
+ "case": "pi-push-button-stop-motion",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 34.1,
+  "input_tokens": 22182,
+  "output_tokens": 5040,
+  "cost_usd": 0.1186,
+  "repair_rounds_used": 0
+ },
+ "parts": 7,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The breadboard diagram labels vertical positions 1-13 and horizontal positions a-e; these are mapped to the catalogue naming as column=number, row=letter (e.g. diagram 3a = '3t.a').",
+  "Black jumper goes from the Pi's GND pin (physical pin 6, first GND in the right-hand column of the header, named GND.1) to breadboard 3a; the orange jumper goes from GPIO17 (left column of the header) to breadboard 5a.",
+  "The button's exact leg holes are not labelled in the diagram; assumed it straddles columns 3 and 5 with legs in rows c and e, so side 1 (column 3) is on the GND strip and side 2 (column 5) is on the GPIO17 strip. No external pull resistor is used; gpiozero's Button enables the Pi's internal pull-up.",
+  "The jumpers are 'pin-socket' (female) leads, modelled as jumper-wire-mf with the female end (a) on the Pi header and the male end (b) in the breadboard.",
+  "Pi, camera module and CSI ribbon cable are not in the catalogue, so they are new part types. The camera ribbon cable connects the camera module to the Pi's camera (CSI) connector.",
+  "Software steps (picamzero, gpiozero, ffmpeg, vlc), power supply, display and other peripherals are not part of the wiring graph. The LEGO subject is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.1,
+   "input_tokens": 22182,
+   "cache_read_tokens": 5414,
+   "output_tokens": 5040,
+   "cost_usd": 0.1186,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "rpi-camera-module",
+   "family": "rpi-camera-module",
+   "checked": false
+  },
+  {
+   "type": "csi-ribbon-cable",
+   "family": "wire",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 11.4
+}

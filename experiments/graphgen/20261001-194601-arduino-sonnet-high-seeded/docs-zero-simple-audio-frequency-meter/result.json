@@ -1,0 +1,79 @@
+{
+ "case": "docs-zero-simple-audio-frequency-meter",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 113.6,
+  "input_tokens": 20176,
+  "output_tokens": 16486,
+  "cost_usd": 0.225,
+  "repair_rounds_used": 0
+ },
+ "parts": 21,
+ "edges": 82,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 4,
+ "problems": [],
+ "notes": [
+  "The schematic is treated as the authority for connectivity: LMV358 section 1 is a non-inverting amplifier. IN1+ is biased by R8 (100k to IOREF/3.3V) and R9 (100k to GND) and fed from the jack through C1 (100nF). IN1- goes to GND through R10 (47k) and to the trimmer through R11 (47k). The trimmer wiper goes to OUT1, and OUT1 goes to A0. Gain = 1 + trimmer/R11 ratio as the schematic shows.",
+  "The Arduino Zero is not in the catalogue and is created as a new type. Its IOREF pin supplies the 3.3 V reference, as drawn in the schematic and the Fritzing image.",
+  "The exact breadboard holes are my approximation of the Fritzing image. I kept the schematic connectivity and placed the parts in 't' (rows a-e) and 'b' (rows f-j) banks accordingly. In particular, the trimmer pins are placed in the 't' bank and the purple wire goes from its wiper column to the op-amp output column. Rail hole numbers are approximate.",
+  "LMV358 pins: 1 OUT1, 2 IN1-, 3 IN1+, 4 GND, 5 IN2+, 6 IN2-, 7 OUT2, 8 VCC. The chip straddles the centre gap with pins 1-4 in columns 14-17 of the 't' bank and pins 8-5 in columns 14-17 of the 'b' bank. The second amplifier section is unused; its pins are joined to the breadboard but nothing is connected on them, so no electrical edges are added for pins 5-7.",
+  "The trimmer's third lug (VCC) is left unconnected, as shown in the schematic (red unconnected end). The jack's LEFT lug is unused.",
+  "The jack's sleeve goes to the GND rail and its RIGHT contact goes through C1 to the amplifier input. I assumed the jack breakout has wires soldered on.",
+  "The tutorial lists '2 x 100k, 2 x 47k'. Resistor values were taken from the schematic labels: R8 and R9 are 100k, R10 and R11 are 47k. The image colour bands are not fully legible.",
+  "The second red wire and the black wire from the Arduino use GND.1 and IOREF. The Zero's GND pin choice is arbitrary; both GND pins are one net."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 113.6,
+   "input_tokens": 20176,
+   "cache_read_tokens": 5414,
+   "output_tokens": 16486,
+   "cost_usd": 0.225,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "lmv358",
+   "family": "lmv358",
+   "checked": false
+  },
+  {
+   "type": "capacitor-100nf",
+   "family": "capacitor-100nf",
+   "checked": false
+  },
+  {
+   "type": "audio-jack-35mm",
+   "family": "audio-jack-35mm",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.3
+}

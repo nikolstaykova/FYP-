@@ -1,0 +1,59 @@
+{
+ "case": "pi-camjam-kit-1",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 59.7,
+  "input_tokens": 23641,
+  "output_tokens": 9103,
+  "cost_usd": 0.1222,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Pi header pins are named per the catalogue (GPIO15, GPIO25, GPIO8, GPIO7, GPIO21, GND.1); the diagram labels them GP15, GP25, etc. The wire is plugged into the GND pin at the GP3 row, right-hand column (physical pin 6).",
+  "The right-hand rail column that serves as the ground rail is modelled as breadboard rail 'tn' with arbitrary hole numbers (the rail is one strip). The rail runs the full board length in the picture, but the catalogue splits it into top/bottom strips; the whole rail is treated as one strip here.",
+  "Pi-side jumpers are male-to-female (female on the header pin, male in the breadboard), the button ground jumper is male-to-male, as in the kit list.",
+  "Buzzer positive (port 1) goes to the column-4 row (j) fed by the blue GPIO15 wire; its negative leg (port 2) goes to the ground rail. Leg positions are read from the picture.",
+  "Pushbutton side 1 (rows 28) goes to ground and side 2 (row 30) to GPIO21; the Pi uses internal pull-up through GPIO Zero so no external resistor.",
+  "LED order: red=GPIO25, amber (yellow)=GPIO8, green=GPIO7, each with a 330R series resistor (bridging the centre gap) and the cathode to the ground rail.",
+  "Hole letters/row numbers were read from the image: wires in column d, resistors e (top bank) to h (bottom bank), LED anodes in column j."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 59.7,
+   "input_tokens": 23641,
+   "cache_read_tokens": 16669,
+   "output_tokens": 9103,
+   "cost_usd": 0.1222,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.1
+}

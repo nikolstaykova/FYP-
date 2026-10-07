@@ -1,0 +1,60 @@
+{
+ "case": "docs-opta-10-opta-modbus-tcp-plc-ide",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 25.3,
+  "api_seconds": 21.9,
+  "first_token_seconds": 11.6,
+  "input_tokens": 27186,
+  "cache_read_tokens": 5414,
+  "output_tokens": 3165,
+  "cost_usd": 0.1198,
+  "turns": 2
+ },
+ "parts": 8,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "No breadboard or discrete electronics; this is a networking/PLC tutorial, so the graph covers the Opta devices, cables, switch and computer.",
+  "Hardware list: 2 Opta, 2 USB-C cables, 2 RJ-45 cables, 1 Ethernet switch (recommended/optional). Without the switch, a single RJ-45 cable could join the two Optas directly.",
+  "The overview diagram also shows an optional Modbus TCP compatible field device on the same network and an arrow to further network devices. It is not in the hardware list, so it is omitted.",
+  "The catalogue usb-cable and laptop entries have no or only one port. Cable ends are left unnamed, and both USB cables use the laptop's single USB port (assumed to be via a hub or two ports).",
+  "The diagram shows the switch and the field device on a shared blue network line. I modelled this as each Opta connecting by RJ-45 to its own switch port (1 and 2).",
+  "Roles: Opta1 is the Modbus TCP Server at 192.168.1.2. Opta2 is the Modbus TCP Client (Master) at 192.168.1.1. Software configuration (IPs, status variable cnt at 25000, FC-04 node) is not part of the physical graph.",
+  "Opta relay outputs and status LEDs are onboard features and are not wired externally."
+ ],
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "opta",
+   "family": "opta",
+   "checked": false
+  },
+  {
+   "type": "ethernet-switch",
+   "family": "button",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  },
+  {
+   "type": "rj45-cable",
+   "family": "wire",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.1
+}

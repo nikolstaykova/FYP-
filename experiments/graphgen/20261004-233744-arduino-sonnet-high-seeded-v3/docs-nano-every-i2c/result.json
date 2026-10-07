@@ -1,0 +1,99 @@
+{
+ "case": "docs-nano-every-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 141.2,
+  "input_tokens": 40645,
+  "output_tokens": 15798,
+  "cost_usd": 0.258,
+  "repair_rounds_used": 0
+ },
+ "parts": 11,
+ "edges": 144,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The circuit image shows the boards wired directly with no breadboards drawn, but the parts list includes 2 mini breadboards. I assumed each Nano Every straddles its own mini breadboard: left-side pins in row e of the top bank, right-side pins in row f of the bottom bank, columns 1-15.",
+  "Jumper wires, resistors and the 3V3 pull-up connection are placed in rows a-c of the same column strips as the Nano pins.",
+  "Only 3 jumper wires are needed (GND, SDA/A4, SCL/A5) even though the manual lists 10. The extra wires are not used.",
+  "The image labels pins GND, A5, A4 and 3V. I mapped them to the catalogue ports GND1, A5, A4 and 3V3, all on the same side of the board. The exact GND pin is ambiguous; GND2 would also work.",
+  "The two 4.7k pull-ups sit on the reader's breadboard (bb1). The reader's 3V3 strip is the pull-up supply. Resistor r1 goes from A5 (SCL) to 3V3 and r2 from A4 (SDA) to 3V3. The image shows the SCL resistor in teal and the SDA resistor in yellow.",
+  "The 3V3 rail is not wired to the writer, which gets its own power over USB. Each board is powered and programmed through its own USB cable.",
+  "The resistor value is stored as 4700 ohms. USB cable edges have no ports because the usb-cable catalogue part defines none.",
+  "The image has A4 and A5 wires crossing at the pull-up junction. The teal and yellow lines do not connect to each other."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 57.5,
+   "input_tokens": 22403,
+   "output_tokens": 1600,
+   "cost_usd": 0.064,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 6,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino Nano Every (reader)",
+     "type": "arduino-nano-every",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "page did not match: https://www.adafruit.com/product/4684 (The page sells NeoPixel Nano 2020 RGB LEDs (WS2812B, 10-pack), not an Arduino Na)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-nano-every.html"
+      ]
+     ],
+     "seconds": 17.5
+    },
+    {
+     "part": "Arduino Nano Every (writer)",
+     "type": "arduino-nano-every",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "arduino-nano-every"
+      ]
+     ],
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 83.7,
+   "input_tokens": 18242,
+   "cache_read_tokens": 5507,
+   "output_tokens": 14198,
+   "cost_usd": 0.194,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 23.6
+}

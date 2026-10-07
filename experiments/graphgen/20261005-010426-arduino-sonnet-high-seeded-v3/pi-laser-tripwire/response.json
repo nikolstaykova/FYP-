@@ -1,0 +1,1603 @@
+{
+ "graph": {
+  "title": "Laser Tripwire (Raspberry Pi LDR + capacitor RC circuit with buzzer)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/laser-tripwire",
+  "new_part_types": [
+   {
+    "type": "capacitor-1uf",
+    "name": "1\u00b5F Capacitor (polarized, electrolytic)",
+    "category": "capacitor",
+    "ports": [
+     {
+      "name": "pos",
+      "kind": "lead"
+     },
+     {
+      "name": "neg",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "drinking-straw",
+    "name": "Drinking straw (light shield)",
+    "category": "shield",
+    "ports": [
+     {
+      "name": "bore",
+      "kind": "hole"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   }
+  ],
+  "parts": [
+   {
+    "id": "rpi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "ldr1",
+    "type": "photoresistor",
+    "label": "Light-dependent resistor (LDR)",
+    "props": []
+   },
+   {
+    "id": "cap1",
+    "type": "capacitor-1uf",
+    "label": "1\u00b5F capacitor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1uF"
+     }
+    ]
+   },
+   {
+    "id": "buz1",
+    "type": "buzzer",
+    "label": "Piezo buzzer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "3V3 jumper lead",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "GPIO4 jumper lead",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "GND jumper lead (capacitor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire-mf",
+    "label": "GND jumper lead (buzzer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire-mf",
+    "label": "GPIO17 jumper lead (buzzer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "straw1",
+    "type": "drinking-straw",
+    "label": "Drinking straw",
+    "props": []
+   },
+   {
+    "id": "laser1",
+    "type": "laser-pointer",
+    "label": "Laser pointer",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "pos",
+    "v": "bb1",
+    "v_port": "3b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "pos",
+    "v": "bb1",
+    "v_port": "3b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "neg",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "neg",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buz1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "30b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buz1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "30b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buz1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "29b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buz1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "29b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "30b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "30b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "contact",
+    "u": "ldr1",
+    "u_port": null,
+    "v": "straw1",
+    "v_port": "bore",
+    "method": "insert",
+    "freedom": null,
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Circuit taken from the two Fritzing images: LDR leg 1 and the 3V3 lead share column 1; LDR leg 2, capacitor positive leg and the GPIO4 lead share column 3; capacitor negative leg and the GND lead share column 5. Breadboard bank 'b' (rows f-j) used as in the second image.",
+   "rpi-4b catalogue entry only lists GPIO_HEADER; I named header pins as ports on the board (3V3 = pin 1, GPIO4 = pin 7, GND.1 = pin 6, GND.2 = pin 9, GPIO17 = pin 11) as the task instructs.",
+   "Buzzer: positive leg (port 1) to GPIO17 via column 30, negative leg (port 2) to GND via column 29, per the second image. Wires use male-female leads (male end 'a' on breadboard, female end 'b' on Pi pin); the buzzer uses two extra leads beyond the 3 listed.",
+   "Capacitor-1uf and drinking-straw were not in the supplied catalogue text, so I defined them as new part types.",
+   "The laser pointer is placed with no electrical edges because it is battery-powered and only aimed down the straw. The LDR sits inside the straw (contact edge).",
+   "Not modelled: the 3 socket-socket jumper leads (final enclosure build, an alternative way to connect the LDR and capacitor without the breadboard) and the optional 3.5mm speakers (alternative to the buzzer, plugged into the Pi's audio jack, which is not a port on the catalogue entry)."
+  ]
+ },
+ "graph_initial": {
+  "title": "Laser Tripwire (Raspberry Pi LDR + capacitor RC circuit with buzzer)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/laser-tripwire",
+  "new_part_types": [
+   {
+    "type": "capacitor-1uf",
+    "name": "1\u00b5F Capacitor (polarized, electrolytic)",
+    "category": "capacitor",
+    "ports": [
+     {
+      "name": "pos",
+      "kind": "lead"
+     },
+     {
+      "name": "neg",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "drinking-straw",
+    "name": "Drinking straw (light shield)",
+    "category": "shield",
+    "ports": [
+     {
+      "name": "bore",
+      "kind": "hole"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   }
+  ],
+  "parts": [
+   {
+    "id": "rpi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "ldr1",
+    "type": "photoresistor",
+    "label": "Light-dependent resistor (LDR)",
+    "props": []
+   },
+   {
+    "id": "cap1",
+    "type": "capacitor-1uf",
+    "label": "1\u00b5F capacitor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1uF"
+     }
+    ]
+   },
+   {
+    "id": "buz1",
+    "type": "buzzer",
+    "label": "Piezo buzzer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "3V3 jumper lead",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "GPIO4 jumper lead",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "GND jumper lead (capacitor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire-mf",
+    "label": "GND jumper lead (buzzer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire-mf",
+    "label": "GPIO17 jumper lead (buzzer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "straw1",
+    "type": "drinking-straw",
+    "label": "Drinking straw",
+    "props": []
+   },
+   {
+    "id": "laser1",
+    "type": "laser-pointer",
+    "label": "Laser pointer",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "pos",
+    "v": "bb1",
+    "v_port": "3b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "pos",
+    "v": "bb1",
+    "v_port": "3b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "neg",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "neg",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buz1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "30b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buz1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "30b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buz1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "29b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buz1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "29b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "30b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "30b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rpi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "contact",
+    "u": "ldr1",
+    "u_port": null,
+    "v": "straw1",
+    "v_port": "bore",
+    "method": "insert",
+    "freedom": null,
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Circuit taken from the two Fritzing images: LDR leg 1 and the 3V3 lead share column 1; LDR leg 2, capacitor positive leg and the GPIO4 lead share column 3; capacitor negative leg and the GND lead share column 5. Breadboard bank 'b' (rows f-j) used as in the second image.",
+   "rpi-4b catalogue entry only lists GPIO_HEADER; I named header pins as ports on the board (3V3 = pin 1, GPIO4 = pin 7, GND.1 = pin 6, GND.2 = pin 9, GPIO17 = pin 11) as the task instructs.",
+   "Buzzer: positive leg (port 1) to GPIO17 via column 30, negative leg (port 2) to GND via column 29, per the second image. Wires use male-female leads (male end 'a' on breadboard, female end 'b' on Pi pin); the buzzer uses two extra leads beyond the 3 listed.",
+   "Capacitor-1uf and drinking-straw were not in the supplied catalogue text, so I defined them as new part types.",
+   "The laser pointer is placed with no electrical edges because it is battery-powered and only aimed down the straw. The LDR sits inside the straw (contact edge).",
+   "Not modelled: the 3 socket-socket jumper leads (final enclosure build, an alternative way to connect the LDR and capacitor without the breadboard) and the optional 3.5mm speakers (alternative to the buzzer, plugged into the Pi's audio jack, which is not a port on the catalogue entry)."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 238.4,
+  "input_tokens": 101263,
+  "output_tokens": 11605,
+  "cost_usd": 0.3053,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 189.1,
+   "input_tokens": 85721,
+   "output_tokens": 4411,
+   "cost_usd": 0.1921,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 10,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "1\u00b5F capacitor",
+     "type": "capacitor-1uf",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-220uf-20-6-3v.html (The content describes a 220\u00b5F, 6.3V Panasonic FK SMT aluminum electrolytic capac)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-47-f-20-35v.html (The page describes a 47\u00b5F, 35V Panasonic FK SMT aluminum electrolytic capacitor )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/RTC-Module-Super-Capacitor-p-2137.html (The content is a Seeed Studio page for an RTC module with a super capacitor. It )"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/0805-SMT-Capacitor-sample-book-4416-pcs-in-92-values-free-shippin-p-571.html (The content is a Seeed Studio page for a 0805 SMT capacitor sample book (4416 pc)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 51.2
+    },
+    {
+     "part": "Socket-socket jumper leads",
+     "type": "jumper-wire-ff",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/1919"
+      ]
+     ],
+     "seconds": 32.1
+    },
+    {
+     "part": "Laser pointer",
+     "type": "laser-pointer",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1054 (The page is for a Laser Diode module (5mW 650nm, integrated driver, red/black wi)"
+      ],
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1057 (The page describes a Line Laser Diode module (5mW 650nm, integrated driver, line)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/led-basic-red-3mm.html (The content describes a basic red 3mm LED (SparkFun COM-00533), not a laser poin)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/led-tactile-button-red.html (The content describes the SparkFun LED Tactile Button - Red (COM-10442), an LED-)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/5mW-Laser-Module-emitter-Red-Line-p-123.html"
+      ]
+     ],
+     "seconds": 58.5
+    },
+    {
+     "part": "Drinking straw",
+     "type": "drinking-straw",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "no search result"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 40.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.3,
+   "input_tokens": 15542,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7194,
+   "cost_usd": 0.1132,
+   "check_seconds": 0.01,
+   "issues": 11,
+   "issue_rules": {
+    "V4": 10,
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 11,
+ "issues_final": 11,
+ "final_issue_list": [
+  [
+   "V4",
+   "e3: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e4: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e7: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e8: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'GND.1' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'GND.1' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e27: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e28: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e31: port 'GND.2' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e32: port 'GND.2' not on rpi-4b"
+  ],
+  [
+   "V2",
+   "part laser1 (laser-pointer) has no connection"
+  ]
+ ],
+ "cards": {
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "buzzer": {
+   "type": "buzzer",
+   "name": "Piezo Buzzer",
+   "category": "buzzer",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire-ff": {
+   "type": "jumper-wire-ff",
+   "name": "Female-Female Jumper Wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "end_a",
+     "kind": "header-socket"
+    },
+    {
+     "name": "end_b",
+     "kind": "header-socket"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "symmetric": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/1919",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "laser-pointer": {
+   "type": "laser-pointer",
+   "name": "5mW Red Laser Module",
+   "category": "output",
+   "ports": [
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    },
+    {
+     "name": "S",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "seeed",
+    "url": "https://www.seeedstudio.com/5mW-Laser-Module-emitter-Red-Line-p-123.html",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "photoresistor": {
+   "type": "photoresistor",
+   "name": "Photoresistor (LDR)",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "rpi-4b": {
+   "type": "rpi-4b",
+   "name": "Raspberry Pi 4 Model B",
+   "category": "single-board-computer",
+   "ports": [
+    {
+     "name": "GPIO_HEADER",
+     "kind": "header-pin"
+    },
+    {
+     "name": "USB_C_POWER",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_0",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_1",
+     "kind": "socket"
+    },
+    {
+     "name": "USB3_A",
+     "kind": "socket"
+    },
+    {
+     "name": "USB2_A",
+     "kind": "socket"
+    },
+    {
+     "name": "ETHERNET",
+     "kind": "socket"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/4296",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "speaker-3-5mm": {
+   "type": "speaker-3-5mm",
+   "name": "USB Powered Speakers (3.5mm stereo input)",
+   "category": "speaker",
+   "ports": [
+    {
+     "name": "audio_in",
+     "kind": "lead"
+    },
+    {
+     "name": "usb_power",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/1363",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Raspberry Pi",
+   "quantity": 1,
+   "catalogue_type": "rpi-4b",
+   "new_type": null,
+   "search_query": null,
+   "category": "single-board-computer"
+  },
+  {
+   "label": "Breadboard",
+   "quantity": 1,
+   "catalogue_type": "breadboard",
+   "new_type": null,
+   "search_query": null,
+   "category": "breadboard"
+  },
+  {
+   "label": "1\u00b5F capacitor",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "capacitor-1uf",
+   "search_query": "1uF electrolytic capacitor",
+   "category": "capacitor"
+  },
+  {
+   "label": "Light-dependent resistor (LDR)",
+   "quantity": 1,
+   "catalogue_type": "photoresistor",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "Socket-pin jumper leads (for testing)",
+   "quantity": 3,
+   "catalogue_type": "jumper-wire-mf",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  },
+  {
+   "label": "Socket-socket jumper leads",
+   "quantity": 3,
+   "catalogue_type": null,
+   "new_type": "jumper-wire-ff",
+   "search_query": "female to female jumper wires",
+   "category": "wire"
+  },
+  {
+   "label": "Laser pointer",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "laser-pointer",
+   "search_query": "red laser pointer",
+   "category": "light"
+  },
+  {
+   "label": "Drinking straw",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "drinking-straw",
+   "search_query": "drinking straws",
+   "category": "consumable"
+  },
+  {
+   "label": "Piezo buzzer",
+   "quantity": 1,
+   "catalogue_type": "buzzer",
+   "new_type": null,
+   "search_query": null,
+   "category": "buzzer"
+  },
+  {
+   "label": "Speakers (3.5mm)",
+   "quantity": 1,
+   "catalogue_type": "speaker-3-5mm",
+   "new_type": null,
+   "search_query": null,
+   "category": "speaker"
+  }
+ ]
+}

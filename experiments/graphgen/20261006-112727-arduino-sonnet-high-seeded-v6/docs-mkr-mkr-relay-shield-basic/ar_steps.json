@@ -1,0 +1,258 @@
+{
+ "tutorial": "docs-mkr-mkr-relay-shield-basic",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/02.shields/mkr-relay-shield/tutorials/mkr-relay-shield-basic/assets/MKRRELAY_T1_IMG01.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/02.shields/mkr-relay-shield/tutorials/mkr-relay-shield-basic/assets/MKRRELAY_T1_IMG02.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/02.shields/mkr-relay-shield/tutorials/mkr-relay-shield-basic/assets/MKRRELAY_T1_IMG04.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/02.shields/mkr-relay-shield/tutorials/mkr-relay-shield-basic/assets/MKRRELAY_T1_IMG05.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/02.shields/mkr-relay-shield/tutorials/mkr-relay-shield-basic/assets/MKRRELAY_T1_IMG06.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/02.shields/mkr-relay-shield/tutorials/mkr-relay-shield-basic/assets/MKRRELAY_T1_IMG07.png"
+ ],
+ "legs_and_ends": 14,
+ "with_position": 11,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "shield1",
+     "type": "arduino-mkr-relay-shield",
+     "label": "MKR Relay Shield"
+    },
+    {
+     "id": "mkr1",
+     "type": "arduino-mkr1000-wifi",
+     "label": "Arduino MKR family board"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "LED_1 (relay 1 status)",
+     "props": {
+      "colour": "red"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "5t.b",
+       "mm": [
+        10.16,
+        2.54
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "6t.b",
+       "mm": [
+        12.7,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "LED_1 series resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "6t.c",
+       "mm": [
+        12.7,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.6",
+       "mm": [
+        12.7,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "led2",
+     "type": "led",
+     "label": "LED_2 (relay 2 status)",
+     "props": {
+      "colour": "green"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "10t.b",
+       "mm": [
+        22.86,
+        2.54
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "11t.b",
+       "mm": [
+        25.4,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "LED_2 series resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "11t.c",
+       "mm": [
+        25.4,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.11",
+       "mm": [
+        25.4,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Pin 3 to LED_1 circuit",
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D3",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "5t.a",
+       "mm": [
+        10.16,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "Pin 4 to LED_2 circuit",
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D4",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": true,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to breadboard ground rail",
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

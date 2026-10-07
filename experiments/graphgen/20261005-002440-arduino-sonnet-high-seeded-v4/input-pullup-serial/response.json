@@ -1,0 +1,444 @@
+{
+ "graph": {
+  "title": "Input Pullup Serial",
+  "source_id": "https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "signal wire (pin 2 to pushbutton)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No external resistor: the internal pull-up on pin 2 (INPUT_PULLUP) is used; pin 13 uses the onboard LED, so no external LED is added.",
+   "Breadboard row naming: the image shows rows a-e on the lower half, which the catalogue calls bank 't' (rows a-e), so the lower-half holes are written as 10t/12t and the upper-half (f-j) as 10b/12b.",
+   "The pushbutton straddles the centre gap at columns 10 and 12. Legs in the same column are one side of the switch (side 1 = column 10, side 2 = column 12). Each of the four legs now has both a joined and an electrical edge to its breadboard hole, which fixes the 'leg not connected' warnings for sides 1 and 2.",
+   "Teal wire goes from Arduino pin 2 to column 10 (row c); black wire goes from the power-header GND (GND.1) to column 12 (row c). The image does not show which GND pin exactly; GND.1 on the power header is assumed.",
+   "The USB cable to the computer for serial is not drawn in the circuit image and is omitted."
+  ]
+ },
+ "graph_initial": {
+  "title": "Input Pullup Serial",
+  "source_id": "https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "signal wire (pin 2 to pushbutton)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No external resistor: the internal pull-up on pin 2 (INPUT_PULLUP) is used; pin 13 uses the onboard LED, so no external LED is added.",
+   "Breadboard row naming: the image shows rows a-e on the lower half, which the catalogue calls bank 't' (rows a-e), so the lower-half holes are written as 10t/12t and the upper-half (f-j) as 10b/12b.",
+   "The pushbutton straddles the centre gap at columns 10 and 12. Legs in the same column are one side of the switch (side 1 = column 10, side 2 = column 12).",
+   "Teal wire goes from Arduino pin 2 to column 10 (row c); black wire goes from the power-header GND (GND.1) to column 12 (row c). The image does not show which GND pin exactly; GND.1 on the power header is assumed.",
+   "The USB cable to the computer for serial is not drawn in the circuit image and is omitted."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 32.9,
+  "input_tokens": 41019,
+  "output_tokens": 4880,
+  "cost_usd": 0.0978,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.9,
+   "input_tokens": 19178,
+   "cache_read_tokens": 11120,
+   "output_tokens": 2373,
+   "cost_usd": 0.0582,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.0,
+   "input_tokens": 21841,
+   "cache_read_tokens": 19176,
+   "output_tokens": 2507,
+   "cost_usd": 0.0396,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "final_issue_list": []
+}

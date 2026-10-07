@@ -1,0 +1,134 @@
+{
+ "case": "while-loop",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 66.6,
+  "input_tokens": 16248,
+  "output_tokens": 10169,
+  "cost_usd": 0.1335,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 68,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The catalogue names the breadboard's top half rows a-e and the bottom half rows f-j. The image labels them the other way round (top half j-f, bottom half e-a). I used the catalogue banks: the image's top half is bank 't' (image row j = a, i = b, h = c, g = d, f = e). The image's bottom half is bank 'b' (image row e = f, d = g, c = h, b = i, a = j).",
+  "Column numbers and rail hole positions are estimated from pixel positions in the circuit image. Rail holes are not column-aligned, so rail indices such as tn.22, tn.28 and bp.30 are approximate. They only matter as the same rail strip.",
+  "The pushbutton straddles the centre gap in columns 4 and 6. I assumed its internally joined pairs are the two legs in the same column. Side 1 is the legs in column 4: pin 2 and the 10k pull-down to GND. Side 2 is the legs in column 6: 5V. This matches the schematic.",
+  "The Arduino GND wire goes to the second GND pin in the power header (GND.2).",
+  "Photoresistor: one leg goes to 5V (column 14) and the other to A0 (column 10), with a 10k resistor from that column to GND. The manual text says 'analog input 2', but the code, schematic and image all use A0.",
+  "The LED is on pin 9 through a 220 ohm resistor, with the LED cathode to the ground rail. The built-in LED on pin 13 (used as the calibration indicator) is on the Uno board, so it is not added.",
+  "The manual lists '2 10k resistors', but the circuit also uses the 220 ohm resistor shown in the images."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 66.6,
+   "input_tokens": 16248,
+   "cache_read_tokens": 8721,
+   "output_tokens": 10169,
+   "cost_usd": 0.1335,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 6,
+  "nets_matched": 5,
+  "net_precision": 0.833,
+  "net_recall": 0.625,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 5,
+   "button": 1,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 4,
+   "led": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 23.7
+}

@@ -1,0 +1,195 @@
+{
+ "case": "serial-call-response",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 68.0,
+  "input_tokens": 22126,
+  "output_tokens": 9839,
+  "cost_usd": 0.1751,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard orientation: the image shows rows j-f in the upper half and e-a in the lower half, while the catalogue defines bank 't' as rows a-e and bank 'b' as rows f-j. The graph follows the catalogue, so the upper half of the image is bank 'b' and the lower half is bank 't'.",
+  "Column numbers were estimated from the pixel positions of the holes. Rail hole numbers (tp/tn/bp/bn) are approximate. Each rail is a single strip, so the exact index doesn't change the connectivity.",
+  "Rails: the upper row of each rail pair is treated as negative (tn, bn) and the row beside the red line as positive (tp, bp). The long black and red wires at the right link the top and bottom rails.",
+  "The pushbutton straddles the centre gap in columns 5 and 7. Side 1 is column 5, with 5V from the red jumper in 5b.j. Side 2 is column 7, shared with the Arduino pin 2 wire and the 10k pull-down resistor.",
+  "The FSR sensors are drawn with two legs: the red leg goes to the bottom + rail (5V) and the blue leg goes to the divider node. The tutorial says any analog sensor can be used, so the FSRs are the ones shown in the image. Yellow jumpers carry the divider nodes to A1 (column 6) and A0 (column 16).",
+  "The black wire from the Arduino goes to the second GND pin on the power header. Which of GND.1/GND.2/GND.3 that is on the Uno is assumed to be GND.2.",
+  "The schematic shows the sense resistors and the divider resistors as separate parts. The three 10k resistors are the divider resistors in the circuit image, and the FSRs are the sense resistors.",
+  "The hardware list says 3 10K resistors, and these are r1, r2 and r3. The resistor value is given as '10k'."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 68.0,
+   "input_tokens": 22126,
+   "cache_read_tokens": 3110,
+   "output_tokens": 9839,
+   "cost_usd": 0.1751,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.2,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 2,
+   "button": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "fsr",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 17.2
+}

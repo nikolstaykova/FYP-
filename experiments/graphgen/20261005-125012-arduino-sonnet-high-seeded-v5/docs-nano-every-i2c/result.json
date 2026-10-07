@@ -1,0 +1,76 @@
+{
+ "case": "docs-nano-every-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 48.0,
+  "input_tokens": 46621,
+  "output_tokens": 7308,
+  "cost_usd": 0.1258,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 listed two mini breadboards; the circuit image only shows one shared junction network (SCL, SDA and 3V3 pull-up rails), so the second breadboard (bb2) is dropped. Nothing connects to it.",
+  "Both boards are Arduino Nano Every; the image artwork looks like a Nano 33 BLE but the text says Nano Every. The image's '3V' pin is the 3V3 port.",
+  "The image does not draw the breadboard. The shared junction is placed on bb1: SCL (A5) of both boards on strip 10t, SDA (A4) of both boards on strip 12t, and 3V3 on the top positive rail.",
+  "Pull-ups: r1 (4.7k) runs from the SCL strip to the 3V3 rail and r2 (4.7k) runs from the SDA strip to the 3V3 rail. 3V3 comes from the reader board via wire4. The writer's 3V3 is not connected, as in the image.",
+  "GND is a single direct wire between the two boards (wire1).",
+  "Only 6 jumper wires are drawn in the image although the parts list names a pack of 10; only those 6 are used.",
+  "The tutorial text says SDA is A4 and SCL is A5, and the image connects A4 to A4 and A5 to A5 on both boards.",
+  "Each USB cable plugs into its board's USB port. The computer is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.3,
+   "input_tokens": 22217,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1985,
+   "cost_usd": 0.0627,
+   "check_seconds": 0.0,
+   "parts_listed": 14,
+   "changed_in_build": 1,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.7,
+   "input_tokens": 24404,
+   "cache_read_tokens": 22215,
+   "output_tokens": 5323,
+   "cost_usd": 0.0631,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.9
+}

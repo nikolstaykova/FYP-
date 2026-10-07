@@ -1,0 +1,155 @@
+{
+ "case": "docs-mkr-lora-button-press-649",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 190.8,
+  "input_tokens": 94453,
+  "output_tokens": 9808,
+  "cost_usd": 0.3063,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Two separate circuits (sender and receiver), each with its own MKR WAN 1300, antenna, breadboard and USB cable, combined into one graph.",
+  "The antenna-lora type is not in the provided catalogue, so it is defined as a new part type with one port, 'cable'. It joins the board's u.FL antenna connector. The board catalogue entry has no port for that connector, so the board port is null.",
+  "The usb-cable has no ports in the catalogue. USB cables are not drawn in the images, so the joined edges to the boards use null ports.",
+  "The images show the breadboard's top half labelled rows j to f. Following the catalogue naming, rows f-j are bank 'b', so holes are written like '5b.g'.",
+  "Sender: the pushbutton legs are in 5b.g and 7b.g. The black wire from GND goes to 5b.f and the yellow wire from D2 goes to 7b.f. Pressing the button connects D2 to GND. The code uses INPUT_PULLUP, so no external resistor is needed.",
+  "Receiver: the LED cathode (straight leg) is in 6b.h and the anode (bent leg) is in 8b.h. The resistor runs from 8b.g to 11b.g. The black wire from GND goes to 6b.g and the green wire from D2 goes to 11b.f. D2 drives the LED through the resistor.",
+  "The resistor is not in the parts list but is drawn in the receiver image, so it is included as type resistor. Its value is not stated, so 220 ohm is assumed. This type was assumed to exist in the catalogue, as the spec describes.",
+  "Resistor leg columns and LED leg columns were estimated from the image pixel positions.",
+  "The pushbutton is drawn with two visible legs, so only ports 1.l and 2.l are used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 153.9,
+   "input_tokens": 75692,
+   "output_tokens": 4609,
+   "cost_usd": 0.2002,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 7,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino MKR WAN 1300",
+     "type": "arduino-mkr-wan-1300",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-micromod-lora-function-board.html (This page sells the SparkFun MicroMod LoRa Function Board (WRL-18573), an M.2 Mi)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/lora-transceiver-module-rfm95cw.html (This page sells the SparkFun RFM95CW LoRa transceiver module (COM-18085). That i)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html"
+      ]
+     ],
+     "seconds": 80.8
+    },
+    {
+     "part": "Antenna",
+     "type": "antenna-lora",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-lora-thing-plus-explorable.html (This page sells the SparkFun LoRa Thing Plus - expLoRaBLE, a Feather-format deve)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/lora-1w-breakout-868m30s.html (The page sells a LoRa 1W Breakout (868M30S) transceiver board, not an antenna. I)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html (The page sells the Arduino MKR WAN 1300, a LoRa development board. It does not s)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/LoRa-LoRaWAN-Gateway-868MHz-Kit-with-Raspberry-Pi-3.html (The page sells a LoRaWAN gateway kit (868MHz) with a Raspberry Pi 3. It is not a)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 65.9
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.9,
+   "input_tokens": 18761,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5199,
+   "cost_usd": 0.1061,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "antenna-lora",
+   "family": "antenna-lora",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.2
+}

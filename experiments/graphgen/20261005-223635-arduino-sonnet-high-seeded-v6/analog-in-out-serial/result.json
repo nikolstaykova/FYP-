@@ -1,0 +1,91 @@
+{
+ "case": "analog-in-out-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 44.4,
+  "input_tokens": 57075,
+  "output_tokens": 6489,
+  "cost_usd": 0.1872,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts are unchanged: Arduino Uno, breadboard, potentiometer, red LED, 220 ohm resistor and five jumper wires.",
+  "Hole names follow the image's row labels: the lower half (rows a-e) is bank 't' and the upper half (rows f-j) is bank 'b'.",
+  "The tutorial text says the 5V and ground pins go to the pot's outer legs and the centre pin goes to A0. The pot is wired that way: wire1 (5V) to VCC, wire2 (GND) to GND, wire3 (A0) to SIG.",
+  "In the image the yellow A0 wire ends on the far side of the centre gap from the pot's legs. I put it in the same column strip as the pot's centre leg (23t) so that it is electrically connected, as the text and schematic require.",
+  "The resistor is placed in row g, from column 3 to column 6, so the blue pin 9 wire (3b.f) reaches its first lead. Its other lead shares column 6 with the LED anode.",
+  "LED polarity follows the tutorial: the anode (the bent, longer leg) is at the resistor's output, and the cathode goes to GND through the black wire at column 8.",
+  "The Uno has three GND pins. wire5 uses GND.1, which is on the digital header next to AREF. wire2 uses GND.2, which is on the power header."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.0,
+   "input_tokens": 27902,
+   "cache_read_tokens": 0,
+   "output_tokens": 1086,
+   "cost_usd": 0.1225,
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.4,
+   "input_tokens": 29173,
+   "cache_read_tokens": 27900,
+   "output_tokens": 5403,
+   "cost_usd": 0.0647,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 5,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "led": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 6.0
+}

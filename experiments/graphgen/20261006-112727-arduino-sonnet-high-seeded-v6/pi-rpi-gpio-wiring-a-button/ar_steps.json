@@ -1,0 +1,280 @@
+{
+ "tutorial": "pi-rpi-gpio-wiring-a-button",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/2-pin-button.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/4-pin-button.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/2x4-pin-button.png"
+ ],
+ "legs_and_ends": 18,
+ "with_position": 17,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi1",
+     "type": "raspberry-pi-4-gpio",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "btn1",
+     "type": "pushbutton",
+     "label": "Button (GPIO 17)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "5t.e",
+       "mm": [
+        10.16,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "5b.f",
+       "mm": [
+        10.16,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "7t.e",
+       "mm": [
+        15.24,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "7b.f",
+       "mm": [
+        15.24,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "btn2",
+     "type": "pushbutton",
+     "label": "Button (GPIO 5)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "10t.e",
+       "mm": [
+        22.86,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "10b.f",
+       "mm": [
+        22.86,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "12t.e",
+       "mm": [
+        27.94,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "12b.f",
+       "mm": [
+        27.94,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": "Button 1 signal wire (GPIO 17 to row 7)",
+     "ends": [
+      {
+       "part": "pi1",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "7t.a",
+       "mm": [
+        15.24,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": "Button 2 signal wire (GPIO 5 to row 12)",
+     "ends": [
+      {
+       "part": "pi1",
+       "port": "29",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "12t.a",
+       "mm": [
+        27.94,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Ground wire from Pi GND to breadboard negative rail",
+     "ends": [
+      {
+       "part": "pi1",
+       "port": "6",
+       "mm": [
+        50.8,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Button 1 ground wire (rail to row 5)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tn.5",
+       "mm": [
+        10.16,
+        -7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "5t.a",
+       "mm": [
+        10.16,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": true,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Button 2 ground wire (rail to row 10)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tn.10",
+       "mm": [
+        22.86,
+        -7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

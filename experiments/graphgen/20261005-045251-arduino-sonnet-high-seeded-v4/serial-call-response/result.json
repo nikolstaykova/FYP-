@@ -1,0 +1,387 @@
+{
+ "case": "serial-call-response",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 87.6,
+  "input_tokens": 25610,
+  "output_tokens": 10621,
+  "cost_usd": 0.1664,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts list matched the 'analog sensors' to ntc-temperature-sensor, but the circuit image shows force-sensitive resistors (FSRs), so the catalogue type fsr is used. The image shows 3 FSR legs; only the 2 active legs are modelled.",
+  "FSR legs are shown with red/blue leg extensions; they are modelled as FSR leads inserted directly into the breadboard rather than as separate jumper wires.",
+  "Breadboard hole names follow the catalogue (top half 't' rows a-e, bottom half 'b' rows f-j). Image rows j..f (top half) map to a..e and image rows e..a (bottom half) map to f..j. Only strip membership matters.",
+  "Rail hole numbers are estimated from the image. tp/tn are the top + and - rails, and bp/bn are the bottom + and - rails. 5V goes to the + rail and GND to the - rail.",
+  "Each of the two sensors forms a divider. FSR goes from the + rail to a node, and a 10K resistor goes from that node to the - rail. In the image, the node at column 16 goes to A0 and the node at column 6 goes to A1.",
+  "Pushbutton sits across the centre gap with legs in columns 5 and 7. Side 1 (left column, 5t/5b) is on the 5V strip and side 2 (right column, 7t/7b) is on pin 2 and the 10K pull-down. The bottom legs are not wired to anything else.",
+  "The pull-down resistor goes from column 7 (pin 2 strip) to column 10 (GND strip via the black jumper).",
+  "Resistors are 10K, so value=10000."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 17.9,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 6,
+   "matched": 6,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "2 analog sensors (potentiometer, photocell, FSR, etc.)",
+     "card": "ntc-temperature-sensor",
+     "skipped": false
+    },
+    {
+     "item": "pushbutton",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "3 10K ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 69.7,
+   "input_tokens": 25610,
+   "cache_read_tokens": 11120,
+   "output_tokens": 10621,
+   "cost_usd": 0.1664,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.2,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 2,
+   "button": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "fsr",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.2,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 2,
+   "button": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "fsr",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.7
+}

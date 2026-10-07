@@ -1,0 +1,1124 @@
+{
+ "graph": {
+  "title": "Raspberry Pi robot buggy (motor controller board, 2 DC motors)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/rpi-python-robot-buggy",
+  "new_part_types": [
+   {
+    "type": "motor-controller-board",
+    "name": "Raspberry Pi motor controller board (CamJam EduKit 3 style, 2 motor channels)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "GPIO_HEADER",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "lead"
+     },
+     {
+      "name": "A2",
+      "kind": "lead"
+     },
+     {
+      "name": "B1",
+      "kind": "lead"
+     },
+     {
+      "name": "B2",
+      "kind": "lead"
+     },
+     {
+      "name": "VIN+",
+      "kind": "lug"
+     },
+     {
+      "name": "VIN-",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "A1",
+      "A2"
+     ],
+     [
+      "B1",
+      "B2"
+     ]
+    ],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "chassis-box",
+    "name": "Small cardboard box (prototype chassis)",
+    "category": "chassis",
+    "ports": [],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi-5",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "mcb1",
+    "type": "motor-controller-board",
+    "label": "Motor controller board",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "Left motor (3V-6V DC motor)",
+    "props": [
+     {
+      "key": "side",
+      "value": "left"
+     }
+    ]
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "Right motor (3V-6V DC motor)",
+    "props": [
+     {
+      "key": "side",
+      "value": "right"
+     }
+    ]
+   },
+   {
+    "id": "wheel1",
+    "type": "wheel",
+    "label": "Left wheel",
+    "props": []
+   },
+   {
+    "id": "wheel2",
+    "type": "wheel",
+    "label": "Right wheel",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "battery-holder-4xaa",
+    "label": "AA battery holder (4 AA)",
+    "props": []
+   },
+   {
+    "id": "aa1",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "aa2",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "aa3",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "aa4",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "caster1",
+    "type": "ball-caster",
+    "label": "Ball caster",
+    "props": []
+   },
+   {
+    "id": "box1",
+    "type": "chassis-box",
+    "label": "Small cardboard box chassis",
+    "props": []
+   },
+   {
+    "id": "pbank1",
+    "type": "usb-power-bank",
+    "label": "USB power bank",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB power cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mcb1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mcb1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "A1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "A2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "A2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "B1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "B1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "B2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "B2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mcb1",
+    "v_port": "VIN+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mcb1",
+    "v_port": "VIN+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mcb1",
+    "v_port": "VIN-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mcb1",
+    "v_port": "VIN-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "aa1",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa2",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa3",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa4",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "aa1",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa1",
+    "u_port": "+",
+    "v": "aa2",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa2",
+    "u_port": "+",
+    "v": "aa3",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa3",
+    "u_port": "+",
+    "v": "aa4",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa4",
+    "u_port": "+",
+    "v": "batt1",
+    "v_port": "positive",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wheel1",
+    "u_port": "shaft_hole",
+    "v": "motor1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wheel2",
+    "u_port": "shaft_hole",
+    "v": "motor2",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "caster1",
+    "u_port": "mount_1",
+    "v": "box1",
+    "v_port": null,
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "joined",
+    "u": "caster1",
+    "u_port": "mount_2",
+    "v": "box1",
+    "v_port": null,
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "tape",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "tape",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "contact",
+    "u": "pi1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": "hand"
+   },
+   {
+    "type": "contact",
+    "u": "batt1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "pbank1",
+    "u_port": "OUT1",
+    "v": "usb1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pbank1",
+    "u_port": "OUT1",
+    "v": "usb1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pi1",
+    "v_port": "USB_C_POWER",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pi1",
+    "v_port": "USB_C_POWER",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Fix for the lead/lug errors: the motor-controller board's motor terminal ports A1, A2, B1 and B2 are now kind 'lead', because the motor's wires are leads clamped in the screw terminals. The battery terminals VIN+ and VIN- stay as lugs.",
+   "Fix for the unconnected ball caster: I added the cardboard box chassis (box1, new type chassis-box). The tutorial uses a small cardboard or plastic box, and it is where the caster is screwed. Step 1 left the box out. The box also holds the motors (adhesive putty or tape), the Pi and the battery holder.",
+   "The box has no ports, so edges to it use null ports. The Pi and the battery holder only rest in the box (contact).",
+   "The motor controller board is not in the catalogue, so it is a new type. It plugs onto the first 26 GPIO pins of the Pi. The catalogue's raspberry-pi-5 only has a GPIO_HEADER port, so the join is GPIO_HEADER to GPIO_HEADER. The motor signals on GPIO 7, 8, 9 and 10 run through that header.",
+   "Motor 1 is on terminal block A and motor 2 on B. Motor wires are symmetric, so each motor's polarity is chosen in software (the pin order in the Robot() call).",
+   "Battery holder red wire (positive) goes to the + terminal and black wire (negative) to the - terminal. The four AA cells are in series in the holder.",
+   "The wheels are pushed onto the motor axles. The dc-motor catalogue entry has no axle port, so these joins have no motor port.",
+   "The USB power bank powers the Pi through a USB cable to the Pi's USB-C power port. The usb-cable type has no ports.",
+   "The optional breadboard, distance sensor and line sensors are not built, as in step 1."
+  ]
+ },
+ "graph_initial": {
+  "title": "Raspberry Pi robot buggy (motor controller board, 2 DC motors)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/rpi-python-robot-buggy",
+  "new_part_types": [
+   {
+    "type": "motor-controller-board",
+    "name": "Raspberry Pi motor controller board (CamJam EduKit 3 style, 2 motor channels)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "GPIO_HEADER",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "lug"
+     },
+     {
+      "name": "A2",
+      "kind": "lug"
+     },
+     {
+      "name": "B1",
+      "kind": "lug"
+     },
+     {
+      "name": "B2",
+      "kind": "lug"
+     },
+     {
+      "name": "VIN+",
+      "kind": "lug"
+     },
+     {
+      "name": "VIN-",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "A1",
+      "A2"
+     ],
+     [
+      "B1",
+      "B2"
+     ]
+    ],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi-5",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "mcb1",
+    "type": "motor-controller-board",
+    "label": "Motor controller board",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "Left motor (3V-6V DC motor)",
+    "props": [
+     {
+      "key": "side",
+      "value": "left"
+     }
+    ]
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "Right motor (3V-6V DC motor)",
+    "props": [
+     {
+      "key": "side",
+      "value": "right"
+     }
+    ]
+   },
+   {
+    "id": "wheel1",
+    "type": "wheel",
+    "label": "Left wheel",
+    "props": []
+   },
+   {
+    "id": "wheel2",
+    "type": "wheel",
+    "label": "Right wheel",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "battery-holder-4xaa",
+    "label": "AA battery holder (4 AA)",
+    "props": []
+   },
+   {
+    "id": "aa1",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "aa2",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "aa3",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "aa4",
+    "type": "battery-aa",
+    "label": "AA battery",
+    "props": []
+   },
+   {
+    "id": "caster1",
+    "type": "ball-caster",
+    "label": "Ball caster",
+    "props": []
+   },
+   {
+    "id": "pbank1",
+    "type": "usb-power-bank",
+    "label": "USB power bank",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB power cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mcb1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mcb1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "A1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "A2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "A2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "B1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mcb1",
+    "v_port": "B1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "B2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mcb1",
+    "v_port": "B2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mcb1",
+    "v_port": "VIN+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mcb1",
+    "v_port": "VIN+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mcb1",
+    "v_port": "VIN-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mcb1",
+    "v_port": "VIN-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "aa1",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa2",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa3",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa4",
+    "u_port": null,
+    "v": "batt1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "aa1",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa1",
+    "u_port": "+",
+    "v": "aa2",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa2",
+    "u_port": "+",
+    "v": "aa3",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa3",
+    "u_port": "+",
+    "v": "aa4",
+    "v_port": "-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "aa4",
+    "u_port": "+",
+    "v": "batt1",
+    "v_port": "positive",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wheel1",
+    "u_port": "shaft_hole",
+    "v": "motor1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wheel2",
+    "u_port": "shaft_hole",
+    "v": "motor2",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "pbank1",
+    "u_port": "OUT1",
+    "v": "usb1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pbank1",
+    "u_port": "OUT1",
+    "v": "usb1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pi1",
+    "v_port": "USB_C_POWER",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pi1",
+    "v_port": "USB_C_POWER",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The part list is the same as in step 1. Nothing was added or dropped.",
+   "The motor controller board is not in the catalogue, so it stays a new type. The board plugs onto the first 26 GPIO pins of the Pi. The catalogue's raspberry-pi-5 only has a GPIO_HEADER port, so the join is board GPIO_HEADER to Pi GPIO_HEADER. The motor signals on GPIO 7, 8, 9 and 10 run through that header.",
+   "Motor 1 is on terminal block A and motor 2 on B. Motor wires are symmetric, so the polarity of each motor is chosen in software (the pin order in the Robot() call). The tutorial's left/right labelling is also set in software.",
+   "Battery holder red wire (positive) goes to the + terminal and black wire (negative) to the - terminal, as the manual says.",
+   "The four AA cells sit in the holder in series, so the holder's positive and negative are connected through the chain of cells.",
+   "The wheels are pushed onto the motor axles. The dc-motor catalogue entry has no axle port, so these joins have no motor port.",
+   "The ball caster has no edges. The cardboard box chassis it is screwed to is not a part in this graph, so it has nothing to join to.",
+   "The USB power bank powers the Pi through a USB cable to the Pi's USB-C power port. The usb-cable type has no ports."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 127.6,
+  "input_tokens": 173131,
+  "output_tokens": 11491,
+  "cost_usd": 0.211,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.6,
+   "input_tokens": 62105,
+   "cache_read_tokens": 53587,
+   "output_tokens": 2190,
+   "cost_usd": 0.0667,
+   "tools_used": [
+    "lookup_part {\"name\": \"CamJam EduKit 3 motor controller board\"}",
+    "lookup_part {\"name\": \"AA battery\", \"type_id\": \"battery-aa\"}",
+    "StructuredOutput {\"title\": \"Raspberry Pi robot buggy (motor controller board, 2 DC motors)\", \"source_id\": \"https://projects.raspberrypi.o"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 14,
+   "changed_in_build": 0,
+   "looked_up": [
+    "battery-aa",
+    "motor-controller-board"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.5,
+   "input_tokens": 33628,
+   "cache_read_tokens": 31550,
+   "output_tokens": 4315,
+   "cost_usd": 0.0578,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi robot buggy (motor controller board, 2 DC motors)\", \"source_id\": \"https://projects.raspberrypi.o"
+   ],
+   "check_seconds": 0.01,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 4,
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.5,
+   "input_tokens": 77398,
+   "cache_read_tokens": 71828,
+   "output_tokens": 4986,
+   "cost_usd": 0.0865,
+   "tools_used": [
+    "lookup_part {\"name\": \"small cardboard box chassis\", \"type_id\": \"chassis-box\"}",
+    "StructuredOutput {\"title\": \"Raspberry Pi robot buggy (motor controller board, 2 DC motors)\", \"source_id\": \"https://projects.raspberrypi.o"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 35.4,
+  "cost_usd": 0.0773,
+  "types": [
+   {
+    "type": "motor-controller-board",
+    "found": true,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "card from https://www.sparkfun.com/kitronik-motor-driver-board-for-raspberry-pi-pico.html"
+     ]
+    ]
+   },
+   {
+    "type": "chassis-box",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/modular-plastic-storage-box-small-10-pack.html (The page is a 10-pack of small modular plastic storage boxes (TOL-11527, 25x30x2)"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/256 (Content describes the Pololu Robot Chassis RRC01A, a 5-inch round laser-cut acry)"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/Plastic-storage-box-transparent-small-p-1307.html (The page is a transparent plastic storage box, not a small cardboard box. The sc)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

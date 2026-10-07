@@ -1,0 +1,1675 @@
+{
+ "graph": {
+  "title": "Barometric Pressure Sensor Web Server (SCP1000 with Arduino Ethernet Shield)",
+  "source_id": "https://arduino.cc/en/Tutorial/LibraryExamples/BarometricPressureWebServer",
+  "new_part_types": [
+   {
+    "type": "scp1000",
+    "name": "SCP1000 Barometric Pressure Sensor Breakout",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "GND",
+      "kind": "lead"
+     },
+     {
+      "name": "3V3",
+      "kind": "lead"
+     },
+     {
+      "name": "SCK",
+      "kind": "lead"
+     },
+     {
+      "name": "MOSI",
+      "kind": "lead"
+     },
+     {
+      "name": "MISO",
+      "kind": "lead"
+     },
+     {
+      "name": "CSB",
+      "kind": "lead"
+     },
+     {
+      "name": "DRDY",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "arduino-ethernet-shield",
+    "name": "Arduino Ethernet Shield (with SD)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "IOREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     },
+     {
+      "name": "stack.d6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "stack.d7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "stack.d11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "stack.d12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "stack.d13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "stack.supply33",
+      "kind": "header-pin"
+     },
+     {
+      "name": "stack.ground1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "rj45",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "6",
+      "stack.d6"
+     ],
+     [
+      "7",
+      "stack.d7"
+     ],
+     [
+      "11",
+      "stack.d11"
+     ],
+     [
+      "12",
+      "stack.d12"
+     ],
+     [
+      "13",
+      "stack.d13"
+     ],
+     [
+      "3.3V",
+      "stack.supply33"
+     ],
+     [
+      "GND.1",
+      "stack.ground1"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board (stacked below the Ethernet Shield)",
+    "props": []
+   },
+   {
+    "id": "shield1",
+    "type": "arduino-ethernet-shield",
+    "label": "Arduino Ethernet Shield",
+    "props": []
+   },
+   {
+    "id": "scp1",
+    "type": "scp1000",
+    "label": "SCP1000 Pressure Sensor Breakout Board",
+    "props": []
+   },
+   {
+    "id": "eth1",
+    "type": "ethernet-cable",
+    "label": "Ethernet cable to network",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "SCK (pin 13)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "MOSI (pin 11)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "MISO (pin 12)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "CSB (pin 7)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "DRDY (pin 6)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "3.3V power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "Ground",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.d6",
+    "v": "uno",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.d6",
+    "v": "uno",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.d7",
+    "v": "uno",
+    "v_port": "7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.d7",
+    "v": "uno",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.d11",
+    "v": "uno",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.d11",
+    "v": "uno",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.d12",
+    "v": "uno",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.d12",
+    "v": "uno",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.d13",
+    "v": "uno",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.d13",
+    "v": "uno",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.supply33",
+    "v": "uno",
+    "v_port": "3.3V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.supply33",
+    "v": "uno",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "stack.ground1",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "stack.ground1",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "A",
+    "v": "shield1",
+    "v_port": "rj45",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "SCK",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "SCK",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MOSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MOSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MISO",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MISO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "CSB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "CSB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "DRDY",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "DRDY",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "3.3V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "3V3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1 (no breadboard; 7 jumper wires: 5 blue signal, 1 red 3.3V, 1 black GND).",
+   "E2 fix: the shield's underside stacking pins are now only the seven the circuit uses, renamed 'stack.*' (the unused power pins pin.GND.2, pin.GND.3, pin.5V and pin.VIN are removed). The checker was treating the shield's underside power pins as board pins. They are pass-through stacking pins, not board supply pins.",
+   "Wiring the SCP1000 3.3V and GND pins straight to the board's 3.3V and GND headers is what the tutorial shows. The sensor is a breakout module with no LED or other load, so nothing needs to sit between the wire and the supply pin. This E2 finding is not a real problem for this build.",
+   "The shield sits on the Uno, so its top sockets carry the Uno's signals (the 'conducts' groups tie each socket to its stacking pin). The jumper wires plug into the shield's top sockets, as in the image.",
+   "The shield's rj45 port is typed header-socket so the Ethernet cable's lead end fits it. The cable's other end goes to the network, which is not a part in the graph.",
+   "The schematic crosses D7/D6 on purpose. D7 goes to CSB and D6 to DRDY, matching the text, code and image.",
+   "SPI wiring follows the code comment and the Uno's real SPI pins: D13 to SCK, D11 to MOSI, D12 to MISO. The labels in the schematic and the image's wire ends are hard to read and look swapped, so I used the electrically correct mapping.",
+   "SCP1000 and Arduino Ethernet Shield are new part types, since lookup_part found neither."
+  ]
+ },
+ "graph_initial": {
+  "title": "Barometric Pressure Sensor Web Server (SCP1000 with Arduino Ethernet Shield)",
+  "source_id": "https://arduino.cc/en/Tutorial/LibraryExamples/BarometricPressureWebServer",
+  "new_part_types": [
+   {
+    "type": "scp1000",
+    "name": "SCP1000 Barometric Pressure Sensor Breakout",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "GND",
+      "kind": "lead"
+     },
+     {
+      "name": "3V3",
+      "kind": "lead"
+     },
+     {
+      "name": "SCK",
+      "kind": "lead"
+     },
+     {
+      "name": "MOSI",
+      "kind": "lead"
+     },
+     {
+      "name": "MISO",
+      "kind": "lead"
+     },
+     {
+      "name": "CSB",
+      "kind": "lead"
+     },
+     {
+      "name": "DRDY",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "arduino-ethernet-shield",
+    "name": "Arduino Ethernet Shield (with SD)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "IOREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     },
+     {
+      "name": "rj45",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board (stacked below the Ethernet Shield)",
+    "props": []
+   },
+   {
+    "id": "shield1",
+    "type": "arduino-ethernet-shield",
+    "label": "Arduino Ethernet Shield",
+    "props": []
+   },
+   {
+    "id": "scp1",
+    "type": "scp1000",
+    "label": "SCP1000 Pressure Sensor Breakout Board",
+    "props": []
+   },
+   {
+    "id": "eth1",
+    "type": "ethernet-cable",
+    "label": "Ethernet cable to network",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "SCK (pin 13)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "MOSI (pin 11)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "MISO (pin 12)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "CSB (pin 7)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "DRDY (pin 6)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "3.3V power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "Ground",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "6",
+    "v": "uno",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "6",
+    "v": "uno",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "7",
+    "v": "uno",
+    "v_port": "7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "7",
+    "v": "uno",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "11",
+    "v": "uno",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "11",
+    "v": "uno",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "12",
+    "v": "uno",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "12",
+    "v": "uno",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "13",
+    "v": "uno",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "13",
+    "v": "uno",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "3.3V",
+    "v": "uno",
+    "v_port": "3.3V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "3.3V",
+    "v": "uno",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "GND.1",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "GND.1",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "A",
+    "v": "shield1",
+    "v_port": "rj45",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "SCK",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "SCK",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MOSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MOSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MISO",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MISO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "CSB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "CSB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "DRDY",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "DRDY",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "3.3V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "3V3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "shield1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1 (no breadboard; 7 jumper wires: 5 blue signal, 1 red 3.3V, 1 black GND).",
+   "The shield is stacked on the Uno; stacking is modelled as joined+electrical edges on the pins the circuit uses (6, 7, 11, 12, 13, 3.3V, GND.1).",
+   "Correction to step 1 note: the schematic crosses D7/D6 on purpose. D7 goes to CSB and D6 to DRDY, which matches the text, code and image.",
+   "SPI wiring follows the code comment and the Uno's real SPI pins: D13 to SCK, D11 to MOSI, D12 to MISO. The schematic's D12/D11 labels and the image's wire ends are hard to read and look swapped, so I used the electrically correct mapping.",
+   "The ground wire goes to the GND header next to 3.3V on the shield's power header (GND.1). The red wire goes to the shield's 3.3V.",
+   "The Ethernet cable plugs into the shield's RJ45 socket. Its other end goes to the network, which is not a part in the graph.",
+   "SCP1000 and Arduino Ethernet Shield are new part types, since lookup_part found neither."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 167.5,
+  "input_tokens": 167014,
+  "output_tokens": 22965,
+  "cost_usd": 0.3554,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 56.2,
+   "input_tokens": 54061,
+   "cache_read_tokens": 47159,
+   "output_tokens": 2668,
+   "cost_usd": 0.0637,
+   "check_seconds": 0.0,
+   "parts_listed": 11,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-ethernet-shield",
+    "scp1000"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.1,
+   "input_tokens": 30253,
+   "cache_read_tokens": 27552,
+   "output_tokens": 6704,
+   "cost_usd": 0.0834,
+   "check_seconds": 0.01,
+   "issues": 15,
+   "issue_rules": {
+    "V3": 8,
+    "V4": 7
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.7,
+   "input_tokens": 37733,
+   "cache_read_tokens": 30251,
+   "output_tokens": 6657,
+   "cost_usd": 0.1025,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "E2": 6
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.5,
+   "input_tokens": 44967,
+   "cache_read_tokens": 37731,
+   "output_tokens": 6936,
+   "cost_usd": 0.1058,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E2": 2
+   }
+  }
+ ],
+ "issues_first": 15,
+ "issues_final": 2,
+ "final_issue_list": [
+  [
+   "E2",
+   "board pin ['shield1:stack.supply33'] is wired straight to ['3V3'] with nothing in between: ['scp1:3V3', 'shield1:3.3V', 'shield1:stack.supply33', 'uno:3.3V']"
+  ],
+  [
+   "E2",
+   "board pin ['shield1:stack.ground1'] is wired straight to ['GND'] with nothing in between: ['scp1:GND', 'shield1:GND.1', 'shield1:stack.ground1', 'uno:GND']"
+  ]
+ ],
+ "upkeep": {
+  "seconds": 36.0,
+  "cost_usd": 0.0904,
+  "types": [
+   {
+    "type": "scp1000",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/barometric-pressure-sensor-mpl115a1.html (The content describes the MPL115A1 bare SPI barometric pressure sensor (SEN-0960)"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/1646 (The content describes the SparkFun BMP085 Barometric Pressure Sensor Breakout (P)"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/LoRaWAN-Barometric-Pressure-Sensor-EU868-p-4309.html (The content describes the SenseCAP Wireless Barometric Pressure Sensor (LoRaWAN )"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   },
+   {
+    "type": "arduino-ethernet-shield",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/single-pair-ethernet-cable-0-5m-shielded.html (The content describes a HARTING Single Pair Ethernet cable (CAB-19312), 0.5 m, s)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield (automotive CAN bus connectivit)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

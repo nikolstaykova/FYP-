@@ -1,0 +1,193 @@
+{
+ "case": "docs-zero-simple-audio-frequency-meter",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 369.2,
+  "input_tokens": 95847,
+  "output_tokens": 23263,
+  "cost_usd": 0.4354,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the catalogue: rows a-e are bank 't' and rows f-j are bank 'b'. The picture labels the visual top half J-F and the bottom half E-A, and the row letters are used as the picture shows them.",
+  "Rails: tp is the red-line rail at the top (3.3 V from IOREF). bn is the blue-line rail at the bottom (GND).",
+  "IOREF supplies the 3.3 V, as in the schematic, not 5V or 3V3.",
+  "The Arduino Zero and the 3.5mm jack breakout are new part types. The jack lug assignment is assumed from the schematic: SLEEVE goes to GND and RIGHT goes through C1. LEFT is unused.",
+  "The chip is assumed to have pin 1 at 14t.e (bottom left, notch left). Pins 1-4 are on row e and pins 5-8 on row f.",
+  "The right end of green wire8 is read as column 15 (the IN1- strip) so the circuit matches the schematic: R11 and R10 meet at IN1-.",
+  "The pot's wiper (SIG) is assumed at 2b.f (purple wire goes to OUT1) and its two outer pins at 1t.e and 3t.e. The 3t.e pin joins R11 (R7 to R11 in the schematic). The other outer pin is unconnected.",
+  "The black wire near column 20 appears to end at the lower rail row in the picture. It is treated as a ground connection (bn.17), as the schematic requires R9 and the chip GND to go to ground.",
+  "Resistor values come from the schematic: R11 and R10 are 47k, R8 and R9 are 100k. The parts catalogue 'resistor' type is used with a value prop.",
+  "Arduino GND.1 is the GND pin next to VIN on the power header."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 237.1,
+   "input_tokens": 80317,
+   "output_tokens": 4362,
+   "cost_usd": 0.2052,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 9,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino Zero Board",
+     "type": "arduino-zero",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Ameba-RTL8195-Arduino-Wireless-Board-p-2699.html (This page sells the Ameba RTL8195 Arduino Wireless Board from Seeed Studio. That)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Blend-Micro-an-Arduino-Development-Board-with-BLE-p-1834.html (This page sells the Blend Micro, a Seeed/RedBear board. It uses an ATmega32u4 wi)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 23.2
+    },
+    {
+     "part": "LMV358 or TLV2462 op-amp",
+     "type": "opamp-lmv358",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/op-amp-lm258p-through-hole.html"
+      ]
+     ],
+     "seconds": 54.7
+    },
+    {
+     "part": "100nF capacitor",
+     "type": "capacitor-100nf",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/capacitor-ceramic-0-1mf-25v-20-80.html"
+      ]
+     ],
+     "seconds": 61.1
+    },
+    {
+     "part": "3.5mm jack",
+     "type": "connector-jack-3-5mm",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-audio-jack-breakout.html (This page sells the SparkFun Audio Jack Breakout (PRT-10588), which is a bare PC)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2125 (This page sells the Pololu L3GD20 3-axis gyro carrier board, which is a sensor b)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/5249 (This page sells the Pololu TB67S579FTG stepper motor driver carrier, not a 3.5mm)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/5V-3-3V-Breadboard-Power-Supply-v1-2.html (The page sells a 5V/3.3V Breadboard Power Supply v1.2 module. It is not a 3.5mm )"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/3-5-mm-Jack-to-3-RCA-Adapter-Cable-150mm-p-2046.html (This page sells a 150 mm 3.5 mm plug to 3 RCA adapter cable. It is a finished ca)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 90.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 132.1,
+   "input_tokens": 15530,
+   "cache_read_tokens": 5507,
+   "output_tokens": 18901,
+   "cost_usd": 0.2302,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "connector-jack-3-5mm",
+   "family": "connector-jack-3-5mm",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 26.0
+}

@@ -1,0 +1,534 @@
+{
+ "graph": {
+  "title": "MKR 1000 WiFi simple web server: remote LED control",
+  "source_id": "MKR1000_T2 (Arduino MKR1000 WiFi web server tutorial)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr1000-wifi",
+    "label": "Arduino MKR 1000 WiFi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "82"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Signal wire (pin 2 to resistor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Ground wire (GND to LED cathode)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Fix: the arduino-mkr1000 card has no digital pins, so port '2' did not exist. I changed mkr1 to type arduino-mkr1000-wifi, which has D2 and GND. The green wire now goes to D2. The lookup returned this card under the name MKR WiFi 1010. I used it as the closest MKR-family board with the same header, and the manual's board is the MKR 1000 WiFi. The pin-2 wiring does not depend on the difference.",
+   "The parts are the same as in step 1 apart from the board type. I added or dropped nothing.",
+   "The resistor value is 82 ohm from the parts list. The schematic label says 220 ohm. At 3.3 V and about 2 V LED forward voltage, 82 ohm gives roughly 16 mA, which is above the 7 mA per-pin figure on the card. I kept 82 ohm because the parts list says so.",
+   "The breadboard image labels its upper half rows j-f, which are the catalogue's 'b' bank (rows f-j). I read the holes from the picture. The green wire goes to column 3 row g. The resistor spans column 3 row h to column 6 row h. The LED anode (the bent, longer leg) is in column 6 row i. The LED cathode is in column 8 row i. The black wire goes to column 8 row h.",
+   "The path is D2, then the green wire, then the resistor, then the LED anode. The LED cathode goes through the black wire to GND. The resistor is on the anode side, as in the schematic.",
+   "There is no USB cable in the parts list, so I did not add one. The sketch's analogRead(A1) is software only, and nothing is wired to A1."
+  ]
+ },
+ "graph_initial": {
+  "title": "MKR 1000 WiFi simple web server: remote LED control",
+  "source_id": "MKR1000_T2 (Arduino MKR1000 WiFi web server tutorial)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr1000",
+    "label": "Arduino MKR 1000 WiFi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "82"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Signal wire (pin 2 to resistor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Ground wire (GND to LED cathode)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The parts are the same as in step 1. I added or dropped nothing.",
+   "The catalogue card for arduino-mkr1000 has no digital pin port. I used port '2' on mkr1 anyway, because the diagram and schematic put the LED on pin 2 and the sketch uses ledPin = 2. The card should be extended with the MKR digital pins (0-14), A0-A6 and 5V.",
+   "The resistor value is 82 ohm from the parts list. The schematic label says 220 ohm. 82 ohm is a usable current limit for an LED on a 3.3 V pin.",
+   "The breadboard image labels its upper half rows j-f, which are the catalogue's 'b' bank (rows f-j). I read the holes from the picture. The green wire goes to column 3 row g. The resistor spans column 3 row h to column 6 row h. The LED anode (the bent, longer leg) is in column 6 row i. The LED cathode is in column 8 row i. The black wire goes to column 8 row h.",
+   "The path is pin 2, then the green wire, then the resistor, then the LED anode. The LED cathode goes through the black wire to GND. The resistor is on the anode side, as in the schematic.",
+   "There is no USB cable in the parts list, so I did not add one. The sketch's analogRead(A1) is software only, and nothing is wired to A1."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 78.3,
+  "input_tokens": 132302,
+  "output_tokens": 6638,
+  "cost_usd": 0.1834,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.5,
+   "input_tokens": 48600,
+   "cache_read_tokens": 27514,
+   "output_tokens": 1072,
+   "cost_usd": 0.0998,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.4,
+   "input_tokens": 25534,
+   "cache_read_tokens": 24550,
+   "output_tokens": 3039,
+   "cost_usd": 0.0378,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.4,
+   "input_tokens": 58168,
+   "cache_read_tokens": 54290,
+   "output_tokens": 2527,
+   "cost_usd": 0.0458,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "final_issue_list": []
+}

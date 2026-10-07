@@ -1,0 +1,82 @@
+{
+ "case": "docs-mkr-mkr-1000-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 37.9,
+  "input_tokens": 93957,
+  "output_tokens": 4629,
+  "cost_usd": 0.1744,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Changed the board type from step 1: arduino-mkr1000 has no digital pin ports (only USB, VIN, VCC, GND, BAT), so pin 2 cannot be wired. I used arduino-mkr1000-wifi, which has D2 and GND. Its catalogue name says MKR WiFi 1010, but its id matches the tutorial's store link (arduino-mkr1000-wifi). The circuit image shows an MKR1000, so this is a catalogue approximation.",
+  "Parts are unchanged from step 1: board, breadboard, LED, 82 ohm resistor, and two jumper wires.",
+  "The resistor is 82 ohm per the parts list. The schematic label says 220 ohm.",
+  "Layout read from the image: green wire from pin 2 to column 3. Resistor from column 3 to column 6. LED anode in column 6 (resistor side) and cathode in column 8. Black wire from column 8 to GND. I used the upper block of the breadboard image as bank 't', rows a-e.",
+  "Current path: D2, then resistor, then LED anode, then LED cathode, then GND. This matches the schematic."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.5,
+   "input_tokens": 61720,
+   "cache_read_tokens": 33997,
+   "output_tokens": 1291,
+   "cost_usd": 0.1306,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 2,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.4,
+   "input_tokens": 32237,
+   "cache_read_tokens": 31187,
+   "output_tokens": 3338,
+   "cost_usd": 0.0438,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.2
+}

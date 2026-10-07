@@ -1,0 +1,88 @@
+{
+ "case": "button-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 85.3,
+  "input_tokens": 57580,
+  "output_tokens": 14486,
+  "cost_usd": 0.1939,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 108,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were kept. Only the labels changed: the circuit image and schematic put pin 6 on the leftmost button and pin 2 on the rightmost, so btn1 is on pin 6 and btn5 is on pin 2. Step 1 had this the other way round.",
+  "Button-to-pin mapping follows the image: btn1=pin 6 (click), btn2=pin 5, btn3=pin 4, btn4=pin 3, btn5=pin 2.",
+  "Each pushbutton spans the centre gap with legs in two columns. Side 1 (1.l, 1.r) is in the 't' bank, row e. Side 2 (2.l, 2.r) is in the 'b' bank, row f. The image shows legs 2 columns apart (6/8, 11/13, 16/18, 21/23, 26/28), so I used those columns.",
+  "For each button, the left-column 't' strip carries the Arduino signal wire (row d) and the pulldown resistor (row a). The resistor's other end goes to the ground rail. The right-column 'b' strip is wired to the 5V rail with a short red jumper (row h). Pressing a button therefore takes the input pin HIGH. This matches the schematic.",
+  "Rail naming: 5V rail = tp, GND rail = bn (the rail next to the resistors). Rail hole numbers follow the nearest breadboard column in the image.",
+  "5V goes to the Leonardo 5V pin and GND to GND.1. The USB cable is not part of the parts list, so it is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.1,
+   "input_tokens": 27680,
+   "cache_read_tokens": 20023,
+   "output_tokens": 1971,
+   "cost_usd": 0.0543,
+   "check_seconds": 0.0,
+   "parts_listed": 24,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 72.2,
+   "input_tokens": 29900,
+   "cache_read_tokens": 27678,
+   "output_tokens": 12515,
+   "cost_usd": 0.1396,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 12.6
+}

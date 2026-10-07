@@ -1,0 +1,1860 @@
+{
+ "graph": {
+  "title": "Alexa-controlled lights and temperature with Arduino Cloud (MKR WiFi 1010 + MKR ENV Shield)",
+  "source_id": "https://create.arduino.cc/projecthub/arduino/iot-cloud-alexa-integration",
+  "new_part_types": [
+   {
+    "type": "mkr-env-shield",
+    "name": "Arduino MKR ENV Shield",
+    "category": "board",
+    "ports": [
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.top",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "2",
+      "2.top"
+     ],
+     [
+      "3",
+      "3.top"
+     ],
+     [
+      "4",
+      "4.top"
+     ],
+     [
+      "5",
+      "5.top"
+     ],
+     [
+      "GND",
+      "GND.top"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "Arduino MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "env1",
+    "type": "mkr-env-shield",
+    "label": "Arduino MKR ENV Shield",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "High Brightness LED, White (meeting room)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "rgb1",
+    "type": "rgb-led",
+    "label": "RGB LED common cathode (lounge area)",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "220 ohm (RGB red)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "220 ohm (RGB green)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "r3",
+    "type": "resistor",
+    "label": "220 ohm (RGB blue)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "r4",
+    "type": "resistor",
+    "label": "220 ohm (white LED)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Pin 5 wire (white LED)",
+    "props": []
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Pin 2 wire (RGB red)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Pin 4 wire (RGB green)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Pin 3 wire (RGB blue)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "White LED cathode to GND rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "RGB common cathode to GND rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "2",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "2",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "3",
+    "v": "mkr1",
+    "v_port": "3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "3",
+    "v": "mkr1",
+    "v_port": "3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "4",
+    "v": "mkr1",
+    "v_port": "4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "4",
+    "v": "mkr1",
+    "v_port": "4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "5",
+    "v": "mkr1",
+    "v_port": "5",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "5",
+    "v": "mkr1",
+    "v_port": "5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "GND",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "GND",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "GND.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "GND.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "5.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "5.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "2.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "2.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "4.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "4.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "3.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "3.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r4",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r4",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r4",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r4",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.9",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "13t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "13t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "17t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "17t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r3",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r3",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r3",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "18t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r3",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "18t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "R",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "R",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "COM",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "COM",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "17t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "17t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "16t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "16t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The schematic image was not readable, so the wiring is inferred from the sketch: pin 5 drives the white LED (meeting room), pins 2/4/3 drive the RGB LED's R/G/B (lounge area).",
+   "I assumed one 220 ohm resistor per LED channel (4 in total). The exact breadboard columns and rows are my own choice.",
+   "The MKR ENV Shield is not in the catalogue, so I added it as a new part type. It stacks on the MKR WiFi 1010 and passes pins 2-5 and GND through to its top headers, and the jumper wires attach to those top headers.",
+   "Fix for the validator errors: the MKR WiFi 1010's pins are header-pins, so the shield's underside ports (2, 3, 4, 5, GND) are now header-sockets. That makes the stacking joins header-pin to header-socket, which is a compatible pair. Physically the shield's pins plug into the board, but the catalogue's kind rules take priority here.",
+   "The MKR ENV Shield's I2C sensors use the board's own bus, so no external wiring is added for the temperature sensor.",
+   "The RGB LED has a common cathode, so COM goes to the breadboard's negative rail, which is connected to the board's GND.",
+   "The Arduino Cloud and Alexa steps are software only and add no parts or connections.",
+   "The board is powered over USB, which is not drawn."
+  ]
+ },
+ "graph_initial": {
+  "title": "Alexa-controlled lights and temperature with Arduino Cloud (MKR WiFi 1010 + MKR ENV Shield)",
+  "source_id": "https://create.arduino.cc/projecthub/arduino/iot-cloud-alexa-integration",
+  "new_part_types": [
+   {
+    "type": "mkr-env-shield",
+    "name": "Arduino MKR ENV Shield",
+    "category": "board",
+    "ports": [
+     {
+      "name": "2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "2.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5.top",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.top",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "2",
+      "2.top"
+     ],
+     [
+      "3",
+      "3.top"
+     ],
+     [
+      "4",
+      "4.top"
+     ],
+     [
+      "5",
+      "5.top"
+     ],
+     [
+      "GND",
+      "GND.top"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "Arduino MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "env1",
+    "type": "mkr-env-shield",
+    "label": "Arduino MKR ENV Shield",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "High Brightness LED, White (meeting room)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "rgb1",
+    "type": "rgb-led",
+    "label": "RGB LED common cathode (lounge area)",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "220 ohm (RGB red)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "220 ohm (RGB green)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "r3",
+    "type": "resistor",
+    "label": "220 ohm (RGB blue)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "r4",
+    "type": "resistor",
+    "label": "220 ohm (white LED)",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Pin 5 wire (white LED)",
+    "props": []
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Pin 2 wire (RGB red)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Pin 4 wire (RGB green)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Pin 3 wire (RGB blue)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "White LED cathode to GND rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "RGB common cathode to GND rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "2",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "2",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "3",
+    "v": "mkr1",
+    "v_port": "3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "3",
+    "v": "mkr1",
+    "v_port": "3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "4",
+    "v": "mkr1",
+    "v_port": "4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "4",
+    "v": "mkr1",
+    "v_port": "4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "5",
+    "v": "mkr1",
+    "v_port": "5",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "5",
+    "v": "mkr1",
+    "v_port": "5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "env1",
+    "u_port": "GND",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "env1",
+    "u_port": "GND",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "GND.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "GND.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "5.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "5.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "2.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "2.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "4.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "4.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "3.top",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "env1",
+    "v_port": "3.top",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r4",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r4",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r4",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r4",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.9",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "13t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "13t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "17t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "17t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r3",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r3",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r3",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "18t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r3",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "18t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "R",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "R",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "COM",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "COM",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "17t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "17t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "rgb1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "rgb1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "16t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "16t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.16",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The schematic image was not readable, so the wiring is inferred from the sketch: pin 5 drives the white LED (meeting room), pins 2/4/3 drive the RGB LED's R/G/B (lounge area).",
+   "I assumed one 220 ohm resistor per LED channel (4 in total). The exact breadboard columns and rows are my own choice.",
+   "The MKR ENV Shield is not in the catalogue, so I added it as a new part type. It stacks on the MKR WiFi 1010 and passes pins 2-5 and GND through to its top headers, and the jumper wires attach to those top headers.",
+   "The MKR ENV Shield's I2C sensors use the board's own bus, so no external wiring is added for the temperature sensor.",
+   "The RGB LED has a common cathode, so COM goes to the breadboard's negative rail, which is connected to the board's GND.",
+   "The Arduino Cloud and Alexa steps are software only and add no parts or connections.",
+   "The board is powered over USB, which is not drawn."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 84.3,
+  "input_tokens": 49179,
+  "output_tokens": 15335,
+  "cost_usd": 0.2782,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.9,
+   "input_tokens": 19821,
+   "cache_read_tokens": 3110,
+   "output_tokens": 8114,
+   "cost_usd": 0.1486,
+   "check_seconds": 0.01,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 5
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.4,
+   "input_tokens": 29358,
+   "cache_read_tokens": 15788,
+   "output_tokens": 7221,
+   "cost_usd": 0.1296,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "final_issue_list": []
+}

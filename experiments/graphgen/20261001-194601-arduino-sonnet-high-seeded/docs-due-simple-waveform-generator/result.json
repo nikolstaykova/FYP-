@@ -1,0 +1,58 @@
+{
+ "case": "docs-due-simple-waveform-generator",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 62.3,
+  "input_tokens": 19469,
+  "output_tokens": 10151,
+  "cost_usd": 0.1588,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 74,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Arduino Due is not in the catalogue, so it is added as a new part type with the header pins used here (2, 3, A0, DAC0, DAC1, 3.3V, GND.x).",
+  "The image has no exact hole coordinates. Breadboard columns and rows are chosen to match the layout: the pot is in the top half (columns 15-17), button 1 spans the centre gap at columns 20/22, and button 2 at columns 26/28. The topology follows the manual and image.",
+  "The top and bottom rail pairs are bridged by long red (power, tp-bp) and black (ground, tn-bn) wires. The rails carry 3.3V and GND from the Due.",
+  "Each button has side 1 on the pin column (blue wire from pin 2 or 3 on top, 10K pull-down to the ground rail below). Side 2 goes to the 3.3V rail by a red wire.",
+  "Pot: one outer leg to 3.3V, the other to GND, wiper to A0 by the yellow wire. The outer pot leg's side is arbitrary because the pot is symmetric.",
+  "DAC0 and DAC1 are outputs only, to an optional oscilloscope. They are not wired, because the oscilloscope is optional and not in the image.",
+  "The USB cable and power supply for the Due are not shown in the image and are omitted."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.3,
+   "input_tokens": 19469,
+   "cache_read_tokens": 5414,
+   "output_tokens": 10151,
+   "cost_usd": 0.1588,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 11.9
+}

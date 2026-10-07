@@ -1,0 +1,63 @@
+{
+ "case": "docs-nano-rp2040-connect-rp2040-ble-device-to-device",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 36.6,
+  "input_tokens": 21973,
+  "output_tokens": 5029,
+  "cost_usd": 0.1176,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The Nano RP2040 Connect is not in the catalogue, so a new part type was created. The pin labelled '2~' in the image is D2 and the pin labelled GND is GND.1.",
+  "Two boards are used. nano1 is the peripheral with the button. nano2 is the central board with no external circuit, only USB power. It uses the onboard RGB LED (blue pixel) and has no edges to other parts.",
+  "Breadboard hole names follow the image's row letters. The image's upper half (rows f-j) is named bank 'b' and the lower half (rows a-e) bank 't'. This contradicts the catalogue text, which says 't' is rows a-e, so the bank letters may need swapping.",
+  "The button straddles the centre gap. Its legs are at columns 8 and 10: the upper pair in row f and the lower pair in row e. Side 1 (upper, 1.l/1.r) goes to the GND rail. Side 2 (lower, 2.l/2.r) goes to D2.",
+  "The dark wire from the GND rail ends at the top rail row near x=1170, which is read as tn.9 (approximate). Its other end is in column 10, row g.",
+  "The GND wire's rail end is read as tn.1 (approximate). The top-row rail is taken as negative because of the black line above it.",
+  "The sketch uses INPUT_PULLUP on D2, so no external resistor is needed. Pressing the button pulls D2 to GND.",
+  "The USB cables are shown plugged into both boards, so they are included as parts."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.6,
+   "input_tokens": 21973,
+   "cache_read_tokens": 5414,
+   "output_tokens": 5029,
+   "cost_usd": 0.1176,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-rp2040-connect",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.0
+}

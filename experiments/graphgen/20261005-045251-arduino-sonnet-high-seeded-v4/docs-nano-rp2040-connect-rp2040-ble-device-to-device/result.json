@@ -1,0 +1,128 @@
+{
+ "case": "docs-nano-rp2040-connect-rp2040-ble-device-to-device",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 131.6,
+  "input_tokens": 31604,
+  "output_tokens": 5300,
+  "cost_usd": 0.1385,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Two boards: 'periph' carries the pushbutton circuit (sketch with INPUT_PULLUP on pin 2); 'central' has no external circuit, only USB (uses its onboard RGB LED). The two boards link wirelessly over Bluetooth LE, so there is no edge between them.",
+  "Pushbutton straddles the breadboard centre gap at columns 8 and 10 (read from the image). Top pair of legs (side 1) are in the top half and are tied to GND through wire3 and the top negative rail; bottom pair (side 2) are in the bottom half and connect to pin 2 via the teal wire. The internal pull-up means no resistor is needed.",
+  "The breadboard image labels the top half rows f-j and the bottom half a-e; the catalogue uses bank 't' (rows a-e) for the top half and 'b' (rows f-j) for the bottom half, so ports follow the catalogue naming by physical position.",
+  "Exact rail hole numbers (tn.1 for the GND wire end, tn.8 for the short wire start) are estimated from the image; any hole in the same rail strip is equivalent.",
+  "Both USB cables are drawn plugged into the boards' USB connectors for power/programming; the host end is not shown."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 99.8,
+   "check_seconds": 0.0,
+   "input_tokens": 9230,
+   "output_tokens": 1125,
+   "cost_usd": 0.0282,
+   "listed": 6,
+   "matched": 3,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "ArduinoBLE library.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "2x Arduino Nano RP2040 Connect.",
+     "card": "arduino-nano-rp2040-connect",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-NANO-RP2040-CONNECT-WITH-HEADERS-p-4941.html"
+      ]
+     ],
+     "seconds": 61.5
+    },
+    {
+     "item": "Breadboard.",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Pushbutton.",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires.",
+     "card": "jumper-wire",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.8,
+   "input_tokens": 22374,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4175,
+   "cost_usd": 0.1103,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.7
+}

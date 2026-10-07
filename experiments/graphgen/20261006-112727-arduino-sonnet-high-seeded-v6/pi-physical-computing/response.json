@@ -1,0 +1,619 @@
+{
+ "graph": {
+  "title": "Using a light-dependent resistor (Raspberry Pi physical computing)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/physical-computing",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi-4-gpio",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "ldr1",
+    "type": "photoresistor",
+    "label": "Light Dependent Resistor",
+    "props": []
+   },
+   {
+    "id": "c1",
+    "type": "capacitor-10uf",
+    "label": "1\u03bcF capacitor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1uF"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Black jumper lead (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Green jumper lead (GPIO4)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "Red jumper lead (3V3)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "c1",
+    "u_port": "POS",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "c1",
+    "u_port": "POS",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "c1",
+    "u_port": "NEG",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "c1",
+    "u_port": "NEG",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No parts were added or dropped from step 1.",
+   "The first circuit image is the authority. It shows the Pi header rotated 180\u00b0. The red lead goes to the rightmost top-row pin, which is pin 1 (3V3). The green lead goes to the second top-row pin, which is pin 7 (GPIO4, matching LightSensor(4)). The black lead goes to the second bottom-row pin, which is pin 6 (GND).",
+   "On the breadboard the red, green and black leads sit in row A of columns 1, 3 and 5, using the image's column labels (column 1 on the right).",
+   "The circuit is 3V3 \u2192 LDR \u2192 node (column 3, GPIO4) \u2192 capacitor + \u2192 capacitor \u2212 \u2192 GND. The LDR spans columns 1 and 3. The capacitor spans columns 3 (POS, the long leg, on the same strip as the LDR leg as the tutorial says) and 5 (NEG).",
+   "Each jumper lead has its female end (a) on the Pi header pin and its male end (b) in the breadboard.",
+   "The capacitor is modelled as capacitor-10uf with value=1uF, because the catalogue has no 1\u03bcF type.",
+   "The tutorial describes many other mini-projects (LED, button, buzzer, traffic lights, PIR, ultrasonic sensor, MCP3008, motors). Its circuit images show only this LDR circuit, so only it is built. The 3x330\u03a9 and 470\u03a9 resistors in the parts list belong to the other projects and are not used here."
+  ]
+ },
+ "graph_initial": {
+  "title": "Using a light-dependent resistor (Raspberry Pi physical computing)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/physical-computing",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi-4-gpio",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "ldr1",
+    "type": "photoresistor",
+    "label": "Light Dependent Resistor",
+    "props": []
+   },
+   {
+    "id": "c1",
+    "type": "capacitor-10uf",
+    "label": "1\u03bcF capacitor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1uF"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Black jumper lead (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Green jumper lead (GPIO4)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "Red jumper lead (3V3)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "c1",
+    "u_port": "POS",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "c1",
+    "u_port": "POS",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "c1",
+    "u_port": "NEG",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "c1",
+    "u_port": "NEG",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No parts were added or dropped from step 1.",
+   "The first circuit image is the authority. It shows the Pi header rotated 180\u00b0. The red lead goes to the rightmost top-row pin, which is pin 1 (3V3). The green lead goes to the second top-row pin, which is pin 7 (GPIO4, matching LightSensor(4)). The black lead goes to the second bottom-row pin, which is pin 6 (GND).",
+   "On the breadboard the red, green and black leads sit in row A of columns 1, 3 and 5, using the image's column labels (column 1 on the right).",
+   "The circuit is 3V3 \u2192 LDR \u2192 node (column 3, GPIO4) \u2192 capacitor + \u2192 capacitor \u2212 \u2192 GND. The LDR spans columns 1 and 3. The capacitor spans columns 3 (POS, the long leg, on the same strip as the LDR leg as the tutorial says) and 5 (NEG).",
+   "Each jumper lead has its female end (a) on the Pi header pin and its male end (b) in the breadboard.",
+   "The capacitor is modelled as capacitor-10uf with value=1uF, because the catalogue has no 1\u03bcF type.",
+   "The tutorial describes many other mini-projects (LED, button, buzzer, traffic lights, PIR, ultrasonic sensor, MCP3008, motors). Its circuit images show only this LDR circuit, so only it is built. The 3x330\u03a9 and 470\u03a9 resistors in the parts list belong to the other projects and are not used here."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 41.3,
+  "input_tokens": 125253,
+  "output_tokens": 5743,
+  "cost_usd": 0.1574,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.5,
+   "input_tokens": 82546,
+   "cache_read_tokens": 64005,
+   "output_tokens": 1361,
+   "cost_usd": 0.1006,
+   "tools_used": [
+    "lookup_part {\"name\": \"1uF electrolytic capacitor\", \"type_id\": \"capacitor-1uf\"}",
+    "StructuredOutput {\"title\": \"Using a light-dependent resistor (Raspberry Pi physical computing)\", \"source_id\": \"https://projects.raspberry"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 7,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.8,
+   "input_tokens": 42707,
+   "cache_read_tokens": 41532,
+   "output_tokens": 4382,
+   "cost_usd": 0.0568,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Using a light-dependent resistor (Raspberry Pi physical computing)\", \"source_id\": \"https://projects.raspberry"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

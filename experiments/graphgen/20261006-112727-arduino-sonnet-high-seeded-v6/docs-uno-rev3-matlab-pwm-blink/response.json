@@ -1,0 +1,1010 @@
+{
+ "graph": {
+  "title": "Control an LED and PWM output with MATLAB and Arduino UNO R3 (potentiometer dimmer)",
+  "source_id": "Arduino MATLAB LED control tutorial (UNO R3, MATLAB Support Package for Arduino Hardware)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "UNO R3",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB 2.0 Cable Type A/B",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard (potentiometer side)",
+    "props": []
+   },
+   {
+    "id": "bb2",
+    "type": "breadboard",
+    "label": "Right breadboard (LED circuit)",
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "Potentiometer through-hole",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "White wire (5V to potentiometer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Orange wire (GND to potentiometer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Gray wire (potentiometer wiper to A0)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "gray"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Red wire (pin 11 to resistor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Green wire (LED cathode to GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "uno",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "5t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "5t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "8t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "8t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "9t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "9t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb2",
+    "v_port": "9t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb2",
+    "v_port": "9t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1; none added or dropped.",
+   "The laptop running MATLAB is not modelled (not in catalogue and not a circuit part); the USB cable joins to the UNO only.",
+   "Resistor value is not given in the manual; 220 ohm assumed. LED colour assumed red.",
+   "Breadboard hole positions are chosen by me, since the images give no exact columns. The potentiometer sits in one row (GND, SIG, VCC in columns 10-12) on breadboard 1. Resistor, LED and wires on breadboard 2 are placed so the resistor is in series between the red pin-11 wire and the LED anode, with the LED cathode going to GND through the green wire.",
+   "Per the manual, the LED anode (long leg) goes to the resistor and the cathode to GND. The potentiometer is powered from 5V (white wire) and GND (orange wire), and its wiper goes to A0 (gray wire). The manual's remark that A0 reads voltage 'from pin13' is ambiguous; D13 is only driven from software, so no wire to D13 is added.",
+   "Pin 11 drives the LED through writePWMVoltage, so the LED circuit uses D11, not D13."
+  ]
+ },
+ "graph_initial": {
+  "title": "Control an LED and PWM output with MATLAB and Arduino UNO R3 (potentiometer dimmer)",
+  "source_id": "Arduino MATLAB LED control tutorial (UNO R3, MATLAB Support Package for Arduino Hardware)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "UNO R3",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB 2.0 Cable Type A/B",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard (potentiometer side)",
+    "props": []
+   },
+   {
+    "id": "bb2",
+    "type": "breadboard",
+    "label": "Right breadboard (LED circuit)",
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "Potentiometer through-hole",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "White wire (5V to potentiometer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Orange wire (GND to potentiometer)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Gray wire (potentiometer wiper to A0)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "gray"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Red wire (pin 11 to resistor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Green wire (LED cathode to GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "uno",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "5t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "5t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "8t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "8t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "9t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "9t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb2",
+    "v_port": "9t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb2",
+    "v_port": "9t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1; none added or dropped.",
+   "The laptop running MATLAB is not modelled (not in catalogue and not a circuit part); the USB cable joins to the UNO only.",
+   "Resistor value is not given in the manual; 220 ohm assumed. LED colour assumed red.",
+   "Breadboard hole positions are chosen by me, since the images give no exact columns. The potentiometer sits in one row (GND, SIG, VCC in columns 10-12) on breadboard 1. Resistor, LED and wires on breadboard 2 are placed so the resistor is in series between the red pin-11 wire and the LED anode, with the LED cathode going to GND through the green wire.",
+   "Per the manual, the LED anode (long leg) goes to the resistor and the cathode to GND. The potentiometer is powered from 5V (white wire) and GND (orange wire), and its wiper goes to A0 (gray wire). The manual's remark that A0 reads voltage 'from pin13' is ambiguous; D13 is only driven from software, so no wire to D13 is added.",
+   "Pin 11 drives the LED through writePWMVoltage, so the LED circuit uses D11, not D13."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 38.5,
+  "input_tokens": 60418,
+  "output_tokens": 5784,
+  "cost_usd": 0.1744,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.1,
+   "input_tokens": 29445,
+   "cache_read_tokens": 3468,
+   "output_tokens": 1332,
+   "cost_usd": 0.1179,
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.4,
+   "input_tokens": 30973,
+   "cache_read_tokens": 29443,
+   "output_tokens": 4452,
+   "cost_usd": 0.0565,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

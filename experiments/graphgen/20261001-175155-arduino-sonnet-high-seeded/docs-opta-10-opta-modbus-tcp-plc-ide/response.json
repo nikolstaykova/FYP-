@@ -1,0 +1,312 @@
+{
+ "graph": {
+  "title": "Modbus TCP Communication Between Two Opta Devices Using Arduino PLC IDE",
+  "source_id": "https://docs.arduino.cc/tutorials/opta/modbus-tcp-plc-ide",
+  "new_part_types": [
+   {
+    "type": "opta",
+    "name": "Finder Opta (Arduino PRO) PLC AFX00002",
+    "category": "board",
+    "ports": [
+     {
+      "name": "USB",
+      "kind": "header-socket"
+     },
+     {
+      "name": "ETH",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "ethernet-switch",
+    "name": "Ethernet Switch",
+    "category": "network",
+    "ports": [
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "1",
+      "2",
+      "3",
+      "4"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "rj45-cable",
+    "name": "RJ-45 LAN cable",
+    "category": "cable",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "opta1",
+    "type": "opta",
+    "label": "Opta Slave (Server)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Server"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.2"
+     }
+    ]
+   },
+   {
+    "id": "opta2",
+    "type": "opta",
+    "label": "Opta Master (Client)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Client"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.1"
+     }
+    ]
+   },
+   {
+    "id": "pc1",
+    "type": "laptop",
+    "label": "Computer - PLC IDE",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C Cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB-C Cable",
+    "props": []
+   },
+   {
+    "id": "eth1",
+    "type": "rj45-cable",
+    "label": "RJ-45 Cable",
+    "props": []
+   },
+   {
+    "id": "eth2",
+    "type": "rj45-cable",
+    "label": "RJ-45 Cable",
+    "props": []
+   },
+   {
+    "id": "sw1",
+    "type": "ethernet-switch",
+    "label": "Ethernet Switch (Optional)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "a",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "a",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "b",
+    "v": "sw1",
+    "v_port": "1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "b",
+    "v": "sw1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth2",
+    "u_port": "a",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth2",
+    "u_port": "a",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth2",
+    "u_port": "b",
+    "v": "sw1",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth2",
+    "u_port": "b",
+    "v": "sw1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No breadboard or discrete electronics; this is a networking/PLC tutorial, so the graph covers the Opta devices, cables, switch and computer.",
+   "Hardware list: 2 Opta, 2 USB-C cables, 2 RJ-45 cables, 1 Ethernet switch (recommended/optional). Without the switch, a single RJ-45 cable could join the two Optas directly.",
+   "The overview diagram also shows an optional Modbus TCP compatible field device on the same network and an arrow to further network devices. It is not in the hardware list, so it is omitted.",
+   "The catalogue usb-cable and laptop entries have no or only one port. Cable ends are left unnamed, and both USB cables use the laptop's single USB port (assumed to be via a hub or two ports).",
+   "The diagram shows the switch and the field device on a shared blue network line. I modelled this as each Opta connecting by RJ-45 to its own switch port (1 and 2).",
+   "Roles: Opta1 is the Modbus TCP Server at 192.168.1.2. Opta2 is the Modbus TCP Client (Master) at 192.168.1.1. Software configuration (IPs, status variable cnt at 25000, FC-04 node) is not part of the physical graph.",
+   "Opta relay outputs and status LEDs are onboard features and are not wired externally."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 25.3,
+  "api_seconds": 21.9,
+  "first_token_seconds": 11.6,
+  "input_tokens": 27186,
+  "cache_read_tokens": 5414,
+  "output_tokens": 3165,
+  "cost_usd": 0.1198,
+  "turns": 2
+ }
+}

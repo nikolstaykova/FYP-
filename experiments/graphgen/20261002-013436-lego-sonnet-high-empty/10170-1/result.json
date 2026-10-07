@@ -1,0 +1,117 @@
+{
+ "case": "10170-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 693.6,
+  "input_tokens": 390849,
+  "output_tokens": 123014,
+  "cost_usd": 1.9304,
+  "repair_rounds_used": 1
+ },
+ "parts": 365,
+ "edges": 371,
+ "repeats": [
+  {
+   "group": "car",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "gend",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "cont",
+   "times": 3,
+   "overrides": 70
+  }
+ ],
+ "new_types_declared": 8,
+ "new_types_added": 8,
+ "problems": [],
+ "notes": [
+  "The attached PDF has no inventory pages (it ends at the back cover), so Element IDs were NOT available. Piece types are the closest catalogue matches by shape, with colour in props. Several types are approximate and some pieces were guessed from the pictures.",
+  "Eight new generic types were added for pieces with no close catalogue match: the 6x16 car base, the 2x16 container base plates, the handrail, the bogie half, the buffer beam, the coupler clip, the buffer cap and the truck cover with pin.",
+  "Fix after validation: the two grey round 2x2 plates in the middle truck (b4, b5) are now lego-403221, round plate with axle hole. Before, they were turntable plates, whose port is a stud, so the red axle connectors could not join them. The connector axle now goes into the axle-hole port.",
+  "Fix after validation: the steering wheel on its yellow plate (sw1, sw2) is now lego-3829, one part standing for wheel and stand together. The earlier lego-9566 was not a real part number.",
+  "Ports are null on most joined edges. Almost every join is a stud/anti-stud stack, so the exact port is not meaningful here. Where a port is given (pins, axle connectors), it is the one that matters.",
+  "Most pieces get a single support edge, since a full per-stud edge list was not practical. Edges are approximate in places, mainly the sub-assemblies on pages 11-13 and the placement of ladders, panels and tiles.",
+  "Page 15 step 15 is marked 2x, so the car and its end truck are one repeat built 2 times. Page 16-17 shows the end truck being built. Its centre pin goes into the car's yellow 2x8 end plate (yp5) and can swivel.",
+  "The middle truck (pages 19-20) is built once. In step 16 its two red axle connectors go into the 4x4 end plates (p4) of car 1 and car 2, so that is how the two cars are coupled. Stickers and printed labels are not modelled.",
+  "The grey 125T container (pages 22-26) is built once. Its two end sub-assemblies (page 26 '2x') are the repeat 'gend', and the second copy attaches to the other end's corner plates (b28 instead of b26).",
+  "The blue container (pages 28-30) is built three times: blue, then red and white (the '+' on page 30). The repeat 'cont' has blue as the template, and every part is recoloured by overrides for copies 2 (red) and 3 (white). The black accent bricks and handles take the container colour in the red and white copies, as in the pictures.",
+  "Final arrangement (pages 27, 31, 32): the grey container sits in car 1 with the red container stacked on it. The white container sits in car 2 with the blue container stacked on it. The seating of a container in a car's well is a contact edge, because nothing is fastened."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 553.0,
+   "input_tokens": 223948,
+   "cache_read_tokens": 91436,
+   "output_tokens": 92946,
+   "cost_usd": 1.4778,
+   "check_seconds": 0.02,
+   "issues": 6,
+   "issue_rules": {
+    "V3": 2,
+    "L2": 4
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 140.6,
+   "input_tokens": 166901,
+   "cache_read_tokens": 135711,
+   "output_tokens": 30068,
+   "cost_usd": 0.4526,
+   "check_seconds": 0.02,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 366,
+  "pieces_built": 365,
+  "pieces_unmapped": 20,
+  "inventory_matched": 239,
+  "exact_matched": 93,
+  "inventory_precision": 0.655,
+  "inventory_recall": 0.653,
+  "exact_recall": 0.254,
+  "joined_edges": 369,
+  "contacts_expected": 100,
+  "contacts_predicted": 91,
+  "contacts_correct": 31,
+  "contact_precision": 0.341,
+  "contact_recall": 0.31
+ },
+ "score_initial": {
+  "pieces_expected": 366,
+  "pieces_built": 365,
+  "pieces_unmapped": 24,
+  "inventory_matched": 239,
+  "exact_matched": 93,
+  "inventory_precision": 0.655,
+  "inventory_recall": 0.653,
+  "exact_recall": 0.254,
+  "joined_edges": 369,
+  "contacts_expected": 100,
+  "contacts_predicted": 91,
+  "contacts_correct": 31,
+  "contact_precision": 0.341,
+  "contact_recall": 0.31
+ },
+ "postprocess_ms": 25.3
+}

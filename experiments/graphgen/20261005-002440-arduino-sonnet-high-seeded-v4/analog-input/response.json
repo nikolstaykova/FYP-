@@ -1,0 +1,940 @@
+{
+ "graph": {
+  "title": "Analog Input (potentiometer controls built-in LED blink rate)",
+  "source_id": "https://docs.arduino.cc/built-in-examples/analog/AnalogInput",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": null,
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "Potentiometer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "5V wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "analog input wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "pin 13 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "220 ohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "red LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "LED ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12b.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12b.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11b.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11b.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10b.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10b.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11b.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11b.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12b.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12b.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "24t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "24t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "24t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "24t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "25t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "25t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "25t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "25t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial gives two alternative circuits (potentiometer OR photoresistor + 10k resistor). Both use A0, so only the potentiometer circuit is built here. The photoresistor variant would replace pot1 with a photoresistor from 5V to A0 plus a 10k resistor from A0 to GND.",
+   "In the potentiometer image the yellow wire ends in the top half of the breadboard just above the pot. I assumed it is meant to reach the pot's middle pin, as the text says, so I put it in the same strip as the middle leg (11b.d).",
+   "Pot outer pins: GND to the black wire and VCC (5V) to the red wire, as in the image. The two outer pins are interchangeable.",
+   "The optional external LED circuit (pin 13 -> 220 ohm resistor -> LED anode, cathode -> GND) is not in the images. Its breadboard positions (columns 20-25, top half) are my choice. The built-in LED on pin 13 also works.",
+   "Which GND.n is which on the Uno is assumed: GND.1 is on the power header, GND.3 is the GND pin next to pin 13.",
+   "Breadboard hole positions are estimated from the image."
+  ]
+ },
+ "graph_initial": {
+  "title": "Analog Input (potentiometer controls built-in LED blink rate)",
+  "source_id": "https://docs.arduino.cc/built-in-examples/analog/AnalogInput",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": null,
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "Potentiometer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "5V wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "analog input wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "pin 13 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "220 ohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "red LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "LED ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12b.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12b.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11b.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11b.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10b.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "10b.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11b.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "11b.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12b.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12b.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "24t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "24t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "24t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "24t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "25t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "25t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "25t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "25t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "GND.3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial gives two alternative circuits (potentiometer OR photoresistor + 10k resistor). Both use A0, so only the potentiometer circuit is built here. The photoresistor variant would replace pot1 with a photoresistor from 5V to A0 plus a 10k resistor from A0 to GND.",
+   "In the potentiometer image the yellow wire ends in the top half of the breadboard just above the pot. I assumed it is meant to reach the pot's middle pin, as the text says, so I put it in the same strip as the middle leg (11b.d).",
+   "Pot outer pins: GND to the black wire and VCC (5V) to the red wire, as in the image. The two outer pins are interchangeable.",
+   "The optional external LED circuit (pin 13 -> 220 ohm resistor -> LED anode, cathode -> GND) is not in the images. Its breadboard positions (columns 20-25, top half) are my choice. The built-in LED on pin 13 also works.",
+   "Which GND.n is which on the Uno is assumed: GND.1 is on the power header, GND.3 is the GND pin next to pin 13.",
+   "Breadboard hole positions are estimated from the image."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 37.3,
+  "input_tokens": 19488,
+  "output_tokens": 4944,
+  "cost_usd": 0.0851,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.3,
+   "input_tokens": 19488,
+   "cache_read_tokens": 11120,
+   "output_tokens": 4944,
+   "cost_usd": 0.0851,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

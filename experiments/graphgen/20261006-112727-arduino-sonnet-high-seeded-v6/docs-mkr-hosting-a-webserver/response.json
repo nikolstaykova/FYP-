@@ -1,0 +1,518 @@
+{
+ "graph": {
+  "title": "MKR WiFi 1010 web server LED control",
+  "source_id": "mkr_tutorial_03 (Arduino MKR WiFi 1010 simple web server)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr1000-wifi",
+    "label": "Arduino MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "220 ohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Signal wire (pin 2 to resistor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Ground wire (GND to LED cathode)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are the same as step 1; nothing added or dropped.",
+   "Circuit: D2 -> green wire -> 220 ohm resistor -> LED anode; LED cathode -> black wire -> GND, as in the image and schematic.",
+   "Breadboard holes use the catalogue naming (top half = 't', rows a-e). Resistor spans columns 3 and 6, LED anode (the bent, longer leg) is in column 6 and cathode in column 8, all in the same half. Each wire shares a column strip with its component leg.",
+   "The MKR WiFi 1010 board is placed beside the breadboard, not on it, and is not drawn as plugged into it; the wires go to its header pins D2 and GND.",
+   "The tutorial code reads analog pin A1 with nothing connected, so no part is wired to A1.",
+   "The 220 ohm resistor sits on the LED anode side, as in the schematic. The LED draws about 20 mA, within the board's limit of 7 mA per pin in the catalogue only if the current is lower: (3.3 V - 2.0 V) / 220 ohm is about 6 mA, which fits."
+  ]
+ },
+ "graph_initial": {
+  "title": "MKR WiFi 1010 web server LED control",
+  "source_id": "mkr_tutorial_03 (Arduino MKR WiFi 1010 simple web server)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr1000-wifi",
+    "label": "Arduino MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "220 ohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Signal wire (pin 2 to resistor)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Ground wire (GND to LED cathode)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "6t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are the same as step 1; nothing added or dropped.",
+   "Circuit: D2 -> green wire -> 220 ohm resistor -> LED anode; LED cathode -> black wire -> GND, as in the image and schematic.",
+   "Breadboard holes use the catalogue naming (top half = 't', rows a-e). Resistor spans columns 3 and 6, LED anode (the bent, longer leg) is in column 6 and cathode in column 8, all in the same half. Each wire shares a column strip with its component leg.",
+   "The MKR WiFi 1010 board is placed beside the breadboard, not on it, and is not drawn as plugged into it; the wires go to its header pins D2 and GND.",
+   "The tutorial code reads analog pin A1 with nothing connected, so no part is wired to A1.",
+   "The 220 ohm resistor sits on the LED anode side, as in the schematic. The LED draws about 20 mA, within the board's limit of 7 mA per pin in the catalogue only if the current is lower: (3.3 V - 2.0 V) / 220 ohm is about 6 mA, which fits."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 26.3,
+  "input_tokens": 68163,
+  "output_tokens": 3668,
+  "cost_usd": 0.0995,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 7.3,
+   "input_tokens": 33598,
+   "cache_read_tokens": 21616,
+   "output_tokens": 799,
+   "cost_usd": 0.0602,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.0,
+   "input_tokens": 34565,
+   "cache_read_tokens": 33596,
+   "output_tokens": 2869,
+   "cost_usd": 0.0393,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

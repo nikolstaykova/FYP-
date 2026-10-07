@@ -1,0 +1,74 @@
+{
+ "case": "digital-read-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 46.2,
+  "input_tokens": 19265,
+  "output_tokens": 6127,
+  "cost_usd": 0.0961,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The breadboard in the image is drawn with rows f-j in the upper half and a-e in the lower half, so I used the row letters to pick the bank: f-j is bank 'b' and a-e is bank 't'.",
+  "The pushbutton straddles the centre gap, with legs in columns 4 and 6. The catalogue says 1.l and 1.r are always joined, and 2.l and 2.r likewise. I treated the column-4 legs (4b.f and 4t.e) as side 1 and the column-6 legs (6b.f and 6t.e) as side 2. This matches the manual: 5V goes to one side, and pin 2 plus the pull-down go to the other side.",
+  "Pin 2 (teal wire) lands in column 6 at row i. The resistor's left lead is in column 6 at row c, on the same side of the button as pin 2, so it is the pull-down.",
+  "The orange wire runs from column 4 (row c) to the bottom plus rail and carries 5V to the button's other side. The 10k resistor goes from column 6 to column 9. The short black wire goes from column 9 (row b) to the bottom minus rail.",
+  "The hole numbers on the rails (bp.1, bp.3, bn.1, bn.7) are my estimate, counting rail holes from the left end of the board in groups of five.",
+  "The black wire from the Arduino ends on a GND pin in the power header. I used GND.2, the second of the two GND pins. The image shows the pin but the exact catalogue port is a guess.",
+  "The resistor value is given as 10000 ohms, from the manual's 10k ohm.",
+  "The Claude.ai Gmail, Google Calendar and Google Drive connectors need authorization before they can be used. This session is non-interactive, so they were not used. They can be authorized in the claude.ai connector settings. They were not needed for this task."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 46.2,
+   "input_tokens": 19265,
+   "cache_read_tokens": 11120,
+   "output_tokens": 6127,
+   "cost_usd": 0.0961,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 12.2
+}

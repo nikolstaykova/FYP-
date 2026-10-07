@@ -1,0 +1,218 @@
+{
+ "case": "analog-input",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 102.9,
+  "input_tokens": 70337,
+  "output_tokens": 7488,
+  "cost_usd": 0.2028,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The tutorial offers two alternative circuits (potentiometer or photoresistor + 10k resistor divider); only the potentiometer circuit is modelled since both use A0. The photoresistor version would replace pot1 with a photoresistor from 5V to A0 and a 10k resistor from A0 to GND.",
+  "Pot columns taken from the image: legs in columns 10/11/12 of the lower half; outer pin at column 10 goes to GND, column 12 to 5V, centre (wiper) column 11 to A0. In the image the yellow wire seems to end at the pot's top pin; modelled as joining the wiper's column strip (11b) per the text.",
+  "The built-in LED on pin 13 needs no parts; the optional external 220 ohm resistor + red LED circuit is included on the breadboard with arbitrary column placement. The LED's cathode goes to the GND pin beside pin 13, mapped to uno GND.3.",
+  "Wire colours of the optional LED wires and which of the Uno's GND ports is used are assumptions."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 70.8,
+   "check_seconds": 0.0,
+   "input_tokens": 50710,
+   "output_tokens": 2822,
+   "cost_usd": 0.1199,
+   "listed": 5,
+   "matched": 2,
+   "looked_up": 3,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "Potentiometer **or**",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "10K ohm photoresistor and 10K ohm resistor",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Resistor-Network-470-OHM-9P-8RES-SIP-5-pcs-p-186.html (The content describes a 470 ohm 9-pin SIP resistor network (8 resistors, 2.54mm )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 11.6
+    },
+    {
+     "item": "built-in LED on pin 13 **or**",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/5036 (Content describes a 64x32 RGB LED matrix panel (2.5mm pitch), not a built-in LED)"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Pimoroni-Unicorn-HAT-HD-256-RGB-LED-pixels-in-a-16x16-matrix-p-3002.html (The page describes the Pimoroni Unicorn HAT HD, a 16x16 RGB LED matrix HAT for R)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 20.2
+    },
+    {
+     "item": "220 ohm resistor and red LED",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1755 (The page is an Adafruit LED Sequin (a sewable 1206 red LED board with a built-in)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/rgb-led-red-green-blue-resistors.html (The page describes an RGB LED (red, green, blue) sold with 220 ohm resistors (Sp)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-Red-LED-Button.html (The content is the Seeed Studio page for the Grove - Red LED Button module, whic)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 27.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.1,
+   "input_tokens": 19627,
+   "cache_read_tokens": 11120,
+   "output_tokens": 4666,
+   "cost_usd": 0.0829,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 5,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 5,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.8
+}

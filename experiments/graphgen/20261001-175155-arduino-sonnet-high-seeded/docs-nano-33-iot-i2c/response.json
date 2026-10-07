@@ -1,0 +1,527 @@
+{
+ "graph": {
+  "title": "I2C between two Arduino Nano 33 IoT boards (reader and writer)",
+  "source_id": "nano33BS_06",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-33-iot",
+    "name": "Arduino Nano 33 IoT",
+    "category": "board",
+    "ports": [
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-33-iot",
+    "label": "READER",
+    "props": []
+   },
+   {
+    "id": "nano2",
+    "type": "arduino-nano-33-iot",
+    "label": "WRITER",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "mini breadboard",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "4.7 k\u03a9 (SCL pull-up)",
+    "props": [
+     {
+      "key": "value",
+      "value": "4700"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "4.7 k\u03a9 (SDA pull-up)",
+    "props": [
+     {
+      "key": "value",
+      "value": "4700"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "brown"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "reader A5",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "reader A4",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "reader 3V",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "writer A5",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "writer A4",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "reader USB",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "writer USB",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "nano2",
+    "v_port": "A5",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "nano2",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "nano2",
+    "v_port": "A4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "nano2",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "nano2",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Nano 33 IoT is not in the catalogue, so I added it as a new part type. I gave it only the ports this circuit uses: A4 (SDA), A5 (SCL), GND, 3V3 and USB. The diagram labels the 3.3 V pin '3V'.",
+   "The diagram draws the two 4.7 k\u03a9 pull-up resistors and the wire junctions without a breadboard. The hardware list names mini breadboards. I put the shared nodes on one breadboard (bb1): column 5t is SCL, column 10t is SDA, and the top positive rail is 3V3. This is an assumption about the layout, but the electrical nets match the diagram.",
+   "The nets are: SCL joins reader A5, writer A5 and one resistor end. SDA joins reader A4, writer A4 and the other resistor end. The other ends of both resistors go to the reader's 3V3 pin. The two GND pins are joined directly by a wire.",
+   "The 3V3 rail is fed only from the reader board. The writer's 3V3 is unused.",
+   "Both boards are powered and programmed over USB from a computer. The computer is not modelled.",
+   "The list says 10 jumper wires, but the circuit needs only 6. I modelled the 6 that the diagram shows.",
+   "Breadboard hole positions are arbitrary, but the nets they form are correct."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 35.0,
+  "api_seconds": 31.7,
+  "first_token_seconds": 16.0,
+  "input_tokens": 20205,
+  "cache_read_tokens": 5414,
+  "output_tokens": 5132,
+  "cost_usd": 0.1116,
+  "turns": 2
+ }
+}

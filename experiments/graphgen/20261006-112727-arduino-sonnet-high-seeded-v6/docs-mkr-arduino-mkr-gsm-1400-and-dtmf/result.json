@@ -1,0 +1,104 @@
+{
+ "case": "docs-mkr-arduino-mkr-gsm-1400-and-dtmf",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 95.3,
+  "input_tokens": 105806,
+  "output_tokens": 13815,
+  "cost_usd": 0.2011,
+  "repair_rounds_used": 1
+ },
+ "parts": 14,
+ "edges": 41,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The schematic image was not available, so the wiring follows the text: a 2N7000 level shifter between the 3.3 V board and the 5 V NeoPixel ring. The board's data pin goes to the 2N7000 source, the board's 3.3 V (VCC) goes to the gate, and the drain goes to the ring DIN and, through the 10k resistor, to 5 V. The ring is powered from the 5 V and GND rails.",
+  "Fix for the D6 errors: the catalogue card for the MKR GSM 1400 lists only VIN, 5V, VCC, GND, USB and BAT, with no digital pin ports. The wire4 end that goes to the board's data pin therefore has no port named (v_port null). The pin number (6) is an assumption, since the manual does not state it.",
+  "Fix for the lead-to-socket error: the LiPo's JST plug into the board's BAT socket is not a valid lead-to-socket join in the spec's port-kind pairs. I recorded it as a contact edge (push-on, by hand) plus an electrical edge from battery + to BAT.",
+  "2N7000 is a TO-92 part, so I placed it in neighbouring holes of one row in the order S, G, D (columns 10, 11, 12). That follows the standard 2N7000 pinout, not the catalogue's TO-220 card.",
+  "The catalogue lists no negative port on the MKR board for the LiPo battery, so only the battery + to BAT is recorded.",
+  "The MKR board is off-breadboard and connected by jumper wires. The micro USB cable has no ports, so the edge to the board's USB port has no port on the cable side.",
+  "The antenna and SIM card are not in the parts list and are not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.7,
+   "input_tokens": 47388,
+   "cache_read_tokens": 44387,
+   "output_tokens": 2053,
+   "cost_usd": 0.0414,
+   "check_seconds": 0.0,
+   "parts_listed": 14,
+   "changed_in_build": 0,
+   "looked_up": [
+    "neopixel-ring"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.1,
+   "input_tokens": 26107,
+   "cache_read_tokens": 24315,
+   "output_tokens": 5685,
+   "cost_usd": 0.0689,
+   "check_seconds": 0.01,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 2,
+    "V3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.5,
+   "input_tokens": 32311,
+   "cache_read_tokens": 26105,
+   "output_tokens": 6077,
+   "cost_usd": 0.0908,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.1
+}

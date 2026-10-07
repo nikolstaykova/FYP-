@@ -1,0 +1,535 @@
+{
+ "graph": {
+  "title": "Keyboard Reprogram",
+  "source_id": "https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "leonardo",
+    "type": "arduino-leonardo",
+    "label": "Arduino Leonardo",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "hook-up wire (D2 to button)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "hook-up wire (GND to button)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The E5 warning is not a real problem for this manual, so I kept the graph unchanged and added no resistor. The sketch calls pinMode(2, INPUT_PULLUP), which enables the Leonardo's internal pull-up on D2. So D2 is held HIGH when the button is open and goes LOW when it is pressed. The tutorial lists no resistor and says only to connect D2 to GND with the pushbutton. An external resistor would break the rule to use exactly the listed parts.",
+   "The circuit images did not load, so the wiring follows the text and the sketch.",
+   "The button straddles the centre gap. Side 1 (1.l, 1.r) is in columns 10 and 12 of the top half. Side 2 (2.l, 2.r) is in the same columns of the bottom half. Wire1 goes from D2 to the strip with 1.l. Wire2 goes from GND.1 to the strip with 2.l.",
+   "Breadboard column numbers, the choice of GND.1 and the wire colours are assumptions. The USB cable is not in the parts list and is left out."
+  ]
+ },
+ "graph_initial": {
+  "title": "Keyboard Reprogram",
+  "source_id": "https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "leonardo",
+    "type": "arduino-leonardo",
+    "label": "Arduino Leonardo",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "hook-up wire (D2 to button)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "hook-up wire (GND to button)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "12b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "leonardo",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are the same as in step 1. No parts were added or dropped.",
+   "The circuit images did not load, so the wiring follows the text: the pushbutton connects D2 to GND, and the sketch uses INPUT_PULLUP, so there is no external resistor.",
+   "The button straddles the centre gap. Side 1 (1.l, 1.r) is in columns 10 and 12 of the top half. Side 2 (2.l, 2.r) is in the same columns of the bottom half. Pressing it joins the two sides.",
+   "Wire1 runs from D2 to column 10 top (10t.a), the same strip as button leg 1.l. Wire2 runs from GND.1 to column 10 bottom (10b.j), the same strip as button leg 2.l.",
+   "Breadboard column numbers and the choice of GND.1 are assumptions. Wire colours are assumptions."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 52.4,
+  "input_tokens": 132514,
+  "output_tokens": 7199,
+  "cost_usd": 0.136,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.7,
+   "input_tokens": 46858,
+   "cache_read_tokens": 42759,
+   "output_tokens": 867,
+   "cost_usd": 0.0336,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/\"}",
+    "StructuredOutput {\"title\": \"Keyboard Reprogram\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/\", \"new_pa"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.9,
+   "input_tokens": 26060,
+   "cache_read_tokens": 25116,
+   "output_tokens": 2440,
+   "cost_usd": 0.0332,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Keyboard Reprogram\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/\", \"new_pa"
+   ],
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 11.7,
+   "input_tokens": 28704,
+   "cache_read_tokens": 26058,
+   "output_tokens": 1984,
+   "cost_usd": 0.0356,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Keyboard Reprogram\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/\", \"new_pa"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 11.1,
+   "input_tokens": 30892,
+   "cache_read_tokens": 28702,
+   "output_tokens": 1908,
+   "cost_usd": 0.0336,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Keyboard Reprogram\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardReprogram/\", \"new_pa"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "final_issue_list": [
+  [
+   "E5",
+   "pin ['leonardo:2'] connects only to a button contact ['btn1:1']: it floats when the button is open (the pull-down/pull-up resistor must join this same pin net)"
+  ]
+ ]
+}

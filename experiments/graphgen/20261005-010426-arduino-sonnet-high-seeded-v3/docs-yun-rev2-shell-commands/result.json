@@ -1,0 +1,130 @@
+{
+ "case": "docs-yun-rev2-shell-commands",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 97.7,
+  "input_tokens": 55588,
+  "output_tokens": 9100,
+  "cost_usd": 0.1702,
+  "repair_rounds_used": 2
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The breadboard is drawn rotated; each horizontal row of 5 holes in the image is one catalogue strip. I mapped the three rows used to columns 10, 13 and 14 (bank t). The exact column numbers are arbitrary.",
+  "The red wire goes to header pin 9 (D9). The black wire goes to the first GND pin on the power header (GND.1). The resistor runs from the D9 strip to the LED anode strip. The LED cathode strip connects to GND. This matches the schematic: D9 -> R1 -> LED -> GND.",
+  "The two E2 findings are not real problems, so I kept the graph unchanged. They list the Y\u00fan's own internal nets from the catalogue. ICSP.GND is tied to the GND pins and ICSP.VCC is tied to 5V on the board itself. My graph has no edge to ICSP.GND, ICSP.VCC or 5V. Nothing in the manual connects to the ICSP header, and the only board connections are wire1 to D9 and wire2 to GND.1. The warning about ICSP.VCC and 5V is unrelated to this circuit, because 5V is not used at all. The ICSP.GND finding only reflects that the board's GND pins share one net with the LED cathode, which is the intended ground return.",
+  "The MCP servers claude.ai Gmail, Google Calendar and Google Drive need authorization through the claude.ai connector settings. They were not needed for this task and are unavailable until authorized."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 50.9,
+   "input_tokens": 10943,
+   "output_tokens": 2087,
+   "cost_usd": 0.0452,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 5,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Y\u00fan board or shield",
+     "type": "arduino-yun",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/2472"
+      ]
+     ],
+     "seconds": 45.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.6,
+   "input_tokens": 11871,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2870,
+   "cost_usd": 0.0553,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E2": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.2,
+   "input_tokens": 15188,
+   "cache_read_tokens": 11869,
+   "output_tokens": 2094,
+   "cost_usd": 0.0366,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E2": 2
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.0,
+   "input_tokens": 17586,
+   "cache_read_tokens": 15186,
+   "output_tokens": 2049,
+   "cost_usd": 0.0331,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E2": 2
+   }
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 2,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.4
+}

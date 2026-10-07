@@ -1,0 +1,144 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 53.7,
+  "input_tokens": 73694,
+  "output_tokens": 4895,
+  "cost_usd": 0.0852,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts are the same as in step 1, with no additions or removals.",
+  "The accelerometer's six pins sit in neighbouring columns 10-15 of the top half of the breadboard, in row a, in the card's pin order (ST, Z, Y, X, GND, VCC). Each jumper wire goes in row b of the same column, so it shares a strip with its accelerometer pin.",
+  "Pin table: ST to A0, Z to A1, Y to A2, X to A3, GND to A4, VDD to A5. A4 is driven LOW as ground and A5 HIGH as 5 V by the sketch (D18 and D19), so no 5V or GND pin is used.",
+  "The captured circuit image was cut off. The six-wire layout and the wire colours (black and red in particular) are assumed from the pin table.",
+  "Some ADXL3xx boards are 3.3 V only, and the tutorial warns about this. The catalogue's adxl335 card gives no supply range, so I kept the tutorial's 5 V wiring."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.1,
+   "input_tokens": 47014,
+   "cache_read_tokens": 42758,
+   "output_tokens": 1307,
+   "cost_usd": 0.0386,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/sensors/ADXL3xx/\"}",
+    "StructuredOutput {\"title\": \"ADXL3xx Accelerometer\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/sensors/ADXL3xx/\", \"new_part_"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.6,
+   "input_tokens": 26680,
+   "cache_read_tokens": 25273,
+   "output_tokens": 3588,
+   "cost_usd": 0.0466,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"ADXL3xx Accelerometer\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/sensors/ADXL3xx/\", \"new_part_"
+   ],
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 15.7
+}

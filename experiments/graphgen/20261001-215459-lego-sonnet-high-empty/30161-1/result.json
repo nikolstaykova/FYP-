@@ -1,0 +1,124 @@
+{
+ "case": "30161-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 154.0,
+  "input_tokens": 69848,
+  "output_tokens": 19904,
+  "cost_usd": 0.3144,
+  "repair_rounds_used": 2
+ },
+ "parts": 24,
+ "edges": 25,
+ "repeats": [
+  {
+   "group": "wheel",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "The supplied PDF has no readable inventory pages, so I could not read the real Element IDs.",
+  "Yellow 1x1 pieces (b10, b11): the 'lego-3070' id was rejected. They now use catalogue type lego-3005744 (yellow round 1x1 plate), the closest catalogue match. The picture could also show a flat 1x1 tile.",
+  "Flame (b15): I kept this part because the Batmobile does have a flame element. I could not find its Element ID, and lego-6126 is my best guess. It is probably still unverified. Please replace it with the Element ID from the inventory page.",
+  "lego-slope-grille and lego-fender-arch are placeholder ids for the same reason. The grille slopes and curved fender are real parts of this model.",
+  "b8:top.2 and b4:top.2 are each used once. b8 sits on both studs of b7, the flame sits on the grille b17, and b20 is joined to b19.",
+  "The step 1 base plate looks like a 3x4 plate. I used lego-3031 (4x4) as the closest match.",
+  "Which stud or port each piece sits on is approximate where the pictures are small. This applies most to the wheel holders in step 4 and the rear top pieces in steps 10-13.",
+  "Step 4 shows pins sticking out at both ends. I modelled them as two wheel-holder plates (front and rear), each with two pins, and put four wheels on those pins in step 14.",
+  "The two trans-red round plates seen in step 8 are attached to the underside of the base plate.",
+  "Step 7 builds a sub-assembly (a 1x4 plate with two yellow pieces and a curved fender) and then fits it on the front of the yellow plate."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 70.3,
+   "input_tokens": 14596,
+   "cache_read_tokens": 5414,
+   "output_tokens": 9651,
+   "cost_usd": 0.1343,
+   "check_seconds": 0.0,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 2,
+    "L2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.0,
+   "input_tokens": 24776,
+   "cache_read_tokens": 14594,
+   "output_tokens": 5431,
+   "cost_usd": 0.098,
+   "check_seconds": 0.04,
+   "issues": 3,
+   "issue_rules": {
+    "L2": 3
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 52.7,
+   "input_tokens": 30476,
+   "cache_read_tokens": 24774,
+   "output_tokens": 4822,
+   "cost_usd": 0.0821,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "L2": 1
+   }
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 1,
+ "score": {
+  "pieces_expected": 45,
+  "pieces_built": 24,
+  "pieces_unmapped": 8,
+  "inventory_matched": 6,
+  "exact_matched": 0,
+  "inventory_precision": 0.25,
+  "inventory_recall": 0.133,
+  "exact_recall": 0.0,
+  "joined_edges": 25,
+  "contacts_expected": 4,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": 0.0
+ },
+ "score_initial": {
+  "pieces_expected": 45,
+  "pieces_built": 24,
+  "pieces_unmapped": 10,
+  "inventory_matched": 6,
+  "exact_matched": 0,
+  "inventory_precision": 0.25,
+  "inventory_recall": 0.133,
+  "exact_recall": 0.0,
+  "joined_edges": 25,
+  "contacts_expected": 4,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": 0.0
+ },
+ "postprocess_ms": 1.3
+}

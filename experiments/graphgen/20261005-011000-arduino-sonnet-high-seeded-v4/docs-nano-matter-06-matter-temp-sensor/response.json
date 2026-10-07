@@ -1,0 +1,1443 @@
+{
+ "graph": {
+  "title": "Matter Temperature Sensor with Arduino Nano Matter",
+  "source_id": "https://docs.arduino.cc/tutorials/nano-matter/matter-temperature-sensor/",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "nanom1",
+    "type": "arduino-nano-matter",
+    "label": "Arduino Nano Matter",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "oled1",
+    "type": "oled-ssd1306",
+    "label": "I2C OLED Display SSD1306",
+    "props": []
+   },
+   {
+    "id": "dht1",
+    "type": "temp-dht11",
+    "label": "DHT11 Temperature and Humidity sensor",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3V3 to OLED VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to OLED GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "D4 to DHT signal",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "3V3 to DHT VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "GND to DHT GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "D4",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "D4",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "11b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "11b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nanom1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "21t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "21t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "SCL",
+    "v": "bb1",
+    "v_port": "22t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "SCL",
+    "v": "bb1",
+    "v_port": "22t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "SDA",
+    "v": "bb1",
+    "v_port": "23t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "SDA",
+    "v": "bb1",
+    "v_port": "23t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "27t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "27t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "28t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "28t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "21t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "21t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "23t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "23t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "28t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "28t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The wiring diagram image (diagram-v1.png) was not provided, so connections follow the text: OLED and DHT11 are powered from 3V3, OLED uses I2C, DHT11 data is on D4.",
+   "The parts list said the Nano Matter was not in the catalogue, but arduino-nano-matter exists, so I used it.",
+   "The catalogue entry for arduino-nano-matter has no SDA/SCL ports. I mapped I2C to A4 (SDA) and A5 (SCL), as on the Nano form factor. This is an assumption.",
+   "The exact breadboard holes are not given. The board is assumed to straddle the centre channel with its used pins at 3t.e, 4t.e, 5t.e, 10b.f and 11b.f. The OLED is at 20t\u201323t and the DHT11 at 27t\u201329t. These holes are illustrative. The strip connectivity (which pin joins which) follows the text.",
+   "The DHT11 module is treated as 3 used pins (VCC, SIG, GND). Its NC pin is unused.",
+   "The USB-C cable connects to the board's USB port. The cable has no catalogue ports, so none are named.",
+   "The Google Nest Hub Max (Thread Border Router) and the software are not part of the build graph."
+  ]
+ },
+ "graph_initial": {
+  "title": "Matter Temperature Sensor with Arduino Nano Matter",
+  "source_id": "https://docs.arduino.cc/tutorials/nano-matter/matter-temperature-sensor/",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "nanom1",
+    "type": "arduino-nano-matter",
+    "label": "Arduino Nano Matter",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "oled1",
+    "type": "oled-ssd1306",
+    "label": "I2C OLED Display SSD1306",
+    "props": []
+   },
+   {
+    "id": "dht1",
+    "type": "temp-dht11",
+    "label": "DHT11 Temperature and Humidity sensor",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3V3 to OLED VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to OLED GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "D4 to DHT signal",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "3V3 to DHT VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "GND to DHT GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "D4",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "D4",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nanom1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "11b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nanom1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "11b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nanom1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "20t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "21t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "21t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "SCL",
+    "v": "bb1",
+    "v_port": "22t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "SCL",
+    "v": "bb1",
+    "v_port": "22t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "oled1",
+    "u_port": "SDA",
+    "v": "bb1",
+    "v_port": "23t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "oled1",
+    "u_port": "SDA",
+    "v": "bb1",
+    "v_port": "23t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "27t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "27t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "28t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "28t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "21t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "21t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "20t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "22t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "23t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "23t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "28t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "28t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "27t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "29t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The wiring diagram image (diagram-v1.png) was not provided, so connections follow the text: OLED and DHT11 are powered from 3V3, OLED uses I2C, DHT11 data is on D4.",
+   "The parts list said the Nano Matter was not in the catalogue, but arduino-nano-matter exists, so I used it.",
+   "The catalogue entry for arduino-nano-matter has no SDA/SCL ports. I mapped I2C to A4 (SDA) and A5 (SCL), as on the Nano form factor. This is an assumption.",
+   "The exact breadboard holes are not given. The board is assumed to straddle the centre channel with its used pins at 3t.e, 4t.e, 5t.e, 10b.f and 11b.f. The OLED is at 20t\u201323t and the DHT11 at 27t\u201329t. These holes are illustrative. The strip connectivity (which pin joins which) follows the text.",
+   "The DHT11 module is treated as 3 used pins (VCC, SIG, GND). Its NC pin is unused.",
+   "The USB-C cable connects to the board's USB port. The cable has no catalogue ports, so none are named.",
+   "The Google Nest Hub Max (Thread Border Router) and the software are not part of the build graph."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 178.6,
+  "input_tokens": 64269,
+  "output_tokens": 8229,
+  "cost_usd": 0.1928,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 132.7,
+   "check_seconds": 0.0,
+   "input_tokens": 43477,
+   "output_tokens": 1914,
+   "cost_usd": 0.0674,
+   "listed": 7,
+   "matched": 3,
+   "looked_up": 2,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Nano Matter (x1)",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-nano-every.html (The content describes the Arduino Nano Every (ATMega4809, DEV-15590), not the Ar)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Arduino-Nano-v3-p-1928.html (The page content is for the Arduino Nano v3 (Seeed Studio), not the Arduino Nano)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 27.0
+    },
+    {
+     "item": "DHT11 Temperature and Humidity sensor (x1)",
+     "card": "temp-dht11",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/humidity-and-temperature-sensor-dht20.html (The page describes the DHT20 (I2C humidity/temperature sensor, SEN-18364), not t)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2764 (The content describes the Redshift Labs UM7 Orientation Sensor (AHRS), not a DHT)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-DHT11.html"
+      ]
+     ],
+     "seconds": 24.4
+    },
+    {
+     "item": "I2C OLED Display SSD1306 (x1)",
+     "card": "oled-ssd1306",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard (x1)",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Google Nest Hub Max (Thread Border Router) (x1)",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "USB-C\u00ae cable (x1)",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 45.9,
+   "input_tokens": 20792,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6315,
+   "cost_usd": 0.1254,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

@@ -1,0 +1,269 @@
+{
+ "case": "pitch-follower",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 36.4,
+  "input_tokens": 27227,
+  "output_tokens": 4650,
+  "cost_usd": 0.1145,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole positions are estimated from the circuit image. The photoresistor straddles the centre gap at column 21; the 100 ohm resistor straddles it at column 9.",
+  "The 4.7K resistor is placed from 21b.c to 24b.c so it shares the A0 node with the photoresistor's lower leg. The black GND wire lands in column 24 (24b.b).",
+  "The speaker's black lead goes straight to the Arduino's digital-header GND (modelled as GND.3). Its red lead goes into 9t.g, the same strip as the 100 ohm resistor. The speaker wires are assumed to be pin-ended leads.",
+  "The 100 ohm resistor sits between pin 9 and the speaker. The tutorial's schematic labels it 10K, but the text and parts list say 100 ohm, so 100 ohm is used.",
+  "The power GND wire uses GND.2, one of the two GND pins on the power header."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 7.3,
+   "check_seconds": 0.0,
+   "input_tokens": 8107,
+   "output_tokens": 429,
+   "cost_usd": 0.0167,
+   "listed": 7,
+   "matched": 6,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "8 ohm speaker",
+     "card": "speaker",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/6486"
+      ]
+     ],
+     "seconds": 7.3
+    },
+    {
+     "item": "photoresistor",
+     "card": "photoresistor",
+     "skipped": false
+    },
+    {
+     "item": "4.7K ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "100 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.1,
+   "input_tokens": 19120,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4221,
+   "cost_usd": 0.0978,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 2,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "1"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 2,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "1"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.8
+}

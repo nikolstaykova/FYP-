@@ -1,0 +1,243 @@
+{
+ "case": "arduino-to-breadboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 131.5,
+  "input_tokens": 31788,
+  "output_tokens": 21840,
+  "cost_usd": 0.2496,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 140,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The part list is the same as step 1. Only the labels of wire1-4, wire7-10 and wire15-16 were made more specific to match the connections.",
+  "The chip sits across the breadboard centre gap with pin 1 at column 5, bank b, row f. Pins 1-14 are in columns 5-18 of bank b, and pins 28-15 are in columns 5-18 of bank t. Exact columns are my choice, because the pictures give only the approximate layout.",
+  "ATmega328P pin use: 1 RESET, 2 RXD, 3 TXD, 7 VCC, 8 GND, 9 XTAL1, 10 XTAL2, 17 MOSI, 18 MISO, 19 SCK, 20 AVCC, 22 GND. Pin 21 (AREF) is left unconnected.",
+  "Bootloader burning (ArduinoISP): Uno pin 10 to RESET, 11 to MOSI, 12 to MISO, 13 to SCK, plus 5V and GND. Wires 1-4 are removed after burning, as the text says.",
+  "Uploading: the Arduino's own microcontroller is removed. Uno pin 0 (RX) goes to ATmega pin 2 and Uno pin 1 (TX) to ATmega pin 3. These are straight, not crossed, because the removed chip leaves pins 0 and 1 connected to the USB-serial chip. The Uno RESET goes to ATmega pin 1. The pictures show these wires only roughly, so this follows the standard Arduino arrangement.",
+  "The 10k resistor pulls RESET (pin 1) up to 5V on the bottom + rail. The crystal sits between pins 9 and 10 via the two blue wires. Each 22 pF capacitor goes from a crystal leg to ground (bottom - rail).",
+  "Top rails are fed from the Uno 5V and GND and linked to the bottom rails by wires 11 and 12. Wires 9 and 10 take VCC and GND to pins 7 and 8 from the bottom rails. Wires 7 and 8 take AVCC and GND to pins 20 and 22 from the top rails.",
+  "The minimal no-crystal circuit is only described as an option, so it is not built. The crystal, capacitors and resistor are used, as in the main diagrams."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.4,
+   "input_tokens": 14115,
+   "cache_read_tokens": 11144,
+   "output_tokens": 3327,
+   "cost_usd": 0.0474,
+   "check_seconds": 0.0,
+   "parts_listed": 24,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 107.1,
+   "input_tokens": 17673,
+   "cache_read_tokens": 14113,
+   "output_tokens": 18513,
+   "cost_usd": 0.2022,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 10,
+  "nets_matched": 3,
+  "net_precision": 0.3,
+  "net_recall": 0.429,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 2,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "resistor": 1,
+   "capacitor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ],
+    [
+     "board",
+     "RESET"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "2"
+    ],
+    [
+     "board",
+     "0"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "3"
+    ],
+    [
+     "board",
+     "1"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 23.5
+}

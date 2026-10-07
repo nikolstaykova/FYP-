@@ -1,0 +1,134 @@
+{
+ "case": "70127-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 533.7,
+  "input_tokens": 388495,
+  "output_tokens": 90219,
+  "cost_usd": 1.5741,
+  "repair_rounds_used": 2
+ },
+ "parts": 109,
+ "edges": 125,
+ "repeats": [
+  {
+   "group": "rearleg",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "frontleg",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "foot",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 34,
+ "new_types_added": 29,
+ "problems": [],
+ "notes": [
+  "The PDF images are low resolution. Part types come from the inventory page (page 32) and the part pictures, and a few Element IDs are my best match by shape.",
+  "Piece-count check (4629913 'page says 4', 302201 'page says 14', 362301 'page says 16'): this is not a real mismatch. The page-32 text repeats its last block of entries (287701, 4629913, 4249112, 302201, 362301, 6015883) a second time, so the counts look doubled. The printed inventory picture shows each once: 2x 4629913, 7x 302201, 8x 362301. The build matches these numbers. 4629913 is used 2x, one in each rear leg. 302201 is used 7x: 2 in the body, 4 in the feet and 1 in the head. 362301 is used 8x: 2 in each of the 4 legs. I kept the graph unchanged.",
+  "Stud-level contacts are approximate. Where a piece covers several pieces below it, I gave an edge to the main supporting piece or pieces. Each stud or anti-stud port is used once. Where a catalogue part has too few ports, the extra edge has a null port on that side.",
+  "The jaw plate (4541978) and tail connector (6052824) have a finger-hinge port, so they join hinge to hinge. The leg ankle plates (6043639) have a socket port that takes the foot's ball (ball to socket).",
+  "Printed stickers are not parts and are omitted. They go on the foot slopes, leg caps, head face slope and the stepped bracket.",
+  "Body ball plates: b16 and b17 are the front pair and b20 and b21 are the rear pair. b24 is the fifth ball plate, stacked on b16, and it takes the head's socket. Steps 4-6 do not show exactly where each ball plate sits, so these positions are my reading.",
+  "Steps 9-12: the four legs click onto balls. Steps 9-10 are the rear legs with arches and a heel claw. Steps 11-12 are the front legs with two shoulder claws. Step 13 builds four identical feet, 4x. Each foot's ball plate snaps into the socket end of a leg's ankle plate.",
+  "The minifigure (page 2) is built in full. The shield's attachment is not shown, so I put it on the torso's right hand. The minifigure is placed on the back plate with a contact edge only, because no step shows it being fixed.",
+  "The head (steps 1-8 of the 14th assembly) hangs on the fifth ball plate by a ball and socket (socket plate b34 onto ball plate b24). The jaw hinges onto the finger plate b31."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 351.0,
+   "input_tokens": 86178,
+   "cache_read_tokens": 5507,
+   "output_tokens": 51723,
+   "cost_usd": 0.841,
+   "check_seconds": 0.01,
+   "issues": 46,
+   "issue_rules": {
+    "V3": 6,
+    "V4": 39,
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 102.6,
+   "input_tokens": 140443,
+   "cache_read_tokens": 86176,
+   "output_tokens": 21222,
+   "cost_usd": 0.4465,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 80.1,
+   "input_tokens": 161874,
+   "cache_read_tokens": 140441,
+   "output_tokens": 17274,
+   "cost_usd": 0.2866,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "L1": 1
+   }
+  }
+ ],
+ "issues_first": 46,
+ "issues_final": 1,
+ "score": {
+  "pieces_expected": 105,
+  "pieces_built": 109,
+  "pieces_unmapped": 0,
+  "inventory_matched": 100,
+  "exact_matched": 100,
+  "inventory_precision": 0.917,
+  "inventory_recall": 0.952,
+  "exact_recall": 0.952,
+  "joined_edges": 124,
+  "contacts_expected": 3,
+  "contacts_predicted": 9,
+  "contacts_correct": 3,
+  "contact_precision": 0.333,
+  "contact_recall": 1.0
+ },
+ "score_initial": {
+  "pieces_expected": 105,
+  "pieces_built": 109,
+  "pieces_unmapped": 0,
+  "inventory_matched": 100,
+  "exact_matched": 100,
+  "inventory_precision": 0.917,
+  "inventory_recall": 0.952,
+  "exact_recall": 0.952,
+  "joined_edges": 124,
+  "contacts_expected": 3,
+  "contacts_predicted": 9,
+  "contacts_correct": 3,
+  "contact_precision": 0.333,
+  "contact_recall": 1.0
+ },
+ "postprocess_ms": 4.7
+}

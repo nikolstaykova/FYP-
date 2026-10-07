@@ -1,0 +1,114 @@
+{
+ "case": "docs-nano-33-iot-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 93.2,
+  "input_tokens": 109181,
+  "output_tokens": 15581,
+  "cost_usd": 0.2433,
+  "repair_rounds_used": 2
+ },
+ "parts": 15,
+ "edges": 40,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The remaining check, 'nano1 needs at least 4.5 V but 3V3 is on 3.3 V', is not a real problem for this manual, so I kept the 3V3 wires. The 4.5 V minimum is the board's supply range on VIN/VUSB. The checker is reading the 3V3 pin as a power input. Here both Nano 33 IoT boards are powered at 5 V from the computer over USB. The 3V3 pin is the board's 3.3 V output, and the tutorial's image uses it as the I2C pull-up source. Moving the pull-ups to VUSB (5 V) would put 5 V on 3.3 V-only I2C pins, which is worse. So I kept 3V3 as the image shows.",
+  "bb2 carries the SDA line and its pull-up, so it is no longer unconnected. The tutorial lists two mini breadboards but the image shows none. I put the SCL line and r1 on bb1 and the SDA line and r2 on bb2, each with its own 3V3 rail. This needs a 7th jumper wire (wire7, a second red 3V3 wire), within the 10 in the parts list.",
+  "The SDA/SCL pins are as in the image: A4 is SDA (yellow) and A5 is SCL (teal) on both boards. GND is joined between the boards with the brown wire.",
+  "The USB cable has no ports in the catalogue, so the USB edges use a null port on the cable side and the board's USB port."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.1,
+   "input_tokens": 22081,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1791,
+   "cost_usd": 0.0602,
+   "check_seconds": 0.0,
+   "parts_listed": 14,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.7,
+   "input_tokens": 24069,
+   "cache_read_tokens": 22079,
+   "output_tokens": 4345,
+   "cost_usd": 0.0528,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V2": 1,
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.9,
+   "input_tokens": 28843,
+   "cache_read_tokens": 24067,
+   "output_tokens": 5159,
+   "cost_usd": 0.0683,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.5,
+   "input_tokens": 34188,
+   "cache_read_tokens": 28841,
+   "output_tokens": 4286,
+   "cost_usd": 0.062,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.1
+}

@@ -1,0 +1,92 @@
+{
+ "case": "tone-melody",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 14.6,
+  "api_seconds": 10.9,
+  "first_token_seconds": 11.3,
+  "input_tokens": 18389,
+  "cache_read_tokens": 9602,
+  "output_tokens": 1498,
+  "cost_usd": 0.052,
+  "turns": 2
+ },
+ "parts": 5,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole positions read from the image. The buzzer legs go in columns 5 and 8, in the upper half of the board. The image labels that half rows f-j, but the catalogue names the upper half bank 't' with rows a-e. I used bank 't' and rows c and d for the legs and wires. Only the column and bank matter electrically.",
+  "The buzzer's left leg (column 5) goes to GND through the black wire. The right leg (column 8) goes to pin 8 through the red wire. The schematic shows + on pin 8 and - on GND. I mapped buzzer port 1 to + and port 2 to -, which is an assumption because the catalogue gives no polarity labels.",
+  "The red wire reaches column 8 in the upper half, crossing the centre gap from the Uno's pin 8. The black wire goes to the GND pin next to AREF on the Uno's digital header, which is GND.1.",
+  "No resistor is used. The tutorial also allows an 8 ohm speaker in place of the piezo buzzer, but the circuit drawn uses a piezo buzzer."
+ ],
+ "score": {
+  "nets_expected": 2,
+  "nets_built": 2,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "buzzer": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "buzzer",
+     "1"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 14.5
+}

@@ -1,0 +1,102 @@
+{
+ "case": "debounce",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 40.4,
+  "api_seconds": 37.3,
+  "first_token_seconds": 23.9,
+  "input_tokens": 16789,
+  "cache_read_tokens": 9602,
+  "output_tokens": 5673,
+  "cost_usd": 0.0874,
+  "turns": 2
+ },
+ "parts": 9,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard coordinates are estimated from the circuit image. Bank 't' (rows a-e) is the half nearest the bottom rails in the picture, and bank 'b' (rows f-j) is the half nearest the top.",
+  "The bottom rail pair is taken as 'bn' (minus, black line) and 'bp' (plus, red line). Rail hole numbers are approximate.",
+  "The button straddles the centre gap with legs in columns 4 and 6. I assumed the catalogue pushbutton's port 1 is the column-4 pair (1.l=4b.f, 1.r=4t.e) and port 2 is the column-6 pair. That gives the schematic's topology: 5V reaches the switch through the orange wire, and the other side goes to pin 2 and the resistor.",
+  "The 10k resistor is a pull-down, from column 6 (bank t, row c) to column 9. A short black wire carries column 9 to the GND rail.",
+  "Pin 2 connects to the button through the teal wire at 6b.i, which is the same column-6 pair as the button leg and resistor.",
+  "The manual does not say which GND pin is used. I used GND.2 (the second GND in the power header), as the picture shows.",
+  "The Arduino sketch (Debounce) is software only and is not part of the graph."
+ ],
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 9.3
+}

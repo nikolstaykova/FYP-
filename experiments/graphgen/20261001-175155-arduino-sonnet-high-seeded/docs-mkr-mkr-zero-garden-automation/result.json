@@ -1,0 +1,83 @@
+{
+ "case": "docs-mkr-mkr-zero-garden-automation",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 94.4,
+  "api_seconds": 90.6,
+  "first_token_seconds": 45.9,
+  "input_tokens": 19375,
+  "cache_read_tokens": 5414,
+  "output_tokens": 15890,
+  "cost_usd": 0.2158,
+  "turns": 2
+ },
+ "parts": 25,
+ "edges": 96,
+ "repeats": [],
+ "new_types_declared": 7,
+ "new_types_added": 7,
+ "problems": [],
+ "notes": [
+  "No breadboard is used: the manual uses ready-made Grove modules on the MKR Connector Carrier (Grove cables).",
+  "The Grove connector names on the carrier (A0, D0, D1, TWI) follow the manual: moisture sensor on A0, water sensor on D0, relay on D1, barometric sensor and OLED on TWI via the Grove I2C Hub.",
+  "The photo shows the MKR Zero-style board; the manual says MKR Zero. The MKR Zero is modelled as a new part type since it is not in the catalogue.",
+  "Grove cable line mapping: SIG = SCL (MKR pin 12), NC = SDA (MKR pin 11) on the TWI connector. Grove VCC is taken from the carrier's 3.3V rail (the carrier's actual VCC voltage selector is not shown).",
+  "Because the Grove cable ports are used for electrical edges, the 'joined' edge for each cable end is recorded at connector level (no specific port).",
+  "Water sensor hack: two solid wires of different length (difference = minimum water depth, e.g. 10 cm) are soldered to two non-connected tinned bars on the Grove water sensor (modelled as BAR.1 and BAR.2).",
+  "12V power circuit (the 'Next step' section) is included: 12V supply to carrier VIN/GND screw terminals, VIN fed to relay COM, relay NO to pump, pump return to GND. The wall-wart has a single PLUG port, so it is connected to both VIN and GND; the exact schematic image was not available so this is inferred from the text.",
+  "The pump (or electronic valve) is modelled as a dc-motor. The plant vase/soil and water tank are not modelled as parts.",
+  "The USB cable (type A to micro-B) connects the computer running the Arduino IDE to the MKR Zero; the usb-cable catalogue part has no named ports."
+ ],
+ "score": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "mkr-connector-carrier",
+   "family": "mkr-connector-carrier",
+   "checked": false
+  },
+  {
+   "type": "grove-moisture-sensor",
+   "family": "grove-moisture-sensor",
+   "checked": false
+  },
+  {
+   "type": "grove-water-sensor",
+   "family": "grove-water-sensor",
+   "checked": false
+  },
+  {
+   "type": "grove-dps310",
+   "family": "grove-dps310",
+   "checked": false
+  },
+  {
+   "type": "grove-oled-096",
+   "family": "led",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  },
+  {
+   "type": "grove-i2c-hub",
+   "family": "grove-i2c-hub",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 32.5
+}

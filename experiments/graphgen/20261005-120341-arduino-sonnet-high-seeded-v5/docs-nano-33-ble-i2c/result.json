@@ -1,0 +1,77 @@
+{
+ "case": "docs-nano-33-ble-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 69.1,
+  "input_tokens": 90387,
+  "output_tokens": 10372,
+  "cost_usd": 0.1733,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 46,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Part type change from step 1: lookup_part only returned the Nano 33 BLE Sense Rev2 card with ports GND, 3V3, VIN and USB. That card has no A4/A5, which the circuit needs. I defined 'arduino-nano-33-ble' with A4, A5, 3V3, GND and USB ports instead, and use it for both boards.",
+  "Dropped wire10 from step 1. The diagram needs only 9 jumper wires, so the tenth was unused. The parts list says 10, which is the pack size.",
+  "The diagram draws the boards wired directly to each other, with no breadboard. The parts list has 2 mini breadboards, so I used them as junction points. bb1 carries the shared SCL strip (10t, A5 of both boards), the shared SDA strip (12t, A4 of both boards) and the 3V3 rail (tp). bb2 carries the shared GND link (bn rail). The Nano boards themselves are not plugged into the breadboards.",
+  "SCL strip 10t goes through r1 (10t.c to 14t.c), then wire8 (14t.d to the tp rail). SDA strip 12t goes through r2 (12t.c to 16t.c), then wire9 (16t.d to the tp rail). The 3V3 from the reader reaches the tp rail through wire4 (tp.3). Both 4.7k resistors are pull-ups to the reader's 3V3, as in the diagram.",
+  "The diagram shows a single GND wire between the boards. It is split into wire1 and wire7 meeting on the bb2 rail (bn.1 and bn.2).",
+  "The tutorial says the board pin is called 3V; I used 3V3 on the Nano. Only the reader's 3V3 is connected, as in the diagram.",
+  "USB cables power the boards from a computer. The cable has no catalogue ports, so only a joined edge to each board's USB port is given."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.3,
+   "input_tokens": 65692,
+   "cache_read_tokens": 54158,
+   "output_tokens": 2501,
+   "cost_usd": 0.082,
+   "check_seconds": 0.0,
+   "parts_listed": 18,
+   "changed_in_build": 5,
+   "looked_up": [
+    "arduino-nano-33-ble-sense"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.8,
+   "input_tokens": 24695,
+   "cache_read_tokens": 22672,
+   "output_tokens": 7871,
+   "cost_usd": 0.0913,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.0
+}

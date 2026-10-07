@@ -1,0 +1,95 @@
+{
+ "case": "docs-due-due-motor-shield-dc",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 54.6,
+  "input_tokens": 35852,
+  "output_tokens": 8953,
+  "cost_usd": 0.1541,
+  "repair_rounds_used": 1
+ },
+ "parts": 6,
+ "edges": 23,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "Arduino Due, Arduino Motor Shield and wall wart supply are not in the catalogue, so they are new part types; only the ports used are meaningful for the shield (pins 3 PWM_A, 12 DIR_A, 9 BRAKE_A, A0 SNS_A).",
+  "The motor's two wires are permanently attached to the motor, so motor ports 1/2 connect straight to the shield's channel A screw terminals (red to +, black to -, as in the photo); no jumper wires are used.",
+  "The shield is stacked on the Due so every shield header pin is joined to the matching Due socket; only the pins the sketch uses plus power pins are listed. The shield's VIN header pin carries the 12V from the Due's VIN to the shield's motor driver; this is a real power feed from the stacked header, not a direct pin-to-pin shortcut.",
+  "The shield's separate VIN/GND screw terminals are not used by this tutorial (power comes through the Due's DC jack), so they were removed from the shield part to avoid an unwired internal link.",
+  "Wall wart (12V used with the fan) plugs into the Due DC jack, modelled as a header-socket so the wire-end plug is a compatible join; its mains plug is not modelled. The DC- side is internal to the barrel jack, so only DC+ is wired to DC-JACK.",
+  "The USB cable goes to the Due programming port (USB-PROG) and to the computer; the photo shows both USB and power cables attached."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.9,
+   "input_tokens": 15337,
+   "cache_read_tokens": 5414,
+   "output_tokens": 4644,
+   "cost_usd": 0.0872,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 1,
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.7,
+   "input_tokens": 20515,
+   "cache_read_tokens": 15335,
+   "output_tokens": 4309,
+   "cost_usd": 0.0669,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-due",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "arduino-motor-shield",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "wall-wart-power-supply",
+   "family": "wall-wart-power-supply",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 11.9
+}

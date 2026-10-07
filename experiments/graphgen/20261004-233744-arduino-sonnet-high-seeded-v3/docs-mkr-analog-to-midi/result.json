@@ -1,0 +1,125 @@
+{
+ "case": "docs-mkr-analog-to-midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 266.5,
+  "input_tokens": 76636,
+  "output_tokens": 26809,
+  "cost_usd": 0.4467,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 91,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Row naming follows the catalogue: bank 't' = rows a-e, bank 'b' = rows f-j. In the picture the a-e half is the lower half.",
+  "Rail naming assumed: tp/bp are the red (+) rails, tn/bn the blue (-) rails. Rail holes are numbered 1-25 in groups of five. The + wires land on tp.8, tp.10 and tp.12. The GND wires land on bn.5, bn.17, bn.18 and bn.25.",
+  "Column positions were read from pixel coordinates. Each resistor was taken to span 4 columns, which matches the schematic: R11 3t.d-7t.d, R10 6t.b-10t.b, R8 12t.b-16t.b, R9 16t.c-20t.c. Some columns could be off by one.",
+  "The 10k trimmer is taken to have its two end pins at 1t.e and 3t.e and the wiper at 2b.f, on the opposite side of the centre gap. The end pin at col 1 goes nowhere, as in the schematic. The pot's GND and VCC ports are symmetric, so which end is which does not matter.",
+  "LMV358 sits across the gap: OUT1 14t.e, IN1- 15t.e, IN1+ 16t.e, V- 17t.e on the a-e side, and V+ 14b.f, OUT2 15b.f, IN2- 16b.f, IN2+ 17b.f on the f-j side. The second op-amp is unused. Its pins are joined to the breadboard with no electrical edges.",
+  "The breadboard picture shows the brown A0 wire on the OUT1 column (14t.a). The schematic draws A0 on the second op-amp's output. I followed the breadboard picture.",
+  "The MKR1000 VCC pin is mapped to catalogue port 3V3. The wire ends on the board are mapped to 3V3, GND and A0.",
+  "The jack's 'right' contact (to C1) is mapped to RING1 and its sleeve to SLEEVE. The tip is unused.",
+  "Resistor values are given as ohms in the 'value' prop (47000 and 100000). The catalogue name '100\u03a9 Resistor' is only a default."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 100.0,
+   "input_tokens": 61199,
+   "output_tokens": 3437,
+   "cost_usd": 0.1722,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 9,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino MKR1000 Board",
+     "type": "arduino-mkr1000",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-micromod-wifi-function-board-da16200.html (This page sells the SparkFun MicroMod WiFi Function Board (DA16200, WRL-18594). )"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-micromod-wifi-function-board-esp32.html (This page sells the SparkFun MicroMod WiFi Function Board (ESP32, WRL-18430). It)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2773 (This page sells the Adafruit CC3000 Wi-Fi Shield for Arduino (Pololu item 2773).)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2774 (The page sells the Adafruit CC3000 Wi-Fi Breakout Board, not the Arduino MKR1000)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Particle-Argon-IoT-Development-Board-Wifi-Mesh-Bluetooth-p-3203.html (The page sells the Particle Argon, not the Arduino MKR1000. It's a different boa)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR1000-p-3167.html"
+      ]
+     ],
+     "seconds": 48.8
+    },
+    {
+     "part": "3.5mm jack",
+     "type": "connector-audio-jack-3-5mm",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-trrs-3-5mm-jack-breakout.html"
+      ]
+     ],
+     "seconds": 43.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 166.5,
+   "input_tokens": 15437,
+   "cache_read_tokens": 5507,
+   "output_tokens": 23372,
+   "cost_usd": 0.2745,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 14.6
+}

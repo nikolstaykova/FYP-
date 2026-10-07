@@ -1,0 +1,70 @@
+{
+ "case": "keyboard-reprogram",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 15.6,
+  "api_seconds": 12.1,
+  "first_token_seconds": 12.5,
+  "input_tokens": 17998,
+  "cache_read_tokens": 9602,
+  "output_tokens": 2015,
+  "cost_usd": 0.0557,
+  "turns": 2
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e9: port '2' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e10: port '2' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e13: port 'GND.1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e14: port 'GND.1' not on arduino-leonardo"
+  ]
+ ],
+ "notes": [
+  "The catalogue's arduino-leonardo entry lists no ports, so I used the Uno port names (2, GND.1) for it. This is an assumption.",
+  "The pushbutton straddles the centre gap of the breadboard. Its 4 legs are at columns 4 and 6, in rows e (top half) and f (bottom half). I read the columns and rows from the picture, so they may be off by one.",
+  "I assumed the pushbutton's 1.l/1.r legs are the top pair and its 2.l/2.r legs are the bottom pair. Pressing the button joins the top and bottom pairs.",
+  "The blue wire goes from D2 to the top of the button's right column. The picture shows it ending in row j of the top half and the button's pins in rows e and f. The black wire goes from the Leonardo GND pin to the button's left column on the other side. I assumed the two wires end in the two different sides of the button, so pressing it connects D2 to GND. Ports 6b.j and 4t.a are my best reading.",
+  "The wire ends sit in different banks than the button legs they should reach: the blue wire ends in 6b.j, but the button leg it connects to is in 6b.f, which is the same strip, so that works. The black wire ends in 4t.a, which shares a strip with the button leg 4t.e, so that also works.",
+  "No external resistor is used. The sketch turns on INPUT_PULLUP, so the internal pull-up resistor on pin 2 does the job.",
+  "The schematic draws the Leonardo's 5V pin but nothing is connected to it. The Leonardo is powered by its USB cable, which the manual does not list as a part, so I left it out."
+ ],
+ "score": {
+  "nets_expected": 2,
+  "nets_built": 2,
+  "nets_matched": 2,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 18.0
+}

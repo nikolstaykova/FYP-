@@ -1,0 +1,176 @@
+{
+ "case": "docs-mkr-lora-button-press-649",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 102.8,
+  "input_tokens": 79655,
+  "output_tokens": 11691,
+  "cost_usd": 0.261,
+  "repair_rounds_used": 1
+ },
+ "parts": 13,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Two separate circuits (sender and receiver), each on its own breadboard and MKR WAN 1300 with its own antenna. The manual really does build two separate boards, so they are not merged.",
+  "The breadboard images show rows f-j in the upper half. I mapped them to catalogue bank 'b' (rows f-j), e.g. '5b.g'.",
+  "Pin 2 on the MKR WAN 1300 is the catalogue port D2.",
+  "Sender: the pushbutton is drawn with two visible legs (columns 5 and 7, row g). I used 1.l and 2.l. The GND wire goes to column 5 (button side 1) and the pin 2 wire goes to column 7 (side 2). The firmware uses INPUT_PULLUP, so there is no external resistor.",
+  "Receiver: the LED cathode (straight leg) is in column 6 with the GND wire. The anode (bent, longer leg) is in column 8 and shares a strip with one end of the resistor. The other resistor end is in column 11 with the pin 2 wire.",
+  "The resistor value is not stated in the manual. 220 ohm is assumed.",
+  "Antenna: the antenna's SMA port (lead) and the board's ANT port (socket) are not a compatible join kind. I removed the port names from the 'joined' antenna edges, which are now board-level push-on joins. I kept the port-specific 'electrical' edge SMA to ANT.",
+  "The USB cables and the laptop (power and programming) are not drawn in the circuit images, so they are not in the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 45.1,
+   "check_seconds": 0.0,
+   "input_tokens": 24901,
+   "output_tokens": 2646,
+   "cost_usd": 0.0661,
+   "listed": 9,
+   "matched": 4,
+   "looked_up": 2,
+   "found": 2,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "LoRa library installed, see the github repository.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "2x Arduino MKR WAN 1300.",
+     "card": "arduino-mkr-wan-1300",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-and-breadboard-holder.html (The content describes the SparkFun Arduino and Breadboard Holder (DEV-11235), a )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html"
+      ]
+     ],
+     "seconds": 22.1
+    },
+    {
+     "item": "2x Antenna.",
+     "card": "antenna-gps-active-sma",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/gps-embedded-antenna-sma.html"
+      ]
+     ],
+     "seconds": 12.0
+    },
+    {
+     "item": "1x Pushbutton.",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "1x Generic LED.",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires.",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard(s).",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "2x Micro USB cable.",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.0,
+   "input_tokens": 24646,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4993,
+   "cost_usd": 0.1276,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.7,
+   "input_tokens": 30108,
+   "cache_read_tokens": 24644,
+   "output_tokens": 4052,
+   "cost_usd": 0.0673,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.4
+}

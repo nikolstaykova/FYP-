@@ -1,0 +1,781 @@
+{
+ "graph": {
+  "title": "Matter Smart Fan with Arduino Nano Matter",
+  "source_id": "https://docs.arduino.cc/tutorials/nano-matter/matter-fan/",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-matter",
+    "name": "Arduino Nano Matter",
+    "category": "board",
+    "ports": [
+     {
+      "name": "D4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB-C",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-motor-driver",
+    "name": "Grove motor driver module",
+    "category": "board",
+    "ports": [
+     {
+      "name": "SIG",
+      "kind": "header-socket"
+     },
+     {
+      "name": "NC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "MOT+",
+      "kind": "header-socket"
+     },
+     {
+      "name": "MOT-",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "dc-motor",
+    "name": "DC motor with fan blade",
+    "category": "motor",
+    "ports": [
+     {
+      "name": "1",
+      "kind": "lead"
+     },
+     {
+      "name": "2",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "1",
+      "2"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   },
+   {
+    "type": "grove-breakout",
+    "name": "Grove-to-breadboard breakout adapter",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "SIG",
+      "kind": "header-pin"
+     },
+     {
+      "name": "NC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "G.SIG",
+      "kind": "header-socket"
+     },
+     {
+      "name": "G.NC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "G.VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "G.GND",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "SIG",
+      "G.SIG"
+     ],
+     [
+      "NC",
+      "G.NC"
+     ],
+     [
+      "VCC",
+      "G.VCC"
+     ],
+     [
+      "GND",
+      "G.GND"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-cable",
+    "name": "Grove 4-pin cable",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a.SIG",
+      "kind": "wire-end"
+     },
+     {
+      "name": "a.NC",
+      "kind": "wire-end"
+     },
+     {
+      "name": "a.VCC",
+      "kind": "wire-end"
+     },
+     {
+      "name": "a.GND",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b.SIG",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b.NC",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b.VCC",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b.GND",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a.SIG",
+      "b.SIG"
+     ],
+     [
+      "a.NC",
+      "b.NC"
+     ],
+     [
+      "a.VCC",
+      "b.VCC"
+     ],
+     [
+      "a.GND",
+      "b.GND"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-matter",
+    "label": "Arduino Nano Matter",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "brk1",
+    "type": "grove-breakout",
+    "label": "Grove breakout adapter (green)",
+    "props": []
+   },
+   {
+    "id": "drv1",
+    "type": "grove-motor-driver",
+    "label": "Grove motor driver module",
+    "props": []
+   },
+   {
+    "id": "gcable1",
+    "type": "grove-cable",
+    "label": "Grove cable",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "DC motor",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Yellow wire D4",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Red wire 3V3",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Black wire GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "4t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "4t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "D4",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "D4",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "6t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "6t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "brk1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "brk1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "brk1",
+    "u_port": "NC",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "brk1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "brk1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "brk1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "brk1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "6t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "6t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "13t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "13t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "a.SIG",
+    "v": "brk1",
+    "v_port": "G.SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "a.SIG",
+    "v": "brk1",
+    "v_port": "G.SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "a.NC",
+    "v": "brk1",
+    "v_port": "G.NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "a.VCC",
+    "v": "brk1",
+    "v_port": "G.VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "a.VCC",
+    "v": "brk1",
+    "v_port": "G.VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "a.GND",
+    "v": "brk1",
+    "v_port": "G.GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "a.GND",
+    "v": "brk1",
+    "v_port": "G.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "b.SIG",
+    "v": "drv1",
+    "v_port": "SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "b.SIG",
+    "v": "drv1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "b.NC",
+    "v": "drv1",
+    "v_port": "NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "b.VCC",
+    "v": "drv1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "b.VCC",
+    "v": "drv1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "b.GND",
+    "v": "drv1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "b.GND",
+    "v": "drv1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "drv1",
+    "v_port": "MOT+",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "drv1",
+    "v_port": "MOT+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "drv1",
+    "v_port": "MOT-",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "drv1",
+    "v_port": "MOT-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "contact",
+    "u": "drv1",
+    "u_port": null,
+    "v": "bb1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The wiring diagram image (diagram-v4.png) was not provided; the circuit is inferred from the cover photo and the text: motor driver powered from 3.3V, PWM on D4.",
+   "Exact breadboard hole positions are assumed (Nano pins in column strips 4-6, breakout in 10-13); the photo does not show them precisely.",
+   "Grove motor driver port names (SIG, NC, VCC, GND, MOT+, MOT-) and the Grove breakout adapter are inferred from the photo (green breakout, Grove cable to blue driver module, red/black motor wires).",
+   "Nano Matter port list is limited to the pins used (D4, 3V3, GND, USB-C).",
+   "Google Nest Hub Max (Thread border router), Google Home app and software are not part of the physical circuit and are omitted.",
+   "The USB-C cable only has a joined edge to the Nano; its other end goes to a computer/power, not modelled.",
+   "NC pins of the Grove connectors are joined but not marked electrical because they carry no signal."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 49.4,
+  "api_seconds": 45.4,
+  "first_token_seconds": 23.1,
+  "input_tokens": 18489,
+  "cache_read_tokens": 5414,
+  "output_tokens": 7204,
+  "cost_usd": 0.1254,
+  "turns": 2
+ }
+}

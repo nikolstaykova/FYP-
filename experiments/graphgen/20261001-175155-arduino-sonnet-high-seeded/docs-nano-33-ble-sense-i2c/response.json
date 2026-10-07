@@ -1,0 +1,394 @@
+{
+ "graph": {
+  "title": "I2C between two Arduino Nano 33 BLE boards (reader/writer)",
+  "source_id": "nano33BS_06 (Arduino Nano 33 BLE Sense I2C reader/writer tutorial)",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-33-ble",
+    "name": "Arduino Nano 33 BLE / BLE Sense",
+    "category": "board",
+    "ports": [
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-33-ble",
+    "label": "READER (Nano 33 BLE Sense)",
+    "props": []
+   },
+   {
+    "id": "nano2",
+    "type": "arduino-nano-33-ble",
+    "label": "WRITER (Nano 33 BLE)",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable to reader",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB cable to writer",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "4.7k pull-up (SCL)",
+    "props": [
+     {
+      "key": "value",
+      "value": "4700"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "4.7k pull-up (SDA)",
+    "props": [
+     {
+      "key": "value",
+      "value": "4700"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "brown"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "SCL (A5) wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "SDA (A4) wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "3V3 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "nano2",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "A5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "A4",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "nano2",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "wire2",
+    "v_port": "a",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "wire2",
+    "v_port": "a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "wire3",
+    "v_port": "a",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "wire3",
+    "v_port": "a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "r2",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "r2",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The circuit image shows direct wiring with no breadboard, although the parts list mentions 2 mini breadboards. Following the image, I left the breadboards out. The resistor leads are joined to the wire ends by twisting, which stands in for the junctions the breadboard would provide.",
+   "The image labels A5 as SCL and A4 as SDA on the Nano 33 BLE. The text says SDA is on A4 and SCL on A5. This agrees with the image.",
+   "Each 4.7k resistor pulls one I2C line up to 3V3 from the reader board. The 3V3 wire ends at one node shared by both resistors' second legs.",
+   "The parts list says 10 jumper wires, but the image shows only 4 wire runs (GND, SCL, SDA, 3V3). I modelled the 4 runs in the image.",
+   "The boards are identified as the Nano 33 BLE Sense (reader) and the Nano 33 BLE (writer). Both use one new part type with only the pins the circuit uses.",
+   "Both boards are powered and programmed over USB cables to a computer. The computer is not modelled."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 29.9,
+  "api_seconds": 26.8,
+  "first_token_seconds": 14.3,
+  "input_tokens": 20219,
+  "cache_read_tokens": 5414,
+  "output_tokens": 3904,
+  "cost_usd": 0.0993,
+  "turns": 2
+ }
+}

@@ -1,0 +1,99 @@
+{
+ "case": "pi-gpio-music-box",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 74.3,
+  "input_tokens": 43737,
+  "output_tokens": 9857,
+  "cost_usd": 0.2294,
+  "repair_rounds_used": 0
+ },
+ "parts": 16,
+ "edges": 69,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The manual leaves GPIO pin choice and breadboard layout to the user; I used the pins from its full code listing: GPIO4, GPIO17, GPIO27 and GPIO10, which are physical pins 7, 11, 13 and 19.",
+  "Each button straddles the breadboard centre gap. Side 1 is in the top half and side 2 is in the bottom half. The GPIO lead goes into the top strip and a pin-to-pin jumper takes the bottom strip to the ground rail. The tutorial's wiring-a-button include is not shown, so this follows the standard layout.",
+  "The five pin-to-socket leads are four GPIO leads plus one ground lead from Pi pin 6 (GND) to rail tn.1. I assumed the socket end (a) goes on the Pi and the pin end (b) goes in the breadboard.",
+  "The four pin-to-pin jumpers connect each button's ground side to the tn rail. The rail is shared, so all grounds are common.",
+  "The buttons have no external pull-up or pull-down resistor because gpiozero Button uses the Pi's internal pull-up.",
+  "The catalogue rpi-4b has no 3.5mm audio jack port, so the speaker is joined to the Pi with no port named. The speaker's USB power connection is not shown in the manual and is not modelled.",
+  "The sample .wav files and the Python code are software and are not part of the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 34.3,
+   "input_tokens": 33573,
+   "output_tokens": 2863,
+   "cost_usd": 0.1188,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 6,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Raspberry Pi computer",
+     "type": "rpi-4b",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/4296"
+      ]
+     ],
+     "seconds": 12.0
+    },
+    {
+     "part": "Speakers or headphones",
+     "type": "speaker-3-5mm",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "page did not match: https://www.adafruit.com/product/3369 (This page sells the Adafruit Mini External USB Stereo Speaker (product 3369). It)"
+      ],
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/1363"
+      ]
+     ],
+     "seconds": 16.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 40.0,
+   "input_tokens": 10164,
+   "cache_read_tokens": 0,
+   "output_tokens": 6994,
+   "cost_usd": 0.1106,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 13.1
+}

@@ -1,0 +1,77 @@
+{
+ "case": "docs-generic-midi-device",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 91.3,
+  "input_tokens": 73061,
+  "output_tokens": 16361,
+  "cost_usd": 0.2361,
+  "repair_rounds_used": 0
+ },
+ "parts": 30,
+ "edges": 136,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1. All 20 wires and 7 buttons are used in the connections.",
+  "The catalogue breadboard has 30 columns, but the image board is wider (about 63) and its buttons are spaced 6 columns apart. I compressed the layout to 4-column spacing so every button fits in columns 1-27. Each button spans columns c and c+2 (c = 1, 5, 9, 13, 17, 21, 25) across the centre gap. The topology is the same as the image.",
+  "Each button's side 1 (1.l and 1.r) is on the bank-b half, and its signal wire joins the strip of its right-hand column. Side 2 (2.l and 2.r) is on the bank-t half. The ground wire goes from that strip to the bn rail, so pressing the button joins the pin to GND. The code uses INPUT_PULLUP, so there are no external resistors.",
+  "Rail assignment from the image: the black GND wires go to the rail beside the blue line (tn on top, bn on bottom). The red wires go to the top rail beside the red line (tp). Rail numbers are arbitrary but kept within 1-30.",
+  "The Arduino GND wire is assumed to go to GND.1 of the Zero's digital header.",
+  "The red IOREF wire goes to tp.28. A second red wire from tp.29 goes to the potentiometer's VCC end. IOREF is 3.3 V on the Zero, which is the pot's supply. The A0 wire goes to the wiper (SIG) and the black wire from the bottom GND rail goes to the pot's GND end, as in the schematic.",
+  "The long black wire links the top GND rail to the bottom GND rail. This joins the Arduino GND to the button ground wires and the pot ground.",
+  "Jumper wires go directly to the potentiometer's pins, as in the image."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.3,
+   "input_tokens": 35232,
+   "cache_read_tokens": 22599,
+   "output_tokens": 2352,
+   "cost_usd": 0.0786,
+   "check_seconds": 0.0,
+   "parts_listed": 30,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 76.0,
+   "input_tokens": 37829,
+   "cache_read_tokens": 35230,
+   "output_tokens": 14009,
+   "cost_usd": 0.1575,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 22.2
+}

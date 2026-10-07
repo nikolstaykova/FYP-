@@ -1,0 +1,158 @@
+{
+ "tutorial": "pi-rpi-physical-connect-led",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/breadboard.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/jumper.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/solder.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/led1.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/led2.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/led3.png"
+ ],
+ "legs_and_ends": 8,
+ "with_position": 6,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi1",
+     "type": "raspberry-pi-3",
+     "label": "Raspberry Pi 3 Model B v1.2"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "Resistor",
+     "props": {
+      "value": "330"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "1t.e",
+       "mm": [
+        0.0,
+        10.16
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "5t.e",
+       "mm": [
+        10.16,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "Red LED",
+     "props": {
+      "colour": "red"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "5t.d",
+       "mm": [
+        10.16,
+        7.62
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "6t.d",
+       "mm": [
+        12.7,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Red jumper wire (to GPIO17)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "1t.a",
+       "mm": [
+        0.0,
+        0.0
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "GPIO17",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Black jumper wire (to GND)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "6t.a",
+       "mm": [
+        12.7,
+        0.0
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "GND.4",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

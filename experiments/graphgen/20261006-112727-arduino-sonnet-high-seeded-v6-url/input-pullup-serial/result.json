@@ -1,0 +1,248 @@
+{
+ "case": "input-pullup-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 55.5,
+  "input_tokens": 128837,
+  "output_tokens": 7283,
+  "cost_usd": 0.1332,
+  "repair_rounds_used": 2
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The 'uno:2 floats when the button is open' warning is not a real problem for this manual, so I kept the graph unchanged and added no resistor. The tutorial is about INPUT_PULLUP: pinMode(2, INPUT_PULLUP) turns on the ATmega's internal pull-up to 5V on pin 2, which holds the pin HIGH when the button is open. The tutorial text says this, and its hardware list has only the board, a button, a breadboard and hook-up wire. An external resistor would break the 'exactly the parts the tutorial says' rule.",
+  "Parts are the same as in step 1; none added or dropped.",
+  "The button straddles the centre gap. Side 1 (1.l, 1.r) is in the top half at columns 10 and 11. Side 2 (2.l, 2.r) is in the bottom half at the same columns.",
+  "Pin 2 goes by wire2 to the button's top side (10t.a). GND goes by wire1 to the button's bottom side (10b.j). Pressing the button joins pin 2 to GND, as the text describes.",
+  "The exact breadboard columns and rows are my choice. The image only shows the wires reaching the button area.",
+  "The LED is the onboard pin-13 LED, so it has no edges. The text only says 'ground', so the choice of GND.1 on the Uno is an assumption."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.8,
+   "input_tokens": 45908,
+   "cache_read_tokens": 42758,
+   "output_tokens": 701,
+   "cost_usd": 0.0282,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/\"}",
+    "StructuredOutput {\"title\": \"Input Pullup Serial\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/\", \"n"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.4,
+   "input_tokens": 24947,
+   "cache_read_tokens": 24167,
+   "output_tokens": 2612,
+   "cost_usd": 0.0341,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Input Pullup Serial\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/\", \"n"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.9,
+   "input_tokens": 27895,
+   "cache_read_tokens": 24945,
+   "output_tokens": 1990,
+   "cost_usd": 0.0367,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Input Pullup Serial\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/\", \"n"
+   ],
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.4,
+   "input_tokens": 30087,
+   "cache_read_tokens": 27893,
+   "output_tokens": 1980,
+   "cost_usd": 0.0342,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Input Pullup Serial\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/\", \"n"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 10.0
+}

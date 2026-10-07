@@ -1,0 +1,422 @@
+{
+ "graph": {
+  "title": "Connect a PIR motion sensor to a Raspberry Pi",
+  "source_id": "pir-diagram (Raspberry Pi projects: PIR motion sensor)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi",
+    "type": "raspberry-pi-4-gpio",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "pir1",
+    "type": "pir-motion-sensor",
+    "label": "PIR sensor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "VCC to 5V jumper (female-to-female)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND jumper (female-to-female)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "OUT to GPIO4 jumper (female-to-female)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "No breadboard; the PIR sensor connects directly to the Pi header through three female-to-female jumper wires.",
+   "The catalogue has no female-to-female jumper type, so the generic jumper-wire is used.",
+   "Pi header pins (physical numbering): 5V = pin 2, GND = pin 6, GPIO4 = pin 7. This matches the image: red wire on the top-right 5V pin, black on the GND pin in the third row, orange on GP4 in the fourth row.",
+   "PIR VCC goes to 5V, which is within the sensor's 4.5-20 V supply range. The OUT pin goes to GPIO4. The manual does not say what voltage OUT swings to; many PIR modules output 3.3 V, which is safe for the Pi's 3.3 V inputs.",
+   "The wire colours come from the image."
+  ]
+ },
+ "graph_initial": {
+  "title": "Connect a PIR motion sensor to a Raspberry Pi",
+  "source_id": "pir-diagram (Raspberry Pi projects: PIR motion sensor)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi",
+    "type": "raspberry-pi-4-gpio",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "pir1",
+    "type": "pir-motion-sensor",
+    "label": "PIR sensor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "VCC to 5V jumper (female-to-female)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND jumper (female-to-female)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "OUT to GPIO4 jumper (female-to-female)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "No breadboard; the PIR sensor connects directly to the Pi header through three female-to-female jumper wires.",
+   "The catalogue has no female-to-female jumper type, so the generic jumper-wire is used.",
+   "Pi header pins (physical numbering): 5V = pin 2, GND = pin 6, GPIO4 = pin 7. This matches the image: red wire on the top-right 5V pin, black on the GND pin in the third row, orange on GP4 in the fourth row.",
+   "PIR VCC goes to 5V, which is within the sensor's 4.5-20 V supply range. The OUT pin goes to GPIO4. The manual does not say what voltage OUT swings to; many PIR modules output 3.3 V, which is safe for the Pi's 3.3 V inputs.",
+   "The wire colours come from the image."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 19.0,
+  "input_tokens": 50076,
+  "output_tokens": 2824,
+  "cost_usd": 0.0481,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 7.9,
+   "input_tokens": 24476,
+   "cache_read_tokens": 22995,
+   "output_tokens": 961,
+   "cost_usd": 0.0201,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Connect a PIR motion sensor to a Raspberry Pi\", \"source_id\": \"pir-diagram (Raspberry Pi projects: PIR motion "
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 11.1,
+   "input_tokens": 25600,
+   "cache_read_tokens": 24474,
+   "output_tokens": 1863,
+   "cost_usd": 0.028,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Connect a PIR motion sensor to a Raspberry Pi\", \"source_id\": \"pir-diagram (Raspberry Pi projects: PIR motion "
+   ],
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

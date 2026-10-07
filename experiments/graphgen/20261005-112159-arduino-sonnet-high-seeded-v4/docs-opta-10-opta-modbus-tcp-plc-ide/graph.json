@@ -1,0 +1,192 @@
+{
+ "nodes": [
+  {
+   "id": "opta1",
+   "type": "arduino-opta-lite",
+   "label": "Opta Slave (Server)",
+   "props": {
+    "role": "Modbus TCP Server",
+    "ip": "192.168.1.2"
+   }
+  },
+  {
+   "id": "opta2",
+   "type": "arduino-opta-lite",
+   "label": "Opta Master (Client)",
+   "props": {
+    "role": "Modbus TCP Client",
+    "ip": "192.168.1.1"
+   }
+  },
+  {
+   "id": "lanhub1",
+   "type": "lan-hub",
+   "label": "Ethernet Switch (Optional)",
+   "props": {}
+  },
+  {
+   "id": "pc1",
+   "type": "laptop",
+   "label": "Computer - PLC IDE",
+   "props": {}
+  },
+  {
+   "id": "usb1",
+   "type": "usb-cable",
+   "label": "USB-C Cable",
+   "props": {}
+  },
+  {
+   "id": "usb2",
+   "type": "usb-cable",
+   "label": "USB-C Cable",
+   "props": {}
+  },
+  {
+   "id": "rj1",
+   "type": "rj45-cable",
+   "label": "RJ-45 Cable",
+   "props": {}
+  },
+  {
+   "id": "rj2",
+   "type": "rj45-cable",
+   "label": "RJ-45 Cable",
+   "props": {}
+  }
+ ],
+ "edges": [
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "opta1",
+   "v_port": "USB-C",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e1"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "pc1",
+   "v_port": "USB",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e2"
+  },
+  {
+   "type": "joined",
+   "u": "usb2",
+   "u_port": null,
+   "v": "opta2",
+   "v_port": "USB-C",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e3"
+  },
+  {
+   "type": "joined",
+   "u": "usb2",
+   "u_port": null,
+   "v": "pc1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e4"
+  },
+  {
+   "type": "joined",
+   "u": "rj1",
+   "u_port": "a",
+   "v": "opta1",
+   "v_port": "ETH",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e5"
+  },
+  {
+   "type": "electrical",
+   "u": "rj1",
+   "u_port": "a",
+   "v": "opta1",
+   "v_port": "ETH",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e6"
+  },
+  {
+   "type": "joined",
+   "u": "rj1",
+   "u_port": "b",
+   "v": "lanhub1",
+   "v_port": "P1",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e7"
+  },
+  {
+   "type": "electrical",
+   "u": "rj1",
+   "u_port": "b",
+   "v": "lanhub1",
+   "v_port": "P1",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e8"
+  },
+  {
+   "type": "joined",
+   "u": "rj2",
+   "u_port": "a",
+   "v": "opta2",
+   "v_port": "ETH",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e9"
+  },
+  {
+   "type": "electrical",
+   "u": "rj2",
+   "u_port": "a",
+   "v": "opta2",
+   "v_port": "ETH",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e10"
+  },
+  {
+   "type": "joined",
+   "u": "rj2",
+   "u_port": "b",
+   "v": "lanhub1",
+   "v_port": "P2",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e11"
+  },
+  {
+   "type": "electrical",
+   "u": "rj2",
+   "u_port": "b",
+   "v": "lanhub1",
+   "v_port": "P2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e12"
+  }
+ ]
+}

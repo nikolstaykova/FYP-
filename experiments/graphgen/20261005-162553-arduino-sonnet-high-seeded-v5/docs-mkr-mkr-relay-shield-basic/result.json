@@ -1,0 +1,101 @@
+{
+ "case": "docs-mkr-mkr-relay-shield-basic",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 60.4,
+  "input_tokens": 77067,
+  "output_tokens": 5293,
+  "cost_usd": 0.1069,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 29,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e2: port 'D3' not on arduino-mkr1000-wifi"
+  ],
+  [
+   "V4",
+   "e3: port 'D3' not on arduino-mkr1000-wifi"
+  ],
+  [
+   "V4",
+   "e14: port 'D4' not on arduino-mkr1000-wifi"
+  ],
+  [
+   "V4",
+   "e15: port 'D4' not on arduino-mkr1000-wifi"
+  ]
+ ],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The MKR board plugs onto the shield's female headers. The shield catalogue entry has no header ports, so this is a single joined edge with no ports. The internal relay control wiring (pin 1 to relay 1, pin 2 to relay 2) is inside the shield and is not drawn as edges.",
+  "The tutorial works with any MKR family board; arduino-mkr1000-wifi was chosen as the generic one.",
+  "LED 1 is driven from D3 and LED 2 from D4, as in the sketch. Each LED has a 220 ohm resistor on its anode side. Both cathodes go to the breadboard ground rail (tn), which a jumper wire connects to the MKR GND.",
+  "Breadboard hole positions are assumed, since the image is not available as text. The LED cathodes go straight into the ground rail.",
+  "Resistor value (220 ohm) and the use of three jumper wires are assumptions.",
+  "The 24V lamp and power supply example is illustrative only and is not built. The relays' NO, COM and NC screw terminals are left unconnected."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.8,
+   "input_tokens": 50247,
+   "cache_read_tokens": 40606,
+   "output_tokens": 1551,
+   "cost_usd": 0.0611,
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-mkr-relay-shield"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.6,
+   "input_tokens": 26820,
+   "cache_read_tokens": 25491,
+   "output_tokens": 3742,
+   "cost_usd": 0.0458,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.0
+}

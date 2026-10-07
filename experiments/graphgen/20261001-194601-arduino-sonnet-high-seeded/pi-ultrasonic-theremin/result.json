@@ -1,0 +1,58 @@
+{
+ "case": "pi-ultrasonic-theremin",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 73.5,
+  "input_tokens": 20505,
+  "output_tokens": 10220,
+  "cost_usd": 0.1294,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The text says to power the sensor from 3V3, but the circuit image (the authority) connects VCC to the Pi's 5V pin and uses a two-resistor voltage divider on the Echo line, so I followed the image.",
+  "The image shows the sensor in breadboard columns 1-4 of the row f-j half. The breadboard catalogue calls that half bank 'b' (rows f-j), so I used ports like '1b.j'. The lower a-e half is bank 't', e.g. '4t.c'.",
+  "Voltage divider: Echo (3b.f) goes by blue wire to 4t.d, then r1 (330 ohm, 4t.c to 8t.c) to the junction strip in column 8. A blue wire from 8t.e takes the junction to GPIO17. r2 (470 ohm, 8t.b to 12t.b) goes to GND through a black wire from 12t.a to rail bn.12. Resistor values are read from the colour bands and may be slightly off.",
+  "Rail hole numbers (bn.12, bn.24, bn.28) are estimated from where the holes sit relative to the column numbers in the image. I assumed the lower '-' rail is 'bn'.",
+  "Pi pin mapping from the image: the red wire goes to the top-left pin (5V.1), the green wire to GPIO4 (Trig) and the blue wire to GPIO17 (Echo). The black wire goes to the GND pin next to GPIO21, which I took as GND.8 (physical pin 39).",
+  "The buzzer image (circuit_2) was not provided. I followed the text: the buzzer connects directly to the Pi with two female jumper leads, one to GPIO21 and one to a GND pin. I assumed buzzer pin 1 is positive, and I chose GND.7 for the second lead.",
+  "The text says the sensor uses GPIO 27 for Trig in some places and 4 in others. The image shows GPIO4 (GP4), so I used that.",
+  "The Python code is not part of the physical build graph."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 73.5,
+   "input_tokens": 20505,
+   "cache_read_tokens": 14431,
+   "output_tokens": 10220,
+   "cost_usd": 0.1294,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 15.8
+}

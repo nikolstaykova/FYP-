@@ -1,0 +1,117 @@
+{
+ "case": "if-statement",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 22.0,
+  "input_tokens": 18678,
+  "output_tokens": 3005,
+  "cost_usd": 0.0625,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "No external LED: the tutorial uses the built-in LED on pin 13, so it is not a separate part.",
+  "Potentiometer legs are read from the image as columns 10, 11, 12 in the bottom half (row e): outer legs GND (col 10) and VCC (col 12), middle leg is the wiper (SIG, col 11).",
+  "In the image the yellow wire's breadboard end is drawn at the top of the pot (around column 11, upper half). The schematic shows the wiper going to A0, so I placed it in the wiper strip, 11b.d. This assumes the pot's wiper is the middle leg.",
+  "Black wire goes to the second GND header socket in the Uno power header (GND.2). Red wire goes to 5V.",
+  "The board is shown powered over USB, but no USB cable appears in the circuit image, so none is included."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.0,
+   "input_tokens": 18678,
+   "cache_read_tokens": 11120,
+   "output_tokens": 3005,
+   "cost_usd": 0.0625,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 21.7
+}

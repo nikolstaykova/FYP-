@@ -1,0 +1,1019 @@
+{
+ "graph": {
+  "title": "MKR IoT Carrier Smart Garden Setup",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-iot-carrier/smart-garden-setup",
+  "new_part_types": [
+   {
+    "type": "arduino-mkr-iot-carrier",
+    "name": "Arduino MKR IoT Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MKR.socket",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6",
+      "kind": "pin"
+     },
+     {
+      "name": "RELAY1_NO",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY1_COM",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY1_NC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY2_NO",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY2_COM",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY2_NC",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "RELAY1_COM",
+      "RELAY1_NO"
+     ],
+     [
+      "RELAY2_COM",
+      "RELAY2_NO"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "usb-cable-open-ended",
+    "name": "Open-ended USB cable (USB-A plug to bare wires)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "usb-a",
+      "kind": "ball"
+     },
+     {
+      "name": "positive",
+      "kind": "wire-end"
+     },
+     {
+      "name": "negative",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "usb-a",
+      "positive",
+      "negative"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-cable-4pin-grove",
+    "name": "Grove 4-pin cable (Grove to Grove, female ends)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "A1",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "A2",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "A3",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "A4",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "B1",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "B2",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "B3",
+      "kind": "pin-hole"
+     },
+     {
+      "name": "B4",
+      "kind": "pin-hole"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "A1",
+      "B1"
+     ],
+     [
+      "A2",
+      "B2"
+     ],
+     [
+      "A3",
+      "B3"
+     ],
+     [
+      "A4",
+      "B4"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr1000-wifi",
+    "label": "MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "arduino-mkr-iot-carrier",
+    "label": "MKR IoT Carrier",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "grove-moisture-sensor",
+    "label": "Soil moisture sensor",
+    "props": []
+   },
+   {
+    "id": "grove1",
+    "type": "grove-cable-4pin-grove",
+    "label": "Grove cable",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "pump-5v",
+    "label": "5V submersible pump",
+    "props": []
+   },
+   {
+    "id": "usbadapter1",
+    "type": "usb-power-adapter",
+    "label": "USB adapter with at least 2 USB ports",
+    "props": []
+   },
+   {
+    "id": "usbcable1",
+    "type": "usb-cable",
+    "label": "Micro-USB cable",
+    "props": []
+   },
+   {
+    "id": "usbcable2",
+    "type": "usb-cable-open-ended",
+    "label": "Open ended USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "MKR.socket",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "MKR.socket",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "carrier1",
+    "v_port": "A6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "carrier1",
+    "v_port": "A6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B2",
+    "v": "moist1",
+    "v_port": "NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B2",
+    "v": "moist1",
+    "v_port": "NC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable2",
+    "u_port": "positive",
+    "v": "carrier1",
+    "v_port": "RELAY1_NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable2",
+    "u_port": "positive",
+    "v": "carrier1",
+    "v_port": "RELAY1_NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "RELAY1_COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "RELAY1_COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable2",
+    "u_port": "negative",
+    "v": "pump1",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable2",
+    "u_port": "negative",
+    "v": "pump1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable2",
+    "u_port": "usb-a",
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable2",
+    "u_port": "usb-a",
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Port-kind fixes: the catalogue's Grove cable (grove-cable-4pin-f) has socket-kind ports, which cannot join the carrier's Grove header or the sensor's pins. It is replaced by a new type, grove-cable-4pin-grove, with the same 8 port names and through pairs (A1-B1 and so on) but pin-hole ports. Pin into pin-hole is a valid pair, and the carrier's A6 Grove connector and the sensor pins are pins.",
+   "The carrier's relay terminals are now header-socket kind, so the pump's lead and the USB cable's wire-end are valid joins into them. In reality they are screw terminals that clamp a wire.",
+   "The open-ended USB cable's usb-a plug is kind ball, which pairs with the adapter's socket-kind USB-A port (a plug-into-receptacle join). This is a stand-in, because no USB-specific kind exists.",
+   "The carrier has a single A6 port for the Grove connector, so the Grove cable's four conductors are shown as one connection from grove1 A1 to carrier A6. The sensor end is wired pin by pin (B1 SIG, B2 NC, B3 VCC, B4 GND).",
+   "The pump is wired as the tutorial says: open-ended cable positive to relay 1 NO, pump positive (port 1, the supply side) to relay 1 COM, and the cable negative joined to the pump negative (port 2).",
+   "The usb-power-adapter type has only one USB-A port (A), so both USB cables go to port A as a simplification. The tutorial says the adapter has at least 2 USB ports.",
+   "Relay 1 is the one used in the circuit text, although the code drives opla.Relay2. The circuit text and image take priority, so relay 1 is wired.",
+   "The watering pipe, water container and optional connector strip are left out because they are not electronic parts. No breadboard or jumper wires are used."
+  ]
+ },
+ "graph_initial": {
+  "title": "MKR IoT Carrier Smart Garden Setup",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-iot-carrier/smart-garden-setup",
+  "new_part_types": [
+   {
+    "type": "arduino-mkr-iot-carrier",
+    "name": "Arduino MKR IoT Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MKR.socket",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY1_NO",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY1_COM",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY1_NC",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY2_NO",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY2_COM",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY2_NC",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "RELAY1_COM",
+      "RELAY1_NO"
+     ],
+     [
+      "RELAY2_COM",
+      "RELAY2_NO"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "usb-cable-open-ended",
+    "name": "Open-ended USB cable (USB-A plug to bare wires)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "usb-a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "positive",
+      "kind": "wire-end"
+     },
+     {
+      "name": "negative",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "usb-a",
+      "positive",
+      "negative"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr1000-wifi",
+    "label": "MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "arduino-mkr-iot-carrier",
+    "label": "MKR IoT Carrier",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "grove-moisture-sensor",
+    "label": "Soil moisture sensor",
+    "props": []
+   },
+   {
+    "id": "grove1",
+    "type": "grove-cable-4pin-f",
+    "label": "Grove cable",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "pump-5v",
+    "label": "5V submersible pump",
+    "props": []
+   },
+   {
+    "id": "usbadapter1",
+    "type": "usb-power-adapter",
+    "label": "USB adapter with at least 2 USB ports",
+    "props": []
+   },
+   {
+    "id": "usbcable1",
+    "type": "usb-cable",
+    "label": "Micro-USB cable",
+    "props": []
+   },
+   {
+    "id": "usbcable2",
+    "type": "usb-cable-open-ended",
+    "label": "Open ended USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "MKR.socket",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "MKR.socket",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "carrier1",
+    "v_port": "A6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "carrier1",
+    "v_port": "A6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B2",
+    "v": "moist1",
+    "v_port": "NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B2",
+    "v": "moist1",
+    "v_port": "NC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable2",
+    "u_port": "positive",
+    "v": "carrier1",
+    "v_port": "RELAY1_NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable2",
+    "u_port": "positive",
+    "v": "carrier1",
+    "v_port": "RELAY1_NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "RELAY1_COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "RELAY1_COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable2",
+    "u_port": "negative",
+    "v": "pump1",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable2",
+    "u_port": "negative",
+    "v": "pump1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": null,
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable2",
+    "u_port": "usb-a",
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable2",
+    "u_port": "usb-a",
+    "v": "usbadapter1",
+    "v_port": "A",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1, except that the open-ended USB cable's conducts now list one group (usb-a, positive, negative) instead of through pairs, since a cable is a plain connector.",
+   "The pump is wired as the tutorial says: open-ended cable positive to relay 1 NO, pump positive (pump port 1, the supply side) to relay 1 COM, and the cable negative joined to the pump negative (port 2). The relay switches the pump's positive supply.",
+   "The carrier has a single A6 port for the Grove connector, so the Grove cable's four conductors are shown as one connection from grove1 A1 to carrier A6. The sensor end is wired pin by pin (B1 SIG, B2 NC, B3 VCC, B4 GND).",
+   "The MKR WiFi 1010 sits on the carrier's MKR socket. The Carrier is powered through the MKR board's USB port from the micro-USB cable.",
+   "The usb-power-adapter type has only one USB-A port (A), so both USB cables go to port A as a simplification. The tutorial says the adapter has at least 2 USB ports.",
+   "Relay 1 is the one used in the circuit text, although the code drives opla.Relay2. The circuit text and image take priority, so relay 1 is wired.",
+   "The wire-to-relay connections use screw terminals (tool), and the cable negative to pump negative is a twisted join or connector strip (hand)."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 137.9,
+  "input_tokens": 208699,
+  "output_tokens": 14562,
+  "cost_usd": 0.3322,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 61.1,
+   "input_tokens": 94072,
+   "cache_read_tokens": 65515,
+   "output_tokens": 2694,
+   "cost_usd": 0.1543,
+   "check_seconds": 0.0,
+   "parts_listed": 8,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-mkr-iot-carrier",
+    "usb-cable-open-ended"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.1,
+   "input_tokens": 34251,
+   "cache_read_tokens": 32019,
+   "output_tokens": 4245,
+   "cost_usd": 0.0578,
+   "check_seconds": 0.01,
+   "issues": 7,
+   "issue_rules": {
+    "V3": 7
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 50.7,
+   "input_tokens": 80376,
+   "cache_read_tokens": 73061,
+   "output_tokens": 7623,
+   "cost_usd": 0.1201,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 7,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 65.9,
+  "cost_usd": 0.1463,
+  "types": [
+   {
+    "type": "arduino-mkr-iot-carrier",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/sparkfun-arduino-iot-weather-station.html (The content is the SparkFun Arduino IoT Weather Station kit (KIT-22636). It cont)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/ARDUINO-MKR-IoT-BUNDLE-p-3177.html (The page is the Arduino MKR IoT Bundle, a kit built around the MKR1000 board wit)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   },
+   {
+    "type": "usb-cable-open-ended",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/usb-a-to-micro-b-cable-1m-usb-2-0-flexible-silicone.html (The page describes a USB-A to Micro-B cable (SparkFun CAB-25629, 1 m, USB 2.0, f)"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/1351 (The content describes the Pololu Micro Maestro 6-channel USB servo controller (p)"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/USB-Cable-Type-A-to-B-30CM-Black-p-1701.html (The page is a USB Type A to Type B 30 cm cable (plug at both ends), not an open-)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   },
+   {
+    "type": "grove-cable-4pin-grove",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/breadboard-to-jst-ghr-04v-cable-4-pin-x-1-25mm-pitch.html (The page is SparkFun CAB-17240, a cable with a 4-pin 1.25mm-pitch JST-GHR-04V co)"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/5522 (The page is a Pololu 4-pin JST SH-style cable (1 mm pitch) with a female connect)"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/Grove-Universal-4-Pin-to-Beagleboner-Blue-6-Pin-Female-JST-SH-Conversion-Cable-10-pcs-pack.html (The content is a Grove 4-pin to BeagleBone Blue 6-pin female JST/SH conversion c)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,1793 @@
+{
+ "graph": {
+  "title": "Ultrasonic theremin",
+  "source_id": "https://projects.raspberrypi.org/en/projects/ultrasonic-theremin",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "uds1",
+    "type": "hc-sr04",
+    "label": "Ultrasonic distance sensor",
+    "props": []
+   },
+   {
+    "id": "buzzer1",
+    "type": "buzzer",
+    "label": "Tonal buzzer",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Echo divider resistor 1",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "Echo divider resistor 2",
+    "props": [
+     {
+      "key": "value",
+      "value": "470"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Red 5V wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Green Trig wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Blue echo wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire-mf",
+    "label": "Blue GPIO17 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Black sensor GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "Black divider GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire-mf",
+    "label": "Black rail to Pi GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire-ff",
+    "label": "Buzzer GPIO21 lead",
+    "props": []
+   },
+   {
+    "id": "wire9",
+    "type": "jumper-wire-ff",
+    "label": "Buzzer GND lead",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "TRIG",
+    "v": "bb1",
+    "v_port": "2b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "TRIG",
+    "v": "bb1",
+    "v_port": "2b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "ECHO",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "ECHO",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "5V",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "4t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "4t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.28",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.28",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.24",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.24",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.39",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.39",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GPIO21",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GPIO21",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "wire8",
+    "v_port": "end_b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "wire8",
+    "v_port": "end_b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GND.34",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GND.34",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "wire9",
+    "v_port": "end_b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "wire9",
+    "v_port": "end_b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The circuit image is the authority: sensor VCC goes to the Pi 5V pin (pin 2), Trig to GPIO4 (pin 7), and Echo to GPIO17 (pin 11) through a two-resistor divider. The text says 3V3 and mentions trigger=27, but the image and the 'How to detect distance' text (trigger pin 4) agree with GPIO4.",
+   "The breadboard image has rows f-j in its upper half and a-e in its lower half. The catalogue puts a-e in bank 't' and f-j in bank 'b', so the sensor and the f-row wires use bank 'b' and the lower-half parts use bank 't'. The negative rail beside row a is therefore 'tn'. Rail hole numbers (12, 24, 28) are estimated from the image, and all holes on a rail are one strip.",
+   "Divider: the Echo wire from 3f goes to 4t.d. R1 runs from 4t.c to 8t.c. The GPIO17 wire is in 8t.e. R2 runs from 8t.b to 12t.b, and a black wire from 12t.a goes to the GND rail. Resistor values are read from the colour bands (R1 330 ohm, R2 470 ohm) and are not stated in the text.",
+   "The six 'socket-to-socket' leads listed in the parts are four sensor leads plus two buzzer leads. The image shows seven wires with a male end on the breadboard side. I used jumper-wire-mf for wires from the Pi header to the breadboard, with port a as the breadboard end and port b as the Pi end. I used jumper-wire for wires between breadboard holes. I used jumper-wire-ff for the two buzzer leads.",
+   "The buzzer is not in the image. The text puts it on GPIO 21 and 'a GND pin' with two female-to-female leads. I used GPIO21 to buzzer pin 1 and Pi GND (pin 34) to buzzer pin 2. The buzzer polarity is assumed.",
+   "The validator's E4 flag (buzzer1:1 and buzzer1:2 not connected) is not a real problem. Both buzzer legs have joined and electrical edges to the female ends of wire8 and wire9, which run to Pi GPIO21 and GND.34. The manual connects the buzzer directly to the Pi with two female-to-female leads, with no breadboard. I kept this and did not move the buzzer onto the breadboard. In this version the buzzer leg is the 'u' endpoint of these edges and the method is 'insert'. The leg goes into the female jumper socket.",
+   "The rpi-4b catalogue lists only GPIO_HEADER, so header pins are named 5V, GPIO4, GPIO17, GPIO21 and GND.<physical pin> (GND.39 and GND.34).",
+   "The Python code in the manual has no physical connections."
+  ]
+ },
+ "graph_initial": {
+  "title": "Ultrasonic theremin",
+  "source_id": "https://projects.raspberrypi.org/en/projects/ultrasonic-theremin",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "uds1",
+    "type": "hc-sr04",
+    "label": "Ultrasonic distance sensor",
+    "props": []
+   },
+   {
+    "id": "buzzer1",
+    "type": "buzzer",
+    "label": "Tonal buzzer",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Echo divider resistor 1",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "Echo divider resistor 2",
+    "props": [
+     {
+      "key": "value",
+      "value": "470"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Red 5V wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Green Trig wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Blue echo wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire-mf",
+    "label": "Blue GPIO17 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Black sensor GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "Black divider GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire-mf",
+    "label": "Black rail to Pi GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire-ff",
+    "label": "Buzzer GPIO21 lead",
+    "props": []
+   },
+   {
+    "id": "wire9",
+    "type": "jumper-wire-ff",
+    "label": "Buzzer GND lead",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "TRIG",
+    "v": "bb1",
+    "v_port": "2b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "TRIG",
+    "v": "bb1",
+    "v_port": "2b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "ECHO",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "ECHO",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "uds1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "uds1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "5V",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "4t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "4t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "4t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.28",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.28",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.24",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.24",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.39",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.39",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GPIO21",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GPIO21",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "end_b",
+    "v": "buzzer1",
+    "v_port": "1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "end_b",
+    "v": "buzzer1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GND.34",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "end_a",
+    "v": "pi1",
+    "v_port": "GND.34",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "end_b",
+    "v": "buzzer1",
+    "v_port": "2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "end_b",
+    "v": "buzzer1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The circuit image is the authority: sensor VCC goes to the Pi 5V pin (pin 2), Trig to GPIO4 (pin 7), and Echo to GPIO17 (pin 11) through a two-resistor divider. The text says 3V3 and mentions trigger=27, but the image and the 'How to detect distance' text (trigger pin 4) agree with GPIO4.",
+   "The breadboard image has rows f-j in its upper half and a-e in its lower half. The catalogue puts a-e in bank 't' and f-j in bank 'b', so the sensor and the f-row wires use bank 'b' and the lower-half parts use bank 't'. The negative rail beside row a is therefore 'tn'. Rail hole numbers (12, 24, 28) are estimated from the image, and all holes on a rail are one strip.",
+   "Divider: the Echo wire from 3f goes to 4t.d. R1 runs from 4t.c to 8t.c. The GPIO17 wire is in 8t.e. R2 runs from 8t.b to 12t.b, and a black wire from 12t.a goes to the GND rail. Resistor values are read from the colour bands (R1 330 ohm, R2 470 ohm) and are not stated in the text.",
+   "The six 'socket-to-socket' leads listed in the parts are four sensor leads plus two buzzer leads. The image shows seven wires with a male end on the breadboard side. I used jumper-wire-mf for wires from the Pi header to the breadboard, with port a as the breadboard end and port b as the Pi end. I used jumper-wire for wires between breadboard holes. I used jumper-wire-ff for the two buzzer leads.",
+   "The buzzer is not in the image. The text puts it on GPIO 21 and 'a GND pin' with two female-to-female leads. I used GPIO21 to buzzer pin 1 and Pi GND (pin 34) to buzzer pin 2. The buzzer polarity is assumed.",
+   "The rpi-4b catalogue lists only GPIO_HEADER, so header pins are named 5V, GPIO4, GPIO17, GPIO21 and GND.<physical pin> (GND.39 and GND.34).",
+   "The Python code in the manual has no physical connections."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 141.1,
+  "input_tokens": 79433,
+  "output_tokens": 21436,
+  "cost_usd": 0.3445,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.0,
+   "input_tokens": 11131,
+   "output_tokens": 373,
+   "cost_usd": 0.0263,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 65.6,
+   "input_tokens": 14394,
+   "cache_read_tokens": 5507,
+   "output_tokens": 8694,
+   "cost_usd": 0.1236,
+   "check_seconds": 0.01,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 12,
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.8,
+   "input_tokens": 23698,
+   "cache_read_tokens": 14392,
+   "output_tokens": 6327,
+   "cost_usd": 0.1034,
+   "check_seconds": 0.01,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 12,
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.7,
+   "input_tokens": 30210,
+   "cache_read_tokens": 23696,
+   "output_tokens": 6042,
+   "cost_usd": 0.0912,
+   "check_seconds": 0.0,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 12,
+    "E4": 2
+   }
+  }
+ ],
+ "issues_first": 14,
+ "issues_final": 14,
+ "final_issue_list": [
+  [
+   "V4",
+   "e11: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e15: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e16: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e31: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e32: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e43: port 'GND.39' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e44: port 'GND.39' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e45: port 'GPIO21' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e46: port 'GPIO21' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e49: port 'GND.34' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e50: port 'GND.34' not on rpi-4b"
+  ],
+  [
+   "E4",
+   "leg buzzer1:1 is not connected to anything"
+  ],
+  [
+   "E4",
+   "leg buzzer1:2 is not connected to anything"
+  ]
+ ],
+ "cards": {
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "buzzer": {
+   "type": "buzzer",
+   "name": "Piezo Buzzer",
+   "category": "buzzer",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "hc-sr04": {
+   "type": "hc-sr04",
+   "name": "HC-SR04 Ultrasonic Distance Sensor",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "TRIG",
+     "kind": "header-pin"
+    },
+    {
+     "name": "ECHO",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire-ff": {
+   "type": "jumper-wire-ff",
+   "name": "Female-Female Jumper Wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "end_a",
+     "kind": "header-socket"
+    },
+    {
+     "name": "end_b",
+     "kind": "header-socket"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "symmetric": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/1919",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "rpi-4b": {
+   "type": "rpi-4b",
+   "name": "Raspberry Pi 4 Model B",
+   "category": "single-board-computer",
+   "ports": [
+    {
+     "name": "GPIO_HEADER",
+     "kind": "header-pin"
+    },
+    {
+     "name": "USB_C_POWER",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_0",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_1",
+     "kind": "socket"
+    },
+    {
+     "name": "USB3_A",
+     "kind": "socket"
+    },
+    {
+     "name": "USB2_A",
+     "kind": "socket"
+    },
+    {
+     "name": "ETHERNET",
+     "kind": "socket"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/4296",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Raspberry Pi",
+   "quantity": 1,
+   "catalogue_type": "rpi-4b",
+   "new_type": null,
+   "search_query": null,
+   "category": "single-board-computer"
+  },
+  {
+   "label": "Solderless breadboard",
+   "quantity": 1,
+   "catalogue_type": "breadboard",
+   "new_type": null,
+   "search_query": null,
+   "category": "breadboard"
+  },
+  {
+   "label": "Ultrasonic distance sensor (3.3V HC-SR04P)",
+   "quantity": 1,
+   "catalogue_type": "hc-sr04",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "Tonal buzzer",
+   "quantity": 1,
+   "catalogue_type": "buzzer",
+   "new_type": null,
+   "search_query": null,
+   "category": "buzzer"
+  },
+  {
+   "label": "Socket-to-socket (female-female) jumper lead",
+   "quantity": 6,
+   "catalogue_type": "jumper-wire-ff",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  }
+ ]
+}

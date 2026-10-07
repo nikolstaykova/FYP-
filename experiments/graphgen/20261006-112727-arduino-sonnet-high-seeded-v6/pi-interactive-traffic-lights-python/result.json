@@ -1,0 +1,86 @@
+{
+ "case": "pi-interactive-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 75.4,
+  "input_tokens": 60006,
+  "output_tokens": 11616,
+  "cost_usd": 0.2327,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts are the same as in step 1. Nothing was added or dropped.",
+  "The Pi is the catalogue's raspberry-pi-4-gpio, which uses physical pin numbers. From the diagram's labels, the wires land on the outer (even) header column: black = pin 6 (GND), blue = pin 10 (GPIO15, buzzer), orange = pin 22 (GPIO25, red LED), green = pin 24 (GPIO8, amber LED), pink = pin 26 (GPIO7, green LED), purple = pin 40 (GPIO21, button).",
+  "The text table says amber = GPIO28 and green = GPIO27. Those pins do not exist on a Pi header, so I followed the diagram's GPIO8 and GPIO7.",
+  "The breadboard's numbered rows (1-30) are the catalogue's 'columns'. Image columns a-e are bank 't' and f-j are bank 'b'. For example, row 9, column d is '9t.d'.",
+  "The right-hand rail that carries all the grounds is named 'tn' with the row number beside each hole. The catalogue does not say which of the four rails it is, so this naming is a guess. Electrically it is one strip, and it takes the black GND wire, the three LED cathodes, the buzzer's negative leg and the button's black wire.",
+  "Each LED branch runs GPIO wire to the resistor (across the centre gap), then to the LED anode, then from the cathode to the ground rail. The resistors are on the anode side, as the image shows.",
+  "The buzzer's positive leg (pin 2) shares a strip with the blue GPIO15 wire. Its negative leg (pin 1) goes to the ground rail.",
+  "The button sits across the gap on rows 28 and 30. The black wire from row 28 goes to the ground rail. The purple GPIO21 wire is on row 30. The tutorial shows no external pull resistor, so the Pi's internal pull-up is assumed.",
+  "The resistor value is not given, so 220 ohm is assumed."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.0,
+   "input_tokens": 29031,
+   "cache_read_tokens": 3468,
+   "output_tokens": 1724,
+   "cost_usd": 0.1202,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Interactive traffic lights with Python (Raspberry Pi, 3 LEDs, button, buzzer)\", \"source_id\": \"https://project"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 17,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 61.4,
+   "input_tokens": 30975,
+   "cache_read_tokens": 29029,
+   "output_tokens": 9892,
+   "cost_usd": 0.1125,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Interactive traffic lights with Python (Raspberry Pi, 3 LEDs, button, buzzer)\", \"source_id\": \"https://project"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.3
+}

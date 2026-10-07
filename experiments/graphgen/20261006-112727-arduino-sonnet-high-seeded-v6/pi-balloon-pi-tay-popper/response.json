@@ -1,0 +1,1587 @@
+{
+ "graph": {
+  "title": "Raspberry Pi Balloon Popper",
+  "source_id": "https://projects.raspberrypi.org/en/projects/balloon-popper",
+  "new_part_types": [
+   {
+    "type": "transistor-bc635",
+    "name": "BC635 NPN Transistor (TO-92)",
+    "category": "transistor",
+    "ports": [
+     {
+      "name": "E",
+      "kind": "lead"
+     },
+     {
+      "name": "C",
+      "kind": "lead"
+     },
+     {
+      "name": "B",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "C",
+      "E"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi",
+    "type": "raspberry-pi-4-gpio",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Tactile button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "q1",
+    "type": "transistor-bc635",
+    "label": "BC635 transistor",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "12\u03a9 balloon resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "12"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "330\u03a9 base resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "batt1",
+    "type": "battery-9v",
+    "label": "9V battery",
+    "props": []
+   },
+   {
+    "id": "snap1",
+    "type": "battery-snap-9v",
+    "label": "Battery snap",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Pi GND to ground rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "GPIO 14 to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "GPIO 2 to 330\u03a9 resistor",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Ground rail to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Transistor emitter to ground rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "9V power rail to balloon resistor row",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "8",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "8",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "E",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "E",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "16t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "16t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "6t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "6t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "6t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": null,
+    "v": "snap1",
+    "v_port": "battery_clip",
+    "method": "clip",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "snap1",
+    "u_port": "positive",
+    "v": "bb1",
+    "v_port": "tp.30",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "snap1",
+    "u_port": "positive",
+    "v": "bb1",
+    "v_port": "tp.30",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "snap1",
+    "u_port": "negative",
+    "v": "bb1",
+    "v_port": "tn.30",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "snap1",
+    "u_port": "negative",
+    "v": "bb1",
+    "v_port": "tn.30",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Change from the previous graph: the two speaker-cable core parts (wire7, wire8) are removed and the 12\u03a9 resistor r1 is placed directly on the breadboard. The checker kept reporting r1:2 as unconnected when it was attached through twisted cable cores. The manual's own steps say 'connect it to the breadboard in the space between the button and the transistor', then 'one side to the middle (collector) leg of the transistor, the other side to the 9V power rail'. So r1 now goes straight into the breadboard, which matches those steps. In the real build the 2 m speaker cable extends these two legs to the balloon; it is not drawn in the circuit images, so it is not modelled.",
+   "r1 leg 1 is in column 11 (the transistor collector row). r1 leg 2 is in column 6, which the red wire6 links to the 9V + rail.",
+   "Only the single-balloon circuit shown in the images is built; the optional second balloon (GPIO 3) is not drawn and is not included.",
+   "BC635 was not found by lookup_part, so a new type 'transistor-bc635' (ports E, C, B) is defined. Flat side facing the ground rail: E in column 10, C in column 11, B in column 12 of row e.",
+   "Breadboard naming: the image's numbered rows 1-30 are the catalogue's columns, and the letters a-e / f-j are its rows. The left rail pair is modelled as tp (red, +9V) and tn (black, ground). Exact rail index numbers (tp.7, tn.1, tn.2, tn.11, tp.30, tn.30) are approximate, since each rail is one strip.",
+   "Pi header pins: GPIO 2 = pin 3, GND = pin 6, GPIO 14 = pin 8. The image shows a 40-pin header board, modelled as raspberry-pi-4-gpio.",
+   "The pushbutton straddles the centre gap: side 1 in column 1 goes to ground, and side 2 in column 3 goes to GPIO 14. The input is read with the Pi's internal pull-up (gpiozero Button), so no external resistor is used.",
+   "The 330\u03a9 resistor r2 runs from the transistor base row (column 12) to column 16, where the green wire from GPIO 2 plugs in.",
+   "The 9V battery connects to the snap clip. The snap's red lead goes to the + rail and its black lead to the \u2212 rail."
+  ]
+ },
+ "graph_initial": {
+  "title": "Raspberry Pi Balloon Popper",
+  "source_id": "https://projects.raspberrypi.org/en/projects/balloon-popper",
+  "new_part_types": [
+   {
+    "type": "transistor-bc635",
+    "name": "BC635 NPN Transistor (TO-92)",
+    "category": "transistor",
+    "ports": [
+     {
+      "name": "E",
+      "kind": "lead"
+     },
+     {
+      "name": "C",
+      "kind": "lead"
+     },
+     {
+      "name": "B",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "C",
+      "E"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi",
+    "type": "raspberry-pi-4-gpio",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Tactile button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "q1",
+    "type": "transistor-bc635",
+    "label": "BC635 transistor",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "12\u03a9 balloon resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "12"
+     }
+    ]
+   },
+   {
+    "id": "r2",
+    "type": "resistor",
+    "label": "330\u03a9 base resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "batt1",
+    "type": "battery-9v",
+    "label": "9V battery",
+    "props": []
+   },
+   {
+    "id": "snap1",
+    "type": "battery-snap-9v",
+    "label": "Battery snap",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Pi GND to ground rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "GPIO 14 to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "GPIO 2 to 330\u03a9 resistor",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Ground rail to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Transistor emitter to ground rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "9V power rail to balloon resistor lead",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "Speaker cable core 1 (balloon resistor to transistor collector row)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "purple"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "Speaker cable core 2 (balloon resistor to 9V rail row)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "8",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "8",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "E",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "E",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "B",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "16t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r2",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "16t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "pi",
+    "v_port": "3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tp.7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "6t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "6t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "1",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "6t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "6t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": null,
+    "v": "snap1",
+    "v_port": "battery_clip",
+    "method": "clip",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "snap1",
+    "u_port": "positive",
+    "v": "bb1",
+    "v_port": "tp.30",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "snap1",
+    "u_port": "positive",
+    "v": "bb1",
+    "v_port": "tp.30",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "snap1",
+    "u_port": "negative",
+    "v": "bb1",
+    "v_port": "tn.30",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "snap1",
+    "u_port": "negative",
+    "v": "bb1",
+    "v_port": "tn.30",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "Only the single-balloon circuit shown in the images is built; the optional second balloon (GPIO 3) is not drawn and is not included.",
+   "BC635 was not found by lookup_part, so a new type 'transistor-bc635' (ports E, C, B) is defined. Flat side facing the ground rail: E in column 10, C in column 11, B in column 12 of row e.",
+   "Breadboard naming: the image's numbered rows 1-30 are the catalogue's columns, and the letters a-e / f-j are its rows. The left rail pair is modelled as tp (red, +9V) and tn (black, ground). Exact rail index numbers (tp.7, tn.1, tn.2, tn.11, tp.30, tn.30) are approximate, since each rail is one strip.",
+   "Pi header pins: GPIO 2 = pin 3, GND = pin 6, GPIO 14 = pin 8. The image shows a 40-pin header board, modelled as raspberry-pi-4-gpio.",
+   "The pushbutton straddles the centre gap: side 1 in column 1 (1t.e / 1b.f) goes to ground, and side 2 in column 3 (3t.e / 3b.f) goes to GPIO 14. The input is read with the Pi's internal pull-up (gpiozero Button), so no external resistor is used.",
+   "The 12\u03a9 balloon resistor r1 is off the breadboard, on the balloon. It is joined by twisting its legs to the two cores of the speaker cable (wire7, wire8). wire7 plugs into the collector row (column 11) and wire8 into column 6, which is linked by the red wire6 to the 9V rail.",
+   "The 330\u03a9 resistor r2 runs from the transistor base row (column 12) to column 16, where the green wire from GPIO 2 plugs in.",
+   "The 9V battery connects to the snap clip. The snap's red lead goes to the + rail and its black lead to the \u2212 rail."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 165.1,
+  "input_tokens": 191412,
+  "output_tokens": 24785,
+  "cost_usd": 0.3893,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 42.0,
+   "input_tokens": 63059,
+   "cache_read_tokens": 53649,
+   "output_tokens": 3074,
+   "cost_usd": 0.0791,
+   "tools_used": [
+    "lookup_part {\"name\": \"BC635 NPN transistor\", \"type_id\": \"transistor-bc635\"}",
+    "lookup_part {\"name\": \"2-core speaker cable\", \"type_id\": \"speaker-cable\"}",
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 16,
+   "changed_in_build": 0,
+   "looked_up": [
+    "transistor-bc635"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.6,
+   "input_tokens": 34532,
+   "cache_read_tokens": 32401,
+   "output_tokens": 8634,
+   "cost_usd": 0.1013,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.1,
+   "input_tokens": 43672,
+   "cache_read_tokens": 34530,
+   "output_tokens": 6318,
+   "cost_usd": 0.1067,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.4,
+   "input_tokens": 50149,
+   "cache_read_tokens": 43670,
+   "output_tokens": 6759,
+   "cost_usd": 0.1022,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "final_issue_list": [
+  [
+   "E4",
+   "leg r1:2 is not connected to anything"
+  ]
+ ],
+ "upkeep": {
+  "seconds": 16.6,
+  "cost_usd": 0.0359,
+  "types": [
+   {
+    "type": "transistor-bc635",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/transistor-npn-50v-800ma-bc337.html (The page describes the BC337 NPN transistor (SparkFun COM-13689), not the BC635 )"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/build-a-diy-biometric-system-to-combat-covid19.html (The content is a Seeed Studio project/solution page (Build A DIY Biometric Syste)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

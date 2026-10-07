@@ -1,0 +1,165 @@
+{
+ "case": "calibration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 47.2,
+  "input_tokens": 22936,
+  "output_tokens": 6512,
+  "cost_usd": 0.1151,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The catalogue defines bank 't' as the top half with rows a-e; the image labels the top half j-f. I used bank 't' for the image's top half and mapped image rows j,i,h,g,f to a,b,c,d,e. Only the strip (column and bank) matters electrically.",
+  "Wiring follows the circuit image. The LED anode (bent leg) is on column 22 and connects to pin 9 by the blue wire. The LED cathode and the 220 ohm resistor are in series to GND on column 26, so the resistor sits on the ground side. This is electrically equivalent to the schematic.",
+  "Power-rail hole indices (tp.1, tp.5, tn.2, tn.12, tn.24) are estimated from the image. The top-row '-' rail is tn and the '+' rail is tp.",
+  "The 10k resistor is value=10000 and the 220 resistor is value=220. The Arduino GND pin used is GND.2 (the second GND on the power header).",
+  "The text says 'Analog input 2' in the circuit caption, but the picture and description use A0, so I used A0."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.6,
+   "input_tokens": 7825,
+   "output_tokens": 434,
+   "cost_usd": 0.0148,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 7,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 40.6,
+   "input_tokens": 15111,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6078,
+   "cost_usd": 0.1003,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 23.2
+}

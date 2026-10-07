@@ -1,0 +1,90 @@
+{
+ "case": "docs-uno-msr3-controlling-dc-motor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 60.5,
+  "input_tokens": 48409,
+  "output_tokens": 10588,
+  "cost_usd": 0.199,
+  "repair_rounds_used": 1
+ },
+ "parts": 10,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The Motor Shield Rev3 and the 2x18650 battery holder are not in the catalogue, so they are new part types. The shield's stacking header pins are modelled only for the pins the tutorial uses (D3, D8, D9, D11, D12, D13, A0, A1 and GND).",
+  "Fix for the checker's E2 problem: the shield's VIN screw terminal is no longer tied to the Uno's VIN pin. The tutorial powers the Uno over USB and uses the battery only for the motor supply on the shield terminal. The Rev3 shield has a separate Vin Connect jumper for powering the Uno from the shield, and the tutorial never uses it. The shield therefore has no VIN header port, and no edge joins shield VIN to uno VIN.",
+  "The shield's GND screw terminal and its GND header pin are one node, so the battery negative shares ground with the Uno.",
+  "The motor and battery leads are modelled as jumper-wire parts, since the spec says to use jumper wires for every wire. Their device ends are assumed to be soldered or permanently attached. Their other ends are screwed into the shield terminals.",
+  "The orange motor lead goes to terminal A+ and the black lead to A-, as in the circuit image. The orange battery lead goes to VIN and the black lead to GND.",
+  "The USB cable and computer are connected with no port names, because the catalogue lists no ports for the USB cable. The cable is assumed to plug into the Uno's USB-B socket.",
+  "The motor is on channel A, which uses D12 (direction), D3 (PWM), D9 (brake) and A0 (current sensing). These reach the shield through stacking, with no extra wires. Channel B (B+/B-) is unused."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.5,
+   "input_tokens": 21045,
+   "cache_read_tokens": 5414,
+   "output_tokens": 5777,
+   "cost_usd": 0.1214,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.0,
+   "input_tokens": 27364,
+   "cache_read_tokens": 21043,
+   "output_tokens": 4811,
+   "cost_usd": 0.0776,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-motor-shield-rev3",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "battery-pack-2x18650",
+   "family": "battery-pack-2x18650",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 21.6
+}

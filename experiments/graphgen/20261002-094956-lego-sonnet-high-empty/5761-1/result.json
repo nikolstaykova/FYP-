@@ -1,0 +1,137 @@
+{
+ "case": "5761-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 461.4,
+  "input_tokens": 532227,
+  "output_tokens": 78810,
+  "cost_usd": 1.6653,
+  "repair_rounds_used": 2
+ },
+ "parts": 134,
+ "edges": 136,
+ "repeats": [
+  {
+   "group": "m1wheel",
+   "times": 4,
+   "overrides": 3
+  },
+  {
+   "group": "m2wheel",
+   "times": 4,
+   "overrides": 3
+  },
+  {
+   "group": "m3wheel",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 10,
+ "new_types_added": 10,
+ "problems": [],
+ "notes": [
+  "Remaining checks L1 and L3 are not real problems for this manual. They are kept on purpose.",
+  "L3 (3 separate groups): booklet 5761 is a 3-in-1 set. Pages 2-9 build the Digger, pages 10-16 the crane truck and pages 17-22 the buggy, each from the same one pool of pieces and one at a time. They are separate models, not one assembly, so they are not connected to each other (b1-b41 + m1wheel; b42-b76 + m2wheel; b77-b110 + m3wheel). Joining them would invent connections the booklet never makes.",
+  "L1 (piece counts): the parts page lists the pieces for ONE set, and all three models draw on that same pool. Because the task says to build every model in the booklet, each model gets its own nodes, so the graph total is about 3x the page counts (e.g. tyres 12 vs 4, wheel holders 6 vs 2). Counting any single model alone gives numbers at or near the page counts. Merging the models to hit the page totals would drop two of the three builds.",
+  "The hub-to-tyre edge uses null ports (this fixed the earlier pin/socket incompatibility).",
+  "The pictures are small, low-resolution and shaded olive, so piece identification and stud-level attachment are best-effort. Most edges use null ports and only record which piece sits on which. A few single-model counts (e.g. Model 3) may be off by one because of ambiguous thumbnails.",
+  "New part types were created for inventory IDs not in the catalogue: 408124, 4188313, 4282745, 4283123, 4106347, 486526, 4141580, 4226179, 3003944, 4611703. Their names and ports are guesses from the inventory thumbnails.",
+  "Wheels (hub 4211764 + tyre 4514560, 4 per model) are in repeats and attach to the four side pins of the two 2x2 wheel-holder plates 4211504 in each model.",
+  "The two orange round plates drawn on p.2 step 2 are not modelled. Only the orange round plate on the cab roof (p.9 step 14) appears in Model 1. Model 2 stacks all three orange round plates (p.16 step 11).",
+  "The 4210633 round plate appears in Model 2 only. The pieces 4611703 and 4106347 are placed approximately.",
+  "Part colours follow the inventory element codes (e.g. 302026 black). The booklet pictures show them as dark grey."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 303.5,
+   "input_tokens": 138258,
+   "cache_read_tokens": 3203,
+   "output_tokens": 44074,
+   "cost_usd": 0.9816,
+   "check_seconds": 0.03,
+   "issues": 14,
+   "issue_rules": {
+    "V3": 12,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 81.3,
+   "input_tokens": 187939,
+   "cache_read_tokens": 138256,
+   "output_tokens": 17644,
+   "cost_usd": 0.4028,
+   "check_seconds": 0.04,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 76.5,
+   "input_tokens": 206030,
+   "cache_read_tokens": 187937,
+   "output_tokens": 17092,
+   "cost_usd": 0.2809,
+   "check_seconds": 0.03,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 14,
+ "issues_final": 2,
+ "score": {
+  "pieces_expected": 57,
+  "pieces_built": 134,
+  "pieces_unmapped": 0,
+  "inventory_matched": 53,
+  "exact_matched": 52,
+  "inventory_precision": 0.396,
+  "inventory_recall": 0.93,
+  "exact_recall": 0.912,
+  "joined_edges": 136,
+  "contacts_expected": 1,
+  "contacts_predicted": 9,
+  "contacts_correct": 0,
+  "contact_precision": 0.0,
+  "contact_recall": 0.0
+ },
+ "score_initial": {
+  "pieces_expected": 57,
+  "pieces_built": 134,
+  "pieces_unmapped": 0,
+  "inventory_matched": 53,
+  "exact_matched": 52,
+  "inventory_precision": 0.396,
+  "inventory_recall": 0.93,
+  "exact_recall": 0.912,
+  "joined_edges": 136,
+  "contacts_expected": 1,
+  "contacts_predicted": 9,
+  "contacts_correct": 0,
+  "contact_precision": 0.0,
+  "contact_recall": 0.0
+ },
+ "postprocess_ms": 33.6
+}

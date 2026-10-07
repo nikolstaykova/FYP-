@@ -1,0 +1,268 @@
+{
+ "case": "docs-mkr-mkr-relay-shield-basic",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 229.7,
+  "input_tokens": 126980,
+  "output_tokens": 31577,
+  "cost_usd": 0.5482,
+  "repair_rounds_used": 2
+ },
+ "parts": 14,
+ "edges": 98,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V3",
+   "e1: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e3: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e5: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e7: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e9: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e11: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e13: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e15: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e17: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e19: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e21: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e23: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e25: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e27: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e29: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e31: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e33: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e35: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e37: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e39: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e41: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e43: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e45: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e47: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e49: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e51: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e53: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e55: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e95: lug \u2194 lug is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The MKR board is stacked onto the shield's female headers; I joined every matching header pin pair (28 pairs) with joined+electrical edges.",
+  "The circuit image (IMG05) was not provided. I assumed the wires go from the MKR pins D3, D4 and GND to the breadboard. D3 and D4 come from the sketch (LED_1=3, LED_2=4).",
+  "Each LED branch is wire -> resistor -> LED anode, with the LED cathode returned to the breadboard's tn rail by a jumper. GND from the MKR goes to the same tn rail.",
+  "I used 5 of the 6 listed jumper wires. The sixth is not needed in the circuit I could infer.",
+  "The resistor value is not given in the manual. I assumed 220 ohm.",
+  "The relays are internally wired to D1 (relay 1) and D2 (relay 2) on the shield, so they need no external wiring. The shield's internal relay-to-pin wiring comes from the catalogue.",
+  "The high-power example uses relay 1 in the NC configuration: PSU + to R1.NC, R1.COM to one bulb terminal, and the other bulb terminal to PSU -. The screw terminals take bare wire ends, so no jumper wires are used.",
+  "The PSU-to-bulb return connection is shown as a permanent (soldered) join. The manual does not say how it is made, so this is an assumption.",
+  "The tutorial calls for a 24V supply and bulb. The catalogue entries are a 12V wall adapter and an E10 bulb socket, and I used them as the nearest matches.",
+  "The four E2 warnings (GND, VCC, VIN, 5V 'board pin wired straight to board pin') are kept as not real problems, and I changed nothing for them. They all come from the MKR board plugging into the shield's headers (mkr1 GND to H.GND, 5V to H.5V, and so on). That mating is the stacking the manual describes ('mount our MKR family board on top of the MKR Relay Shield'). It is not a jumper shortcut between two supply pins, and no power pin is wired to a different power pin by any edge I added.",
+  "In the GND warning, led1:C and led2:C sit on the GND net on purpose. Both LED cathodes return to GND through the breadboard rail and wire3.",
+  "The VCC-to-5V grouping the checker reports comes from the catalogue's internal conduction for the shield's power header and terminal pins, not from an edge I added. I made no VCC-to-5V connection. Removing the power-pin stacking edges would make the model wrong, because the shield's relay coils and terminals need GND and VCC from the MKR board."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 78.6,
+   "input_tokens": 43851,
+   "output_tokens": 4167,
+   "cost_usd": 0.1349,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 8,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "MKR Relay Shield",
+     "type": "shield-arduino-mkr-relay-proto",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-spectrum-shield.html (The page sells the SparkFun Spectrum Shield (DEV-13116). It is an Arduino R3 aud)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-wifi-shield-esp8266.html (The page sells the SparkFun WiFi Shield - ESP8266 (WRL-13287), which is a WiFi s)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2186 (The page sells the SparkFun Inventor's Kit V3 with a RedBoard. It is a discontin)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2769 (This page sells the SparkFun Inventor's Kit V3.1, a discontinued starter kit wit)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-RELAY-PROTO-SHIELD-p-3174.html"
+      ]
+     ],
+     "seconds": 72.2
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 55.8,
+   "input_tokens": 17485,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9206,
+   "cost_usd": 0.1411,
+   "check_seconds": 0.01,
+   "issues": 33,
+   "issue_rules": {
+    "V3": 29,
+    "E2": 4
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 50.0,
+   "input_tokens": 27901,
+   "cache_read_tokens": 17483,
+   "output_tokens": 9370,
+   "cost_usd": 0.1389,
+   "check_seconds": 0.0,
+   "issues": 33,
+   "issue_rules": {
+    "V3": 29,
+    "E2": 4
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 45.3,
+   "input_tokens": 37743,
+   "cache_read_tokens": 27899,
+   "output_tokens": 8834,
+   "cost_usd": 0.1333,
+   "check_seconds": 0.01,
+   "issues": 33,
+   "issue_rules": {
+    "V3": 29,
+    "E2": 4
+   }
+  }
+ ],
+ "issues_first": 33,
+ "issues_final": 33,
+ "score": {
+  "families_listed": [
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 17.3
+}

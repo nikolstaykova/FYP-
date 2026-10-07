@@ -1,0 +1,111 @@
+{
+ "case": "docs-nano-33-ble-sense-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 68.5,
+  "input_tokens": 36268,
+  "output_tokens": 6386,
+  "cost_usd": 0.1524,
+  "repair_rounds_used": 0
+ },
+ "parts": 14,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V2",
+   "part bb2 (breadboard) has no connection"
+  ]
+ ],
+ "notes": [
+  "The circuit image shows direct wires between the boards, with a 4.7k pull-up resistor from each of A5 (SCL) and A4 (SDA) to 3V3. The image does not show how the mini breadboards are used, so I put both pull-ups and the SCL/SDA junctions on bb1: A5 wires share column 5 and A4 wires share column 10. The resistors' other legs go to the top power rail, which is fed from the reader's 3V3 pin.",
+  "The second mini breadboard (bb2) is listed in the parts but is not used in the circuit image, so it has no connections.",
+  "Only 6 of the 10 listed jumper wires are needed for the circuit shown.",
+  "The catalogue has no USB port on the Nano or ports on usb-cable, so the USB edges have no port names. Each board is powered and connected to the computer by its own USB cable.",
+  "The image labels the GND pin on each board without saying which of the two GND pins it is, so I used GND_1 on both. The '3V' label is taken as 3V3. A4 is SDA and A5 is SCL, as the manual states.",
+  "The pull-up resistor value is 4.7k, so I set value=4700. The catalogue resistor entry is named 100 ohm, but the value prop overrides that."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 34.6,
+   "input_tokens": 18093,
+   "output_tokens": 1433,
+   "cost_usd": 0.0511,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 6,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino Nano 33 BLE Sense",
+     "type": "arduino-nano-33-ble-sense",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-nano-ble-sense-rev2-with-headers.html"
+      ]
+     ],
+     "seconds": 11.6
+    },
+    {
+     "part": "Arduino Nano 33 BLE Sense (writer, or any I2C Arduino)",
+     "type": "arduino-nano-33-ble-sense",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "arduino-nano-33-ble-sense"
+      ]
+     ],
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.9,
+   "input_tokens": 18175,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4953,
+   "cost_usd": 0.1013,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.4
+}

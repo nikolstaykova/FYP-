@@ -1,0 +1,91 @@
+{
+ "case": "docs-uno-wifi-rev2-uno-wifi-r2-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 51.4,
+  "input_tokens": 92473,
+  "output_tokens": 5051,
+  "cost_usd": 0.1127,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Step 1 parts are unchanged: one board, one breadboard, one LED, one 220 ohm resistor, and two jumper wires.",
+  "Circuit as drawn: pin 2 -> green wire -> breadboard column 3 -> 220 ohm resistor -> column 6 -> LED anode. The LED cathode (column 8) -> black wire -> GND next to AREF.",
+  "The image shows the LED's bent, longer leg in column 6, so I took that as the anode. The straight leg in column 8 is the cathode and goes to GND.",
+  "The catalogue's breadboard names the upper half as bank 't' (rows a-e). The image labels that half f-j, so I used 't' holes. Each column's five holes are one strip, so the exact row letters don't change the circuit.",
+  "The UNO WiFi Rev2 was not found by lookup_part, so it is a new part type with Uno-style header ports. The GND next to AREF is mapped to GND.1.",
+  "The sketch also reads A1 (analogRead) as a 'random reading', but the diagram has nothing on A1, so I added no connection there."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.3,
+   "input_tokens": 60301,
+   "cache_read_tokens": 50545,
+   "output_tokens": 1672,
+   "cost_usd": 0.0658,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-uno-wifi-rev2"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.1,
+   "input_tokens": 32172,
+   "cache_read_tokens": 30406,
+   "output_tokens": 3379,
+   "cost_usd": 0.0469,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-uno-wifi-rev2",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.9
+}

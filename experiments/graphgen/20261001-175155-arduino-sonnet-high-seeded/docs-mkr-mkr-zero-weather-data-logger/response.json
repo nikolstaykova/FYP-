@@ -1,0 +1,534 @@
+{
+ "graph": {
+  "title": "MKR Zero DHT22 (RHT03) Weather Data Logger",
+  "source_id": "hackster: MKR Zero Weather Data Logger (DHT22 + SD card)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-zero",
+    "label": "Arduino MKR Zero",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Medium breadboard",
+    "props": []
+   },
+   {
+    "id": "dht1",
+    "type": "dht22",
+    "label": "DHT22 / RHT03",
+    "props": []
+   },
+   {
+    "id": "c1",
+    "type": "capacitor-100nf",
+    "label": "100nF",
+    "props": [
+     {
+      "key": "value",
+      "value": "100nF"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "4.7k",
+    "props": [
+     {
+      "key": "value",
+      "value": "4700"
+     }
+    ]
+   },
+   {
+    "id": "sd1",
+    "type": "microsd-card",
+    "label": "microSD card",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "lipo-battery-3v7",
+    "label": "3.7V LiPo battery",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "red wire (VCC)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "orange wire (data to pin 7)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "black wire (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "blue wire (cap to VCC)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "blue wire (cap to GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "yellow wire (resistor to VCC)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "yellow wire (resistor to data)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "26t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "26t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "DATA",
+    "v": "bb1",
+    "v_port": "27t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "DATA",
+    "v": "bb1",
+    "v_port": "27t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "NC",
+    "v": "bb1",
+    "v_port": "28t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "dht1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "dht1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "29t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "26t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "26t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "mkr1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "mkr1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "27t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "27t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "mkr1",
+    "v_port": "7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "mkr1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "26t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "26t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "c1",
+    "v_port": "1",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "c1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "29t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "c1",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "c1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "26t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "26t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "1",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "27t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "27t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "2",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "r1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "sd1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "JST",
+    "v": "mkr1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The text says 'Plug the MKRZero to the breadboard', but the circuit image shows the MKR Zero beside the breadboard and linked only by three jumper wires (VCC, pin 7, GND). I followed the image.",
+   "The image shows the 100 nF capacitor and 4.7k resistor off the breadboard, joined to it by blue and yellow wires. I modelled those as jumper wires with their ends twisted to the component leads.",
+   "Breadboard holes are approximate. The DHT22 sits in row a, columns 26-29: VCC, DATA, NC, GND. The wires go into rows b-e of the same columns. Columns 26 (VCC) and 29 (GND) take the capacitor wires. Columns 26 (VCC) and 27 (DATA) take the pull-up resistor wires.",
+   "The catalogue entry for arduino-mkr-zero has no port '7', although the circuit uses digital pin 7. I used '7' anyway. It also has no battery (JST) or SD slot port, so the battery and microSD edges name no port on the board.",
+   "The dht22 catalogue entry lists no ports. I used VCC, DATA, NC and GND, in the order the image shows (the RHT03 is the same sensor as the DHT22).",
+   "The manual's 'SD card' is modelled as the catalogue microsd-card part, inserted in the MKR Zero's built-in slot.",
+   "The resistor is listed as 4.75k, but the manual text and image say 4.7k. I used value 4700.",
+   "The LiPo battery is joined through its JST connector to the MKR Zero's battery connector. The image shows it connected, and the manual says to plug one in."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 42.4,
+  "api_seconds": 37.9,
+  "first_token_seconds": 21.2,
+  "input_tokens": 16689,
+  "cache_read_tokens": 5414,
+  "output_tokens": 6046,
+  "cost_usd": 0.1066,
+  "turns": 2
+ }
+}

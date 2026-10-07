@@ -1,0 +1,96 @@
+{
+ "case": "21000-2",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 188.7,
+  "input_tokens": 235921,
+  "output_tokens": 32511,
+  "cost_usd": 0.8373,
+  "repair_rounds_used": 1
+ },
+ "parts": 69,
+ "edges": 77,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The PDF is a very dark scan with small step illustrations. Part identities come from matching step-box counts to the inventory page (12x 362226 = 7 in step 8 + one each in steps 6, 7, 12, 13, 14; 3x 300426 = step 16; 3x 300326 = steps 9, 10, 11).",
+  "Single-use port fix: every stud and anti-stud port now carries at most one joined edge. Pieces whose catalogue entry has only one stud or anti-stud port are joined to just one neighbour each. Where a piece has several ports (4x8 base plates, 4x6 plates, 2x3 and 1x3 bricks, corner bricks), different numbered ports are used for different neighbours.",
+  "Because of that constraint, the real many-to-many overlaps (a 4x6 plate spanning the seam of both base plates, a brick bridging two lower bricks) are not all expressed. Each piece is joined to one lower piece, plus a second link only where the catalogue gives a free port. The base plates b1/b2 are linked by a contact edge.",
+  "Step 5 placements (jumper plates, tile 1x6 and two 1x2 tiles) are approximate. The jumper plates b16-b18 carry the tiles, b14/b15 carry the tower start, and b13 -> b19 -> b23 -> b27 carry the curved brick.",
+  "Steps 9-16 are modelled as chains of corner bricks, 2x2 bricks, 1x1 bricks and tiles; exact stud pairings are inferred from the dark illustrations.",
+  "Antennas: lego-300426 (1x2 brick) has only one stud port, so b68 sits on b67 and b69 sits on a free stud of b61 (1x3 brick). In the real model both antennas sit on the top two studs.",
+  "The booklet builds a single model (Sears Tower, set 21000-2 Willis Tower)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 111.7,
+   "input_tokens": 108048,
+   "cache_read_tokens": 5507,
+   "output_tokens": 18073,
+   "cost_usd": 0.592,
+   "check_seconds": 0.03,
+   "issues": 32,
+   "issue_rules": {
+    "V4": 32
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 76.9,
+   "input_tokens": 127873,
+   "cache_read_tokens": 108046,
+   "output_tokens": 14438,
+   "cost_usd": 0.2453,
+   "check_seconds": 0.03,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 32,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 69,
+  "pieces_built": 69,
+  "pieces_unmapped": 0,
+  "inventory_matched": 68,
+  "exact_matched": 68,
+  "inventory_precision": 0.986,
+  "inventory_recall": 0.986,
+  "exact_recall": 0.986,
+  "joined_edges": 76,
+  "contacts_expected": 62,
+  "contacts_predicted": 44,
+  "contacts_correct": 40,
+  "contact_precision": 0.909,
+  "contact_recall": 0.645
+ },
+ "score_initial": {
+  "pieces_expected": 69,
+  "pieces_built": 69,
+  "pieces_unmapped": 0,
+  "inventory_matched": 68,
+  "exact_matched": 68,
+  "inventory_precision": 0.986,
+  "inventory_recall": 0.986,
+  "exact_recall": 0.986,
+  "joined_edges": 81,
+  "contacts_expected": 62,
+  "contacts_predicted": 52,
+  "contacts_correct": 46,
+  "contact_precision": 0.885,
+  "contact_recall": 0.742
+ },
+ "postprocess_ms": 32.8
+}

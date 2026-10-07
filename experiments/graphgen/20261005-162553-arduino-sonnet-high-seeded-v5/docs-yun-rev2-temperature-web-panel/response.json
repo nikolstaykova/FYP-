@@ -1,0 +1,783 @@
+{
+ "graph": {
+  "title": "Arduino Y\u00fan Temperature Web Panel",
+  "source_id": "https://www.arduino.cc/en/Tutorial/TemperatureWebPanel",
+  "new_part_types": [
+   {
+    "type": "arduino-yun-headers",
+    "name": "Arduino Y\u00fan (with pin headers)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "IOREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "USB_MICRO",
+      "kind": "header-socket"
+     },
+     {
+      "name": "USB_A",
+      "kind": "header-socket"
+     },
+     {
+      "name": "ETHERNET",
+      "kind": "header-socket"
+     },
+     {
+      "name": "MICROSD",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "yun1",
+    "type": "arduino-yun-headers",
+    "label": "Arduino Y\u00fan",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "tmp1",
+    "type": "temp-tmp36",
+    "label": "TMP36 temperature sensor",
+    "props": []
+   },
+   {
+    "id": "sd1",
+    "type": "microsd-card-media",
+    "label": "SD card",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "red wire (5V)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "yellow wire (A1 signal)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "black wire (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "sd1",
+    "u_port": null,
+    "v": "yun1",
+    "v_port": "MICROSD",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "3",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "3",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Fix: the catalogue's arduino-yun card lists only VIN, 3V3, GND, USB_MICRO, USB_A, ETHERNET and MICROSD. It has no 5V or A1 pin, but the tutorial's circuit and schematic need both. I added the new part type arduino-yun-headers. It is the same Y\u00fan board with its real header pins: A0-A5, 0-13, GND.1-3, 5V, 3.3V, VIN, IOREF, RESET, AREF, plus the USB, Ethernet and microSD connectors. yun1 now uses this type.",
+   "The black wire now goes to GND.1 instead of GND, to match the new type's port names. The image shows it on the first GND header pin.",
+   "The parts are otherwise the same as in step 1: yun1, bb1, tmp1, sd1 and three jumper wires (red, yellow, black).",
+   "Wiring follows the schematic and circuit image. Red goes from 5V to TMP36 pin 1 (+Vs). Yellow goes from A1 to pin 2 (Vout). Black goes from GND to pin 3 (GND). The TMP36 accepts 2.7-5.5 V, so 5V is within range.",
+   "The red wire sits on the header pin just right of the 3.3V label. That pin's own label is hidden by the wire, and the schematic shows 5V, so I used 5V.",
+   "Breadboard placement is my reading of the image. Each horizontal row of 5 holes is modelled as one column-bank strip: 10t for the +Vs row, 11t for the Vout row and 12t for the GND row. The sensor leg goes in hole a and the wire end in hole e of each strip.",
+   "The SD card is shown inserted in the Y\u00fan's microSD slot, as the circuit text says. It has no electrical edge because the tutorial gives no pin-level wiring for it.",
+   "The sketch's option of powering the sensor from A0/A2 is not built. The circuit image uses the 5V and GND header pins."
+  ]
+ },
+ "graph_initial": {
+  "title": "Arduino Y\u00fan Temperature Web Panel",
+  "source_id": "https://www.arduino.cc/en/Tutorial/TemperatureWebPanel",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "yun1",
+    "type": "arduino-yun",
+    "label": "Arduino Y\u00fan",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "tmp1",
+    "type": "temp-tmp36",
+    "label": "TMP36 temperature sensor",
+    "props": []
+   },
+   {
+    "id": "sd1",
+    "type": "microsd-card-media",
+    "label": "SD card",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "red wire (5V)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "yellow wire (A1 signal)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "black wire (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "sd1",
+    "u_port": null,
+    "v": "yun1",
+    "v_port": "MICROSD",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "3",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "3",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are the same as in step 1; no change.",
+   "Wiring follows the schematic and circuit image. Red goes from the Y\u00fan 5V to TMP36 pin 1 (+Vs). Yellow goes from A1 to pin 2 (Vout). Black goes from GND to pin 3 (GND).",
+   "The red wire sits on the header pin just right of the 3.3V label. That pin's own label is hidden by the wire, and the schematic shows 5V, so I used 5V. The TMP36 accepts 2.7-5.5 V, so 5V is within range.",
+   "The catalogue card for arduino-yun lists only VIN, 3V3, GND, USB_MICRO, USB_A, ETHERNET and MICROSD. It has no 5V or A1 port. I used the board's real pin names '5V' and 'A1' anyway, because the tutorial needs them. The catalogue entry should probably be extended.",
+   "Breadboard placement is my reading of the image. Each horizontal row of 5 holes is modelled as one column-bank strip: 10t for the +Vs row, 11t for the Vout row and 12t for the GND row. The sensor leg goes in hole a and the wire end in hole e of each strip.",
+   "The TMP36 pin order (1=+Vs, 2=Vout, 3=GND) follows the schematic. The flat side faces the viewer, with the legs top to bottom as +Vs, Vout, GND.",
+   "The SD card is shown inserted in the Y\u00fan's microSD slot, as the circuit text says. It has no electrical edge because the tutorial gives no pin-level wiring for it.",
+   "The sketch's alternative of powering the sensor from A0/A2 is not built. The circuit image uses the 5V and GND header pins."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 76.4,
+  "input_tokens": 107496,
+  "output_tokens": 9006,
+  "cost_usd": 0.1857,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.3,
+   "input_tokens": 39096,
+   "cache_read_tokens": 22612,
+   "output_tokens": 1155,
+   "cost_usd": 0.0808,
+   "check_seconds": 0.0,
+   "parts_listed": 7,
+   "changed_in_build": 0,
+   "looked_up": [
+    "temp-tmp36"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.1,
+   "input_tokens": 42934,
+   "cache_read_tokens": 41019,
+   "output_tokens": 3883,
+   "cost_usd": 0.0518,
+   "check_seconds": 0.0,
+   "issues": 4,
+   "issue_rules": {
+    "V4": 4
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.0,
+   "input_tokens": 25466,
+   "cache_read_tokens": 21859,
+   "output_tokens": 3968,
+   "cost_usd": 0.0531,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 32.5,
+  "cost_usd": 0.0705,
+  "types": [
+   {
+    "type": "arduino-yun-headers",
+    "found": true,
+    "trail": [
+     [
+      "adafruit",
+      "did not match: https://www.adafruit.com/product/2077 (The content describes the Adafruit Proto Shield for Arduino (product 2077), a pr)"
+     ],
+     [
+      "sparkfun",
+      "no search result"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/2749 (The content describes a Pololu stackable 2x20-pin 0.1 inch female header with sp)"
+     ],
+     [
+      "seeed",
+      "card from https://www.seeedstudio.com/Arduino-Y-N-p-1616.html"
+     ]
+    ]
+   }
+  ]
+ }
+}

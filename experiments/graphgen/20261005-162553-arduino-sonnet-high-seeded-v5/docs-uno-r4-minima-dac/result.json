@@ -1,0 +1,86 @@
+{
+ "case": "docs-uno-r4-minima-dac",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 62.6,
+  "input_tokens": 55374,
+  "output_tokens": 7806,
+  "cost_usd": 0.1475,
+  "repair_rounds_used": 0
+ },
+ "parts": 11,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct and are unchanged. The catalogue's arduino-uno is the R3, so I used arduino-uno-r4-minima, which lookup_part returned. It has a single GND port.",
+  "The image shows rows f-j in the top half of the breadboard and rows a-e in the bottom half. I mapped the bottom half (a-e) to catalogue bank 't' and the top half (f-j) to bank 'b'. The rails beside the bottom half are written tp (+, lower row) and tn (-, upper row).",
+  "Rail hole numbers are estimated from the image: GND wire at tn.1, 5V wire at tp.2, potentiometer red wire at tp.11, potentiometer black wire at tn.12, buzzer black wire at tn.25. Connectivity is the same wherever on a rail they sit.",
+  "Potentiometer: its two outer legs are in columns 13 and 15 (row e) and the wiper is in column 14 (row f). I took the 5V side as column 13 (red wire) and GND as column 15 (black wire). This is symmetric for a potentiometer. The yellow wire from A5 lands in column 14, top half (14b.j), which is the wiper strip.",
+  "Buzzer: the leg in column 26 goes to the A0 wire, so it is pin 2 (+). The leg in column 30 goes to GND through the black wire, so it is pin 1 (-). This matches the catalogue polarity.",
+  "A0 is the UNO R4's DAC output and drives the buzzer. The potentiometer wiper goes to A5 to set the frequency. The tutorial text doesn't state which pin the potentiometer is read on, so the A5 wiring comes from the image.",
+  "No resistors or LEDs are used, as in the tutorial."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.0,
+   "input_tokens": 35806,
+   "cache_read_tokens": 21097,
+   "output_tokens": 1352,
+   "cost_usd": 0.0758,
+   "check_seconds": 0.0,
+   "parts_listed": 11,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-uno-r4-minima"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.6,
+   "input_tokens": 19568,
+   "cache_read_tokens": 18173,
+   "output_tokens": 6454,
+   "cost_usd": 0.0717,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.3
+}

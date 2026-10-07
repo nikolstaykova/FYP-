@@ -1,0 +1,469 @@
+{
+ "graph": {
+  "title": "Light an LED with a Raspberry Pi (3V3 and GND)",
+  "source_id": "Raspberry Pi Foundation project: Light an LED (breadboard, 3V3 and GND)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (3V3)",
+    "props": []
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (GND)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Breadboard ravine separates top bank (t, rows a-e) from bottom bank (b, rows f-j). The manual's 'row 1' is taken as column 1 of the catalogue's naming.",
+   "LED anode (long leg) in 1t.e on the left/top side of the ravine; cathode in 1b.f on the other side. Wire1's male end goes in 1t.a, which is the same strip as the anode.",
+   "Resistor leg 1 shares the cathode strip (1b.h is in column 1 bottom bank). Leg 2 goes in column 5 bottom bank (any free row on that side); wire2 male end shares that strip (5b.j).",
+   "Resistor value is not given in the manual; 330 ohm assumed as typical for 3.3 V.",
+   "Jumper-wire-mf: port 'a' is assumed to be the male end (breadboard) and 'b' the female end (Pi header pin).",
+   "The Pi's 3V3 pin is 3V3.1 and GND is GND.1; the manual does not specify which physical pins, so these were chosen."
+  ]
+ },
+ "graph_initial": {
+  "title": "Light an LED with a Raspberry Pi (3V3 and GND)",
+  "source_id": "Raspberry Pi Foundation project: Light an LED (breadboard, 3V3 and GND)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (3V3)",
+    "props": []
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (GND)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Breadboard ravine separates top bank (t, rows a-e) from bottom bank (b, rows f-j). The manual's 'row 1' is taken as column 1 of the catalogue's naming.",
+   "LED anode (long leg) in 1t.e on the left/top side of the ravine; cathode in 1b.f on the other side. Wire1's male end goes in 1t.a, which is the same strip as the anode.",
+   "Resistor leg 1 shares the cathode strip (1b.h is in column 1 bottom bank). Leg 2 goes in column 5 bottom bank (any free row on that side); wire2 male end shares that strip (5b.j).",
+   "Resistor value is not given in the manual; 330 ohm assumed as typical for 3.3 V.",
+   "Jumper-wire-mf: port 'a' is assumed to be the male end (breadboard) and 'b' the female end (Pi header pin).",
+   "The Pi's 3V3 pin is 3V3.1 and GND is GND.1; the manual does not specify which physical pins, so these were chosen."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 18.4,
+  "input_tokens": 19915,
+  "output_tokens": 2265,
+  "cost_usd": 0.0817,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.4,
+   "input_tokens": 19915,
+   "cache_read_tokens": 5414,
+   "output_tokens": 2265,
+   "cost_usd": 0.0817,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

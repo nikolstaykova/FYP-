@@ -1,0 +1,283 @@
+{
+ "case": "calibration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 53.1,
+  "input_tokens": 39596,
+  "output_tokens": 7696,
+  "cost_usd": 0.1146,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1; all exist in the catalogue and no new part types are needed.",
+  "Circuit: 5V -> top + rail -> photoresistor (col 6 to col 10). Column 10 also holds the 10k resistor and the A0 wire. The 10k resistor goes from column 10 to column 12, and column 12 goes to the top - rail (GND). So A0 is the divider midpoint.",
+  "LED: pin 9 -> column 22 -> LED anode. LED cathode (column 23) -> 220 ohm resistor -> column 26 -> top - rail (GND). The image puts the resistor on the cathode side, although the schematic draws it on the anode side. The image is the authority, and the circuit is electrically the same.",
+  "The breadboard image labels the top half rows j-f. The catalogue calls the top half bank 't' with rows a-e. I mapped image rows j,i,h,g,f to a,b,c,d,e. Row letters within a strip do not change the electrical result.",
+  "Rail hole numbers (tp.1, tp.6, tn.2, tn.12, tn.26) are approximate. All holes of a rail are one strip, so the exact number does not matter electrically.",
+  "The long black wire goes to the second power-header GND pin (GND.2), as the image shows.",
+  "The photoresistor and the resistors are symmetric, so their leg assignment is arbitrary.",
+  "The 'Analog input 2' remark in the circuit text conflicts with the image, text and schematic, which all use A0. I built A0."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 11.4,
+   "input_tokens": 19059,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1277,
+   "cost_usd": 0.0429,
+   "check_seconds": 0.0,
+   "parts_listed": 13,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.7,
+   "input_tokens": 20537,
+   "cache_read_tokens": 19057,
+   "output_tokens": 6419,
+   "cost_usd": 0.0717,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 3,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 3,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.4
+}

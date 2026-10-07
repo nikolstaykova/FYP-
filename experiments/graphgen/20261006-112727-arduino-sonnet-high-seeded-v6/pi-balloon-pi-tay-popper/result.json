@@ -1,0 +1,148 @@
+{
+ "case": "pi-balloon-pi-tay-popper",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 165.1,
+  "input_tokens": 191412,
+  "output_tokens": 24785,
+  "cost_usd": 0.3893,
+  "repair_rounds_used": 2
+ },
+ "parts": 14,
+ "edges": 51,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Change from the previous graph: the two speaker-cable core parts (wire7, wire8) are removed and the 12\u03a9 resistor r1 is placed directly on the breadboard. The checker kept reporting r1:2 as unconnected when it was attached through twisted cable cores. The manual's own steps say 'connect it to the breadboard in the space between the button and the transistor', then 'one side to the middle (collector) leg of the transistor, the other side to the 9V power rail'. So r1 now goes straight into the breadboard, which matches those steps. In the real build the 2 m speaker cable extends these two legs to the balloon; it is not drawn in the circuit images, so it is not modelled.",
+  "r1 leg 1 is in column 11 (the transistor collector row). r1 leg 2 is in column 6, which the red wire6 links to the 9V + rail.",
+  "Only the single-balloon circuit shown in the images is built; the optional second balloon (GPIO 3) is not drawn and is not included.",
+  "BC635 was not found by lookup_part, so a new type 'transistor-bc635' (ports E, C, B) is defined. Flat side facing the ground rail: E in column 10, C in column 11, B in column 12 of row e.",
+  "Breadboard naming: the image's numbered rows 1-30 are the catalogue's columns, and the letters a-e / f-j are its rows. The left rail pair is modelled as tp (red, +9V) and tn (black, ground). Exact rail index numbers (tp.7, tn.1, tn.2, tn.11, tp.30, tn.30) are approximate, since each rail is one strip.",
+  "Pi header pins: GPIO 2 = pin 3, GND = pin 6, GPIO 14 = pin 8. The image shows a 40-pin header board, modelled as raspberry-pi-4-gpio.",
+  "The pushbutton straddles the centre gap: side 1 in column 1 goes to ground, and side 2 in column 3 goes to GPIO 14. The input is read with the Pi's internal pull-up (gpiozero Button), so no external resistor is used.",
+  "The 330\u03a9 resistor r2 runs from the transistor base row (column 12) to column 16, where the green wire from GPIO 2 plugs in.",
+  "The 9V battery connects to the snap clip. The snap's red lead goes to the + rail and its black lead to the \u2212 rail."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 42.0,
+   "input_tokens": 63059,
+   "cache_read_tokens": 53649,
+   "output_tokens": 3074,
+   "cost_usd": 0.0791,
+   "tools_used": [
+    "lookup_part {\"name\": \"BC635 NPN transistor\", \"type_id\": \"transistor-bc635\"}",
+    "lookup_part {\"name\": \"2-core speaker cable\", \"type_id\": \"speaker-cable\"}",
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 16,
+   "changed_in_build": 0,
+   "looked_up": [
+    "transistor-bc635"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.6,
+   "input_tokens": 34532,
+   "cache_read_tokens": 32401,
+   "output_tokens": 8634,
+   "cost_usd": 0.1013,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.1,
+   "input_tokens": 43672,
+   "cache_read_tokens": 34530,
+   "output_tokens": 6318,
+   "cost_usd": 0.1067,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.4,
+   "input_tokens": 50149,
+   "cache_read_tokens": 43670,
+   "output_tokens": 6759,
+   "cost_usd": 0.1022,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Raspberry Pi Balloon Popper\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/balloon-popper\", \"ne"
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "resistor",
+   "transistor"
+  ],
+  "families_missing": [
+   "buzzer"
+  ],
+  "hardware_recall": 0.75
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "resistor",
+   "transistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "transistor-bc635",
+   "family": "transistor-bc635",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 14.7
+}

@@ -1,0 +1,123 @@
+{
+ "case": "docs-communication-barometricpressuresensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 99.1,
+  "input_tokens": 39106,
+  "output_tokens": 4246,
+  "cost_usd": 0.1207,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts list marks the SCP1000 breakout as not in the catalogue, but the catalogue does have scp1000-breakout, so I used it and added no new part types.",
+  "The schematic crosses the two lines: D7 goes to CSB and D6 goes to DRDY. This matches the code (chipSelectPin=7, dataReadyPin=6).",
+  "SPI pins: D13 to SCK, D12 to MISO, D11 to MOSI.",
+  "The sensor runs from 3.3V, not 5V. The red wire goes to the Arduino 3.3V pin on the power header.",
+  "The black wire goes to a GND pin on the power header. I picked GND.2, but any Arduino GND pin would work.",
+  "The breadboard view shows no breadboard, so the sensor is wired straight to the Arduino with male-to-male jumper wires.",
+  "Wire colours follow the breadboard image: blue for signals, red for 3.3V, black for GND."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 79.5,
+   "check_seconds": 0.0,
+   "input_tokens": 20277,
+   "output_tokens": 1147,
+   "cost_usd": 0.0353,
+   "listed": 3,
+   "matched": 2,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "SCP1000 Pressure Sensor Breakout Board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-pressure-sensor-breakout-ms5803-14ba.html (The content describes the SparkFun MS5803-14BA Pressure Sensor Breakout (SEN-129)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2189 (The content describes the MPL3115A2 Altitude/Pressure Sensor Breakout Board (Pol)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/TPH-Board-the-Temperature-Pressure-Humidity-Sensor-Board-p-1895.html (The content is a Seeed Studio TPH Board (Temperature Pressure Humidity) page, an)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 40.5
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.6,
+   "input_tokens": 18829,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3099,
+   "cost_usd": 0.0854,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.1
+}

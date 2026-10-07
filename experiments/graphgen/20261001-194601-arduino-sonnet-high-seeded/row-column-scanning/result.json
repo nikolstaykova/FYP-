@@ -1,0 +1,265 @@
+{
+ "case": "row-column-scanning",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 62.2,
+  "input_tokens": 19077,
+  "output_tokens": 9622,
+  "cost_usd": 0.1,
+  "repair_rounds_used": 0
+ },
+ "parts": 37,
+ "edges": 124,
+ "repeats": [
+  {
+   "group": "direct",
+   "times": 8,
+   "overrides": 14
+  },
+  {
+   "group": "limited",
+   "times": 8,
+   "overrides": 14
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Wiring follows the manual's pin table: matrix pins 1-16 map to Arduino 13,12,11,10,A2,A3,A4,A5,2,3,4,5,6,7,8,9 and to matrix ports R5,R7,C2,C3,R8,C5,R6,R3,R1,C4,C6,R4,C1,R2,C7,C8.",
+  "The eight green wires (pins 13,12,11,10,A2-A5) go straight from the Arduino to the matrix. The eight yellow wires (pins 2-9) each pass through a 1k resistor. In the image the resistors plug into the Arduino header and a yellow wire runs on to the matrix.",
+  "The image shows 8 resistors, one on each of pins 2-9. The manual says to put them on the wires 'connected in yellow'. Pins 2-9 serve both rows and columns, as the pin table shows.",
+  "Breadboard hole positions for the potentiometers and wires are approximate readings of the image. The pot wipers sit in the top bank and the outer legs in the bottom bank. Each pot's black and red wires go to the right-hand power rails (tn and tp). The red wire from tp.2 goes to 5V and the black wire from tn.3 goes to GND.",
+  "Pot on rows 8-10 wiper goes to A1 and pot on rows 14-16 wiper goes to A0, from where the blue wires end at the Arduino headers in the image.",
+  "The catalogue port names for led-matrix-8x8 (R1-R8, C1-C8) are used. Matrix pin numbers map to them as above.",
+  "Resistor-to-wire joins are modelled as lead-to-wire-end connections."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.2,
+   "input_tokens": 19077,
+   "cache_read_tokens": 19075,
+   "output_tokens": 9622,
+   "cost_usd": 0.1,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 28,
+  "nets_built": 28,
+  "nets_matched": 19,
+  "net_precision": 0.679,
+  "net_recall": 0.679,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 8,
+   "pot": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "pot": 2,
+   "resistor": 8
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "led",
+     "R1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "R2"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "led",
+     "R4"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "led",
+     "C2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "led",
+     "C3"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "led",
+     "C5"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 25.7
+}

@@ -1,0 +1,138 @@
+{
+ "case": "button-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 87.3,
+  "input_tokens": 43516,
+  "output_tokens": 10430,
+  "cost_usd": 0.1849,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 108,
+ "repeats": [
+  {
+   "group": "btn",
+   "times": 5,
+   "overrides": 40
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The catalogue has arduino-leonardo, so it is used even though the parts list matched it to None. The Leonardo connects to the computer by micro-USB. The USB cable is not drawn, so it is not modelled.",
+  "Catalogue convention: bank 't' is rows a-e and bank 'b' is rows f-j. The image's upper half (rows f-j, next to the 5V rail) is therefore bank 'b', and its lower half (rows a-e) is bank 't'.",
+  "Each pushbutton straddles the centre gap. Its upper legs (side 1) are in bank b at columns L and L+2, row f. Its lower legs (side 2) are in bank t, row e. L is 6, 11, 16, 21 and 26 for buttons 1 to 5.",
+  "Side 1 gets 5V through a red jumper to row h of the right-hand column. Side 2 (the input side) goes to the Arduino pin and to the 10k pulldown resistor, which runs to the GND rail.",
+  "Pin mapping follows the schematic: button 1 on pin 6 (mouse click), button 2 on pin 5, button 3 on pin 4, button 4 on pin 3, button 5 on pin 2. The blue wire loops are nested in the image, and the order is the one the schematic shows.",
+  "Power rail hole numbers are approximate, read from the image positions. tp is the upper positive rail, which carries 5V. bn is the lower negative rail, which is GND.",
+  "The 10k resistors use value=10000. The exact breadboard rows for the blue wire ends (row c for button 1, row b for the others) are read from the image."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 26.2,
+   "check_seconds": 0.0,
+   "input_tokens": 23815,
+   "output_tokens": 1251,
+   "cost_usd": 0.0566,
+   "listed": 5,
+   "matched": 4,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Leonardo, Micro or Due board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1947 (The content describes the Adafruit 2.8\" TFT Touch Shield with Capacitive Touch ()"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-uno-r4-minima.html (The page describes the Arduino UNO R4 Minima (SparkFun DEV-22633, RA4M1, 5V), no)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2521 (The content describes the Pololu Zumo Shield for Arduino v1.3, a motor-driver sh)"
+      ],
+      [
+       "budget",
+       "stopped after 3 checks"
+      ]
+     ],
+     "seconds": 26.2
+    },
+    {
+     "item": "5x momentary pushbuttons",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "5x 10k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 61.1,
+   "input_tokens": 19701,
+   "cache_read_tokens": 11120,
+   "output_tokens": 9179,
+   "cost_usd": 0.1283,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 6.2
+}

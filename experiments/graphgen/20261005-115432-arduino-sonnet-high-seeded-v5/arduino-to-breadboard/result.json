@@ -1,0 +1,234 @@
+{
+ "case": "arduino-to-breadboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 79.6,
+  "input_tokens": 13870,
+  "output_tokens": 13501,
+  "cost_usd": 0.1486,
+  "repair_rounds_used": 0
+ },
+ "parts": 20,
+ "edges": 124,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The tutorial has two wiring diagrams (burn bootloader; upload via USB-serial). I built the first: the bootloader-burning (ArduinoISP) circuit with the external 16 MHz clock. The upload circuit (RX/TX wires, Arduino microcontroller removed) and the minimal no-crystal circuit are not included.",
+  "The 10k pull-up resistor from ATmega pin 1 (RESET) to +5V is drawn in the image and listed in the parts list.",
+  "Arduino pin 10 goes to ATmega pin 1 (RESET), pin 11 to pin 17 (MOSI), pin 12 to pin 18 (MISO), pin 13 to pin 19 (SCK), as in the standard ArduinoISP wiring.",
+  "The crystal sits across ATmega pins 9 and 10 (XTAL1/XTAL2) via the two blue wires; each 22 pF capacitor goes from a crystal leg to ground.",
+  "Exact breadboard hole positions and rail indices are estimated from the picture. The chip straddles the centre gap, with pins 1-14 on the bottom half and 15-28 on the top half.",
+  "The image shows no clear AVCC (pin 20) or second GND (pin 22 is grounded, pin 8 also) wire beyond what is drawn. I added only the visible power wires: +5V to pin 7 and GND to pins 8 and 22. A real build should also connect pin 20 (AVCC) to +5V.",
+  "Top rail 'tp' is +5V and 'tn' is GND, linked to the bottom rails 'bp' and 'bn' by the long red and black wires on the right."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 79.6,
+   "input_tokens": 13870,
+   "cache_read_tokens": 11032,
+   "output_tokens": 13501,
+   "cost_usd": 0.1486,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 8,
+  "nets_matched": 2,
+  "net_precision": 0.25,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 2,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "atmega328p": 1,
+   "resistor": 1,
+   "crystal": 1,
+   "capacitor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "20"
+    ],
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 26.5
+}

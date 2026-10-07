@@ -1,0 +1,556 @@
+{
+ "graph": {
+  "title": "Knock (Piezo knock sensor)",
+  "source_id": "https://docs.arduino.cc/built-in-examples/sensors/Knock",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": null,
+    "props": []
+   },
+   {
+    "id": "piezo1",
+    "type": "buzzer",
+    "label": "Piezo electric disc",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "1 Megohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1000000"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "black wire (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "red wire (A0)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "piezo1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "piezo1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "piezo1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "piezo1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The 1 Megohm resistor is modelled with the catalogue 'resistor' type and value=1000000.",
+   "In the image the upper breadboard half is labelled rows f-j. It is named bank 'b' (rows f-j) in the catalogue, so the circuit uses holes such as 5b.i.",
+   "Piezo legs are in columns 5 (black wire, ground side) and 8 (red wire, A0 side), row i. The resistor is in row h across columns 5 and 8, in parallel with the piezo. The black wire goes to 5b.g and the red wire to 8b.f.",
+   "Buzzer port 1 is taken as the positive (red) lead and port 2 as the negative (black) lead.",
+   "The black wire goes to the GND pin next to AREF on the digital header, mapped to GND.1.",
+   "The tutorial lists 'solid surface' as hardware. It is not a circuit part, so it is not modelled.",
+   "The piezo disc is shown with its own lead wires in the image. These are treated as the buzzer's legs and are not separate parts."
+  ]
+ },
+ "graph_initial": {
+  "title": "Knock (Piezo knock sensor)",
+  "source_id": "https://docs.arduino.cc/built-in-examples/sensors/Knock",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": null,
+    "props": []
+   },
+   {
+    "id": "piezo1",
+    "type": "buzzer",
+    "label": "Piezo electric disc",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "1 Megohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1000000"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "black wire (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "red wire (A0)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "piezo1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "piezo1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "piezo1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "piezo1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "8b.i",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "8b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The 1 Megohm resistor is modelled with the catalogue 'resistor' type and value=1000000.",
+   "In the image the upper breadboard half is labelled rows f-j. It is named bank 'b' (rows f-j) in the catalogue, so the circuit uses holes such as 5b.i.",
+   "Piezo legs are in columns 5 (black wire, ground side) and 8 (red wire, A0 side), row i. The resistor is in row h across columns 5 and 8, in parallel with the piezo. The black wire goes to 5b.g and the red wire to 8b.f.",
+   "Buzzer port 1 is taken as the positive (red) lead and port 2 as the negative (black) lead.",
+   "The black wire goes to the GND pin next to AREF on the digital header, mapped to GND.1.",
+   "The tutorial lists 'solid surface' as hardware. It is not a circuit part, so it is not modelled.",
+   "The piezo disc is shown with its own lead wires in the image. These are treated as the buzzer's legs and are not separate parts."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 37.3,
+  "input_tokens": 32685,
+  "output_tokens": 3338,
+  "cost_usd": 0.0907,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 18.4,
+   "check_seconds": 0.0,
+   "input_tokens": 13729,
+   "output_tokens": 774,
+   "cost_usd": 0.0315,
+   "listed": 4,
+   "matched": 2,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "Piezo electric disc",
+     "card": "buzzer",
+     "skipped": false
+    },
+    {
+     "item": "1 Megohm resistor",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/resistor-4-7k-ohm-1-10w-1.html (The content describes a 4.7 kOhm 1/10W 1% SMD resistor (COM-18280), not a megohm)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/0-2-Inch-Thin-Film-Resistor-type-Pressure-Sensor-FSR400-A301-p-2091.html (The content describes a 0.2 inch thin film pressure sensor (FSR400 A301), a forc)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 18.4
+    },
+    {
+     "item": "solid surface",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.9,
+   "input_tokens": 18956,
+   "cache_read_tokens": 11120,
+   "output_tokens": 2564,
+   "cost_usd": 0.0592,
+   "check_seconds": 0.04,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

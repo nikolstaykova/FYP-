@@ -1,0 +1,1891 @@
+{
+ "graph": {
+  "title": "Home Gardening Automation (HGA) with Arduino MKR Zero and Grove modules",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-zero/home-gardening-automation",
+  "new_part_types": [
+   {
+    "type": "arduino-mkr-zero",
+    "name": "Arduino MKR Zero",
+    "category": "board",
+    "ports": [
+     {
+      "name": "AREF",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-cable",
+    "name": "Grove 4-pin cable",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "ball"
+     },
+     {
+      "name": "b",
+      "kind": "ball"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-zero",
+    "label": "Arduino MKR Zero",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "arduino-mkr-connector-carrier",
+    "label": "Arduino MKR Connector Carrier",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable type A male to micro-B male",
+    "props": []
+   },
+   {
+    "id": "laptop1",
+    "type": "laptop",
+    "label": "Computer (Arduino IDE)",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "moisture-grove-soil",
+    "label": "Grove Moisture Sensor",
+    "props": []
+   },
+   {
+    "id": "water1",
+    "type": "water-sensor-grove",
+    "label": "Grove Water Sensor",
+    "props": []
+   },
+   {
+    "id": "relay1",
+    "type": "grove-relay",
+    "label": "Grove Relay",
+    "props": []
+   },
+   {
+    "id": "baro1",
+    "type": "pressure-dps310",
+    "label": "Grove DPS310 Barometric Pressure Sensor",
+    "props": []
+   },
+   {
+    "id": "oled1",
+    "type": "display-oled-128x64-i2c",
+    "label": "Grove OLED Display 0.96\"",
+    "props": []
+   },
+   {
+    "id": "hub1",
+    "type": "hub-grove-i2c",
+    "label": "Grove I2C Hub",
+    "props": []
+   },
+   {
+    "id": "gcable1",
+    "type": "grove-cable",
+    "label": "Grove cable carrier A0 to moisture",
+    "props": []
+   },
+   {
+    "id": "gcable2",
+    "type": "grove-cable",
+    "label": "Grove cable carrier D0 to water",
+    "props": []
+   },
+   {
+    "id": "gcable3",
+    "type": "grove-cable",
+    "label": "Grove cable carrier D1 to relay",
+    "props": []
+   },
+   {
+    "id": "gcable4",
+    "type": "grove-cable",
+    "label": "Grove cable carrier TWI to hub",
+    "props": []
+   },
+   {
+    "id": "gcable5",
+    "type": "grove-cable",
+    "label": "Grove cable hub to barometer",
+    "props": []
+   },
+   {
+    "id": "gcable6",
+    "type": "grove-cable",
+    "label": "Grove cable hub to OLED",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Long solid wire (water sensor hack)",
+    "props": [
+     {
+      "key": "length",
+      "value": "long"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Short solid wire (water sensor hack)",
+    "props": [
+     {
+      "key": "length",
+      "value": "short"
+     }
+    ]
+   },
+   {
+    "id": "psu1",
+    "type": "wall-wart-power-supply",
+    "label": "12V power supply",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "dc-motor",
+    "label": "Water pump (or electronic valve)",
+    "props": []
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "12V to relay COM",
+    "props": []
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Relay NO to pump",
+    "props": []
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Pump to GND",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "mkr-header",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "mkr-header",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "b",
+    "v": "moist1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "b",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable2",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable2",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable2",
+    "u_port": "b",
+    "v": "water1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable2",
+    "u_port": "b",
+    "v": "water1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable4",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable4",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable4",
+    "u_port": "b",
+    "v": "hub1",
+    "v_port": "P1.SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable4",
+    "u_port": "b",
+    "v": "hub1",
+    "v_port": "P1.SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable5",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P2.SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable5",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P2.SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable5",
+    "u_port": "b",
+    "v": "baro1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable5",
+    "u_port": "b",
+    "v": "baro1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable6",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P3.SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable6",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P3.SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable6",
+    "u_port": "b",
+    "v": "oled1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable6",
+    "u_port": "b",
+    "v": "oled1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "water1",
+    "v_port": null,
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "damaging"
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "water1",
+    "v_port": null,
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "damaging"
+   },
+   {
+    "type": "contact",
+    "u": "psu1",
+    "u_port": "DC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "psu1",
+    "u_port": "DC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "contact",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": "COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": "COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "relay1",
+    "v_port": "NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "relay1",
+    "v_port": "NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pump1",
+    "v_port": "1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pump1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "pump1",
+    "v_port": "2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "pump1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "contact",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial title/URL is inferred; no official id was given.",
+   "Arduino MKR Zero is not in the catalogue, so it is a new part type (MKR header pins plus USB).",
+   "The catalogue already has grove-relay, so it is used for the Grove Relay even though the parts list said 'None'.",
+   "Grove cables are not in the catalogue. I added a grove-cable connector type (a and b are one node). The carrier and hub Grove ports are 'socket' kind, so the cable plug ends are given kind 'ball' as the nearest compatible stand-in for a plug that snaps into a socket.",
+   "The carrier has one generic 'grove' port, not separate A0/D0/D1/TWI ports. The pin assignment (A0 moisture, D0 water, D1 relay, TWI via I2C hub) comes from the text, so the three sensor cables and the TWI cable all use port 'grove'.",
+   "Grove module connectors are not named ports. The joined edge to a module therefore has no port, and the electrical edge names the signal port (SIG or SCL).",
+   "The power section follows the 'next step' diagram, which I could not see. It is reconstructed from the text: the 12V supply goes to the carrier VIN/GND screw block (modelled as the carrier 'VCC' and 'GND' ports) and to relay COM. The pump goes between relay NO and GND.",
+   "The carrier VCC and GND ports are pin-kind and cannot take a wire-end or the supply's DC port as a 'joined' edge. The screw-terminal clamps on the carrier are therefore 'contact' plus 'electrical' edges. The relay and pump screw terminals keep 'joined' edges.",
+   "The wall-wart has a single 'DC' port, so the supply's ground return is not modelled separately.",
+   "The water sensor hack uses two solid wires of different lengths soldered to two non-adjacent tinned bars. They are modelled as jumper-wire parts joined to the sensor. Their free ends go into the tank.",
+   "The Arduino IDE is software only, so it is represented only by the laptop on the USB cable.",
+   "The moisture sensor probe goes in the soil and the water sensor wires go in the tank. These are physical placements and are not graph edges.",
+   "The Gmail, Google Calendar and Google Drive connectors need authorization (claude.ai connector settings). They are unavailable in this non-interactive session. This task did not need them."
+  ]
+ },
+ "graph_initial": {
+  "title": "Home Gardening Automation (HGA) with Arduino MKR Zero and Grove modules",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-zero/home-gardening-automation",
+  "new_part_types": [
+   {
+    "type": "arduino-mkr-zero",
+    "name": "Arduino MKR Zero",
+    "category": "board",
+    "ports": [
+     {
+      "name": "AREF",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-cable",
+    "name": "Grove 4-pin cable",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-zero",
+    "label": "Arduino MKR Zero",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "arduino-mkr-connector-carrier",
+    "label": "Arduino MKR Connector Carrier",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable type A male to micro-B male",
+    "props": []
+   },
+   {
+    "id": "laptop1",
+    "type": "laptop",
+    "label": "Computer (Arduino IDE)",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "moisture-grove-soil",
+    "label": "Grove Moisture Sensor",
+    "props": []
+   },
+   {
+    "id": "water1",
+    "type": "water-sensor-grove",
+    "label": "Grove Water Sensor",
+    "props": []
+   },
+   {
+    "id": "relay1",
+    "type": "grove-relay",
+    "label": "Grove Relay",
+    "props": []
+   },
+   {
+    "id": "baro1",
+    "type": "pressure-dps310",
+    "label": "Grove DPS310 Barometric Pressure Sensor",
+    "props": []
+   },
+   {
+    "id": "oled1",
+    "type": "display-oled-128x64-i2c",
+    "label": "Grove OLED Display 0.96\"",
+    "props": []
+   },
+   {
+    "id": "hub1",
+    "type": "hub-grove-i2c",
+    "label": "Grove I2C Hub",
+    "props": []
+   },
+   {
+    "id": "gcable1",
+    "type": "grove-cable",
+    "label": "Grove cable carrier A0 to moisture",
+    "props": []
+   },
+   {
+    "id": "gcable2",
+    "type": "grove-cable",
+    "label": "Grove cable carrier D0 to water",
+    "props": []
+   },
+   {
+    "id": "gcable3",
+    "type": "grove-cable",
+    "label": "Grove cable carrier D1 to relay",
+    "props": []
+   },
+   {
+    "id": "gcable4",
+    "type": "grove-cable",
+    "label": "Grove cable carrier TWI to hub",
+    "props": []
+   },
+   {
+    "id": "gcable5",
+    "type": "grove-cable",
+    "label": "Grove cable hub to barometer",
+    "props": []
+   },
+   {
+    "id": "gcable6",
+    "type": "grove-cable",
+    "label": "Grove cable hub to OLED",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Long solid wire (water sensor hack)",
+    "props": [
+     {
+      "key": "length",
+      "value": "long"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Short solid wire (water sensor hack)",
+    "props": [
+     {
+      "key": "length",
+      "value": "short"
+     }
+    ]
+   },
+   {
+    "id": "psu1",
+    "type": "wall-wart-power-supply",
+    "label": "12V power supply",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "dc-motor",
+    "label": "Water pump (or electronic valve)",
+    "props": []
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "12V to relay COM",
+    "props": []
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Relay NO to pump",
+    "props": []
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "Pump to GND",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "mkr-header",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "mkr-header",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable1",
+    "u_port": "b",
+    "v": "moist1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable1",
+    "u_port": "b",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable2",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable2",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable2",
+    "u_port": "b",
+    "v": "water1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable2",
+    "u_port": "b",
+    "v": "water1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable4",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable4",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "grove",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable4",
+    "u_port": "b",
+    "v": "hub1",
+    "v_port": "P1.SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable4",
+    "u_port": "b",
+    "v": "hub1",
+    "v_port": "P1.SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable5",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P2.SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable5",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P2.SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable5",
+    "u_port": "b",
+    "v": "baro1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable5",
+    "u_port": "b",
+    "v": "baro1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable6",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P3.SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable6",
+    "u_port": "a",
+    "v": "hub1",
+    "v_port": "P3.SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "gcable6",
+    "u_port": "b",
+    "v": "oled1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "gcable6",
+    "u_port": "b",
+    "v": "oled1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "water1",
+    "v_port": null,
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "damaging"
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "water1",
+    "v_port": null,
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "damaging"
+   },
+   {
+    "type": "joined",
+    "u": "psu1",
+    "u_port": "DC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "psu1",
+    "u_port": "DC",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "carrier1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": "COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "relay1",
+    "v_port": "COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "relay1",
+    "v_port": "NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "relay1",
+    "v_port": "NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pump1",
+    "v_port": "1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pump1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "pump1",
+    "v_port": "2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "pump1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial title/URL is inferred; no official id was given.",
+   "Arduino MKR Zero is not in the catalogue, so it is a new part type (MKR header pins plus USB).",
+   "The catalogue already has grove-relay, so it is used for the Grove Relay even though the parts list said 'None'.",
+   "Grove cables are not in the catalogue. I added a grove-cable connector type (a and b are one node) to model them.",
+   "The carrier has one generic 'grove' port, not separate A0/D0/D1/TWI ports. The pin assignment (A0 moisture, D0 water, D1 relay, TWI via I2C hub) comes from the text, so the three sensor cables and the TWI cable all use port 'grove'.",
+   "Grove module connectors are not named ports. The joined edge to a module therefore has no port, and the electrical edge names the signal port (SIG or SCL).",
+   "The power section follows the 'next step' diagram, which I could not see. It is reconstructed from the text: the 12V supply goes to the carrier VIN/GND screw block (modelled as the carrier 'VCC' and 'GND' ports) and to relay COM. The pump goes between relay NO and GND.",
+   "The wall-wart has a single 'DC' port, so the supply's ground return is not modelled separately.",
+   "The water sensor hack uses two solid wires of different lengths soldered to two non-adjacent tinned bars. They are modelled as jumper-wire parts joined to the sensor. Their free ends go into the tank.",
+   "The Arduino IDE is software only, so it is represented only by the laptop on the USB cable.",
+   "The moisture sensor probe goes in the soil and the water sensor wires go in the tank. These are physical placements and are not graph edges.",
+   "The Gmail, Google Calendar and Google Drive connectors need authorization (claude.ai connector settings). They are unavailable in this non-interactive session. This task did not need them."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 289.3,
+  "input_tokens": 186715,
+  "output_tokens": 24888,
+  "cost_usd": 0.5891,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 204.8,
+   "check_seconds": 0.0,
+   "input_tokens": 136901,
+   "output_tokens": 10729,
+   "cost_usd": 0.3501,
+   "listed": 10,
+   "matched": 0,
+   "looked_up": 8,
+   "found": 6,
+   "items": [
+    {
+     "item": "Arduino IDE",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Arduino MKR Zero",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield, which is a shield that adds CA)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 5.9
+    },
+    {
+     "item": "Seeed Grove Moisture Sensor",
+     "card": "moisture-grove-soil",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-soil-moisture-sensor-with-screw-terminals.html (The page describes the SparkFun Soil Moisture Sensor with Screw Terminals (SEN-1)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-Moisture-Sensor.html"
+      ]
+     ],
+     "seconds": 18.6
+    },
+    {
+     "item": "Seeed Grove - Relay",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/relay-spdt-sealed.html (The page describes the SparkFun Relay SPDT Sealed (COM-00100), a bare through-ho)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-8-Channel-Solid-State-Relay.html (The page is the Grove 8-Channel Solid State Relay, a different product from the )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 18.1
+    },
+    {
+     "item": "Seeed Seed - Grove - Oled Display 0.96\"",
+     "card": "display-oled-128x64-i2c",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/oled-display-white-128x32-0-91in.html (The page describes a SparkFun bare 0.91in 128x32 white OLED panel (LCD-24177), n)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-OLED-Display-0-96.html"
+      ]
+     ],
+     "seconds": 27.1
+    },
+    {
+     "item": "Seeed Seed - Grove - Water Sensor",
+     "card": "water-sensor-grove",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-soil-moisture-sensor-with-screw-terminals.html (The page describes the SparkFun Soil Moisture Sensor (SEN-13637, with screw term)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-Water-Sensor.html"
+      ]
+     ],
+     "seconds": 19.0
+    },
+    {
+     "item": "Seeed GROVE - HIGH PRECISION BAROMETRIC PRESSURE SENSOR (DPS310)",
+     "card": "pressure-dps310",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/barometric-pressure-sensor-mpl115a1.html (The content describes the SparkFun MPL115A1 barometric pressure sensor (SEN-0960)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/1646 (The page describes the SparkFun BMP085 Barometric Pressure Sensor Breakout (Polo)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-High-Precision-Barometer-Sensor-DPS310-p-4397.html"
+      ]
+     ],
+     "seconds": 42.3
+    },
+    {
+     "item": "Seeed Grove - I2C Hub",
+     "card": "hub-grove-i2c",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/qwiic-cable-grove-adapter-100mm.html (The page describes the SparkFun Qwiic Cable - Grove Adapter (100mm, PRT-15109). )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-I2C-Hub.html"
+      ]
+     ],
+     "seconds": 36.5
+    },
+    {
+     "item": "Arduino MKR Connector Carrier (Grove compatible)",
+     "card": "arduino-mkr-connector-carrier",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-micromod-atp-carrier-board.html (The content describes the SparkFun MicroMod ATP Carrier Board (DEV-16885), an M.)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/1317 (The content describes the Pololu CP2102N USB-to-Serial Adapter Carrier (item #13)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-CONNECTOR-CARRIER-GROVE-COMPATIBLE.html"
+      ]
+     ],
+     "seconds": 27.2
+    },
+    {
+     "item": "Arduino USB cable type A male to micro type B male",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.8,
+   "input_tokens": 21316,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6323,
+   "cost_usd": 0.1276,
+   "check_seconds": 0.0,
+   "issues": 10,
+   "issue_rules": {
+    "V3": 10
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.7,
+   "input_tokens": 28498,
+   "cache_read_tokens": 21314,
+   "output_tokens": 7836,
+   "cost_usd": 0.1114,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 10,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 31.0,
+  "cost_usd": 0.036,
+  "types": [
+   {
+    "type": "arduino-mkr-zero",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "no search result"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield (a CAN bus shield for MKR board)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   },
+   {
+    "type": "grove-cable",
+    "found": true,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "card from https://www.sparkfun.com/qwiic-cable-grove-adapter-100mm.html"
+     ]
+    ]
+   }
+  ]
+ }
+}

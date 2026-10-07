@@ -1,0 +1,99 @@
+{
+ "case": "41485-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 502.8,
+  "input_tokens": 353635,
+  "output_tokens": 74788,
+  "cost_usd": 1.5763,
+  "repair_rounds_used": 1
+ },
+ "parts": 91,
+ "edges": 128,
+ "repeats": [],
+ "new_types_declared": 7,
+ "new_types_added": 6,
+ "problems": [],
+ "notes": [
+  "The instructions are isometric pictures only, so exact stud-level positions are inferred. Port names are indicative, not exact stud positions.",
+  "Fix for the port-reuse problems: where a part has several same-kind ports (e.g. plate 2x4 studs, brick 1x4, plate 6x6), each join now uses its own port. Where the catalogue gives a part only one stud or anti-stud port (e.g. the 4x4 white plate b3, 1x1 and 2x2 bricks, tiles), a piece spanning several parts keeps the real port on one join only. The other joins use a null port on that side. The joins are real; the part has no further catalogue ports to name.",
+  "The ports of the new part types 6212093, 6212094, 6210077 and 4579690 were expanded so each of their joins has its own port.",
+  "Parts not in the catalogue were created: 6212093, 6212094, 6070712, 4579690, 6210077, 4271949, 6035291. Names are guesses from the pictures; the IDs come from the inventory page.",
+  "Bracket 6123809 is modelled as a 1x2 top (stud.1/anti-stud.1) with a 2x2 side-stud face. The head is three levels of brackets: L1 b18/b19 (left/right), L2 b32-b37, L3 b42-b47. Their position labels (front-left, back-left, etc.) are inferred.",
+  "Which exact bracket each brown or black hair, sideburn, neck and face piece attaches to (steps 12-20) is a best guess.",
+  "The white 4x4 plate b3 is the torso base: body bricks sit on its studs, legs (407026 and 1x2 plates) hang from its anti-studs, and the leg plates then stand on the 6x6 base in step 25.",
+  "Step 2 cylinder: 4632566 (round plate with side hole) carries a white and a black round plate on each side (null port on the hole side). The blaster stack in step 24 (blaster, cone, white round plate, black round plate) is inferred. 614126 has only a pin-hole port in the catalogue, so its port is left null.",
+  "The left-arm clip plate 4535737 holds the blaster by its clip. The torch holder 6054551 sits on that plate's stud and on the blaster (inferred from step 24).",
+  "The step 22 4x sub-assembly (leg brick and side tile) is listed explicitly instead of as a repeat, because the 1x2 foot plates in step 23 bridge pairs of leg bricks."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 394.1,
+   "input_tokens": 148727,
+   "cache_read_tokens": 5507,
+   "output_tokens": 53834,
+   "cost_usd": 1.1123,
+   "check_seconds": 0.04,
+   "issues": 29,
+   "issue_rules": {
+    "V4": 29
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 108.6,
+   "input_tokens": 204908,
+   "cache_read_tokens": 148725,
+   "output_tokens": 20954,
+   "cost_usd": 0.464,
+   "check_seconds": 0.03,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 29,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 91,
+  "pieces_built": 91,
+  "pieces_unmapped": 0,
+  "inventory_matched": 91,
+  "exact_matched": 91,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 128,
+  "contacts_expected": 12,
+  "contacts_predicted": 22,
+  "contacts_correct": 12,
+  "contact_precision": 0.545,
+  "contact_recall": 1.0
+ },
+ "score_initial": {
+  "pieces_expected": 91,
+  "pieces_built": 91,
+  "pieces_unmapped": 0,
+  "inventory_matched": 91,
+  "exact_matched": 91,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 128,
+  "contacts_expected": 12,
+  "contacts_predicted": 22,
+  "contacts_correct": 12,
+  "contact_precision": 0.545,
+  "contact_recall": 1.0
+ },
+ "postprocess_ms": 18.2
+}

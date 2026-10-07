@@ -1,0 +1,990 @@
+{
+ "graph": {
+  "title": "Temperature Web Panel (Arduino Y\u00fan + TMP36)",
+  "source_id": "https://www.arduino.cc/en/Tutorial/TemperatureWebPanel",
+  "new_part_types": [
+   {
+    "type": "arduino-yun",
+    "name": "Arduino Y\u00fan",
+    "category": "board",
+    "ports": [
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "IOREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "tmp36",
+    "name": "TMP36 Temperature Sensor",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "VS",
+      "kind": "lead"
+     },
+     {
+      "name": "VOUT",
+      "kind": "lead"
+     },
+     {
+      "name": "GND",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "yun",
+    "type": "arduino-yun",
+    "label": "Y\u00fan board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "tmp1",
+    "type": "tmp36",
+    "label": "TMP36 temperature sensor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "red hook-up wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "yellow hook-up wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "black hook-up wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "VS",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "VS",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "VOUT",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "VOUT",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The parts list maps the Y\u00fan to 'arduino-yun', but that type is not in the visible catalogue, so I defined it as a new part type. Drop the new entry if the catalogue already has it.",
+   "The TMP36 is not in the catalogue, so I defined it as 'tmp36' with ports VS, VOUT and GND. Pin order in the image, top to bottom, is +Vs, Vout, GND. This matches the schematic's pins 1, 2 and 3.",
+   "The breadboard in the image is rotated. Each horizontal row of 5 holes is one strip, which I mapped to columns 10t, 11t and 12t. The wires go in hole a of each strip. The TMP36 legs go in hole e of each strip.",
+   "In the image the red wire goes to the Y\u00fan power-header pin just right of 3.3V (the 5V pin). The black wire goes to the first GND pin of the power header (GND.1). The yellow wire goes to A1.",
+   "The schematic draws the Vout line going to A0. The circuit image and the text both say A1, so I used A1.",
+   "The sketch also uses A0 and A2 as power and ground, but the image does not use them, so the 5V and GND wires are what I built.",
+   "The micro-SD card or USB stick, the computer and the network are not part of the wiring, so I left them out."
+  ]
+ },
+ "graph_initial": {
+  "title": "Temperature Web Panel (Arduino Y\u00fan + TMP36)",
+  "source_id": "https://www.arduino.cc/en/Tutorial/TemperatureWebPanel",
+  "new_part_types": [
+   {
+    "type": "arduino-yun",
+    "name": "Arduino Y\u00fan",
+    "category": "board",
+    "ports": [
+     {
+      "name": "0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A0",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A4",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A5",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "IOREF",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "tmp36",
+    "name": "TMP36 Temperature Sensor",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "VS",
+      "kind": "lead"
+     },
+     {
+      "name": "VOUT",
+      "kind": "lead"
+     },
+     {
+      "name": "GND",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "yun",
+    "type": "arduino-yun",
+    "label": "Y\u00fan board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "tmp1",
+    "type": "tmp36",
+    "label": "TMP36 temperature sensor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "red hook-up wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "yellow hook-up wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "black hook-up wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "VS",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "VS",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "VOUT",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "VOUT",
+    "v": "bb1",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "tmp1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "tmp1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "12t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "yun",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The parts list maps the Y\u00fan to 'arduino-yun', but that type is not in the visible catalogue, so I defined it as a new part type. Drop the new entry if the catalogue already has it.",
+   "The TMP36 is not in the catalogue, so I defined it as 'tmp36' with ports VS, VOUT and GND. Pin order in the image, top to bottom, is +Vs, Vout, GND. This matches the schematic's pins 1, 2 and 3.",
+   "The breadboard in the image is rotated. Each horizontal row of 5 holes is one strip, which I mapped to columns 10t, 11t and 12t. The wires go in hole a of each strip. The TMP36 legs go in hole e of each strip.",
+   "In the image the red wire goes to the Y\u00fan power-header pin just right of 3.3V (the 5V pin). The black wire goes to the first GND pin of the power header (GND.1). The yellow wire goes to A1.",
+   "The schematic draws the Vout line going to A0. The circuit image and the text both say A1, so I used A1.",
+   "The sketch also uses A0 and A2 as power and ground, but the image does not use them, so the 5V and GND wires are what I built.",
+   "The micro-SD card or USB stick, the computer and the network are not part of the wiring, so I left them out."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 118.9,
+  "input_tokens": 52572,
+  "output_tokens": 5300,
+  "cost_usd": 0.1624,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 92.5,
+   "check_seconds": 0.0,
+   "input_tokens": 34488,
+   "output_tokens": 1457,
+   "cost_usd": 0.0726,
+   "listed": 6,
+   "matched": 2,
+   "looked_up": 2,
+   "found": 1,
+   "items": [
+    {
+     "item": "Y\u00fan board or shield",
+     "card": "arduino-yun",
+     "skipped": false
+    },
+    {
+     "item": "computer and Y\u00fan device on the same wireless or wired network",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "TMP36 temperature sensor on analog pin A1",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-digital-temperature-sensor-breakout-tmp102.html (The content describes the SparkFun TMP102 digital I2C temperature sensor breakou)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/5352 (The content describes the Pololu CT220BMV-HS5 contactless current sensor carrier)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-Infrared-Temperature-Sensor-Array-AMG8833.html (The content describes the Grove AMG8833 8x8 infrared thermal sensor array, not a)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 25.6
+    },
+    {
+     "item": "SD card or USB Flash memory stick",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "hook-up wies",
+     "card": "wire",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/hook-up-wire-black-22-awg.html"
+      ]
+     ],
+     "seconds": 27.9
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.4,
+   "input_tokens": 18084,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3843,
+   "cost_usd": 0.0898,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 28.6,
+  "cost_usd": 0.0416,
+  "types": [
+   {
+    "type": "arduino-yun",
+    "found": true,
+    "trail": [
+     [
+      "cache",
+      "arduino-yun"
+     ]
+    ]
+   },
+   {
+    "type": "tmp36",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/sparkfun-essential-sensor-kit-v2.html (The content is the SparkFun Essential Sensor Kit V2 page (SEN-20408), a retired )"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/Grove-Infrared-Temperature-Sensor-Array-AMG8833.html (The content describes the Grove AMG8833 8x8 infrared thermal sensor array, not t)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

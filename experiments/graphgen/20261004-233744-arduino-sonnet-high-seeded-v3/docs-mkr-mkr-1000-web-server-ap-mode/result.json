@@ -1,0 +1,69 @@
+{
+ "case": "docs-mkr-mkr-1000-web-server-ap-mode",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 28.5,
+  "input_tokens": 29885,
+  "output_tokens": 2943,
+  "cost_usd": 0.1159,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Circuit read from the wiring image: the upper half of the drawn breadboard (rows j-f) is mapped to catalogue bank 'b' (rows f-j), since the catalogue's 't' bank is rows a-e.",
+  "Green wire: MKR1000 pin 2 (D2) to column 3, row g. Resistor spans column 3 to column 6 on row h. LED anode (bent leg) is in column 6 and cathode (straight leg) in column 8, both on row i. Black wire runs from GND to column 8, row h.",
+  "Resulting current path: D2 -> resistor -> LED anode -> LED cathode -> GND, matching the schematic.",
+  "The tutorial's sketch drives LED_BUILTIN, but the text and diagram say the external LED is on pin 2. I followed the diagram.",
+  "The tutorial text calls the LED generic. Red is taken from the image.",
+  "No wire connects to A1. It is read in software only, as a floating input."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 8.4,
+   "input_tokens": 11772,
+   "output_tokens": 331,
+   "cost_usd": 0.0383,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.1,
+   "input_tokens": 18113,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2612,
+   "cost_usd": 0.0776,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.8
+}

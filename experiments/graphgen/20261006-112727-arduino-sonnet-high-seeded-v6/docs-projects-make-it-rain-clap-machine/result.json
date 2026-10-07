@@ -1,0 +1,149 @@
+{
+ "case": "docs-projects-make-it-rain-clap-machine",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 215.0,
+  "input_tokens": 220020,
+  "output_tokens": 36085,
+  "cost_usd": 0.6271,
+  "repair_rounds_used": 2
+ },
+ "parts": 24,
+ "edges": 102,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "E6 (two resistors): I checked it again and kept both on purpose. The parts list says '2.2Kohm resistor' once, but the Hardware text names two separate uses: 'a 2.2Kohm pull down resistor' for the DC motor MOSFET and 'a 2.2Kohm pull up resistor' for the servo MOSFET. The parts photo shows two resistors too. Dropping either would leave a MOSFET stage without the resistor the text requires.",
+  "E8 (motor on 5V): I kept the motor on 5V. The manual drives the DC motor from the 5V supply through MOSFET q1, with a diode across it as the flyback diode and a pull-down on the gate. It says the project runs from USB or from an external battery that gives the motor extra power. The 1-3 V rating comes from the catalogue's generic hobby-motor entry, but the tutorial's motor is the Arduino-kit hobby motor switched by a MOSFET from 5V. The catalogue's 12 V motor is rated 6-12 V and does not fit 5V either. The manual lists no resistor, regulator or other part to lower the motor voltage, so I added none.",
+  "The schematic image was not readable, so the layout is my own reconstruction from the text. The text gives only the I2S pins: SD on A6, SCK on pin 2, FS (WS) on pin 3. The mic is powered from VCC (3.3 V) with L/R tied to GND. The motor MOSFET gate (D4) and the servo MOSFET gate (D5) are guessed pins.",
+  "Servo stage: MOSFET q2 has source to GND and its gate on D5. The drain is the servo PWM node, with a 2.2k pull-up (r2) to 5V. The servo V+ is on 5V and its GND on GND. The 0.1 uF capacitor c1 and the 100 uF capacitor c2 sit across the 5V and GND rails to block motor noise.",
+  "Wire count: 12 jumper wires are used. The earlier estimate of 18 was too high.",
+  "The 100 uF capacitor uses the capacitor-10uf type with value=100uF, because the catalogue has no other electrolytic. The mic is a new type because lookup_part found nothing for it.",
+  "The rubber band, MDF box, hot glue, card stock and optional LiPo battery are mechanical or optional and are not in the graph. Power comes from the USB cable on the MKR Zero."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 52.1,
+   "input_tokens": 68220,
+   "cache_read_tokens": 37032,
+   "output_tokens": 3943,
+   "cost_usd": 0.1716,
+   "tools_used": [
+    "lookup_part {\"name\": \"ICS43432 I2S digital microphone\", \"type_id\": \"mic-ics43432\"}",
+    "lookup_part {\"name\": \"100 uF electrolytic capacitor\", \"type_id\": \"capacitor-100uf\"}",
+    "StructuredOutput {\"title\": \"Make it Rain clap machine (Arduino MKR Zero)\", \"source_id\": \"hackster-make-it-rain-mkrzero\", \"new_part_types\""
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 30,
+   "changed_in_build": 6,
+   "looked_up": [
+    "mic-ics43432"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 69.8,
+   "input_tokens": 38290,
+   "cache_read_tokens": 34652,
+   "output_tokens": 12433,
+   "cost_usd": 0.1458,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Make it Rain clap machine (Arduino MKR Zero)\", \"source_id\": \"hackster-make-it-rain-mkrzero\", \"new_part_types\""
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E6": 1,
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 48.8,
+   "input_tokens": 51567,
+   "cache_read_tokens": 38288,
+   "output_tokens": 10142,
+   "cost_usd": 0.1622,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Make it Rain clap machine (Arduino MKR Zero)\", \"source_id\": \"hackster-make-it-rain-mkrzero\", \"new_part_types\""
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E6": 1,
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.3,
+   "input_tokens": 61943,
+   "cache_read_tokens": 51565,
+   "output_tokens": 9567,
+   "cost_usd": 0.1475,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Make it Rain clap machine (Arduino MKR Zero)\", \"source_id\": \"hackster-make-it-rain-mkrzero\", \"new_part_types\""
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E6": 1,
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 2,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "diode",
+   "motor",
+   "resistor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "capacitor",
+   "diode",
+   "motor",
+   "resistor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mic-ics43432",
+   "family": "mic-ics43432",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 7.5
+}

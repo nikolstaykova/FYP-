@@ -1,0 +1,60 @@
+{
+ "case": "pi-rpi-physical-connect-motor-controller",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 29.1,
+  "api_seconds": 25.7,
+  "first_token_seconds": 12.7,
+  "input_tokens": 24134,
+  "cache_read_tokens": 14806,
+  "output_tokens": 4136,
+  "cost_usd": 0.0816,
+  "turns": 2
+ },
+ "parts": 5,
+ "edges": 22,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 1,
+ "problems": [
+  [
+   "V3",
+   "e5: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e7: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e9: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e11: lead \u2194 lug is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The battery pack and motors have fixed attached leads (red/black), so no separate jumper wires are used; leads are clamped directly in the screw terminals.",
+  "Battery red -> VIN, black -> GND, as required by the manual. Motors may go either way round; the assignment of motor wires to terminal lugs is arbitrary.",
+  "Battery pack is a 4-cell AA holder with an ON/OFF switch (not in catalogue); a new type was created. Switch must be OFF while wiring.",
+  "Motor controller board is a new type; the board plugs onto the Pi GPIO header and uses GPIO 7, 8, 9, 10. The exact mapping of each GPIO to motor terminals (through pairs) is an assumption; the board is modelled with the header pins it uses plus one ground pin (GND.5, pin 25, assumed).",
+  "Powering the Pi itself (USB supply) is mentioned only as 'power up' and is not modelled."
+ ],
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "battery-pack-4aa",
+   "family": "battery-pack-4aa",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 10.2
+}

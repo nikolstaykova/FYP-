@@ -46,13 +46,19 @@ def arduino_seed():
         if len(pins) == 3 and sub == "potentiometer":
             through = [["GND", "SIG"], ["SIG", "VCC"]]
         if not pins and card.get("pin_domains"):  # boards: header pins from the card's pin domains
-            doms = card["pin_domains"]
-            pins = [p for dom in doms.values() for p in dom] + ["GND.1", "GND.2", "GND.3", "5V", "3.3V", "VIN", "RESET"]
+            doms = card["pin_domains"]  # a pin can be in two domains (analog and digital): list it once
+            pins = list(dict.fromkeys([p for dom in doms.values() for p in dom]
+                                      + ["GND.1", "GND.2", "GND.3", "5V", "3.3V", "VIN", "RESET"]))
             kind = "header-socket"
+        if not pins and card.get("symmetric_pins"):  # e.g. the DIP switch lists its pins only as symmetric pairs
+            pins = [p for group in card["symmetric_pins"] for p in group]
         entries[cid] = _entry(
             cid, card.get("display_name", cid), sub or card.get("type", "part"), [(p, kind) for p in pins],
             through=through, symmetric=card.get("symmetric_pins", []), polarized=bool(card.get("polarized")),
-            connector=bool(card.get("connector_only")), alias=card.get("pin_aliases"))
+            connector=bool(card.get("connector_only")), alias=card.get("pin_aliases"),
+            # breadboard placement facts (CircuitQuest PARTS.md): all legs go in together, in pin order, in one row;
+            # the part sits across the centre gap
+            legs_together=bool(card.get("legs_placed_together")), straddles_gap=bool(card.get("straddles_center_gap")))
     # Cards without explicit pins that the experiment needs.
     entries["arduino-uno"] = _entry("arduino-uno", "Arduino Uno R3", "board",
                                     [(p, "header-socket") for p in UNO_PORTS],
@@ -81,6 +87,9 @@ def arduino_seed():
     entries["led"] = _entry("led", "LED", "led", [("A", "lead"), ("C", "lead")], through=[["A", "C"]], polarized=True)
     entries["pushbutton"] = _entry("pushbutton", "Pushbutton", "button",
                                    [("1.l", "lead"), ("1.r", "lead"), ("2.l", "lead"), ("2.r", "lead")],
+                                   legs_together=True, straddles_gap=True,
+                                   placement="4 legs, across the centre gap (as CircuitQuest's lessons place it): 1.l and "
+                                             "1.r face each other across the gap in one column, 2.l and 2.r in another",
                                    through=[["1", "2"]], symmetric=[["1", "2"]],
                                    alias={"mode": "prefix", "prefixes": ["1", "2"]},
                                    note="4 legs in two pairs: 1.l and 1.r are ALWAYS joined inside (side 1), 2.l and 2.r "
@@ -120,6 +129,36 @@ def lego_entry(part_file, description):
                   status="imported", rotation=rotation, mirror_of=mirror)
 
 
+def _placement(e):
+    """'legs together in one row, in order GND, SIG, VCC; across the centre gap'."""
+    out = []
+    if e.get("legs_together"):
+        order = ", ".join(p["name"] for p in e["ports"][:16])
+        out.append("all legs in neighbouring holes of one row" + (f", in order {order}" if order else ""))
+    if e.get("straddles_gap"):
+        out.append("sits across the centre gap, half its legs on each half, facing each other in the same columns")
+    return e.get("placement") or "; ".join(out)
+
+
+def _facts(el):
+    """Electrical facts as short text: 'supply 3.3-6.0 V; logic 5 V; LED forward 2.0 V, 20 mA, needs a series resistor'."""
+    out = []
+    if el.get("supply_v_min") is not None or el.get("supply_v_max") is not None:
+        out.append(f"supply {el.get('supply_v_min', '?')}-{el.get('supply_v_max', '?')} V"
+                   + (f" on {'/'.join(el['power_pins'])}" if el.get("power_pins") else ""))
+    if el.get("logic_v"):
+        out.append(f"logic {el['logic_v']} V" + (" (NOT 5 V tolerant)" if el.get("five_v_tolerant") is False else ""))
+    if el.get("max_pin_current_ma"):
+        out.append(f"max {el['max_pin_current_ma']} mA per I/O pin")
+    if el.get("forward_v"):
+        out.append(f"forward {el['forward_v']} V")
+    if el.get("current_ma"):
+        out.append(f"about {el['current_ma']} mA")
+    if el.get("needs_series_resistor"):
+        out.append("needs a series resistor")
+    return "; ".join(out)
+
+
 class Catalogue:
     def __init__(self, entries=None):
         self.entries = copy.deepcopy(entries or {})
@@ -149,8 +188,9 @@ class Catalogue:
         self.created += added
         return added
 
-    def prompt_text(self, types=None):
-        """Compact one-line-per-type listing for the prompt."""
+    def prompt_text(self, types=None, electrical=False, placement=False):
+        """Compact one-line-per-type listing for the prompt. electrical=True adds each card's electrical facts (v5);
+        placement=True its breadboard placement facts (v6)."""
         lines = []
         for t in sorted(types or self.entries):
             e = self.entries[t]
@@ -161,7 +201,9 @@ class Catalogue:
             if e["symmetric"]:
                 flags.append("symmetric " + "/".join("=".join(g) for g in e["symmetric"]))
             lines.append(f"- {t} | {e['name']} | ports: {ports}" + (f" | {', '.join(flags)}" if flags else "")
-                         + (f" | NOTE: {e['note']}" if e.get("note") else ""))
+                         + (f" | NOTE: {e['note']}" if e.get("note") else "")
+                         + (f" | ELECTRICAL: {_facts(e['electrical'])}" if electrical and e.get("electrical") else "")
+                         + (f" | BREADBOARD: {_placement(e)}" if placement and (e.get("legs_together") or e.get("straddles_gap")) else ""))
         return "\n".join(lines)
 
     def to_json(self):

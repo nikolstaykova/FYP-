@@ -1,0 +1,227 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 73.1,
+  "input_tokens": 28909,
+  "output_tokens": 5213,
+  "cost_usd": 0.1268,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The supplied part match (accel-adxl362) has SPI pins (VCC, GND, SCLK, MOSI...) that don't fit this analog breakout. I used the catalogue's adxl335 instead, whose ports ST, Z, Y, X, GND, VCC match the board in the circuit image.",
+  "Pin mapping from the schematic and table: A0 to ST, A1 to Z, A2 to Y, A3 to X, A4 to GND, A5 to VDD (VCC). A4 is driven LOW and A5 HIGH in code to power the sensor.",
+  "The breakout's 6 pins sit in breadboard columns 4-9, row j. In the image, row j is at the top of the board. I mapped rows f-j to bank 'b' per the catalogue. Each jumper wire lands in the same column strip, in a different row.",
+  "The tutorial doesn't name its wire colours. The colours used are the ones in the circuit image."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 43.7,
+   "check_seconds": 0.0,
+   "input_tokens": 8263,
+   "output_tokens": 778,
+   "cost_usd": 0.0208,
+   "listed": 2,
+   "matched": 1,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "ADXL3xx Accelerometer",
+     "card": "accel-adxl362",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-triple-axis-accelerometer-breakout-adxl362.html"
+      ]
+     ],
+     "seconds": 32.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.4,
+   "input_tokens": 20646,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4435,
+   "cost_usd": 0.106,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 4.9
+}

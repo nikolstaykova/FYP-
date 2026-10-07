@@ -1,0 +1,124 @@
+{
+ "case": "pi-camjam-kit-1",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 84.7,
+  "input_tokens": 19943,
+  "output_tokens": 11539,
+  "cost_usd": 0.1797,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GND.6' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GND.6' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e5: port 'GPIO15' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e6: port 'GPIO15' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e13: port 'GPIO25' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e14: port 'GPIO25' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e25: port 'GPIO8' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e26: port 'GPIO8' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e37: port 'GPIO7' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e38: port 'GPIO7' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e49: port 'GPIO21' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e50: port 'GPIO21' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The rpi-4b catalogue entry only lists GPIO_HEADER; individual header pins are named GPIO15, GPIO25, GPIO8, GPIO7, GPIO21 and GND.6 (GND on physical pin 6, the pin the black wire uses).",
+  "Pin mapping follows the image and the manual's table: button GPIO21, red LED GPIO25, amber LED GPIO8, green LED GPIO7, buzzer GPIO15.",
+  "The right-hand power rail is treated as one continuous strip, named 'tp' (the column next to the + marking). It acts as the ground rail because the black wire from Pi GND feeds it. The exact rail hole numbers are approximate. The rail strip is one node, so this does not change the connectivity.",
+  "For the male-to-female wires, port a is the female end on the Pi header pin and port b is the male end in the breadboard. The male-to-male wire's ends are interchangeable.",
+  "The amber LED is drawn yellow in the image. Each LED's bent (longer) leg is taken as the anode, in the breadboard column next to its resistor. The straight leg is the cathode, in the ground rail.",
+  "The buzzer's + lead is taken to be in 4b.j, in line with the blue wire at 4b.g. The blue segments between them are only drawn as a visual link. Its other lead goes to the ground rail. Buzzer port 1 is taken as +.",
+  "The pushbutton straddles the centre gap. Row 28 is side 1 (grounded through the short black wire) and row 30 is side 2 (to GPIO21). Pressing it pulls GPIO21 low, using GPIO Zero's internal pull-up.",
+  "Each resistor is 330 ohm and bridges the centre gap, from column e to column h. The LED anode sits in column j of the same row."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.2,
+   "input_tokens": 8450,
+   "output_tokens": 602,
+   "cost_usd": 0.0365,
+   "check_seconds": 0.0,
+   "matched": 10,
+   "listed": 10,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 78.5,
+   "input_tokens": 11493,
+   "cache_read_tokens": 3203,
+   "output_tokens": 10937,
+   "cost_usd": 0.1432,
+   "check_seconds": 0.01,
+   "issues": 12,
+   "issue_rules": {
+    "V4": 12
+   }
+  }
+ ],
+ "issues_first": 12,
+ "issues_final": 12,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 10.7
+}

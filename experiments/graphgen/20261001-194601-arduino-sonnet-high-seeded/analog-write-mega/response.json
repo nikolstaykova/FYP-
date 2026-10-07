@@ -1,0 +1,1620 @@
+{
+ "graph": {
+  "title": "Fading 12 LEDs on an Arduino Mega (AnalogWriteMega)",
+  "source_id": "https://www.arduino.cc/en/Tutorial/AnalogWriteMega",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mega1",
+    "type": "arduino-mega",
+    "label": "Arduino Mega",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "wiregnd",
+    "type": "jumper-wire",
+    "label": "ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wiregnd",
+    "u_port": "a",
+    "v": "mega1",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wiregnd",
+    "u_port": "a",
+    "v": "mega1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wiregnd",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wiregnd",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [
+   {
+    "group": "ledblock",
+    "times": 12,
+    "parts": [
+     {
+      "id": "r",
+      "type": "resistor",
+      "label": "220 ohm resistor",
+      "props": [
+       {
+        "key": "value",
+        "value": "220"
+       }
+      ]
+     },
+     {
+      "id": "led",
+      "type": "led",
+      "label": "red LED",
+      "props": [
+       {
+        "key": "colour",
+        "value": "red"
+       }
+      ]
+     },
+     {
+      "id": "wp",
+      "type": "jumper-wire",
+      "label": "pin wire",
+      "props": []
+     },
+     {
+      "id": "wg",
+      "type": "jumper-wire",
+      "label": "cathode to ground rail wire",
+      "props": [
+       {
+        "key": "colour",
+        "value": "black"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "1",
+      "v": "bb1",
+      "v_port": "1t.c",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "1",
+      "v": "bb1",
+      "v_port": "1t.c",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "2",
+      "v": "bb1",
+      "v_port": "1b.h",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "2",
+      "v": "bb1",
+      "v_port": "1b.h",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "led",
+      "u_port": "A",
+      "v": "bb1",
+      "v_port": "1b.i",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "led",
+      "u_port": "A",
+      "v": "bb1",
+      "v_port": "1b.i",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "led",
+      "u_port": "C",
+      "v": "bb1",
+      "v_port": "2b.i",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "led",
+      "u_port": "C",
+      "v": "bb1",
+      "v_port": "2b.i",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wg",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "2b.j",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wg",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "2b.j",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wg",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "tn.2",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wg",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "tn.2",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wp",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "1t.a",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wp",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "1t.a",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wp",
+      "u_port": "b",
+      "v": "mega1",
+      "v_port": "2",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wp",
+      "u_port": "b",
+      "v": "mega1",
+      "v_port": "2",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:3t.c"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:3b.h"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:3b.i"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:4b.i"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:4b.j"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:3t.a"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:3"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.3"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:5t.c"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:5b.h"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:5b.i"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:6b.i"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:6b.j"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:5t.a"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:4"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.4"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:7t.c"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:7b.h"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:7b.i"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:8b.i"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:8b.j"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:7t.a"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:5"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.5"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:9t.c"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:9b.h"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:9b.i"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:10b.i"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:10b.j"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:9t.a"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:6"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.6"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:11t.c"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:11b.h"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:11b.i"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:12b.i"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:12b.j"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:11t.a"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:7"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.7"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:13t.c"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:13b.h"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:13b.i"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:14b.i"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:14b.j"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:13t.a"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:8"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.8"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:15t.c"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:15b.h"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:15b.i"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:16b.i"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:16b.j"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:15t.a"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:9"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.9"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:17t.c"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:17b.h"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:17b.i"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:18b.i"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:18b.j"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:17t.a"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:10"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.10"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:19t.c"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:19b.h"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:19b.i"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:20b.i"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:20b.j"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:19t.a"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:11"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.11"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:21t.c"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:21b.h"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:21b.i"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:22b.i"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:22b.j"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:21t.a"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:12"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.12"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:23t.c"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:23b.h"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:23b.i"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:24b.i"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:24b.j"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:23t.a"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:13"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:tn.2",
+      "value": "bb1:tn.13"
+     }
+    ]
+   }
+  ],
+  "notes": [
+   "Each of the 12 LED blocks connects one Mega PWM pin (2-13, copy n -> pin n+1) through a 220 ohm resistor to an LED anode; cathodes go via a black jumper to the shared ground rail, which is wired to Mega GND.",
+   "Fix: every wire end now uses its own breadboard hole. The ground rail is one strip; the Mega GND wire uses tn.1 and the 12 cathode jumpers use tn.2 through tn.13 (copy n -> tn.n+1), so no hole is shared.",
+   "Exact breadboard columns are chosen for a clean layout (copy n uses column 2n-1 for resistor/anode and column 2n for cathode); the image spaces them irregularly but the connectivity is the same.",
+   "The breadboard is oriented per the catalogue: bank 't' rows a-e, bank 'b' rows f-j; resistors straddle the centre gap.",
+   "The Mega GND port is assumed to be named 'GND.1' (catalogue port list truncated).",
+   "The anode is the longer LED leg; in the image the LED leg next to the resistor column is the anode, the other is the cathode.",
+   "Resistor value 220 ohm per the manual."
+  ]
+ },
+ "graph_initial": {
+  "title": "Fading 12 LEDs on an Arduino Mega (AnalogWriteMega)",
+  "source_id": "https://www.arduino.cc/en/Tutorial/AnalogWriteMega",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "mega1",
+    "type": "arduino-mega",
+    "label": "Arduino Mega",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "wiregnd",
+    "type": "jumper-wire",
+    "label": "ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wiregnd",
+    "u_port": "a",
+    "v": "mega1",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wiregnd",
+    "u_port": "a",
+    "v": "mega1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wiregnd",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wiregnd",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [
+   {
+    "group": "ledblock",
+    "times": 12,
+    "parts": [
+     {
+      "id": "r",
+      "type": "resistor",
+      "label": "220 ohm resistor",
+      "props": [
+       {
+        "key": "value",
+        "value": "220"
+       }
+      ]
+     },
+     {
+      "id": "led",
+      "type": "led",
+      "label": "red LED",
+      "props": [
+       {
+        "key": "colour",
+        "value": "red"
+       }
+      ]
+     },
+     {
+      "id": "wp",
+      "type": "jumper-wire",
+      "label": "pin wire",
+      "props": []
+     },
+     {
+      "id": "wg",
+      "type": "jumper-wire",
+      "label": "cathode to ground rail wire",
+      "props": [
+       {
+        "key": "colour",
+        "value": "black"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "1",
+      "v": "bb1",
+      "v_port": "1t.c",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "1",
+      "v": "bb1",
+      "v_port": "1t.c",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "2",
+      "v": "bb1",
+      "v_port": "1b.h",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "2",
+      "v": "bb1",
+      "v_port": "1b.h",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "led",
+      "u_port": "A",
+      "v": "bb1",
+      "v_port": "1b.i",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "led",
+      "u_port": "A",
+      "v": "bb1",
+      "v_port": "1b.i",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "led",
+      "u_port": "C",
+      "v": "bb1",
+      "v_port": "2b.i",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "led",
+      "u_port": "C",
+      "v": "bb1",
+      "v_port": "2b.i",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wg",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "2b.j",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wg",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "2b.j",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wg",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "tn.1",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wg",
+      "u_port": "b",
+      "v": "bb1",
+      "v_port": "tn.1",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wp",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "1t.a",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wp",
+      "u_port": "a",
+      "v": "bb1",
+      "v_port": "1t.a",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "wp",
+      "u_port": "b",
+      "v": "mega1",
+      "v_port": "2",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "wp",
+      "u_port": "b",
+      "v": "mega1",
+      "v_port": "2",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:3t.c"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:3b.h"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:3b.i"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:4b.i"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:4b.j"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:3t.a"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:3"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:5t.c"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:5b.h"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:5b.i"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:6b.i"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:6b.j"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:5t.a"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:4"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:7t.c"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:7b.h"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:7b.i"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:8b.i"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:8b.j"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:7t.a"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:5"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:9t.c"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:9b.h"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:9b.i"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:10b.i"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:10b.j"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:9t.a"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:6"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:11t.c"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:11b.h"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:11b.i"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:12b.i"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:12b.j"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:11t.a"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:7"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:13t.c"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:13b.h"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:13b.i"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:14b.i"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:14b.j"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:13t.a"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:8"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:15t.c"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:15b.h"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:15b.i"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:16b.i"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:16b.j"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:15t.a"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:9"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:17t.c"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:17b.h"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:17b.i"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:18b.i"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:18b.j"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:17t.a"
+     },
+     {
+      "copy_number": 9,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:10"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:19t.c"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:19b.h"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:19b.i"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:20b.i"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:20b.j"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:19t.a"
+     },
+     {
+      "copy_number": 10,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:11"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:21t.c"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:21b.h"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:21b.i"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:22b.i"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:22b.j"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:21t.a"
+     },
+     {
+      "copy_number": 11,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:12"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1t.c",
+      "value": "bb1:23t.c"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1b.h",
+      "value": "bb1:23b.h"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1b.i",
+      "value": "bb1:23b.i"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:2b.i",
+      "value": "bb1:24b.i"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:2b.j",
+      "value": "bb1:24b.j"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "bb1:1t.a",
+      "value": "bb1:23t.a"
+     },
+     {
+      "copy_number": 12,
+      "kind": "attach",
+      "target": "mega1:2",
+      "value": "mega1:13"
+     }
+    ]
+   }
+  ],
+  "notes": [
+   "Each of the 12 LED blocks connects one Mega PWM pin (2-13, copy n -> pin n+1) through a 220 ohm resistor to an LED anode; cathodes go via a black jumper to the shared ground rail, which is wired to Mega GND.",
+   "Exact breadboard columns are chosen for a clean layout (copy n uses column 2n-1 for resistor/anode and column 2n for cathode); the image spaces them irregularly but the connectivity is the same.",
+   "The breadboard is oriented per the catalogue: bank 't' rows a-e, bank 'b' rows f-j; resistors straddle the centre gap. Ground rail 'tn.1' is one strip.",
+   "The Mega GND port is assumed to be named 'GND.1' (catalogue port list truncated).",
+   "The anode is the longer LED leg; in the image the LED leg next to the resistor column is the anode, the other is the cathode.",
+   "Resistor value 220 ohm per the manual; the image resistor band colours were not used."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 77.5,
+  "input_tokens": 46220,
+  "output_tokens": 14093,
+  "cost_usd": 0.2118,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 46.3,
+   "input_tokens": 18998,
+   "cache_read_tokens": 10995,
+   "output_tokens": 7582,
+   "cost_usd": 0.11,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.2,
+   "input_tokens": 27222,
+   "cache_read_tokens": 18996,
+   "output_tokens": 6511,
+   "cost_usd": 0.1018,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "final_issue_list": []
+}

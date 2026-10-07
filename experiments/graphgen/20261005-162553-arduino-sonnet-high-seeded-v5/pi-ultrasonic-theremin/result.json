@@ -1,0 +1,76 @@
+{
+ "case": "pi-ultrasonic-theremin",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 72.7,
+  "input_tokens": 52445,
+  "output_tokens": 10381,
+  "cost_usd": 0.1475,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts kept unchanged.",
+  "Breadboard holes use the catalogue naming (bank 't' = rows a-e, bank 'b' = rows f-j). The sensor sits in holes 1-4 of row j (bank b), with VCC, Trig, Echo and GND in columns 1-4 respectively.",
+  "Echo goes through a voltage divider: Echo (col 3) -> blue wire -> col 4 (bank t) -> r1 (330) -> col 8 -> r2 (470) -> col 12 -> ground rail. GPIO17 is taken from the col 8 midpoint. Resistor values are inferred from the band colours in the image.",
+  "Power: red wire from sensor VCC (col 1) to the Pi 5V pin (pin 2), as the image shows. The text mentions 3V3, but the image is followed. Trig goes to GPIO4 and Echo (divided) to GPIO17, as in the image and the code's echo=17.",
+  "The sensor GND wire (col 4) goes to the bottom negative rail ('bn'); a black wire from that rail goes to Pi GND (pin 39, GND.8). Rail hole numbers (12, 24, 28) are approximate, since the whole rail is one strip.",
+  "The buzzer circuit image (circuit_2) is not given. The text says the buzzer connects directly to GPIO21 and a GND pin with two jumper leads. Buzzer pin 2 (+) goes to GPIO21 and pin 1 (-) goes to GND.7 (pin 34); the choice of GND pin is an assumption.",
+  "The text lists 6 jumper leads, but the circuit image shows 7 wires plus 2 for the buzzer, so 9 are used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.9,
+   "input_tokens": 24953,
+   "cache_read_tokens": 18746,
+   "output_tokens": 2344,
+   "cost_usd": 0.052,
+   "check_seconds": 0.0,
+   "parts_listed": 15,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 52.8,
+   "input_tokens": 27492,
+   "cache_read_tokens": 24951,
+   "output_tokens": 8037,
+   "cost_usd": 0.0955,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 11.9
+}

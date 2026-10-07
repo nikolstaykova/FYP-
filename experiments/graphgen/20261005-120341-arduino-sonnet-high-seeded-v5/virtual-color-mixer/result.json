@@ -1,0 +1,235 @@
+{
+ "case": "virtual-color-mixer",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 72.5,
+  "input_tokens": 43927,
+  "output_tokens": 10764,
+  "cost_usd": 0.1615,
+  "repair_rounds_used": 0
+ },
+ "parts": 21,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as in step 1; no parts were added or removed.",
+  "Each divider is: 5V rail -> FSR -> sense node -> 10k resistor -> GND rail. The sense node goes to an analog pin. Sensor 1 is the rightmost one in the picture and feeds A0, sensor 2 is in the middle and feeds A1, and sensor 3 is the leftmost and feeds A2. This follows the yellow wires in the circuit image.",
+  "Breadboard hole names follow the catalogue: bank 't' is rows a-e, which is the lower half of the picture, because the picture's row labels are flipped. Column numbers are read from the picture. Each sense node is one strip: yellow wire in row e, blue FSR wire in row b, resistor top lead in row a.",
+  "Rail hole indices (tp.1, tn.2, bp.4/12/22, bn.6/16/24, 28/29) are approximate positions read from the picture. Any hole on the same rail is electrically equivalent.",
+  "In the picture, the top rail wires run 5V to the top + rail and GND to the top - rail. The two long vertical wires on the right then carry + and - down to the bottom rails. The resistors' lower leads go to the bottom - rail and the FSR red wires go to the bottom + rail.",
+  "The picture shows the FSR legs extended with short red and blue wires. I modelled this as lead-to-wire-end joins (twisted).",
+  "GND.1 is used for the Uno ground in the power header. The picture shows the black wire on the second GND pin of the power header, and the catalogue does not say which GND index that is.",
+  "The Arduino-side wire ends are modelled as plug-in joins on header sockets."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.1,
+   "input_tokens": 20909,
+   "cache_read_tokens": 11144,
+   "output_tokens": 1892,
+   "cost_usd": 0.0602,
+   "check_seconds": 0.0,
+   "parts_listed": 21,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 56.4,
+   "input_tokens": 23018,
+   "cache_read_tokens": 20907,
+   "output_tokens": 8872,
+   "cost_usd": 0.1013,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 3
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 3,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 21.4
+}

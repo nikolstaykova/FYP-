@@ -1,0 +1,1440 @@
+{
+ "graph": {
+  "title": "LoRa remote LED control with two Arduino MKR WAN 1300 (sender and receiver)",
+  "source_id": "WAN1300_T3 (Arduino MKR WAN 1300 tutorial 3: LoRa sender/receiver)",
+  "new_part_types": [
+   {
+    "type": "antenna-lora",
+    "name": "LoRa antenna",
+    "category": "antenna",
+    "ports": [
+     {
+      "name": "cable",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wan-1300",
+    "label": "Sender MKR WAN 1300",
+    "props": []
+   },
+   {
+    "id": "mkr2",
+    "type": "arduino-mkr-wan-1300",
+    "label": "Receiver MKR WAN 1300",
+    "props": []
+   },
+   {
+    "id": "ant1",
+    "type": "antenna-lora",
+    "label": "Sender antenna",
+    "props": []
+   },
+   {
+    "id": "ant2",
+    "type": "antenna-lora",
+    "label": "Receiver antenna",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Sender breadboard",
+    "props": []
+   },
+   {
+    "id": "bb2",
+    "type": "breadboard",
+    "label": "Receiver breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Pushbutton",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "LED resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Sender GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Sender D2 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Receiver GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Receiver D2 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Micro USB cable (sender)",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "Micro USB cable (receiver)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ant1",
+    "u_port": "cable",
+    "v": "mkr1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "ant2",
+    "u_port": "cable",
+    "v": "mkr2",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "mkr2",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Two separate circuits (sender and receiver), each with its own MKR WAN 1300, antenna, breadboard and USB cable, combined into one graph.",
+   "The antenna-lora type is not in the provided catalogue, so it is defined as a new part type with one port, 'cable'. It joins the board's u.FL antenna connector. The board catalogue entry has no port for that connector, so the board port is null.",
+   "The usb-cable has no ports in the catalogue. USB cables are not drawn in the images, so the joined edges to the boards use null ports.",
+   "The images show the breadboard's top half labelled rows j to f. Following the catalogue naming, rows f-j are bank 'b', so holes are written like '5b.g'.",
+   "Sender: the pushbutton legs are in 5b.g and 7b.g. The black wire from GND goes to 5b.f and the yellow wire from D2 goes to 7b.f. Pressing the button connects D2 to GND. The code uses INPUT_PULLUP, so no external resistor is needed.",
+   "Receiver: the LED cathode (straight leg) is in 6b.h and the anode (bent leg) is in 8b.h. The resistor runs from 8b.g to 11b.g. The black wire from GND goes to 6b.g and the green wire from D2 goes to 11b.f. D2 drives the LED through the resistor.",
+   "The resistor is not in the parts list but is drawn in the receiver image, so it is included as type resistor. Its value is not stated, so 220 ohm is assumed. This type was assumed to exist in the catalogue, as the spec describes.",
+   "Resistor leg columns and LED leg columns were estimated from the image pixel positions.",
+   "The pushbutton is drawn with two visible legs, so only ports 1.l and 2.l are used."
+  ]
+ },
+ "graph_initial": {
+  "title": "LoRa remote LED control with two Arduino MKR WAN 1300 (sender and receiver)",
+  "source_id": "WAN1300_T3 (Arduino MKR WAN 1300 tutorial 3: LoRa sender/receiver)",
+  "new_part_types": [
+   {
+    "type": "antenna-lora",
+    "name": "LoRa antenna",
+    "category": "antenna",
+    "ports": [
+     {
+      "name": "cable",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wan-1300",
+    "label": "Sender MKR WAN 1300",
+    "props": []
+   },
+   {
+    "id": "mkr2",
+    "type": "arduino-mkr-wan-1300",
+    "label": "Receiver MKR WAN 1300",
+    "props": []
+   },
+   {
+    "id": "ant1",
+    "type": "antenna-lora",
+    "label": "Sender antenna",
+    "props": []
+   },
+   {
+    "id": "ant2",
+    "type": "antenna-lora",
+    "label": "Receiver antenna",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Sender breadboard",
+    "props": []
+   },
+   {
+    "id": "bb2",
+    "type": "breadboard",
+    "label": "Receiver breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Pushbutton",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "LED resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Sender GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Sender D2 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Receiver GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Receiver D2 wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Micro USB cable (sender)",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "Micro USB cable (receiver)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ant1",
+    "u_port": "cable",
+    "v": "mkr1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "ant2",
+    "u_port": "cable",
+    "v": "mkr2",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "mkr2",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Two separate circuits (sender and receiver), each with its own MKR WAN 1300, antenna, breadboard and USB cable, combined into one graph.",
+   "The antenna-lora type is not in the provided catalogue, so it is defined as a new part type with one port, 'cable'. It joins the board's u.FL antenna connector. The board catalogue entry has no port for that connector, so the board port is null.",
+   "The usb-cable has no ports in the catalogue. USB cables are not drawn in the images, so the joined edges to the boards use null ports.",
+   "The images show the breadboard's top half labelled rows j to f. Following the catalogue naming, rows f-j are bank 'b', so holes are written like '5b.g'.",
+   "Sender: the pushbutton legs are in 5b.g and 7b.g. The black wire from GND goes to 5b.f and the yellow wire from D2 goes to 7b.f. Pressing the button connects D2 to GND. The code uses INPUT_PULLUP, so no external resistor is needed.",
+   "Receiver: the LED cathode (straight leg) is in 6b.h and the anode (bent leg) is in 8b.h. The resistor runs from 8b.g to 11b.g. The black wire from GND goes to 6b.g and the green wire from D2 goes to 11b.f. D2 drives the LED through the resistor.",
+   "The resistor is not in the parts list but is drawn in the receiver image, so it is included as type resistor. Its value is not stated, so 220 ohm is assumed. This type was assumed to exist in the catalogue, as the spec describes.",
+   "Resistor leg columns and LED leg columns were estimated from the image pixel positions.",
+   "The pushbutton is drawn with two visible legs, so only ports 1.l and 2.l are used."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 190.8,
+  "input_tokens": 94453,
+  "output_tokens": 9808,
+  "cost_usd": 0.3063,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 153.9,
+   "input_tokens": 75692,
+   "output_tokens": 4609,
+   "cost_usd": 0.2002,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 7,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino MKR WAN 1300",
+     "type": "arduino-mkr-wan-1300",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-micromod-lora-function-board.html (This page sells the SparkFun MicroMod LoRa Function Board (WRL-18573), an M.2 Mi)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/lora-transceiver-module-rfm95cw.html (This page sells the SparkFun RFM95CW LoRa transceiver module (COM-18085). That i)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html"
+      ]
+     ],
+     "seconds": 80.8
+    },
+    {
+     "part": "Antenna",
+     "type": "antenna-lora",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-lora-thing-plus-explorable.html (This page sells the SparkFun LoRa Thing Plus - expLoRaBLE, a Feather-format deve)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/lora-1w-breakout-868m30s.html (The page sells a LoRa 1W Breakout (868M30S) transceiver board, not an antenna. I)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html (The page sells the Arduino MKR WAN 1300, a LoRa development board. It does not s)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/LoRa-LoRaWAN-Gateway-868MHz-Kit-with-Raspberry-Pi-3.html (The page sells a LoRaWAN gateway kit (868MHz) with a Raspberry Pi 3. It is not a)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 65.9
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.9,
+   "input_tokens": 18761,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5199,
+   "cost_usd": 0.1061,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "cards": {
+  "arduino-mkr-wan-1300": {
+   "type": "arduino-mkr-wan-1300",
+   "name": "Arduino MKR WAN 1300",
+   "category": "board",
+   "ports": [
+    {
+     "name": "AREF",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A0",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A1",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A2",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A3",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A4",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A5",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A6",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D0",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D1",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D2",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D3",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D4",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D5",
+     "kind": "header-pin"
+    },
+    {
+     "name": "5V",
+     "kind": "header-pin"
+    },
+    {
+     "name": "VIN",
+     "kind": "header-pin"
+    },
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    },
+    {
+     "name": "RESET",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D6",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D7",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D8",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D9",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D10",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D11",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D12",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D13",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D14",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "seeed",
+    "url": "https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html",
+    "title": "ARDUINO MKR WAN 1300 LORA CONNECTIVITY p 3164"
+   }
+  },
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "led": {
+   "type": "led",
+   "name": "LED",
+   "category": "led",
+   "ports": [
+    {
+     "name": "A",
+     "kind": "lead"
+    },
+    {
+     "name": "C",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "A",
+     "C"
+    ]
+   ],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "pushbutton": {
+   "type": "pushbutton",
+   "name": "Pushbutton",
+   "category": "button",
+   "ports": [
+    {
+     "name": "1.l",
+     "kind": "lead"
+    },
+    {
+     "name": "1.r",
+     "kind": "lead"
+    },
+    {
+     "name": "2.l",
+     "kind": "lead"
+    },
+    {
+     "name": "2.r",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": {
+    "mode": "prefix",
+    "prefixes": [
+     "1",
+     "2"
+    ]
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "note": "4 legs in two pairs: 1.l and 1.r are ALWAYS joined inside (side 1), 2.l and 2.r are ALWAYS joined (side 2); pressing joins side 1 to side 2. Wire the input pin to one side and the supply to the OTHER side; a pull-down/pull-up resistor goes on the SAME side as the input pin."
+  },
+  "usb-cable": {
+   "type": "usb-cable",
+   "name": "USB Cable",
+   "category": "cable",
+   "ports": [],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Arduino MKR WAN 1300",
+   "quantity": 2,
+   "catalogue_type": null,
+   "new_type": "arduino-mkr-wan-1300",
+   "search_query": "Arduino MKR WAN 1300 LoRa board",
+   "category": "board"
+  },
+  {
+   "label": "Antenna",
+   "quantity": 2,
+   "catalogue_type": null,
+   "new_type": "antenna-lora",
+   "search_query": "Arduino antenna 868MHz LoRa",
+   "category": "antenna"
+  },
+  {
+   "label": "Pushbutton",
+   "quantity": 1,
+   "catalogue_type": "pushbutton",
+   "new_type": null,
+   "search_query": null,
+   "category": "button"
+  },
+  {
+   "label": "Generic LED",
+   "quantity": 1,
+   "catalogue_type": "led",
+   "new_type": null,
+   "search_query": null,
+   "category": "led"
+  },
+  {
+   "label": "Jumper wires",
+   "quantity": 1,
+   "catalogue_type": "jumper-wire",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  },
+  {
+   "label": "Breadboard",
+   "quantity": 2,
+   "catalogue_type": "breadboard",
+   "new_type": null,
+   "search_query": null,
+   "category": "breadboard"
+  },
+  {
+   "label": "Micro USB cable",
+   "quantity": 2,
+   "catalogue_type": "usb-cable",
+   "new_type": null,
+   "search_query": null,
+   "category": "cable"
+  }
+ ]
+}

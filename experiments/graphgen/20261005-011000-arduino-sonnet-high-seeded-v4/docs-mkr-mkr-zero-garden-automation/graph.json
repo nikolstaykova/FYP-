@@ -1,0 +1,632 @@
+{
+ "nodes": [
+  {
+   "id": "mkr1",
+   "type": "arduino-mkr-zero",
+   "label": "Arduino MKR Zero",
+   "props": {}
+  },
+  {
+   "id": "carrier1",
+   "type": "arduino-mkr-connector-carrier",
+   "label": "Arduino MKR Connector Carrier",
+   "props": {}
+  },
+  {
+   "id": "usb1",
+   "type": "usb-cable",
+   "label": "USB cable type A male to micro-B male",
+   "props": {}
+  },
+  {
+   "id": "laptop1",
+   "type": "laptop",
+   "label": "Computer (Arduino IDE)",
+   "props": {}
+  },
+  {
+   "id": "moist1",
+   "type": "moisture-grove-soil",
+   "label": "Grove Moisture Sensor",
+   "props": {}
+  },
+  {
+   "id": "water1",
+   "type": "water-sensor-grove",
+   "label": "Grove Water Sensor",
+   "props": {}
+  },
+  {
+   "id": "relay1",
+   "type": "grove-relay",
+   "label": "Grove Relay",
+   "props": {}
+  },
+  {
+   "id": "baro1",
+   "type": "pressure-dps310",
+   "label": "Grove DPS310 Barometric Pressure Sensor",
+   "props": {}
+  },
+  {
+   "id": "oled1",
+   "type": "display-oled-128x64-i2c",
+   "label": "Grove OLED Display 0.96\"",
+   "props": {}
+  },
+  {
+   "id": "hub1",
+   "type": "hub-grove-i2c",
+   "label": "Grove I2C Hub",
+   "props": {}
+  },
+  {
+   "id": "gcable1",
+   "type": "grove-cable",
+   "label": "Grove cable carrier A0 to moisture",
+   "props": {}
+  },
+  {
+   "id": "gcable2",
+   "type": "grove-cable",
+   "label": "Grove cable carrier D0 to water",
+   "props": {}
+  },
+  {
+   "id": "gcable3",
+   "type": "grove-cable",
+   "label": "Grove cable carrier D1 to relay",
+   "props": {}
+  },
+  {
+   "id": "gcable4",
+   "type": "grove-cable",
+   "label": "Grove cable carrier TWI to hub",
+   "props": {}
+  },
+  {
+   "id": "gcable5",
+   "type": "grove-cable",
+   "label": "Grove cable hub to barometer",
+   "props": {}
+  },
+  {
+   "id": "gcable6",
+   "type": "grove-cable",
+   "label": "Grove cable hub to OLED",
+   "props": {}
+  },
+  {
+   "id": "wire1",
+   "type": "jumper-wire",
+   "label": "Long solid wire (water sensor hack)",
+   "props": {
+    "length": "long"
+   }
+  },
+  {
+   "id": "wire2",
+   "type": "jumper-wire",
+   "label": "Short solid wire (water sensor hack)",
+   "props": {
+    "length": "short"
+   }
+  },
+  {
+   "id": "psu1",
+   "type": "wall-wart-power-supply",
+   "label": "12V power supply",
+   "props": {}
+  },
+  {
+   "id": "pump1",
+   "type": "dc-motor",
+   "label": "Water pump (or electronic valve)",
+   "props": {}
+  },
+  {
+   "id": "wire3",
+   "type": "jumper-wire",
+   "label": "12V to relay COM",
+   "props": {}
+  },
+  {
+   "id": "wire4",
+   "type": "jumper-wire",
+   "label": "Relay NO to pump",
+   "props": {}
+  },
+  {
+   "id": "wire5",
+   "type": "jumper-wire",
+   "label": "Pump to GND",
+   "props": {}
+  }
+ ],
+ "edges": [
+  {
+   "type": "joined",
+   "u": "mkr1",
+   "u_port": null,
+   "v": "carrier1",
+   "v_port": "mkr-header",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e1"
+  },
+  {
+   "type": "electrical",
+   "u": "mkr1",
+   "u_port": null,
+   "v": "carrier1",
+   "v_port": "mkr-header",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e2"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "mkr1",
+   "v_port": "USB",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e3"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "laptop1",
+   "v_port": "USB",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e4"
+  },
+  {
+   "type": "joined",
+   "u": "gcable1",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e5"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable1",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e6"
+  },
+  {
+   "type": "joined",
+   "u": "gcable1",
+   "u_port": "b",
+   "v": "moist1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e7"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable1",
+   "u_port": "b",
+   "v": "moist1",
+   "v_port": "SIG",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e8"
+  },
+  {
+   "type": "joined",
+   "u": "gcable2",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e9"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable2",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e10"
+  },
+  {
+   "type": "joined",
+   "u": "gcable2",
+   "u_port": "b",
+   "v": "water1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e11"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable2",
+   "u_port": "b",
+   "v": "water1",
+   "v_port": "SIG",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e12"
+  },
+  {
+   "type": "joined",
+   "u": "gcable3",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e13"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable3",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e14"
+  },
+  {
+   "type": "joined",
+   "u": "gcable3",
+   "u_port": "b",
+   "v": "relay1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e15"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable3",
+   "u_port": "b",
+   "v": "relay1",
+   "v_port": "SIG",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e16"
+  },
+  {
+   "type": "joined",
+   "u": "gcable4",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e17"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable4",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "grove",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e18"
+  },
+  {
+   "type": "joined",
+   "u": "gcable4",
+   "u_port": "b",
+   "v": "hub1",
+   "v_port": "P1.SCL",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e19"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable4",
+   "u_port": "b",
+   "v": "hub1",
+   "v_port": "P1.SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e20"
+  },
+  {
+   "type": "joined",
+   "u": "gcable5",
+   "u_port": "a",
+   "v": "hub1",
+   "v_port": "P2.SCL",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e21"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable5",
+   "u_port": "a",
+   "v": "hub1",
+   "v_port": "P2.SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e22"
+  },
+  {
+   "type": "joined",
+   "u": "gcable5",
+   "u_port": "b",
+   "v": "baro1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e23"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable5",
+   "u_port": "b",
+   "v": "baro1",
+   "v_port": "SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e24"
+  },
+  {
+   "type": "joined",
+   "u": "gcable6",
+   "u_port": "a",
+   "v": "hub1",
+   "v_port": "P3.SCL",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e25"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable6",
+   "u_port": "a",
+   "v": "hub1",
+   "v_port": "P3.SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e26"
+  },
+  {
+   "type": "joined",
+   "u": "gcable6",
+   "u_port": "b",
+   "v": "oled1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e27"
+  },
+  {
+   "type": "electrical",
+   "u": "gcable6",
+   "u_port": "b",
+   "v": "oled1",
+   "v_port": "SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e28"
+  },
+  {
+   "type": "joined",
+   "u": "wire1",
+   "u_port": "a",
+   "v": "water1",
+   "v_port": null,
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "damaging",
+   "id": "e29"
+  },
+  {
+   "type": "joined",
+   "u": "wire2",
+   "u_port": "a",
+   "v": "water1",
+   "v_port": null,
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "damaging",
+   "id": "e30"
+  },
+  {
+   "type": "contact",
+   "u": "psu1",
+   "u_port": "DC",
+   "v": "carrier1",
+   "v_port": "VCC",
+   "method": "rest",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e31"
+  },
+  {
+   "type": "electrical",
+   "u": "psu1",
+   "u_port": "DC",
+   "v": "carrier1",
+   "v_port": "VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e32"
+  },
+  {
+   "type": "contact",
+   "u": "wire3",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "VCC",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e33"
+  },
+  {
+   "type": "electrical",
+   "u": "wire3",
+   "u_port": "a",
+   "v": "carrier1",
+   "v_port": "VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e34"
+  },
+  {
+   "type": "joined",
+   "u": "wire3",
+   "u_port": "b",
+   "v": "relay1",
+   "v_port": "COM",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e35"
+  },
+  {
+   "type": "electrical",
+   "u": "wire3",
+   "u_port": "b",
+   "v": "relay1",
+   "v_port": "COM",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e36"
+  },
+  {
+   "type": "joined",
+   "u": "wire4",
+   "u_port": "a",
+   "v": "relay1",
+   "v_port": "NO",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e37"
+  },
+  {
+   "type": "electrical",
+   "u": "wire4",
+   "u_port": "a",
+   "v": "relay1",
+   "v_port": "NO",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e38"
+  },
+  {
+   "type": "joined",
+   "u": "wire4",
+   "u_port": "b",
+   "v": "pump1",
+   "v_port": "1",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e39"
+  },
+  {
+   "type": "electrical",
+   "u": "wire4",
+   "u_port": "b",
+   "v": "pump1",
+   "v_port": "1",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e40"
+  },
+  {
+   "type": "joined",
+   "u": "wire5",
+   "u_port": "a",
+   "v": "pump1",
+   "v_port": "2",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e41"
+  },
+  {
+   "type": "electrical",
+   "u": "wire5",
+   "u_port": "a",
+   "v": "pump1",
+   "v_port": "2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e42"
+  },
+  {
+   "type": "contact",
+   "u": "wire5",
+   "u_port": "b",
+   "v": "carrier1",
+   "v_port": "GND",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e43"
+  },
+  {
+   "type": "electrical",
+   "u": "wire5",
+   "u_port": "b",
+   "v": "carrier1",
+   "v_port": "GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e44"
+  }
+ ]
+}

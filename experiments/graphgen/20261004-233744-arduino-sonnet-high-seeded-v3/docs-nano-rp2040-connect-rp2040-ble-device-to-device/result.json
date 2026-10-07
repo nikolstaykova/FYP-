@@ -1,0 +1,99 @@
+{
+ "case": "docs-nano-rp2040-connect-rp2040-ble-device-to-device",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 55.3,
+  "input_tokens": 36998,
+  "output_tokens": 5210,
+  "cost_usd": 0.1426,
+  "repair_rounds_used": 0
+ },
+ "parts": 7,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V2",
+   "part uno2 (arduino-nano-rp2040-connect) has no connection"
+  ]
+ ],
+ "notes": [
+  "The peripheral circuit image shows three jumper wires (GND to top negative rail, rail to button column 10, D2 to button column 8), but the parts list says 2. The image is the authority, so the graph has 3.",
+  "The central board (uno2) has no external circuit. It uses its onboard RGB LED and is linked to the peripheral over Bluetooth LE, which is not a physical connection, so it has no edges.",
+  "USB cables are drawn in the images but are not catalogue parts, so they are omitted.",
+  "Breadboard hole coordinates are estimated from the image. The button straddles the centre gap in columns 8 and 10. Column 8 is the D2 side (side 1). Column 10 is the GND side (side 2). The code uses INPUT_PULLUP, so no external resistor is needed.",
+  "The image draws the f-j rows above the centre gap, so I used the catalogue naming of bank 'b' for rows f-j and 't' for rows a-e. The GND pin next to D2 is taken as GND.2. The rail holes tn.1 and tn.8 are estimated."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 28.3,
+   "input_tokens": 18897,
+   "output_tokens": 1755,
+   "cost_usd": 0.0566,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 4,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Nano RP2040 Connect",
+     "type": "arduino-nano-rp2040-connect",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-NANO-RP2040-CONNECT-WITH-HEADERS-p-4941.html"
+      ]
+     ],
+     "seconds": 22.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.0,
+   "input_tokens": 18101,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3455,
+   "cost_usd": 0.086,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 21.9
+}

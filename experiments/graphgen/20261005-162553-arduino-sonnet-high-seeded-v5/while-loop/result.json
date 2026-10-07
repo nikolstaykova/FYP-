@@ -1,0 +1,355 @@
+{
+ "case": "while-loop",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 76.9,
+  "input_tokens": 41425,
+  "output_tokens": 11679,
+  "cost_usd": 0.1585,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 68,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1; no parts added or dropped.",
+  "Breadboard hole letters follow the image: the visually upper half is rows f-j (bank 'b'), the lower half rows a-e (bank 't'). Rails are named by visual position: tn/tp are the top ground/+ rails and bn/bp are the bottom ground/+ rails. In the image the upper rail row is ground (black line) and the lower is + (red line).",
+  "Photoresistor circuit: 5V rail to 14t.c leg, then 10t.c leg to A0 (via wire5 at 10t.b) and to the 10k resistor r1 to ground. This matches the schematic.",
+  "Button circuit: 6t.e/6b.f side to 5V, 4t.e/4b.f side to pin 2 (wire4) and to the 10k pull-down r2 to ground. The pushbutton straddles the centre gap; pins 1.l/1.r are the col-4 pair and 2.l/2.r the col-6 pair.",
+  "LED circuit: pin 9 (yellow) to 15b, r3 (220 ohm) from col 15 to col 18, LED anode in col 18, cathode in col 19, black wire6 to the top ground rail.",
+  "The black wire from the Arduino goes to the lower GND pin of the power header; this is assumed to be GND.2.",
+  "Rail hole numbers are approximate column positions read from the image. The bottom rails are fed from the top rails by the two long wires on the right (wire9 ground, wire10 +5V).",
+  "The tutorial text says 'analog input 2' but the code, schematic and image use A0, so A0 is used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.4,
+   "input_tokens": 19782,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1655,
+   "cost_usd": 0.0496,
+   "check_seconds": 0.0,
+   "parts_listed": 18,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 63.5,
+   "input_tokens": 21643,
+   "cache_read_tokens": 19780,
+   "output_tokens": 10024,
+   "cost_usd": 0.1089,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.375,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 4,
+   "button": 1,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "photoresistor": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "photoresistor",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "photoresistor",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "photoresistor",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "photoresistor",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 8,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.375,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 4,
+   "button": 1,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "photoresistor": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "photoresistor",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "photoresistor",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "photoresistor",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "photoresistor",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.9
+}

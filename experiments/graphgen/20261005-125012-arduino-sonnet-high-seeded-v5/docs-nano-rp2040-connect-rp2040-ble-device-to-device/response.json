@@ -1,0 +1,1002 @@
+{
+ "graph": {
+  "title": "Nano RP2040 Connect BLE button (peripheral) and onboard LED (central)",
+  "source_id": "rp2040-bluetooth",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-rp2040-connect",
+    "name": "Arduino Nano RP2040 Connect",
+    "category": "board",
+    "ports": [
+     {
+      "name": "D0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VUSB",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "peripheral",
+    "type": "arduino-nano-rp2040-connect",
+    "label": "Peripheral Nano RP2040 Connect",
+    "props": []
+   },
+   {
+    "id": "central",
+    "type": "arduino-nano-rp2040-connect",
+    "label": "Central Nano RP2040 Connect",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable (peripheral)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB cable (central)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Signal wire D2 to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to breadboard rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "dark gray"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Rail to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "dark gray"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "peripheral",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "central",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No changes to the step 1 parts list.",
+   "The Nano RP2040 Connect was not found by lookup_part, so a new part type is drafted.",
+   "The breadboard coordinates are read from the image. The image's upper half (rows f-j) is bank 'b' in the catalogue naming, and the lower half (rows a-e) is bank 't'. The upper rail row next to the black line is treated as 'tn' (ground).",
+   "The pushbutton straddles the centre gap, with its legs in columns 8 and 10. The two top legs (side 1) are in 8b.f and 10b.f, and the two bottom legs (side 2) are in 8t.e and 10t.e.",
+   "The dark gray wire from GND goes to the upper rail at tn.1. A short dark gray wire runs from the rail at tn.7 to 10b.g, which puts the button's top side at GND.",
+   "The teal wire runs from D2 to 8t.d. That is in the same column strip as the button's bottom legs, so D2 is on side 2.",
+   "Rail hole numbers tn.1 and tn.7 are approximate positions read from the image.",
+   "There is no external resistor, because the sketch uses INPUT_PULLUP, so D2 is pulled high and pressing the button pulls it to GND.",
+   "The central board has no extra circuit. It is powered over USB and uses its onboard RGB LED.",
+   "The USB cable ports are unspecified, so those edges name only the board's USB port."
+  ]
+ },
+ "graph_initial": {
+  "title": "Nano RP2040 Connect BLE button (peripheral) and onboard LED (central)",
+  "source_id": "rp2040-bluetooth",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-rp2040-connect",
+    "name": "Arduino Nano RP2040 Connect",
+    "category": "board",
+    "ports": [
+     {
+      "name": "D0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VUSB",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "AREF",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "peripheral",
+    "type": "arduino-nano-rp2040-connect",
+    "label": "Peripheral Nano RP2040 Connect",
+    "props": []
+   },
+   {
+    "id": "central",
+    "type": "arduino-nano-rp2040-connect",
+    "label": "Central Nano RP2040 Connect",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable (peripheral)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB cable (central)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Signal wire D2 to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "teal"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to breadboard rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "dark gray"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Rail to button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "dark gray"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "peripheral",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "central",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "10t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "D2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "D2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "8t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "peripheral",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "tn.7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No changes to the step 1 parts list.",
+   "The Nano RP2040 Connect was not found by lookup_part, so a new part type is drafted.",
+   "The breadboard coordinates are read from the image. The image's upper half (rows f-j) is bank 'b' in the catalogue naming, and the lower half (rows a-e) is bank 't'. The upper rail row next to the black line is treated as 'tn' (ground).",
+   "The pushbutton straddles the centre gap, with its legs in columns 8 and 10. The two top legs (side 1) are in 8b.f and 10b.f, and the two bottom legs (side 2) are in 8t.e and 10t.e.",
+   "The dark gray wire from GND goes to the upper rail at tn.1. A short dark gray wire runs from the rail at tn.7 to 10b.g, which puts the button's top side at GND.",
+   "The teal wire runs from D2 to 8t.d. That is in the same column strip as the button's bottom legs, so D2 is on side 2.",
+   "Rail hole numbers tn.1 and tn.7 are approximate positions read from the image.",
+   "There is no external resistor, because the sketch uses INPUT_PULLUP, so D2 is pulled high and pressing the button pulls it to GND.",
+   "The central board has no extra circuit. It is powered over USB and uses its onboard RGB LED.",
+   "The USB cable ports are unspecified, so those edges name only the board's USB port."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 64.6,
+  "input_tokens": 69821,
+  "output_tokens": 6603,
+  "cost_usd": 0.1573,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.2,
+   "input_tokens": 45052,
+   "cache_read_tokens": 25822,
+   "output_tokens": 1936,
+   "cost_usd": 0.1009,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-nano-rp2040-connect"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.4,
+   "input_tokens": 24769,
+   "cache_read_tokens": 22694,
+   "output_tokens": 4667,
+   "cost_usd": 0.0564,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 11.8,
+  "cost_usd": 0.0181,
+  "types": [
+   {
+    "type": "arduino-nano-rp2040-connect",
+    "found": true,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "no search result"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "card from https://www.seeedstudio.com/ARDUINO-NANO-RP2040-CONNECT-WITH-HEADERS-p-4941.html"
+     ]
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,114 @@
+{
+ "case": "docs-mkr-mkr-1000-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 25.4,
+  "input_tokens": 22670,
+  "output_tokens": 3654,
+  "cost_usd": 0.1063,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The MKR 1000 WiFi is not in the catalogue, so it is defined as a new part type with the pins labelled in the diagram (pin 8 is unlabelled in the image but included).",
+  "Resistor value: the parts list says 82 ohm, but the schematic labels it 220 \u03a9. I used 220 because the circuit images are the authority. Change it to 82 if you prefer the text.",
+  "Breadboard rows: the image shows rows j-f in the top half and e-a in the bottom half. The catalogue says bank 't' is rows a-e, but I named holes by the row letters shown in the image. Rows f-j are therefore bank 'b' and the holes are written like '3b.h'. The resistor and wire holes are read from the picture.",
+  "LED polarity: the bent (longer) leg is in column 6 and I took it as the anode. It connects through the resistor to pin 2. The straight leg (cathode) in column 8 goes to GND through the black wire, which ends in the same column.",
+  "The resistor spans columns 3 and 6 in row h. The green wire from pin 2 ends in column 3, row g, which is the same strip as the resistor's first leg.",
+  "The sketch's analogRead(A1) is only software. No hardware is wired to A1."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 7,
+   "matched": 4,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "WiFi101 library.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Arduino MKR 1000 WiFi (link to store).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Generic LED",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "82 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.4,
+   "input_tokens": 22670,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3654,
+   "cost_usd": 0.1063,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-1000",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.7
+}

@@ -1,0 +1,113 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 77.5,
+  "input_tokens": 46220,
+  "output_tokens": 14093,
+  "cost_usd": 0.2118,
+  "repair_rounds_used": 1
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [
+  {
+   "group": "ledblock",
+   "times": 12,
+   "overrides": 88
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Each of the 12 LED blocks connects one Mega PWM pin (2-13, copy n -> pin n+1) through a 220 ohm resistor to an LED anode; cathodes go via a black jumper to the shared ground rail, which is wired to Mega GND.",
+  "Fix: every wire end now uses its own breadboard hole. The ground rail is one strip; the Mega GND wire uses tn.1 and the 12 cathode jumpers use tn.2 through tn.13 (copy n -> tn.n+1), so no hole is shared.",
+  "Exact breadboard columns are chosen for a clean layout (copy n uses column 2n-1 for resistor/anode and column 2n for cathode); the image spaces them irregularly but the connectivity is the same.",
+  "The breadboard is oriented per the catalogue: bank 't' rows a-e, bank 'b' rows f-j; resistors straddle the centre gap.",
+  "The Mega GND port is assumed to be named 'GND.1' (catalogue port list truncated).",
+  "The anode is the longer LED leg; in the image the LED leg next to the resistor column is the anode, the other is the cathode.",
+  "Resistor value 220 ohm per the manual."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 46.3,
+   "input_tokens": 18998,
+   "cache_read_tokens": 10995,
+   "output_tokens": 7582,
+   "cost_usd": 0.11,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.2,
+   "input_tokens": 27222,
+   "cache_read_tokens": 18996,
+   "output_tokens": 6511,
+   "cost_usd": 0.1018,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 9.7
+}

@@ -1,0 +1,123 @@
+{
+ "case": "docs-mkr-powering-with-batteries",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 67.3,
+  "input_tokens": 79513,
+  "output_tokens": 8400,
+  "cost_usd": 0.2111,
+  "repair_rounds_used": 2
+ },
+ "parts": 7,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "single-use port bb1:8b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:8t.e used 2 times"
+  ]
+ ],
+ "notes": [
+  "The E5 floating-pin warning for D8 is not a real problem for this manual, so I left the graph unchanged. The manual, the circuit image, the schematic and the parts list all have no resistor. The schematic wires D8 straight to one button contact and GND to the other. The manual says only that the pushbutton 'goes between D8 and GND'. Adding a resistor would put in a part that is not in the tutorial.",
+  "In the sketch, D8 is used as a wake-up interrupt pin. The manual does not say how D8 is held at a defined level when the button is open. It presumably relies on the board's internal pull-up, which is not an external part.",
+  "The battery plugs into the MKR's JST PH connector, which has no named port in the catalogue, so the battery-to-board edge has null ports. The battery's electrical connection is not modelled port to port.",
+  "The USB cable has no ports in the catalogue and plugs into the board's micro-USB socket, so that edge has null ports. The tutorial uses it to charge the battery. It is not drawn in the circuit images.",
+  "The image's breadboard labels the upper half rows j to f and the lower half rows e to a. The catalogue calls rows a-e bank 't' and rows f-j bank 'b', so the upper half is bank 'b' and the lower half is bank 't'. The button straddles the centre gap at column 8.",
+  "The image shows the button in one column. A real 4-leg pushbutton also uses a second column, so I placed the other legs in column 10. 1.l and 1.r are in the upper half and are joined inside the button. 2.l and 2.r are in the lower half and are joined inside the button.",
+  "The GND wire goes to the upper-half side (8b.f) and the D8 wire to the lower-half side (8t.e), as drawn.",
+  "The Li-Po battery type is the 3.7 V LiPo from the catalogue. The manual asks for at least 1024 mAh, and the catalogue entry says 850 mAh."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.0,
+   "input_tokens": 12824,
+   "output_tokens": 432,
+   "cost_usd": 0.0435,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 6,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.8,
+   "input_tokens": 19089,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3009,
+   "cost_usd": 0.0855,
+   "check_seconds": 0.01,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 2,
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.0,
+   "input_tokens": 22455,
+   "cache_read_tokens": 19087,
+   "output_tokens": 2485,
+   "cost_usd": 0.0421,
+   "check_seconds": 0.01,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 2,
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.5,
+   "input_tokens": 25145,
+   "cache_read_tokens": 22453,
+   "output_tokens": 2474,
+   "cost_usd": 0.04,
+   "check_seconds": 0.01,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 2,
+    "E5": 1
+   }
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 3,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.5
+}

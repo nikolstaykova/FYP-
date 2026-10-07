@@ -1,0 +1,1498 @@
+{
+ "graph": {
+  "title": "Weather Forecasting Gnome (Arduino Nano Every, BME280, DS3231, WS2812 strip)",
+  "source_id": "Arduino Project Hub: Weather Forecasting Gnome (Nano Every + BME280 + DS3231 + WS2812)",
+  "new_part_types": [
+   {
+    "type": "ds3231-rtc",
+    "name": "Maxim DS3231MPMB1 Peripheral Module (DS3231 RTC)",
+    "category": "module",
+    "ports": [
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SDA",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SCL",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND_2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC_2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SDA_2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SCL_2",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [
+     [
+      "GND",
+      "GND_2"
+     ],
+     [
+      "VCC",
+      "VCC_2"
+     ],
+     [
+      "SDA",
+      "SDA_2"
+     ],
+     [
+      "SCL",
+      "SCL_2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "ws2812-strip-8",
+    "name": "WS2812B LED strip, 8 LEDs (solder pads 5V/DIN/GND, DOUT)",
+    "category": "led",
+    "ports": [
+     {
+      "name": "5V",
+      "kind": "lead"
+     },
+     {
+      "name": "DIN",
+      "kind": "lead"
+     },
+     {
+      "name": "GND",
+      "kind": "lead"
+     },
+     {
+      "name": "DOUT",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-every",
+    "label": "Arduino Nano Every",
+    "props": []
+   },
+   {
+    "id": "bme1",
+    "type": "bme280",
+    "label": "SparkFun BME280 Atmospheric Sensor Breakout",
+    "props": []
+   },
+   {
+    "id": "rtc1",
+    "type": "ds3231-rtc",
+    "label": "DS3231MPMB1 RTC module",
+    "props": []
+   },
+   {
+    "id": "strip1",
+    "type": "ws2812-strip-8",
+    "label": "WS2812 LED strip (8 LEDs)",
+    "props": [
+     {
+      "key": "leds",
+      "value": "8"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable (power and programming)",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3V3 to RTC VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to RTC GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "A4 (SDA) to RTC SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "A5 (SCL) to RTC SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "RTC VCC pass-through to BME280 3V3",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "RTC GND pass-through to BME280 GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "RTC SDA pass-through to BME280 SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "RTC SCL pass-through to BME280 SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire9",
+    "type": "jumper-wire",
+    "label": "5V to LED strip power (VDC) pad",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire10",
+    "type": "jumper-wire",
+    "label": "GND to LED strip GND pad",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire11",
+    "type": "jumper-wire",
+    "label": "D7 to LED strip DIN pad",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "VCC",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SDA",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SCL",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "VCC_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "VCC_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "3V3",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "GND_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "GND_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SDA_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SDA_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SDA",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SCL_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SCL_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SCL",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "5V",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "5V",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "D7",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "D7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "DIN",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "DIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Fix: the previous version used a null port on the catalogue 'led-strip' (which has no ports), so all three strip wires collapsed into one node and falsely shorted 5V, GND and D7. strip1 is now a new type 'ws2812-strip-8' with separate pads 5V (the manual's VDC), DIN, GND and DOUT, and no internal connections, so each wire lands on its own pad. The catalogue 'led-strip' was unusable here because it lists no ports.",
+   "Wiring: 5V -> strip 5V pad (red); GND -> strip GND pad (black, assumed since the manual only implies it); D7 -> strip DIN (white). DOUT is unused.",
+   "No breadboard is used: the manual solders wires directly between the Nano Every, DS3231 module and BME280; all wires are modelled as jumper-wire with both ends soldered.",
+   "DS3231MPMB1 is not in the catalogue and lookup found nothing, so it is a new type 'ds3231-rtc' with a GND/VCC/SDA/SCL header on one side and a pass-through header on the other (GND_2/VCC_2/SDA_2/SCL_2), joined internally. The second set of four wires runs from the pass-through side to the BME280.",
+   "Nano 3V3 powers the RTC and BME280 (3.3 V part); A4 = SDA (blue), A5 = SCL (yellow).",
+   "The USB cable has no catalogue ports, so its end is left unspecified; it plugs into the Nano Every's USB port.",
+   "The 3D-printed gnome enclosure is not an electronic part and is omitted."
+  ]
+ },
+ "graph_initial": {
+  "title": "Weather Forecasting Gnome (Arduino Nano Every, BME280, DS3231, WS2812 strip)",
+  "source_id": "Arduino Project Hub: Weather Forecasting Gnome (Nano Every + BME280 + DS3231 + WS2812)",
+  "new_part_types": [
+   {
+    "type": "ds3231-rtc",
+    "name": "Maxim DS3231MPMB1 Peripheral Module (DS3231 RTC)",
+    "category": "module",
+    "ports": [
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SDA",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SCL",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND_2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC_2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SDA_2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SCL_2",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [
+     [
+      "GND",
+      "GND_2"
+     ],
+     [
+      "VCC",
+      "VCC_2"
+     ],
+     [
+      "SDA",
+      "SDA_2"
+     ],
+     [
+      "SCL",
+      "SCL_2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-every",
+    "label": "Arduino Nano Every",
+    "props": []
+   },
+   {
+    "id": "bme1",
+    "type": "bme280",
+    "label": "SparkFun BME280 Atmospheric Sensor Breakout",
+    "props": []
+   },
+   {
+    "id": "rtc1",
+    "type": "ds3231-rtc",
+    "label": "DS3231MPMB1 RTC module",
+    "props": []
+   },
+   {
+    "id": "strip1",
+    "type": "led-strip",
+    "label": "WS2812 LED strip (8 LEDs)",
+    "props": [
+     {
+      "key": "leds",
+      "value": "8"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable (power and programming)",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3V3 to RTC VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to RTC GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "A4 (SDA) to RTC SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "A5 (SCL) to RTC SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "RTC VCC pass-through to BME280 3V3",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "RTC GND pass-through to BME280 GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "RTC SDA pass-through to BME280 SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "RTC SCL pass-through to BME280 SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire9",
+    "type": "jumper-wire",
+    "label": "5V to LED strip power",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire10",
+    "type": "jumper-wire",
+    "label": "GND to LED strip GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire11",
+    "type": "jumper-wire",
+    "label": "D7 to LED strip DIN",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "VCC",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SDA",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SCL",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "rtc1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "VCC_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "VCC_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "3V3",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "GND_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "GND_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SDA_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SDA_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SDA",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SCL_2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "rtc1",
+    "v_port": "SCL_2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SCL",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bme1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "5V",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "5V",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire9",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "GND",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire10",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "D7",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "a",
+    "v": "nano1",
+    "v_port": "D7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "DIN",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire11",
+    "u_port": "b",
+    "v": "strip1",
+    "v_port": "DIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "No breadboard is used: the manual solders wires directly between the Nano Every, DS3231 module and BME280; all wires are modelled as jumper-wire with both ends soldered.",
+   "DS3231MPMB1 is not in the catalogue and lookup found nothing, so it is a new type 'ds3231-rtc' with a GND/VCC/SDA/SCL header on one side and a pass-through header on the other (GND_2/VCC_2/SDA_2/SCL_2), joined internally. The second set of four wires runs from the pass-through side to the BME280.",
+   "Wiring: Nano 3V3 -> RTC VCC and BME280 3V3 (red); GND -> RTC and BME280 GND (black); A4 = SDA (blue); A5 = SCL (yellow). The BME280 is a 3.3 V part, so it is powered from 3V3, not 5V.",
+   "LED strip: 5V from Nano 5V pin (USB-sourced, no stress on the regulator), data on D7 (white wire, to DIN), and a GND wire (assumed; the manual only implies it). DOUT is unused.",
+   "The catalogue 'led-strip' lists no ports and lookup returned none, so I used the names 5V, DIN and GND for the strip's pads (the manual calls them VDC, DIN and GND); these ports are not in the catalogue entry.",
+   "The USB cable has no catalogue ports, so its end is left unspecified; it plugs into the Nano Every's USB port and supplies power.",
+   "The 3D-printed gnome enclosure is not an electronic part and is omitted."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 134.8,
+  "input_tokens": 247451,
+  "output_tokens": 19266,
+  "cost_usd": 0.4001,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.1,
+   "input_tokens": 72211,
+   "cache_read_tokens": 39052,
+   "output_tokens": 2533,
+   "cost_usd": 0.1642,
+   "check_seconds": 0.0,
+   "parts_listed": 16,
+   "changed_in_build": 0,
+   "looked_up": [
+    "bme280",
+    "ds3231-rtc"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.3,
+   "input_tokens": 78551,
+   "cache_read_tokens": 75721,
+   "output_tokens": 5682,
+   "cost_usd": 0.079,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.7,
+   "input_tokens": 45472,
+   "cache_read_tokens": 39449,
+   "output_tokens": 5396,
+   "cost_usd": 0.0769,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E1": 1,
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.7,
+   "input_tokens": 51217,
+   "cache_read_tokens": 45470,
+   "output_tokens": 5655,
+   "cost_usd": 0.08,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "error": "RuntimeError: claude -p failed: API Error: This request would exceed your account's rate limit. Please try again later."
+ }
+}

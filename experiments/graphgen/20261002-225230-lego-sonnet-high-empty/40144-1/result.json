@@ -1,0 +1,129 @@
+{
+ "case": "40144-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 529.9,
+  "input_tokens": 577402,
+  "output_tokens": 96608,
+  "cost_usd": 1.9373,
+  "repair_rounds_used": 2
+ },
+ "parts": 164,
+ "edges": 169,
+ "repeats": [
+  {
+   "group": "tower",
+   "times": 3,
+   "overrides": 2
+  },
+  {
+   "group": "glass",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 7,
+ "new_types_added": 6,
+ "problems": [],
+ "notes": [
+  "The three separate groups are correct and are kept on purpose, so the L3 warning is not a real problem for this manual. Set 40144 contains three independent models: the red car (b1-b10, pages 3-4), the blue Toys R Us delivery truck (b11-b26, pages 5-7) and the store (b27-b149 plus the 'tower' and 'glass' repeats, pages 8-36). Each is completed on its own and shown separately on page 37. Nothing fastens the vehicles to the store or to each other, so any edge between them would be invented.",
+  "A port is used on only one edge. Where a plate carries several pieces, each gets a distinct stud port where the catalogue has them (for example 4211445, 4211001, 4211353 and the new 371023 and 242023 types). Where the catalogue has no spare ports (303026 base plates have 4 stud ports for 20+ attached pieces; 362323; 4113916; and the second joins of 'wide' pieces like b100, b101, b102, b103, b122, b146 that sit on two supports), the extra joins have a null port on that side. The pieces are still physically joined.",
+  "Element ids come from the inventory page. Where the catalogue name differs from what the inventory shows I still used the inventory id. 4632571 is catalogue 'plate 1x1 with clip' but is used as a 1x1 wheel holder with side studs. 614126 is catalogue 'wheel' but is used both as the small black wheel and as a round plate 1x1. 4558168 and 243101 are used as white tiles 1x4 and 1x6.",
+  "Wheels attach to the holders' side studs. The catalogue has no side-stud port for 4632571, so the holder side of the wheel joins is null. The lamp stack is also null on the round-plate side. The green trees (4529239) have no stud port, so their side is null.",
+  "The Toys R Us 'R' stickers on the truck side (steps 8-9) and the sign tile (step 33) are decals, not parts, so they have no nodes. The sign tile is b146.",
+  "Seven part types are new because their element ids are not in the catalogue: 302424, 302423, 371023, 242023, 243123, 366623 and 4568734. I gave 371023 four stud ports and 242023 three so that several pieces can sit on them.",
+  "The pictures are small, so exact stud positions are approximate. Which piece sits on which, and the stacking order, follow the pictures. Specific studs on large plates were assigned by best reading.",
+  "Step 4 adds a second 4x8 plate (b36) to the first (b27). I treated it as interlocked with b27 and gave the front-garden pieces (tiles, green plates, lamp) to b36. The picture is ambiguous about the exact overlap.",
+  "The 3-piece yellow/clear towers (step 11) and the two 3-plate clear stacks (step 18) are repeats. Their attach points are my best reading of the arrows: the towers go on b60, b61 and b62, and the clear stacks on b57 and b58.",
+  "The truck chassis is built clear plates (bottom), black plate and holders, then the blue 1x3 plate (top), as in the step pictures. The car is the same sandwich with the red plate on top."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 301.6,
+   "input_tokens": 147552,
+   "cache_read_tokens": 3203,
+   "output_tokens": 48071,
+   "cost_usd": 1.0587,
+   "check_seconds": 0.03,
+   "issues": 25,
+   "issue_rules": {
+    "V4": 24,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 133.9,
+   "input_tokens": 201454,
+   "cache_read_tokens": 147550,
+   "output_tokens": 26767,
+   "cost_usd": 0.5128,
+   "check_seconds": 0.03,
+   "issues": 1,
+   "issue_rules": {
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 94.3,
+   "input_tokens": 228396,
+   "cache_read_tokens": 201452,
+   "output_tokens": 21770,
+   "cost_usd": 0.3658,
+   "check_seconds": 0.03,
+   "issues": 1,
+   "issue_rules": {
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 25,
+ "issues_final": 1,
+ "score": {
+  "pieces_expected": 165,
+  "pieces_built": 164,
+  "pieces_unmapped": 0,
+  "inventory_matched": 162,
+  "exact_matched": 162,
+  "inventory_precision": 0.988,
+  "inventory_recall": 0.982,
+  "exact_recall": 0.982,
+  "joined_edges": 169,
+  "contacts_expected": 61,
+  "contacts_predicted": 90,
+  "contacts_correct": 39,
+  "contact_precision": 0.433,
+  "contact_recall": 0.639
+ },
+ "score_initial": {
+  "pieces_expected": 165,
+  "pieces_built": 164,
+  "pieces_unmapped": 0,
+  "inventory_matched": 162,
+  "exact_matched": 162,
+  "inventory_precision": 0.988,
+  "inventory_recall": 0.982,
+  "exact_recall": 0.982,
+  "joined_edges": 169,
+  "contacts_expected": 61,
+  "contacts_predicted": 90,
+  "contacts_correct": 39,
+  "contact_precision": 0.433,
+  "contact_recall": 0.639
+ },
+ "postprocess_ms": 15.7
+}

@@ -1,0 +1,121 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 29.6,
+  "input_tokens": 20488,
+  "output_tokens": 4454,
+  "cost_usd": 0.0842,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Wiring follows the circuit image and the pin table: ST->A0, Z->A1, Y->A2, X->A3, GND->A4, VDD->A5. A4 is driven LOW as ground and A5 HIGH as 5V in code. The schematic crosses X/Z, but the image and table are taken as authoritative.",
+  "The breakout's 6-pin header sits in breadboard columns 4-9 at the row nearest the top of the image (labelled j in the image). The catalogue's top bank 't' is rows a-e, so I used 't' holes: module in row e, wires in row d of the same columns. Any hole in the same column-bank is the same strip, so the connectivity is unchanged.",
+  "The Arduino is assumed to be powered over USB, which the manual does not show, so no USB cable is included.",
+  "The ADXL335 catalogue type stands in for the generic ADXL3xx breakout. Its ports are ST, Z, Y, X, GND, VCC, and VDD on the board is mapped to VCC.",
+  "The MCP connectors (Gmail, Google Calendar, Google Drive) need authorization, but they were not used for this task."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.6,
+   "input_tokens": 20488,
+   "cache_read_tokens": 11120,
+   "output_tokens": 4454,
+   "cost_usd": 0.0842,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 30.6
+}

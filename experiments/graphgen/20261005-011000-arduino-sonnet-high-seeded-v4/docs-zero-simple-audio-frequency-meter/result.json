@@ -1,0 +1,189 @@
+{
+ "case": "docs-zero-simple-audio-frequency-meter",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 273.7,
+  "input_tokens": 75864,
+  "output_tokens": 31397,
+  "cost_usd": 0.488,
+  "repair_rounds_used": 1
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The catalogue entry opamp-lmv358 has an empty port list, so no port on it can be referenced. That caused the V4 errors. I created a new part type, lmv358-dip8, with numbered lead ports 1-8 and used it for ic1. This is not a different part from the manual's LMV358. It is the same chip with its pins defined.",
+  "lmv358-dip8 pin numbering follows the standard dual op-amp pinout: 1 OUT A, 2 IN A-, 3 IN A+, 4 GND, 5 IN B+, 6 IN B-, 7 OUT B, 8 V+. Its 'through' list only records the signal paths from inputs to outputs.",
+  "On the breadboard the chip straddles the centre gap in columns 14-17, with pin 1 at 14t.e and pin 8 at 14b.f.",
+  "The Arduino Zero is not in the catalogue, so it is a new part type. It is powered over USB, which the manual doesn't draw.",
+  "The op-amp's Vcc comes from the IOREF pin (3.3 V on the Zero), as in both images.",
+  "The catalogue match for the 100 nF capacitor (capacitor-10uf, polarized) is wrong. The image shows a non-polarized ceramic disc, so I created capacitor-100nf.",
+  "The catalogue match for the 3.5 mm jack (midi-jack) is wrong, so I created audio-jack-35mm with SLEEVE, RIGHT and LEFT lugs, as in the schematic. Only SLEEVE and RIGHT are wired. LEFT is unused.",
+  "Breadboard row letters follow the image: rows a-e are the lower half (bank 't') and rows f-j are the upper half (bank 'b'). Rails: tp is the top red rail, bn is the bottom blue (negative) rail. Holes are numbered 1-25 along each rail, skipping the gaps.",
+  "The teal jumper in row C is drawn ending near column 14, which is the op-amp output strip. The schematic puts the R10/R11 node on the inverting input (pin 2, column 15), so I wired it 10t.c to 15t.c.",
+  "The trimmer is read as outer pins at 1t.e (GND) and 3t.e (VCC), and the wiper at 2b.f. The purple wire from 2b.g carries the wiper to the op-amp output (14t.d). R11 attaches to the trimmer's column-3 terminal.",
+  "Resistor values come from the schematic: R8 and R9 are 100k, and R10 and R11 are 47k. R8 runs from the Vcc column 12 to the + input at column 16. R9 runs from column 16 to the GND column 20. R10 runs from GND (column 6) to the - input node (column 10). R11 runs from the trimmer to the - input node (column 7, tied to column 10 by a jumper).",
+  "Wire ends to the jack lugs are assumed to be soldered. The jack is a breakout board, and the manual doesn't say how they attach."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 84.6,
+   "check_seconds": 0.0,
+   "input_tokens": 13651,
+   "output_tokens": 994,
+   "cost_usd": 0.0333,
+   "listed": 7,
+   "matched": 5,
+   "looked_up": 2,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Zero Board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Ameba-RTL8195-Arduino-Wireless-Board-p-2699.html (The content is the Seeed Studio page for the Ameba RTL8195 Arduino Wireless Boar)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 9.5
+    },
+    {
+     "item": "10k ohm trimmer",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "1x LMV358 or TLV2462",
+     "card": "opamp-lmv358",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-opamp-breakout-lmv358.html"
+      ]
+     ],
+     "seconds": 11.9
+    },
+    {
+     "item": "2 100k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "2 47k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "100n farad capacitor",
+     "card": "capacitor-10uf",
+     "skipped": false
+    },
+    {
+     "item": "3.5mm jack",
+     "card": "midi-jack",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 139.0,
+   "input_tokens": 20325,
+   "cache_read_tokens": 5507,
+   "output_tokens": 20217,
+   "cost_usd": 0.2625,
+   "check_seconds": 0.0,
+   "issues": 16,
+   "issue_rules": {
+    "V4": 16
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 50.1,
+   "input_tokens": 41888,
+   "cache_read_tokens": 20323,
+   "output_tokens": 10186,
+   "cost_usd": 0.1922,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 16,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "lmv358-dip8",
+   "family": "lmv358-dip8",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 19.7
+}

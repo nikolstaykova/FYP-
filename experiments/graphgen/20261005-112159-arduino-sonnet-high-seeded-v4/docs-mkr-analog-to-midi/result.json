@@ -1,0 +1,146 @@
+{
+ "case": "docs-mkr-analog-to-midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 141.3,
+  "input_tokens": 30031,
+  "output_tokens": 19711,
+  "cost_usd": 0.2763,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The catalogue match for the 100n capacitor (capacitor-10uf) is a polarized 10 uF part. The picture shows a non-polarized ceramic 100 nF capacitor, so I made a new type, capacitor-100nf.",
+  "The catalogue match for the 3.5 mm jack (midi-jack) is a 5-pin DIN socket. I made a new type, audio-jack-35mm, with SLEEVE, RIGHT and LEFT lugs. The LEFT lug is not connected in the circuit.",
+  "The LMV358 is a new type, opamp-lmv358, with DIP-8 pins named OUT1, IN1N, IN1P, GND, IN2P, IN2N, OUT2 and VCC (pins 1 to 8). It sits across the centre gap with pin 1 at column 14 on the row-e side (bank t). Pins 5 to 8 are on row f (bank b).",
+  "I read hole positions off the Fritzing image, so column and row numbers are estimates. In the catalogue's naming, rows a-e are bank 't' and rows f-j are bank 'b'. In the picture the a-e rows are the lower half.",
+  "The trimmer's end legs are taken to be in 1t.e and 3t.e and its wiper in 2b.f. R11 connects to 3t, and the wiper goes by the purple wire to the op-amp output strip (14t). The 1t.e end is left open, as in the schematic.",
+  "The brown wire from MKR1000 A0 lands on strip 14t, which is op-amp pin 1 (OUT1). The schematic draws A0 on the second amplifier's output, but the breadboard image is the authority. The unused second amplifier's inputs are not connected.",
+  "The MKR1000 header pins are taken as VCC (red wire), GND (black wire) and A0 (brown wire). A0 is the DAC0/A0 pin in the schematic.",
+  "The 100k resistors are R8 (VCC to the signal node) and R9 (signal node to GND). The 47k resistors are R11 (pot to inverting node) and R10 (inverting node to GND). The values come from the colour bands.",
+  "The jack's two lugs are wired to the board with blue wires, and I assumed these are soldered. The left pad goes to the ground rail as SLEEVE, and the right pad goes to C1 via 18t. The teal and black-outlined short jumpers in the image are treated as jumper wires.",
+  "Power rails: tp is the red (+) rail on the top and bn is the blue (-) rail on the bottom. Rail hole numbers are counted 1 to 25 in groups of 5."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 14.7,
+   "check_seconds": 0.0,
+   "input_tokens": 9521,
+   "output_tokens": 1707,
+   "cost_usd": 0.0352,
+   "listed": 7,
+   "matched": 6,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino MKR1000 Board",
+     "card": "arduino-mkr1000",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR1000-p-3167.html"
+      ]
+     ],
+     "seconds": 14.6
+    },
+    {
+     "item": "1x 10k trimmer",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "1x LMV358 or TLV2462",
+     "card": "opamp-lmv358",
+     "skipped": false
+    },
+    {
+     "item": "2x 100k resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "2x 47k resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "1x 100n capacitor",
+     "card": "capacitor-10uf",
+     "skipped": false
+    },
+    {
+     "item": "1x 3.5mm jack",
+     "card": "midi-jack",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 126.6,
+   "input_tokens": 20510,
+   "cache_read_tokens": 5507,
+   "output_tokens": 18004,
+   "cost_usd": 0.2411,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "opamp-lmv358",
+   "family": "opamp-lmv358",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.5
+}

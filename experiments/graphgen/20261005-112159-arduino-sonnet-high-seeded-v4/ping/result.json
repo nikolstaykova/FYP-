@@ -1,0 +1,240 @@
+{
+ "case": "ping",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 45.7,
+  "input_tokens": 18714,
+  "output_tokens": 2742,
+  "cost_usd": 0.06,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The SEN136B5B has a single SIG pin; the catalogue hc-sr04 has separate TRIG and ECHO, so SIG is modelled on TRIG and ECHO is unused.",
+  "The breadboard columns are read from the image: the sensor pins are in columns 9, 10 and 11 (GND, 5V, SIG) in row h of the upper half (bank b, rows f-j). The jumper wires are in row g of the same columns.",
+  "The image shows the GND wire on the Uno header pin beside AREF. I assigned it to GND.1 because the catalogue does not say which GND that is.",
+  "The tutorial has no resistors or LEDs, so none are added."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 23.3,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 3,
+   "matched": 3,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "Ultrasonic Range Finder",
+     "card": "hc-sr04",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.4,
+   "input_tokens": 18714,
+   "cache_read_tokens": 11120,
+   "output_tokens": 2742,
+   "cost_usd": 0.06,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "ping": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "hc-sr04": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "ping",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "ping",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "ping",
+     "SIG"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "hc-sr04",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "hc-sr04",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "hc-sr04",
+     "TRIG"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "ping": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "hc-sr04": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "ping",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "ping",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "ping",
+     "SIG"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "hc-sr04",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "hc-sr04",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "hc-sr04",
+     "TRIG"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 6.3
+}

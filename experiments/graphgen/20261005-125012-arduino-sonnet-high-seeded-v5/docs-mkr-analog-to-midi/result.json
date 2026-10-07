@@ -1,0 +1,81 @@
+{
+ "case": "docs-mkr-analog-to-midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 197.7,
+  "input_tokens": 70781,
+  "output_tokens": 23749,
+  "cost_usd": 0.3307,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "Breadboard hole names follow the catalogue: rows a-e are bank 't' and rows f-j are bank 'b'. The LMV358 straddles the centre gap: pins 1-4 at 14t.e-17t.e (pin 1 at the left), pins 8-5 at 14b.f-17b.f. Column and row positions were estimated from the image pixel grid.",
+  "Rails: the upper rail row of the bottom rail pair (blue line) is 'bn' and is used for GND. The lower row of the top rail pair (red line) is 'tp' and is used for VCC. Hole numbers count sequentially along the rail.",
+  "Circuit per schematic: VCC - R8(100k) - node (C1, op-amp + input, R9) - R9(100k) - GND. Jack signal goes through C1 to this node. The op-amp - input is the R11/R10 node: R10 goes to GND, R11 goes to the trimmer end, and the trimmer wiper goes to the op-amp output (pin 1). The output (pin 1) also goes to MKR1000 A0. Op-amp V+ (pin 8) is on VCC and GND (pin 4) is on ground. Only the first amplifier is used.",
+  "The MKR1000 catalogue card lists only USB, VIN, VCC, GND and BAT. A0 is not listed, but the brown wire clearly goes to A0 (DAC0/A0), so port 'A0' is used.",
+  "Pot orientation: its two end pins are interchangeable. Pin 3 (VCC) feeds R11, pin 1 (GND) is unused, and the wiper (SIG) is the amplifier-output feedback. The purple wire is shown on the pot's wiper strip (2t.d) so that the wiper reaches the op-amp output as the schematic requires. In the image it appears to start at row G of column 2.",
+  "Jack: the wire to the bottom GND rail goes to SLEEVE and the other wire (to C1 via 18t.b) goes to RING1 (the schematic's RIGHT). Which of the two jack pins is which was inferred from the schematic.",
+  "The 100 nF capacitor reuses the capacitor-22pf type with value=100nF. The trimmer uses potentiometer-10k, and the jack uses the audio-jack-35mm breakout.",
+  "The MKR1000 is powered over USB. The USB cable is not drawn in the images, so it is not included."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 50.1,
+   "input_tokens": 44722,
+   "cache_read_tokens": 25013,
+   "output_tokens": 3196,
+   "cost_usd": 0.1133,
+   "check_seconds": 0.0,
+   "parts_listed": 23,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-mkr1000",
+    "lmv358"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 147.6,
+   "input_tokens": 26059,
+   "cache_read_tokens": 23173,
+   "output_tokens": 20553,
+   "cost_usd": 0.2174,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.7
+}

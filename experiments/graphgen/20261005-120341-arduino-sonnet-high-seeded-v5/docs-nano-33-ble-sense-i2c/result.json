@@ -1,0 +1,83 @@
+{
+ "case": "docs-nano-33-ble-sense-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 78.5,
+  "input_tokens": 67334,
+  "output_tokens": 10900,
+  "cost_usd": 0.172,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 50,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Changes from step 1: reader and writer now use a new type 'arduino-nano-33-ble'. lookup_part returned only a Nano 33 BLE Sense Rev2 card with ports GND/3V3/VIN/USB for both boards. That card has no A4/A5 header pins, which this circuit needs, and it is not the plain Nano 33 BLE. Both boards have the same pinout, so they share one type. I also changed wire9's colour from red to brown, because it links the GND rails.",
+  "Circuit: SDA is A4 and SCL is A5 on both boards, as the text says. They are wired A5-A5, A4-A4 and GND-GND. The reader's 3V3 feeds a 3V3 rail. One 4.7k resistor pulls SCL up to 3V3 and the other pulls SDA up to 3V3, as in the diagram.",
+  "The diagram draws the wires directly, and the mini breadboards are not shown. I assumed this layout to use all 10 jumpers and both mini breadboards from the parts list. bb1 sits on the reader side and holds the SCL strip (column 5), the SDA strip (column 8), the 3V3 rail and the GND rail, plus both pull-ups. bb2 sits on the writer side. wire7, wire8 and wire9 link the two breadboards for SCL, SDA and GND. The boards are wired to the breadboards, not plugged into them.",
+  "The writer's 3V3 is not connected, as in the diagram. Only the reader supplies 3V3 for the pull-ups, and both boards run on 3.3 V logic.",
+  "The jumper wires are the catalogue's male jumper type, as in the parts list, and are shown inserted at the board header pins.",
+  "Each board is powered by its own USB cable to the computer. The computer is not modelled, so the USB cables have only a joined edge to the board's USB port.",
+  "The built-in LED on the reader is part of the board and needs no extra part."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.6,
+   "input_tokens": 43154,
+   "cache_read_tokens": 32259,
+   "output_tokens": 2227,
+   "cost_usd": 0.0723,
+   "check_seconds": 0.0,
+   "parts_listed": 18,
+   "changed_in_build": 4,
+   "looked_up": [
+    "arduino-nano-33-ble-sense"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 51.9,
+   "input_tokens": 24180,
+   "cache_read_tokens": 22035,
+   "output_tokens": 8673,
+   "cost_usd": 0.0997,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-33-ble",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 24.4
+}

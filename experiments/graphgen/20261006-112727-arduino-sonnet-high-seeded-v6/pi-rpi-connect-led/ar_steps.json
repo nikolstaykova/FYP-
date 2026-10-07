@@ -1,0 +1,159 @@
+{
+ "tutorial": "pi-rpi-connect-led",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/breadboard.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/mfjumper.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/led.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/resistor.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/raspberrypi.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/LEDcloseup.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/ground-missing.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/circuit-current-flow.gif"
+ ],
+ "legs_and_ends": 8,
+ "with_position": 7,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi1",
+     "type": "raspberry-pi-3",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "LED",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "1t.e",
+       "mm": [
+        0.0,
+        10.16
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "1b.f",
+       "mm": [
+        0.0,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "Resistor",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "1b.g",
+       "mm": [
+        0.0,
+        20.32
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "5b.g",
+       "mm": [
+        10.16,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire-mf",
+     "colour": null,
+     "label": "Male-to-female jumper wire (3V3 to LED anode row)",
+     "ends": [
+      {
+       "part": "pi1",
+       "port": "3V3",
+       "mm": [
+        33.02,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "1t.a",
+       "mm": [
+        0.0,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire-mf",
+     "colour": null,
+     "label": "Male-to-female jumper wire (GND to resistor row)",
+     "ends": [
+      {
+       "part": "pi1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "5b.h",
+       "mm": [
+        10.16,
+        22.86
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

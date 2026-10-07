@@ -1,0 +1,147 @@
+{
+ "case": "pi-gpio-music-box",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 90.8,
+  "input_tokens": 58476,
+  "output_tokens": 10352,
+  "cost_usd": 0.2293,
+  "repair_rounds_used": 0
+ },
+ "parts": 16,
+ "edges": 70,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e17: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e18: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e33: port 'GPIO27' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e34: port 'GPIO27' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e49: port 'GPIO10' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e50: port 'GPIO10' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e65: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e66: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e70: port 'USB2_A' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The tutorial does not fix the breadboard layout or GND pin; the layout was chosen so each button straddles the centre gap. The GPIO lead goes to the top-half side of the button and a GND lead goes to the bottom-half side. A pin-to-socket lead from a Pi GND pin feeds the bottom negative rail 'bn'.",
+  "GPIO numbers (4, 17, 27, 10) come from the tutorial's full code listing. They are named as GPIO ports on rpi1, along with GND. The catalogue's rpi-4b entry lists only GPIO_HEADER, so these header-pin names are an assumed extension.",
+  "Each button's GPIO is wired to one side and ground to the other side. The code uses gpiozero Button, which enables the internal pull-up, so no external resistor is needed.",
+  "The five pin-to-socket leads are four GPIO leads and one GND lead. The four pin-to-pin leads link the GND rail to each button.",
+  "The speaker's audio_in is shown plugged into the Pi's 3.5mm audio jack. The catalogue's rpi-4b has no audio-jack port, so the Pi end has no port name. The speaker's USB power is assumed to come from a Pi USB 2.0 port. The tutorial only says 'speakers or headphones'.",
+  "Pushbutton legs 1.l and 1.r are one internal side, and 2.l and 2.r are the other. Both legs of each side are placed in the breadboard as a physical button would be. Electrical wiring uses one column per side.",
+  "The software steps (pygame, sample WAV files, Thonny) are not physical parts and are not in the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 43.6,
+   "input_tokens": 45400,
+   "output_tokens": 2749,
+   "cost_usd": 0.1219,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 6,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Raspberry Pi computer",
+     "type": "rpi-4b",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/4296"
+      ]
+     ],
+     "seconds": 11.2
+    },
+    {
+     "part": "Speakers or headphones",
+     "type": "speaker-3-5mm",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/3369 (The content describes a USB-powered stereo speaker (Adafruit 3369) that explicit)"
+      ],
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/1363"
+      ]
+     ],
+     "seconds": 23.8
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.2,
+   "input_tokens": 13076,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7603,
+   "cost_usd": 0.1074,
+   "check_seconds": 0.01,
+   "issues": 11,
+   "issue_rules": {
+    "V4": 10,
+    "V3": 1
+   }
+  }
+ ],
+ "issues_first": 11,
+ "issues_final": 11,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 14.4
+}

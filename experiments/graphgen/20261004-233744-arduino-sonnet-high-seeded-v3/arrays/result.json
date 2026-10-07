@@ -1,0 +1,82 @@
+{
+ "case": "arrays",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 66.5,
+  "input_tokens": 23854,
+  "output_tokens": 10558,
+  "cost_usd": 0.1592,
+  "repair_rounds_used": 0
+ },
+ "parts": 27,
+ "edges": 100,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The breadboard in the picture is drawn flipped relative to the catalogue naming: the image's top half (rows j-f) is mapped to bank 'b' (rows f-j) and the bottom half (rows e-a) to bank 't' (rows a-e). Resistors straddle the centre gap.",
+  "Column numbers are read from the image: LED anodes/resistors/signal wires in columns 7, 10, 13, 16, 19, 22 (pins 7, 6, 5, 4, 3, 2 respectively); LED cathodes in columns 8, 11, 14, 17, 20, 23.",
+  "Each LED cathode connects with a short black jumper to the top ground rail (tn); the exact rail hole index is approximate, all rail holes are one strip. One black jumper runs from Arduino GND (next to pin 13) to the same rail.",
+  "The manual text says 220 ohm resistors; the catalogue resistor is generic so value=220 is set as a prop.",
+  "The schematic shows pin order 7,6,5,4,3,2 top to bottom; the sketch's array order (2,7,4,6,5,3) only affects software, not wiring.",
+  "Manual lists 'hook-up wires' as one item; 14 jumper wires are used in the circuit image: 6 signal, 6 LED ground, 1 Arduino GND (13 total counting these: 6+6+1)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.2,
+   "input_tokens": 8325,
+   "output_tokens": 317,
+   "cost_usd": 0.0156,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 60.3,
+   "input_tokens": 15529,
+   "cache_read_tokens": 5507,
+   "output_tokens": 10241,
+   "cost_usd": 0.1436,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 13,
+  "nets_built": 13,
+  "nets_matched": 13,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 6,
+   "led": 6
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 6,
+   "resistor": 6
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 12.2
+}

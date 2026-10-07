@@ -1,0 +1,182 @@
+{
+ "case": "docs-uno-msr3-controlling-dc-motor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 195.4,
+  "input_tokens": 120400,
+  "output_tokens": 15590,
+  "cost_usd": 0.324,
+  "repair_rounds_used": 2
+ },
+ "parts": 6,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The tutorial's parts list matched the power source to connector-atx-24pin, which is wrong. I modelled it as a new part, battery-pack-2x18650, which is a 2x 3.7V Li-Ion 18650 holder with an orange + lead and a black - lead.",
+  "The DC motor is not in the catalogue, so I made it a new part, dc-motor. The image shows the orange lead on A+ and the black lead on A-.",
+  "The shield is stacked on the Uno. I only added joined and electrical edges for the shield ports the catalogue lists (D12, D3, D9, A0, D13, D11, D8, A1, 5V). The other stacked header pins have no named shield port.",
+  "The motor and battery leads are part of those components, so no jumper wires appear. In the manual's image they go straight into the shield's screw terminals: A+, A-, VIN and GND.",
+  "I kept the four wire-end to screw-terminal edges (motor to A+/A-, battery to VIN/GND) even though the checker flags them. This is a real connection in the manual: a stripped wire end is clamped under a screw terminal. The shield's terminal ports are screw-kind in the catalogue, and the compatibility list has no screw-terminal pair. Changing my method from 'insert' back to 'screw' did not change that. I did not change the port kinds, since the wire ends are real wire ends and the shield ports come from the catalogue.",
+  "The usb-cable part has no ports in the catalogue, so its edge to the Uno has no port. The edge to the laptop uses the laptop's USB port.",
+  "Channel B (B+, B-) is left unused. The tutorial only wires channel A, which uses D12 for direction, D3 for PWM and D9 for brake."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 130.7,
+   "check_seconds": 0.0,
+   "input_tokens": 45003,
+   "output_tokens": 4959,
+   "cost_usd": 0.1138,
+   "listed": 5,
+   "matched": 2,
+   "looked_up": 2,
+   "found": 2,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Arduino Motor Shield Rev3(link to store)",
+     "card": "arduino-motor-shield-rev3",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-ardumoto-motor-driver-shield.html (The page describes the SparkFun Ardumoto Motor Driver Shield (DEV-14129, L298-ba)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2519 (The content describes the Pololu Dual MAX14870 Motor Driver Shield for Arduino ()"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MOTOR-SHIELD-REV3-p-3176.html"
+      ]
+     ],
+     "seconds": 33.7
+    },
+    {
+     "item": "Arduino UNO (link to store)",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "DC motor (6-12V)",
+     "card": "dc-motor",
+     "skipped": false
+    },
+    {
+     "item": "Power source (this tutorial uses 2x 3.7V Li-Ion 18650 batteries).",
+     "card": "connector-atx-24pin",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/atx-power-supply-connector-right-angle.html"
+      ]
+     ],
+     "seconds": 21.6
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.2,
+   "input_tokens": 21272,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3496,
+   "cost_usd": 0.0991,
+   "check_seconds": 0.0,
+   "issues": 4,
+   "issue_rules": {
+    "V3": 4
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.9,
+   "input_tokens": 25246,
+   "cache_read_tokens": 21270,
+   "output_tokens": 3386,
+   "cost_usd": 0.054,
+   "check_seconds": 0.0,
+   "issues": 4,
+   "issue_rules": {
+    "V3": 4
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.6,
+   "input_tokens": 28879,
+   "cache_read_tokens": 25244,
+   "output_tokens": 3749,
+   "cost_usd": 0.0571,
+   "check_seconds": 0.0,
+   "issues": 4,
+   "issue_rules": {
+    "V3": 4
+   }
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 4,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "dc-motor",
+   "family": "dc-motor",
+   "checked": false
+  },
+  {
+   "type": "battery-pack-2x18650",
+   "family": "battery-pack-2x18650",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 17.1
+}

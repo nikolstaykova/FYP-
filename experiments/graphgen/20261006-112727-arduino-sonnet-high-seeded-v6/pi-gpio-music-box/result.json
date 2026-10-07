@@ -1,0 +1,83 @@
+{
+ "case": "pi-gpio-music-box",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 56.5,
+  "input_tokens": 57367,
+  "output_tokens": 9473,
+  "cost_usd": 0.1312,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 68,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 change: dropped the speaker-8ohm node. The tutorial's 'speakers or headphones' plug into the Pi's audio jack, not the GPIO circuit. The catalogue's Pi GPIO type has no audio port, and a bare 8-ohm speaker is not what the tutorial describes. So it would be an unconnected node.",
+  "GPIO numbers map to 40-pin header pins as follows: GPIO4 = pin 7, GPIO17 = pin 11, GPIO27 = pin 13, GPIO10 = pin 19. Ground is header pin 6. These are the pin numbers in the tutorial's code.",
+  "Each button is wired between its GPIO pin and ground. gpiozero's Button uses the Pi's internal pull-up, so no external resistor is needed.",
+  "Each button straddles the centre gap, with side 1 (1.l, 1.r) on the top half and side 2 (2.l, 2.r) on the bottom half. The GPIO lead goes into the same column strip as side 1, and a pin-to-pin jumper takes side 2 to the ground rail bn.",
+  "The five pin-to-socket leads are 4 button signal leads plus 1 ground lead. For these leads, end a is the male pin into the breadboard and end b is the female socket on the Pi header pin. The four pin-to-pin jumpers link each button's side 2 to the ground rail.",
+  "The tutorial lets you choose any GPIO pins, so the exact breadboard columns and the wire-to-rail positions are assumptions. The GPIO numbers come from the example code."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.4,
+   "input_tokens": 27787,
+   "cache_read_tokens": 22995,
+   "output_tokens": 1603,
+   "cost_usd": 0.0398,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"GPIO Music Box\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/gpio-music-box\", \"new_part_types\""
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 16,
+   "changed_in_build": 1,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 43.1,
+   "input_tokens": 29580,
+   "cache_read_tokens": 27785,
+   "output_tokens": 7870,
+   "cost_usd": 0.0914,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"GPIO Music Box\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/gpio-music-box\", \"new_part_types\""
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer"
+  ],
+  "families_missing": [
+   "buzzer"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [],
+ "postprocess_ms": 12.2
+}

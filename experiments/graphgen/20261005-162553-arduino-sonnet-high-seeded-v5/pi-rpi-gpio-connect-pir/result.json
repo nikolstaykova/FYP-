@@ -1,0 +1,72 @@
+{
+ "case": "pi-rpi-gpio-connect-pir",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 21.8,
+  "input_tokens": 63144,
+  "output_tokens": 3053,
+  "cost_usd": 0.0543,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1; step 1 was correct.",
+  "No breadboard is used: the PIR sensor connects directly to the Pi's GPIO header with three female-to-female jumper cables.",
+  "The catalogue has no female-to-female jumper type (lookup returned only male-to-female), so the generic jumper-wire is used for the three cables.",
+  "Raspberry Pi model is not stated; raspberry-pi-3b is used because it is the catalogue Pi with named GPIO header pins and matches the full-size board in the image.",
+  "From the image, the red wire goes to the 5V pin at header position 2 (5V.1) and the black wire to the GND pin at position 6 (GND.1). The orange wire goes to GP4 (GPIO4) at position 7.",
+  "The PIR sensor is a 5V-powered part (supply 4.5-20 V on VCC), so 5V is correct. Its OUT signal is normally 3.3 V, which is safe for the Pi's GPIO input."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.9,
+   "input_tokens": 41274,
+   "cache_read_tokens": 39381,
+   "output_tokens": 1132,
+   "cost_usd": 0.0268,
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.9,
+   "input_tokens": 21870,
+   "cache_read_tokens": 20840,
+   "output_tokens": 1921,
+   "cost_usd": 0.0275,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 11.4
+}

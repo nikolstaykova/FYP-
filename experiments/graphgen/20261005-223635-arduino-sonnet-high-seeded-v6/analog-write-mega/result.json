@@ -1,0 +1,88 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 102.0,
+  "input_tokens": 58375,
+  "output_tokens": 20381,
+  "cost_usd": 0.2571,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1; step 1 was correct.",
+  "Each LED has its anode in an odd column (top half, row a) and its cathode in the next even column. The 220 ohm resistor shares the anode column and bridges the centre gap to the bottom half. A signal wire from the Mega pin lands in the same bottom-half column. This matches the circuit image, which puts the resistor on the anode side.",
+  "LED 1 (leftmost) is on pin 13 and LED 12 is on pin 2, as the image wires them. Pins 2-13 are all PWM on the Mega.",
+  "Each LED cathode goes by a short black jumper to the top ground rail (tn.*). The rail is one strip. The black wire from the Mega GND pin next to AREF goes to the same rail.",
+  "The Mega catalogue entry does not list its GND port names, so GND.1 is assumed for the GND pin beside AREF, following the Uno/Nano naming.",
+  "Breadboard coordinates are my own consistent mapping. The image shows the board flipped, so exact rows are not read from it."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.7,
+   "input_tokens": 27413,
+   "cache_read_tokens": 20023,
+   "output_tokens": 3209,
+   "cost_usd": 0.0657,
+   "check_seconds": 0.0,
+   "parts_listed": 51,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 83.3,
+   "input_tokens": 30962,
+   "cache_read_tokens": 27411,
+   "output_tokens": 17172,
+   "cost_usd": 0.1914,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 24.6
+}

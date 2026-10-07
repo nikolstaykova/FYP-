@@ -1,0 +1,99 @@
+{
+ "case": "memsic2125",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 37.0,
+  "input_tokens": 23767,
+  "output_tokens": 5230,
+  "cost_usd": 0.1056,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 37,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts list says 5 hook-up wires, but the circuit image shows 6 (orange 5V, black Arduino GND, yellow pin 2, blue pin 3, and two short black GND wires from the module's two GND pins to the ground rail). I built all 6.",
+  "The Memsic module straddles the centre gap. Its bottom pin row sits in the a-e half (bank t) and its top pin row sits in the f-j half (bank b), at columns 17-19. I mapped them as follows. Bottom row: GND.1 at 17, XOUT at 18, VDD at 19. Top row: GND.2 at 17, YOUT at 18, TOUT at 19. TOUT (temperature) is left unconnected, as in the schematic.",
+  "The exact rail hole numbers (bn.6, bn.12, bn.16) are estimated from the image. The ground rail is the lower rail's top row (the black '-' line).",
+  "Wire ends are placed on the same column strip as the module pin in a different row, e.g. 19t.a for the 5V wire.",
+  "The Arduino GND wire is attached to GND.1. The image shows it on one of the two GND header pins next to 5V.",
+  "The USB cable connects the Arduino to the computer so serial data can be sent. The computer is not modelled, and the cable's ports are not specified."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.0,
+   "input_tokens": 8263,
+   "output_tokens": 330,
+   "cost_usd": 0.0155,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.0,
+   "input_tokens": 15504,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4900,
+   "cost_usd": 0.0901,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 4,
+  "nets_matched": 4,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "memsic2125": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "memsic2125": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 4,
+  "nets_matched": 4,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "memsic2125": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "memsic2125": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.6
+}

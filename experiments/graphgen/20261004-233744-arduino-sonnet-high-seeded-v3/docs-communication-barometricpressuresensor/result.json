@@ -1,0 +1,73 @@
+{
+ "case": "docs-communication-barometricpressuresensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 38.3,
+  "input_tokens": 20008,
+  "output_tokens": 4233,
+  "cost_usd": 0.0981,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The catalogue's pressure-scp1000 entry (BMP085-based, ports VCC/GND/SDA/SCL/XCLR/EOC) has no SCK/MOSI/MISO/DRDY/CSB pins, so it can't represent this SPI circuit. I added a new type, scp1000-breakout, with the pins the schematic uses.",
+  "No breadboard is used. The sensor is wired directly to the Arduino with 7 jumper wires.",
+  "Pin mapping follows the schematic and code: D13 to SCK, D12 to MISO, D11 to MOSI, D7 to CSB, D6 to DRDY. The crossed lines in the schematic mean D7 goes to CSB and D6 goes to DRDY.",
+  "3.3V goes to VCC and GND goes to GND. GND.1 is assumed for the Arduino ground pin, because the photo shows a power-header Gnd but not which one.",
+  "The first Fritzing image has the sensor pins in a different order from the schematic. The schematic and code were treated as correct for signal assignment."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 13.1,
+   "input_tokens": 10991,
+   "output_tokens": 233,
+   "cost_usd": 0.0342,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 3,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.2,
+   "input_tokens": 9017,
+   "cache_read_tokens": 3203,
+   "output_tokens": 4000,
+   "cost_usd": 0.0639,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "scp1000-breakout",
+   "family": "scp1000-breakout",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.1
+}

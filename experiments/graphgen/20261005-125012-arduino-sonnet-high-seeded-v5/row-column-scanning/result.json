@@ -1,0 +1,495 @@
+{
+ "case": "row-column-scanning",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 149.2,
+  "input_tokens": 80393,
+  "output_tokens": 28584,
+  "cost_usd": 0.3444,
+  "repair_rounds_used": 1
+ },
+ "parts": 37,
+ "edges": 124,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Fix for the validator: each breadboard hole takes only one lead, so the six wires that share the power rails now use separate holes on the same rail strip. 5V rail (tp): wire1 at tp.2, wire4 at tp.10, wire6 at tp.16. GND rail (tn): wire2 at tn.3, wire3 at tn.9, wire5 at tn.14. All holes on one rail are one strip, so the nets are unchanged.",
+  "Rail hole numbers follow the image roughly: the Arduino 5V and GND wires land at rows 2 and 3, and the pot wires at rows near their pots.",
+  "Parts are unchanged from step 2. Labels were already corrected there: the upper pot (pot1) goes to A1 and the lower pot (pot2) goes to A0, as in the image.",
+  "Matrix pin mapping follows the manual's table, converted to the catalogue's R1-R8 / C1-C8 names: pin1=R5->13, pin2=R7->12, pin3=C2->11, pin4=C3->10, pin5=R8->A2, pin6=C5->A3, pin7=R6->A4, pin8=R3->A5, pin9=R1->2, pin10=C4->3, pin11=C6->4, pin12=R4->5, pin13=C1->6, pin14=R2->7, pin15=C7->8, pin16=C8->9.",
+  "As in the image, the 1k resistors are on the 8 yellow lines (Arduino pins 9 down to 2), which carry a mix of rows and columns. The 8 green lines (pins 13, 12, 11, 10, A2-A5) have no resistor.",
+  "Each yellow line is modelled as resistor leg 1 in the Arduino header, leg 2 soldered or twisted to a yellow wire, and that wire's other end on the matrix pin. The joining method is assumed.",
+  "Pot leg holes are read from the image and are approximate, but the nets are right: 5V and GND to the outer legs, wiper to A0 / A1. Pot GND and VCC are interchangeable, so the black-wire side is GND and the red-wire side is VCC.",
+  "The tutorial shows no USB cable or power supply, so none is added."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.8,
+   "input_tokens": 19591,
+   "cache_read_tokens": 19589,
+   "output_tokens": 2876,
+   "cost_usd": 0.0327,
+   "check_seconds": 0.0,
+   "parts_listed": 37,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 78.8,
+   "input_tokens": 22751,
+   "cache_read_tokens": 19589,
+   "output_tokens": 14371,
+   "cost_usd": 0.1555,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 51.6,
+   "input_tokens": 38051,
+   "cache_read_tokens": 22749,
+   "output_tokens": 11337,
+   "cost_usd": 0.1562,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 28,
+  "nets_built": 28,
+  "nets_matched": 19,
+  "net_precision": 0.679,
+  "net_recall": 0.679,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 8,
+   "pot": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "pot": 2,
+   "resistor": 8
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "led",
+     "R1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "R2"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "led",
+     "R4"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "led",
+     "C2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "led",
+     "C3"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "led",
+     "C5"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 28,
+  "nets_built": 28,
+  "nets_matched": 19,
+  "net_precision": 0.679,
+  "net_recall": 0.679,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 8,
+   "pot": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "pot": 2,
+   "resistor": 8
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "led",
+     "R1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "R2"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "led",
+     "R4"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "led",
+     "C2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "led",
+     "C3"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "led",
+     "C5"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 19.0
+}

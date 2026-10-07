@@ -1,0 +1,229 @@
+{
+ "case": "joystick-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 44.9,
+  "input_tokens": 19963,
+  "output_tokens": 6667,
+  "cost_usd": 0.1135,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 47,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "In the circuit image the five joystick pins sit in one vertical line of breadboard holes, which would short them on a real breadboard. I seated them in five adjacent columns (6t\u201310t, row a), and each Arduino wire goes to the same column's row e.",
+  "Wiring follows the image and schematic: A0 goes to VERT, A1 goes to HORZ, pin 6 goes to SEL, 5V goes to VCC, and GND goes to GND.",
+  "The image shows the GND wire on the power header GND pin next to 5V. I mapped it to GND.2 and put the LED return on GND.3.",
+  "The optional status LED on pin 5 is included as pin 5 \u2192 220 \u03a9 resistor \u2192 LED anode, with the cathode to GND. These positions are my own, since the manual only refers to the LED tutorial.",
+  "I left out the optional second pushbutton with its 10k pulldown on D3. The manual says the main pushbutton may be built into the joystick (SEL on pin 6), and that circuit has no pulldown.",
+  "The USB cable has no ports in the catalogue, so it is joined to the board with no port named."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.1,
+   "input_tokens": 4607,
+   "output_tokens": 549,
+   "cost_usd": 0.0118,
+   "check_seconds": 0.0,
+   "matched": 9,
+   "listed": 9,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.8,
+   "input_tokens": 15356,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6118,
+   "cost_usd": 0.1017,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 7,
+  "nets_matched": 2,
+  "net_precision": 0.286,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "analog-joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "analog-joystick": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "analog-joystick",
+     "VCC"
+    ],
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "VERT"
+    ],
+    [
+     "board",
+     "A1"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "HORZ"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "analog-joystick",
+     "VCC"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "VERT"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "HORZ"
+    ],
+    [
+     "board",
+     "A1"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "SEL"
+    ],
+    [
+     "board",
+     "6"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 22.2
+}

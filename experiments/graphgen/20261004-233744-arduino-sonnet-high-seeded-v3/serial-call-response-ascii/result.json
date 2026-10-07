@@ -1,0 +1,206 @@
+{
+ "case": "serial-call-response-ascii",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 68.8,
+  "input_tokens": 23405,
+  "output_tokens": 9659,
+  "cost_usd": 0.1481,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The circuit image shows two 2-lead force-sensing resistors; they are mapped to the matched parts (potentiometer-10k and photoresistor). The potentiometer is used as a variable resistor: only SIG and VCC are connected, GND is left unconnected.",
+  "Breadboard hole names were mapped from the image onto the catalogue naming: the image's top half (rows j-f) is bank 't' (rows a-e, j->a ... f->e) and the lower half (rows e-a) is bank 'b' (rows f-j, e->f ... a->j). Exact columns are estimated from the picture.",
+  "Top rails: tp = + (red line), tn = - (black). Bottom rails: bp = +, bn = -. Long wires link top and bottom rails.",
+  "The pushbutton straddles the centre gap: side 1 (column 5) is on 5V, side 2 (column 7) goes to Arduino pin 2 and to the 10K pull-down resistor to GND, matching the schematic.",
+  "Sensor 1 (potentiometer) junction goes to A1 with a 10K resistor to GND; sensor 2 (photoresistor) junction goes to A0 with a 10K resistor to GND, as drawn in the image.",
+  "The sensors' leads plug directly into the breadboard, as drawn."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.7,
+   "input_tokens": 7993,
+   "output_tokens": 452,
+   "cost_usd": 0.0153,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 7,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.1,
+   "input_tokens": 15412,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9207,
+   "cost_usd": 0.1328,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.2,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 4,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 18.4
+}

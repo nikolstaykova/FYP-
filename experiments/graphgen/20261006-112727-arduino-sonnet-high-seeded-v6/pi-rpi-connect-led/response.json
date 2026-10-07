@@ -1,0 +1,486 @@
+{
+ "graph": {
+  "title": "Light an LED with a Raspberry Pi",
+  "source_id": "raspberrypi.org: light-an-led (LED circuit on breadboard)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi-3",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (3V3 to LED anode row)",
+    "props": []
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (GND to resistor row)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "The manual's 'row 1' is the numbered breadboard line crossing the ravine; in the catalogue's naming this is column 1, with the top bank (1t) left of the ravine and the bottom bank (1b) right of it.",
+   "LED anode (A, long leg) is in 1t.e and cathode (C) is in 1b.f, straddling the ravine.",
+   "Resistor leg 1 is in 1b.g, on the same strip as the LED cathode. Leg 2 is in 5b.g, a free column on the same side of the ravine.",
+   "Wire 1: male end in 1t.a, on the LED anode strip. Female end on the Pi 3V3 pin. Wire 2: male end in 5b.h, on the resistor's second-leg strip. Female end on the Pi GND pin.",
+   "The resistor value is not given, so no value prop is set. 3V3 with an LED and a series resistor is within the LED's current limits for a typical resistor.",
+   "The Raspberry Pi model is not specified, so raspberry-pi-3 is used for its 3V3 and GND ports. The tutorial says to use any GND pin."
+  ]
+ },
+ "graph_initial": {
+  "title": "Light an LED with a Raspberry Pi",
+  "source_id": "raspberrypi.org: light-an-led (LED circuit on breadboard)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi-3",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (3V3 to LED anode row)",
+    "props": []
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Male-to-female jumper wire (GND to resistor row)",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "5b.g",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "The manual's 'row 1' is the numbered breadboard line crossing the ravine; in the catalogue's naming this is column 1, with the top bank (1t) left of the ravine and the bottom bank (1b) right of it.",
+   "LED anode (A, long leg) is in 1t.e and cathode (C) is in 1b.f, straddling the ravine.",
+   "Resistor leg 1 is in 1b.g, on the same strip as the LED cathode. Leg 2 is in 5b.g, a free column on the same side of the ravine.",
+   "Wire 1: male end in 1t.a, on the LED anode strip. Female end on the Pi 3V3 pin. Wire 2: male end in 5b.h, on the resistor's second-leg strip. Female end on the Pi GND pin.",
+   "The resistor value is not given, so no value prop is set. 3V3 with an LED and a series resistor is within the LED's current limits for a typical resistor.",
+   "The Raspberry Pi model is not specified, so raspberry-pi-3 is used for its 3V3 and GND ports. The tutorial says to use any GND pin."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 22.9,
+  "input_tokens": 53044,
+  "output_tokens": 3215,
+  "cost_usd": 0.1321,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 7.2,
+   "input_tokens": 26045,
+   "cache_read_tokens": 3468,
+   "output_tokens": 794,
+   "cost_usd": 0.0989,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Light an LED with a Raspberry Pi\", \"source_id\": \"raspberrypi.org: light-an-led (LED circuit on breadboard)\", "
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.7,
+   "input_tokens": 26999,
+   "cache_read_tokens": 26043,
+   "output_tokens": 2421,
+   "cost_usd": 0.0332,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Light an LED with a Raspberry Pi\", \"source_id\": \"raspberrypi.org: light-an-led (LED circuit on breadboard)\", "
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

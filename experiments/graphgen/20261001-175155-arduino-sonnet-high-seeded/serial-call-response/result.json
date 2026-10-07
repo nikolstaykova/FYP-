@@ -1,0 +1,201 @@
+{
+ "case": "serial-call-response",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 105.0,
+  "api_seconds": 101.5,
+  "first_token_seconds": 75.1,
+  "input_tokens": 47506,
+  "cache_read_tokens": 33353,
+  "output_tokens": 10789,
+  "cost_usd": 0.1712,
+  "turns": 2
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The image shows the breadboard with rows j-f in the top half and e-a in the bottom half; the catalogue calls rows a-e bank 't' and f-j bank 'b'. Hole names follow the catalogue, so the half drawn at the top is bank 'b' and the half drawn at the bottom is bank 't'.",
+  "Rail hole numbers are estimated from the picture. The top rail is 'tp'/'tn' and the bottom rail is 'bp'/'bn'. The long side wires (black and red at the far right) join the top rails to the bottom rails. Their exact columns (28 and 29) are approximate.",
+  "The black GND wire goes to the second GND pin in the power header, which I mapped to GND.2.",
+  "The two 'sense resistors' are FSRs (the manual says photocell, FSR or potentiometer). I used the catalogue fsr type, with its two legs plugged straight into the breadboard. The red and blue strokes in the picture are lead extensions, not separate jumper wires.",
+  "Sensor 1 (FSR to 6t.b, 10k to ground, tap wire to A1) and sensor 2 (FSR to 16t.b, 10k to ground, tap wire to A0) are the same circuit. I wrote them out as separate parts because their breadboard columns differ. The outer yellow wire goes to A0 and the inner one to A1.",
+  "Button port mapping is assumed: '1' is the half drawn at the top (rows f-j, bank b) and '2' the half drawn at the bottom (bank t). 'l' is the left leg (column 5) and 'r' the right leg (column 7). 5V is on the column-5 strip and the pin 2 line plus the pull-down resistor are on the column-7 strip, so pressing the button pulls pin 2 high.",
+  "Resistors are 10 k\u03a9 (value=10000). One is the button pull-down from 7b.g to 10b.g, with 10b.i wired to the negative rail. The other two are the sensor pull-downs to the bottom negative rail."
+ ],
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 4,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 3,
+   "fsr": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 11.8
+}

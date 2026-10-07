@@ -1,0 +1,97 @@
+{
+ "case": "docs-nano-matter-04-matter-relay-lightbulb",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 71.5,
+  "input_tokens": 47133,
+  "output_tokens": 11431,
+  "cost_usd": 0.2063,
+  "repair_rounds_used": 1
+ },
+ "parts": 10,
+ "edges": 29,
+ "repeats": [],
+ "new_types_declared": 5,
+ "new_types_added": 4,
+ "problems": [],
+ "notes": [
+  "The Arduino Nano Matter is not in the catalogue, so it is a new part type. Its pin list is approximate; only 3V3, GND and D4 are used.",
+  "The breadboard hole positions for the Nano Matter pins (3V3 at 2t.e, GND at 14t.e, D4 at 10b.f) and for the jumper wires are assumptions. The manual does not give them. The Nano straddles the centre channel.",
+  "The Grove relay module is a new type because the catalogue relay-module has no ports. It is powered from 3V3 and its signal pin is driven by D4, as the text says. The photo shows a Grove cable with a breadboard adapter. It is modelled as three jumper wires to VCC, GND and SIG.",
+  "The AC side follows the text: the relay interrupts the live conductor. Mains live goes to the relay COM, then NO goes to the lamp socket live terminal. Neutral goes straight to the socket. The wire nut seen in the photo is omitted.",
+  "The mains-side terminals (relay COM/NC/NO, AC cable ends, socket terminals, bulb contacts) are typed as 'lead' ports so that lead-to-lead joins are valid. The 'lug' kind has no compatible join. These are screw or clamp connections in reality.",
+  "The mains plug end of the AC cable is not modelled. The cable's L and N ports are the bare ends.",
+  "The Google Nest Hub Max (Thread border router) and the phone app connect wirelessly. They are not in the build graph. The sketch and software steps are not part of the graph.",
+  "Mains voltage is dangerous."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.1,
+   "input_tokens": 19997,
+   "cache_read_tokens": 5414,
+   "output_tokens": 6588,
+   "cost_usd": 0.1253,
+   "check_seconds": 0.0,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 5
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.4,
+   "input_tokens": 27136,
+   "cache_read_tokens": 19995,
+   "output_tokens": 4843,
+   "cost_usd": 0.081,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "score_initial": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "grove-relay-module",
+   "family": "grove-relay-module",
+   "checked": false
+  },
+  {
+   "type": "ac-cable",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "lightbulb-socket",
+   "family": "lightbulb-socket",
+   "checked": false
+  },
+  {
+   "type": "ac-lightbulb",
+   "family": "ac-lightbulb",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 9.1
+}

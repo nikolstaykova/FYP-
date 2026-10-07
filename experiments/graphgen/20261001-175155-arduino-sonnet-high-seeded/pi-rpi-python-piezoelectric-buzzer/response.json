@@ -1,0 +1,192 @@
+{
+ "graph": {
+  "title": "Piezoelectric buzzer on Raspberry Pi (GPIO 17)",
+  "source_id": "buzzer-circuit.png (Raspberry Pi gpiozero buzzer tutorial)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "buzzer1",
+    "type": "buzzer",
+    "label": "Piezoelectric buzzer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Black jumper wire (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Purple jumper wire (GPIO17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "purple"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "18t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "18t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Breadboard bottom half (rows a-e in the image) is mapped to bank 't' per the catalogue naming.",
+   "Buzzer legs are assumed to sit in holes 15t.b (negative, black) and 18t.b (positive, purple); the jumper wires share the same columns in row a, so they connect via the column strip.",
+   "Buzzer port 1 is assumed to be the positive (long) leg and port 2 the negative leg.",
+   "The black wire goes to the Pi GND pin at physical pin 9 (GND.2), next to GPIO17 on the lower header row (pin 11), per the image highlights.",
+   "No resistor is used in the circuit; the Pi is not powered/connected to anything else in the manual."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 21.7,
+  "api_seconds": 18.2,
+  "first_token_seconds": 11.6,
+  "input_tokens": 17842,
+  "cache_read_tokens": 14806,
+  "output_tokens": 2720,
+  "cost_usd": 0.0423,
+  "turns": 2
+ }
+}

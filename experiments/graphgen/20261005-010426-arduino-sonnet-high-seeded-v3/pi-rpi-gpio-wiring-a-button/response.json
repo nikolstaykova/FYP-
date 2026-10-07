@@ -1,0 +1,739 @@
+{
+ "graph": {
+  "title": "Wiring a button to a Raspberry Pi (GPIO 17 input)",
+  "source_id": "raspberry-pi-button-wiring (2-pin / 4-pin / 2x4-pin button diagrams)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "rpi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Button",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GPIO 17 signal wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The parts list gives 1 button and 2 jumper wires, so I built the single four-leg button on a breadboard. I did not build the two-leg flying-lead version or the 2-button common-ground rail version.",
+   "The 4-pin diagram was not supplied. I took the button position from the 2x4 image: it straddles the centre gap with legs in rows 5 and 7, columns e and f. These are holes 5t.e, 5b.f, 7t.e and 7b.f in the catalogue's naming.",
+   "Side 1 of the button (rows 5) goes to ground. Side 2 (row 7) goes to GPIO 17. The button is non-polarised, so either way round works.",
+   "The black ground wire goes to breadboard hole 5t.a. The orange GPIO 17 wire goes to 7t.a. These are in the same strips as the button legs. In the 2-button image the ground wire runs to the negative rail instead. With one button I connected it directly.",
+   "The catalogue's rpi-4b only lists GPIO_HEADER as a port. I used the pin names GPIO17 and GND for the header pins, as the task instructs. The GND pin in the diagram is the one beside GP3, which is physical pin 6.",
+   "The wire ends at the Pi header are modelled as jumper-wire (the catalogue type matched to the parts list), not male-to-female. In practice the Pi end would be a female socket."
+  ]
+ },
+ "graph_initial": {
+  "title": "Wiring a button to a Raspberry Pi (GPIO 17 input)",
+  "source_id": "raspberry-pi-button-wiring (2-pin / 4-pin / 2x4-pin button diagrams)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "rpi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Button",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GPIO 17 signal wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "5b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "rpi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The parts list gives 1 button and 2 jumper wires, so I built the single four-leg button on a breadboard. I did not build the two-leg flying-lead version or the 2-button common-ground rail version.",
+   "The 4-pin diagram was not supplied. I took the button position from the 2x4 image: it straddles the centre gap with legs in rows 5 and 7, columns e and f. These are holes 5t.e, 5b.f, 7t.e and 7b.f in the catalogue's naming.",
+   "Side 1 of the button (rows 5) goes to ground. Side 2 (row 7) goes to GPIO 17. The button is non-polarised, so either way round works.",
+   "The black ground wire goes to breadboard hole 5t.a. The orange GPIO 17 wire goes to 7t.a. These are in the same strips as the button legs. In the 2-button image the ground wire runs to the negative rail instead. With one button I connected it directly.",
+   "The catalogue's rpi-4b only lists GPIO_HEADER as a port. I used the pin names GPIO17 and GND for the header pins, as the task instructs. The GND pin in the diagram is the one beside GP3, which is physical pin 6.",
+   "The wire ends at the Pi header are modelled as jumper-wire (the catalogue type matched to the parts list), not male-to-female. In practice the Pi end would be a female socket."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 27.9,
+  "input_tokens": 17963,
+  "output_tokens": 3147,
+  "cost_usd": 0.0604,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 5.6,
+   "input_tokens": 7566,
+   "output_tokens": 279,
+   "cost_usd": 0.0111,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 4,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.3,
+   "input_tokens": 10397,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2868,
+   "cost_usd": 0.0493,
+   "check_seconds": 0.01,
+   "issues": 4,
+   "issue_rules": {
+    "V4": 4
+   }
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 4,
+ "final_issue_list": [
+  [
+   "V4",
+   "e9: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e10: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e13: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e14: port 'GPIO17' not on rpi-4b"
+  ]
+ ],
+ "cards": {
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "pushbutton": {
+   "type": "pushbutton",
+   "name": "Pushbutton",
+   "category": "button",
+   "ports": [
+    {
+     "name": "1.l",
+     "kind": "lead"
+    },
+    {
+     "name": "1.r",
+     "kind": "lead"
+    },
+    {
+     "name": "2.l",
+     "kind": "lead"
+    },
+    {
+     "name": "2.r",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": {
+    "mode": "prefix",
+    "prefixes": [
+     "1",
+     "2"
+    ]
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "note": "4 legs in two pairs: 1.l and 1.r are ALWAYS joined inside (side 1), 2.l and 2.r are ALWAYS joined (side 2); pressing joins side 1 to side 2. Wire the input pin to one side and the supply to the OTHER side; a pull-down/pull-up resistor goes on the SAME side as the input pin."
+  },
+  "rpi-4b": {
+   "type": "rpi-4b",
+   "name": "Raspberry Pi 4 Model B",
+   "category": "single-board-computer",
+   "ports": [
+    {
+     "name": "GPIO_HEADER",
+     "kind": "header-pin"
+    },
+    {
+     "name": "USB_C_POWER",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_0",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_1",
+     "kind": "socket"
+    },
+    {
+     "name": "USB3_A",
+     "kind": "socket"
+    },
+    {
+     "name": "USB2_A",
+     "kind": "socket"
+    },
+    {
+     "name": "ETHERNET",
+     "kind": "socket"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/4296",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Raspberry Pi",
+   "quantity": 1,
+   "catalogue_type": "rpi-4b",
+   "new_type": null,
+   "search_query": null,
+   "category": "single-board-computer"
+  },
+  {
+   "label": "Button (pushbutton)",
+   "quantity": 1,
+   "catalogue_type": "pushbutton",
+   "new_type": null,
+   "search_query": null,
+   "category": "button"
+  },
+  {
+   "label": "Breadboard",
+   "quantity": 1,
+   "catalogue_type": "breadboard",
+   "new_type": null,
+   "search_query": null,
+   "category": "breadboard"
+  },
+  {
+   "label": "Jumper wires",
+   "quantity": 2,
+   "catalogue_type": "jumper-wire",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  }
+ ]
+}

@@ -1,0 +1,132 @@
+{
+ "case": "docs-generic-midi-device",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 97.1,
+  "input_tokens": 36861,
+  "output_tokens": 15015,
+  "cost_usd": 0.2239,
+  "repair_rounds_used": 0
+ },
+ "parts": 30,
+ "edges": 136,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The image breadboard is longer than 30 columns (about 63), so column numbers above 30 are used (up to 39) and rail hole indices run up to ~50; hole names are my best reading of the picture.",
+  "Image rows J-F (top half) are mapped to bank 'b' (rows f-j) and rows E-A (bottom half) to bank 't' (rows a-e) to match the catalogue naming. Each tactile button straddles the centre gap in two columns (e.g. columns 1 and 3).",
+  "Each button's top legs (side 1) go to the signal strip with the wire from the Arduino pin; its bottom legs (side 2) go to the strip with a black wire to the bottom negative (ground) rail. Pins use INPUT_PULLUP so no resistors are needed.",
+  "Pot: red wire from the positive rail (fed from the Arduino IOREF pin) to the VCC end, yellow wire from A0 to the wiper (SIG), black wire from the bottom negative rail to the GND end. The slide pot is modelled as potentiometer-10k.",
+  "Arduino GND pin used is the one on the digital header next to AREF; modelled as GND.1 (catalogue port naming ambiguity).",
+  "The two black rail-to-rail wires (Arduino GND to top negative rail, and top negative rail to bottom negative rail) link all ground rails; the top and bottom negative rails are not otherwise connected.",
+  "The 7 tactile buttons were listed as 'None' in the matched parts but the catalogue's pushbutton type is used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 10.2,
+   "check_seconds": 0.0,
+   "input_tokens": 9200,
+   "output_tokens": 378,
+   "cost_usd": 0.0206,
+   "listed": 6,
+   "matched": 2,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board with a Native USB port (Zero, Due, 101, Micro, Leonardo)",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "7 tactile push-buttons Normally Open",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Turn-On-Open-Hardware-Metal-Push-Button-With-OSH-Logo-p-1335.html (The content is a Seeed Studio page for a metal push button with an OSH logo, and)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 10.2
+    },
+    {
+     "item": "10k \u03a9 linear potentiometer",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Arduino MIDI USB library",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 86.9,
+   "input_tokens": 27661,
+   "cache_read_tokens": 14132,
+   "output_tokens": 14637,
+   "cost_usd": 0.2033,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 14.7
+}

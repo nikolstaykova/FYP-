@@ -1,0 +1,71 @@
+{
+ "case": "pi-generic-electronics-connect-ultrasonic-distance-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 37.5,
+  "api_seconds": 34.4,
+  "first_token_seconds": 17.4,
+  "input_tokens": 18043,
+  "cache_read_tokens": 14806,
+  "output_tokens": 5914,
+  "cost_usd": 0.075,
+  "turns": 2
+ },
+ "parts": 12,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'VCC' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e2: port 'VCC' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e3: port 'Trig' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e4: port 'Trig' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e5: port 'Echo' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e6: port 'Echo' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e7: port 'GND' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e8: port 'GND' not on hc-sr04"
+  ]
+ ],
+ "notes": [
+  "The catalogue lists hc-sr04 with no ports; I used VCC, Trig, Echo and GND, which are the labels on the sensor.",
+  "Breadboard banks follow the catalogue: rows f-j are bank 'b' and rows a-e are bank 't'. The sensor sits in columns 1-4 of row j.",
+  "The Echo pin goes through a potential divider. 330 ohm (r1) runs from the Echo strip (column 4) to column 8. 470 ohm (r2) runs from column 8 to column 12, and column 12 goes to the ground rail. The divider midpoint (column 8) goes to GPIO17.",
+  "The wire positions on the bottom-half ground rail (bn.12, bn.24, bn.28) are estimated from the image.",
+  "Pi pins are read from the image. VCC goes to the first 5V pin (physical pin 2, 5V.1), Trig to GPIO4 (pin 7), Echo's divider to GPIO17 (pin 11), and ground to the GND pin at physical pin 39 (GND.8). The text says any numbered GPIO pin works for Trig and Echo.",
+  "The 4.000 reading on the sensor in the wiring image is only a display value, so it is not a part."
+ ],
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 10.6
+}

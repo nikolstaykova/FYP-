@@ -1,0 +1,86 @@
+{
+ "case": "docs-nano-matter-06-matter-temp-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 68.0,
+  "input_tokens": 88789,
+  "output_tokens": 7383,
+  "cost_usd": 0.1951,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 45,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The wiring diagram image was not provided, so connections follow the manual text: OLED and DHT11 powered from 3V3, OLED on I2C, DHT11 signal on D4.",
+  "The Nano Matter has no breadboard layout in the catalogue, so it is wired to the breadboard with jumper wires from its header pins rather than modelled as plugged in. Its I2C pins are assumed to be the Nano-style SDA=A4 and SCL=A5.",
+  "OLED legs are in 10t-13t row a in order GND, VCC, SCL, SDA. DHT11 legs are in 20t-23t row a in order GND, VCC, NC, SIG; NC is left unconnected.",
+  "3V3 and GND each use one Nano pin and one wire to the OLED strips. A short wire then carries each to the DHT11 strips (wire6 for 3V3, wire7 for GND), so there are no doubled header pins.",
+  "The Google Nest Hub is the Thread border router and is not part of the circuit. The Nano is powered and programmed through the USB-C cable.",
+  "The DHT11 is the 'dht11' catalogue type, a Grove-style card with ports GND, VCC, NC, SIG. This is an assumed match for the bare DHT11 module."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.0,
+   "input_tokens": 58072,
+   "cache_read_tokens": 32234,
+   "output_tokens": 1503,
+   "cost_usd": 0.1248,
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": [
+    "dht11"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.0,
+   "input_tokens": 30717,
+   "cache_read_tokens": 29302,
+   "output_tokens": 5880,
+   "cost_usd": 0.0703,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.8
+}

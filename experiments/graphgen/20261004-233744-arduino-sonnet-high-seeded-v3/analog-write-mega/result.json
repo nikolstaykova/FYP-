@@ -1,0 +1,142 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 54.2,
+  "input_tokens": 23794,
+  "output_tokens": 8152,
+  "cost_usd": 0.1349,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [
+  {
+   "group": "ch",
+   "times": 12,
+   "overrides": 77
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "single-use port bb1:tn.1 used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:1b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:3b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:5b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:7b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:9b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:11b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:13b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:15b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:17b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:19b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:21b.f used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:23b.f used 2 times"
+  ]
+ ],
+ "notes": [
+  "Each channel: Mega pin (2..13) -> blue jumper -> breadboard strip, 220 ohm resistor bridges the centre gap to the LED-anode strip, LED cathode strip is wired by a black jumper to the ground rail (tn). Exact breadboard columns are chosen for a clean layout (2 columns per channel), not copied from the image's hole positions.",
+  "The ground rail tn.1..tn.12 is a single rail strip; all cathode wires and the Mega GND wire share it.",
+  "The Mega GND pin (next to AREF) is assumed to be named GND.1 in the catalogue.",
+  "LED anodes are the longer leg (A) on the resistor side; cathodes (C) go to ground, as in the schematic.",
+  "Image pin order has pin 13 at the leftmost LED; here copy k uses pin k+1, which is electrically equivalent."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.0,
+   "input_tokens": 8278,
+   "output_tokens": 324,
+   "cost_usd": 0.0155,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 48.2,
+   "input_tokens": 15516,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7828,
+   "cost_usd": 0.1194,
+   "check_seconds": 0.01,
+   "issues": 13,
+   "issue_rules": {
+    "V4": 13
+   }
+  }
+ ],
+ "issues_first": 13,
+ "issues_final": 13,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 24.4
+}

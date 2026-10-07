@@ -1,0 +1,68 @@
+{
+ "case": "pi-generic-electronics-connect-ultrasonic-distance-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 41.7,
+  "input_tokens": 15294,
+  "output_tokens": 6362,
+  "cost_usd": 0.0761,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Sensor pins are plugged into top-half columns 1-4 (row j): VCC, Trig, Echo, GND; jumper wires attach at row f of the same columns.",
+  "Echo goes via a blue wire to column 4 of the bottom half, then through the 330\u03a9 resistor (4b.c to 8b.c). Column 8 is the divider midpoint, which goes to GPIO17 and through the 470\u03a9 resistor (8b.b to 12b.b) to the ground rail via a black wire at 12b.a.",
+  "The exact bottom-rail hole numbers (bn.10, bn.20, bn.23) are estimated from the picture. All of them lie on the same bottom negative rail strip, so the connectivity does not depend on the numbers.",
+  "Trig is on GPIO4 and the divider output on GPIO17, as in the image (the manual allows any numbered GPIO pin). The Pi GND is the pin at the far right of the lower header row (pin 39), which I mapped to GND.8.",
+  "The Pi end of each wire to the header is modelled as a male-to-female jumper, with the female end on the Pi pin."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.7,
+   "input_tokens": 15294,
+   "cache_read_tokens": 12803,
+   "output_tokens": 6362,
+   "cost_usd": 0.0761,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 4.6
+}

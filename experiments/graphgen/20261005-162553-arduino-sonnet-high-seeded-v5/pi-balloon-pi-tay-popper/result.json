@@ -1,0 +1,133 @@
+{
+ "case": "pi-balloon-pi-tay-popper",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 141.6,
+  "input_tokens": 123868,
+  "output_tokens": 19759,
+  "cost_usd": 0.362,
+  "repair_rounds_used": 1
+ },
+ "parts": 15,
+ "edges": 58,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 4,
+ "problems": [],
+ "notes": [
+  "Fix for the validator errors (e47, e49): the battery snap-to-battery joins were lug to lug, which is not a compatible pair. The 9V battery terminals are now 'stud' ports and the snap's contacts are 'anti-stud' ports, so the snap-on join is stud to anti-stud. Nothing else changed.",
+  "Parts are the same as step 1; none added or dropped.",
+  "Rail holes: I used the left-hand rails, with 'tn' as the ground (-) rail and 'tp' as the 9V (+) rail. The exact hole number on a rail does not matter because each rail is one strip.",
+  "Breadboard coordinates are read from the circuit image. Button: row 1 (e1 and f1) goes to the ground rail through the black wire at a1. Row 3 (e3 and f3) goes to GPIO14 through the blue wire at a3. All four button legs are placed, with two on each side of the centre gap.",
+  "Transistor in column e of rows 10, 11, 12: emitter on row 10 (black wire to the ground rail), collector on row 11, base on row 12. The 330 ohm resistor runs from c12 to c16, and the green wire from GPIO2 goes to a16.",
+  "The red wire from the 9V rail to a6 and the speaker cable ends at b6 and b11 put the 12 ohm balloon resistor between the 9V rail and the collector. The tutorial says to connect it between the button and the transistor but does not show exact holes, so b6 and b11 are my choice.",
+  "The 12 ohm resistor's legs are twisted to the two cores of the speaker cable, and it is taped to the balloon.",
+  "Pi pins: the image highlights GND at physical pin 6 (GND.1), GPIO14 at pin 8 and GPIO2 at pin 3. These map to catalogue ports GND.1, GPIO14 and GPIO2.",
+  "The 330 ohm resistor limits the GPIO2 base current. The 9V supply drives only the transistor collector side and never touches a Pi pin. The ground rail is shared between the Pi GND and the battery negative.",
+  "The fourth pin-to-pin jumper in the parts list is not shown in the image, so it is not included."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 55.3,
+   "input_tokens": 53041,
+   "cache_read_tokens": 29503,
+   "output_tokens": 3764,
+   "cost_usd": 0.1377,
+   "check_seconds": 0.0,
+   "parts_listed": 15,
+   "changed_in_build": 0,
+   "looked_up": [
+    "battery-9v",
+    "battery-snap-9v",
+    "speaker-cable-2core",
+    "transistor-bc635"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.0,
+   "input_tokens": 30623,
+   "cache_read_tokens": 27002,
+   "output_tokens": 9093,
+   "cost_usd": 0.1108,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.3,
+   "input_tokens": 40204,
+   "cache_read_tokens": 30621,
+   "output_tokens": 6902,
+   "cost_usd": 0.1135,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "resistor",
+   "transistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "resistor",
+   "transistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "transistor-bc635",
+   "family": "transistor-bc635",
+   "checked": false
+  },
+  {
+   "type": "battery-9v",
+   "family": "battery-9v",
+   "checked": false
+  },
+  {
+   "type": "battery-snap-9v",
+   "family": "battery-snap-9v",
+   "checked": false
+  },
+  {
+   "type": "speaker-cable-2core",
+   "family": "wire",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 28.6
+}

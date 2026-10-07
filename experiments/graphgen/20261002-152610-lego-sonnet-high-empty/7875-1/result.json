@@ -1,0 +1,98 @@
+{
+ "case": "7875-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 122.7,
+  "input_tokens": 210934,
+  "output_tokens": 17631,
+  "cost_usd": 0.6222,
+  "repair_rounds_used": 1
+ },
+ "parts": 28,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The PDF has no inventory pages and no Element IDs are printed, so every piece's type is a best visual match from the catalogue. Colours are given as props, and the catalogue entry's own colour may differ.",
+  "Body steps 1-2: I read the grey 2x2 pieces as wheel holders with pins and the yellow piece as a 2x4 plate. The exact overlap of the yellow plate and the grey holders is hard to see, so those joins are approximate. Underside grey strips shown in step 2 are not modelled separately.",
+  "Body step 3: the black rear piece is modelled as lego-digger-seat-back. Step 4 plate is read as a yellow 2x2. The step 5 hood is a single yellow curved slope.",
+  "Arm (right-hand column, steps 1-5): two hinge plates joined by a hinge, with alternating black clip plates and yellow 1x2 plates stacked on each half. The black bucket bracket and yellow 1x1 clip piece in the step 5 inset are approximated with catalogue types. Step 6 attaches the arm to the black rear mount; I modelled this as a revolute clip joint.",
+  "Cab (step 7) is modelled as a trans-clear windscreen box with a yellow 2x4 roof plate. The front blade (step 8) is approximated with an inverted-slope piece on a black clip plate.",
+  "The four wheels (grey rims with black tyres) go on the two wheel holders' pins. The manual shows two sizes of tyre but I used one type for all four.",
+  "Fix for the validator errors: where a piece joins several others through the same single stud or anti-stud port, I left the ports null on the extra joins, because one stud can only hold one join and these pieces overlap in ways the pictures do not resolve.",
+  "The arm-to-body clip joint (b13 to b4) and the rim-to-tyre joins also have null ports. The catalogue has no matching clip port on b4, and the rim and tyre port names (tire, rim) were read by the validator as incompatible kinds."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 88.1,
+   "input_tokens": 99189,
+   "cache_read_tokens": 5507,
+   "output_tokens": 11839,
+   "cost_usd": 0.4942,
+   "check_seconds": 0.03,
+   "issues": 11,
+   "issue_rules": {
+    "V3": 5,
+    "V4": 6
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.5,
+   "input_tokens": 111745,
+   "cache_read_tokens": 99187,
+   "output_tokens": 5792,
+   "cost_usd": 0.128,
+   "check_seconds": 0.03,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 11,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 39,
+  "pieces_built": 28,
+  "pieces_unmapped": 1,
+  "inventory_matched": 6,
+  "exact_matched": 4,
+  "inventory_precision": 0.214,
+  "inventory_recall": 0.154,
+  "exact_recall": 0.103,
+  "joined_edges": 28,
+  "contacts_expected": 2,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": 0.0
+ },
+ "score_initial": {
+  "pieces_expected": 39,
+  "pieces_built": 28,
+  "pieces_unmapped": 1,
+  "inventory_matched": 6,
+  "exact_matched": 4,
+  "inventory_precision": 0.214,
+  "inventory_recall": 0.154,
+  "exact_recall": 0.103,
+  "joined_edges": 28,
+  "contacts_expected": 2,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": 0.0
+ },
+ "postprocess_ms": 16.2
+}

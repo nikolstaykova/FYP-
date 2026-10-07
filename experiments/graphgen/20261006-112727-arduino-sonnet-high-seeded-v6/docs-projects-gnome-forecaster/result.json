@@ -1,0 +1,146 @@
+{
+ "case": "docs-projects-gnome-forecaster",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 166.8,
+  "input_tokens": 287685,
+  "output_tokens": 18278,
+  "cost_usd": 0.4534,
+  "repair_rounds_used": 2
+ },
+ "parts": 15,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Fix: the short-circuit report came from my previous graph, where the three wires to the strip all ended on strip1 with no port. That made the strip one single node joining 5V, D7 and GND. Each strip wire now lands on its own pin.",
+  "The catalogue's led-strip type has no ports, so I replaced strip1 with a new type, ws2812-strip-8. lookup_part found no 8-LED strip card. Its ports are the pads printed on the strip: VDC, DIN, GND and DOUT. DOUT is left unconnected. The strip is still the same single part from the manual's parts list.",
+  "No breadboard is used; all connections are soldered wires, modelled as jumper-wire parts with a joined (solder) edge and an electrical edge at each end.",
+  "The DS3231MPMB1 was not found by lookup_part, so it is a new type, ds3231-rtc. Its second side (VCC_2, GND_2, SDA_2, SCL_2) is the pass-through of the first side, and the BME280 wires connect there.",
+  "Nano Every pins used: 3V3 (red) and GND (black) power the RTC, A4 (blue) is SDA and A5 (yellow) is SCL. The BME280 is powered from 3V3 because it is a 3.3 V part.",
+  "The strip is powered from the 5V pin (red wire), as in the manual. DIN goes to D7 (white wire), matching LED_PIN 7 in the sketch.",
+  "The strip's GND wire to a Nano GND pin is not described in the text but is needed to complete the circuit.",
+  "The 3D-printed gnome enclosure and the glitter statue photos are not electronic parts and are not in the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 46.9,
+   "input_tokens": 82551,
+   "cache_read_tokens": 40819,
+   "output_tokens": 2291,
+   "cost_usd": 0.198,
+   "tools_used": [
+    "lookup_part {\"name\": \"Maxim DS3231MPMB1 Peripheral Module\", \"type_id\": \"ds3231-rtc\"}",
+    "lookup_part {\"name\": \"Digilent WS2812 Addressable LED Strip\", \"type_id\": \"led-strip\"}",
+    "StructuredOutput {\"title\": \"Weather Forecasting Gnome (Nano Every, BME280, DS3231, WS2812 strip)\", \"source_id\": \"Arduino Project Hub: Wea"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 15,
+   "changed_in_build": 0,
+   "looked_up": [
+    "ds3231-rtc"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.2,
+   "input_tokens": 43909,
+   "cache_read_tokens": 41728,
+   "output_tokens": 5434,
+   "cost_usd": 0.0714,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Weather Forecasting Gnome (Nano Every, BME280, DS3231, WS2812 strip)\", \"source_id\": \"Arduino Project Hub: Wea"
+   ],
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.8,
+   "input_tokens": 49874,
+   "cache_read_tokens": 43907,
+   "output_tokens": 5041,
+   "cost_usd": 0.0831,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Weather Forecasting Gnome (Nano Every, BME280, DS3231, WS2812 strip)\", \"source_id\": \"Arduino Project Hub: Wea"
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E1": 1,
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 59.9,
+   "input_tokens": 111351,
+   "cache_read_tokens": 105156,
+   "output_tokens": 5512,
+   "cost_usd": 0.1009,
+   "tools_used": [
+    "lookup_part {\"name\": \"WS2812B 8-LED addressable strip with VDC DIN GND pads\", \"type_id\": \"ws2812-strip-8\"}",
+    "StructuredOutput {\"title\": \"Weather Forecasting Gnome (Nano Every, BME280, DS3231, WS2812 strip)\", \"source_id\": \"Arduino Project Hub: Wea"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ds3231-rtc",
+   "family": "ds3231-rtc",
+   "checked": false
+  },
+  {
+   "type": "ws2812-strip-8",
+   "family": "ws2812-strip-8",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 24.9
+}

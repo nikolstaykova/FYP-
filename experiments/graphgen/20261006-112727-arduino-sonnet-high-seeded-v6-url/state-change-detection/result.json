@@ -1,0 +1,142 @@
+{
+ "case": "state-change-detection",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 35.2,
+  "input_tokens": 70558,
+  "output_tokens": 4378,
+  "cost_usd": 0.0725,
+  "repair_rounds_used": 0
+ },
+ "parts": 7,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct and are unchanged.",
+  "The button straddles the centre gap. Side 1 (1.l, 1.r) is in columns 10 and 11 of the top half, and side 2 (2.l, 2.r) is in the same columns of the bottom half.",
+  "The red wire carries 5V to the button's side 1 (strip 10t). The teal wire goes from Uno pin 2 to the opposite side of the button (strip 11b).",
+  "The 10k pull-down resistor is on the same strip (11b) as the pin 2 wire. Its other leg goes to strip 14b, which the black wire takes to Uno GND.1. This matches the schematic.",
+  "Exact breadboard holes are my choice, since the image does not show them clearly. The topology follows the schematic.",
+  "The LED on pin 13 is the Uno's built-in LED, so no external LED is added."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.4,
+   "input_tokens": 45688,
+   "cache_read_tokens": 42758,
+   "output_tokens": 887,
+   "cost_usd": 0.0291,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/digital/StateChangeDetection/\"}",
+    "StructuredOutput {\"title\": \"State Change Detection (Edge Detection) for pushbuttons\", \"source_id\": \"https://docs.arduino.cc/built-in-exam"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 7,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.8,
+   "input_tokens": 24870,
+   "cache_read_tokens": 23947,
+   "output_tokens": 3491,
+   "cost_usd": 0.0434,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"State Change Detection (Edge Detection) for pushbuttons\", \"source_id\": \"https://docs.arduino.cc/built-in-exam"
+   ],
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 15.1
+}

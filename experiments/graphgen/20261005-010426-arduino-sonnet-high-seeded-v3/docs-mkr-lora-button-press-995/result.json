@@ -1,0 +1,129 @@
+{
+ "case": "docs-mkr-lora-button-press-995",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 207.9,
+  "input_tokens": 54501,
+  "output_tokens": 8697,
+  "cost_usd": 0.2035,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'SIG' not on antenna-lora"
+  ],
+  [
+   "V4",
+   "e2: port 'SIG' not on antenna-lora"
+  ]
+ ],
+ "notes": [
+  "Two separate circuits: sender (mkr1, ant1, bb1, btn1, wire1, wire2) and receiver (mkr2, ant2, bb2, led1, r1, wire3, wire4); each board has its own USB cable.",
+  "The catalogue board has no antenna or USB port, so antenna and USB edges use a null port on the board side (antenna U.FL connector at the bottom of the board).",
+  "The breadboard image has rows j..f in the top half; the catalogue calls the top half bank 't' (rows a-e) and the bottom bank 'b' (rows f-j). The images' top half is rows f-j, so bank 'b' is used with the image's row letters.",
+  "Sender: button legs are in columns 5 and 7 (row g). Only one leg per side is drawn, so btn1 ports 1.l and 2.l are used. The black wire (GND) goes to 5b.f and the yellow wire (D2) to 7b.f. The sketch uses INPUT_PULLUP, so no external resistor is needed.",
+  "Receiver: LED cathode is in column 6 (row h) and anode in column 8 (row h); the GND wire is in 6b.g. The resistor is in row g from column 8 to column 11. The green wire from D2 is in 11b.f.",
+  "The resistor value is not stated in the manual. 220 ohm is assumed. The LED is shown as green. The cathode is assumed to be the straight leg and the anode the bent leg.",
+  "Wire end A is on the MKR board and end B is on the breadboard. The manual's pin 2 is the catalogue port D2.",
+  "The claude.ai Gmail, Google Calendar and Google Drive connectors need authorization through the claude.ai connector settings. They were not used for this graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 170.6,
+   "input_tokens": 35548,
+   "output_tokens": 3549,
+   "cost_usd": 0.0971,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 7,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino MKR WAN 1310",
+     "type": "arduino-mkr-wan-1310",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html"
+      ]
+     ],
+     "seconds": 79.5
+    },
+    {
+     "part": "Antenna",
+     "type": "antenna-lora",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/915mhz-lora-antenna-rp-sma-1-2-wave-2dbi.html"
+      ]
+     ],
+     "seconds": 84.2
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.3,
+   "input_tokens": 18953,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5148,
+   "cost_usd": 0.1064,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.7
+}

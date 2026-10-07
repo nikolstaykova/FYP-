@@ -1,0 +1,699 @@
+{
+ "graph": {
+  "title": "Connect a PIR motion sensor to a Raspberry Pi",
+  "source_id": "PIR connection (pir-diagram.png)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "rpi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "pir1",
+    "type": "pir-motion-sensor",
+    "label": "PIR sensor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-ff",
+    "label": "Female-to-female jumper cable (VCC to 5V)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-ff",
+    "label": "Female-to-female jumper cable (GND to GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-ff",
+    "label": "Female-to-female jumper cable (OUT to GPIO 4)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "5V",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The catalogue rpi-4b lists only a GPIO_HEADER port; individual header pins are named 5V, GND and GPIO4 as the task instructs, and these are not in the catalogue port list.",
+   "From the diagram, the 5V wire goes to the top-right header pin (physical pin 2), the GND wire to physical pin 6, and the GPIO 4 wire to physical pin 7.",
+   "Wire colours (red, black, orange) come from the diagram. The PIR pin-to-wire mapping follows the manual text: VCC to 5V, GND to GND, OUT to GPIO 4.",
+   "The wires are female-to-female, so each end pushes onto a male pin: the PIR's pins and the Pi's header pins.",
+   "GPIO 4 is the example choice. Any numbered GPIO pin would work."
+  ]
+ },
+ "graph_initial": {
+  "title": "Connect a PIR motion sensor to a Raspberry Pi",
+  "source_id": "PIR connection (pir-diagram.png)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "rpi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "pir1",
+    "type": "pir-motion-sensor",
+    "label": "PIR sensor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-ff",
+    "label": "Female-to-female jumper cable (VCC to 5V)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-ff",
+    "label": "Female-to-female jumper cable (GND to GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-ff",
+    "label": "Female-to-female jumper cable (OUT to GPIO 4)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "5V",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "end_a",
+    "v": "pir1",
+    "v_port": "OUT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "end_b",
+    "v": "rpi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The catalogue rpi-4b lists only a GPIO_HEADER port; individual header pins are named 5V, GND and GPIO4 as the task instructs, and these are not in the catalogue port list.",
+   "From the diagram, the 5V wire goes to the top-right header pin (physical pin 2), the GND wire to physical pin 6, and the GPIO 4 wire to physical pin 7.",
+   "Wire colours (red, black, orange) come from the diagram. The PIR pin-to-wire mapping follows the manual text: VCC to 5V, GND to GND, OUT to GPIO 4.",
+   "The wires are female-to-female, so each end pushes onto a male pin: the PIR's pins and the Pi's header pins.",
+   "GPIO 4 is the example choice. Any numbered GPIO pin would work."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 46.3,
+  "input_tokens": 17126,
+  "output_tokens": 2279,
+  "cost_usd": 0.0484,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 31.7,
+   "input_tokens": 7560,
+   "output_tokens": 243,
+   "cost_usd": 0.0107,
+   "check_seconds": 0.0,
+   "matched": 2,
+   "listed": 3,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Raspberry Pi",
+     "type": "rpi-4b",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "rpi-4b"
+      ]
+     ],
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.6,
+   "input_tokens": 9566,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2036,
+   "cost_usd": 0.0377,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 6,
+ "final_issue_list": [
+  [
+   "V4",
+   "e3: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e4: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e7: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e8: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'GPIO4' not on rpi-4b"
+  ]
+ ],
+ "cards": {
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire-ff": {
+   "type": "jumper-wire-ff",
+   "name": "Female-Female Jumper Wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "end_a",
+     "kind": "header-socket"
+    },
+    {
+     "name": "end_b",
+     "kind": "header-socket"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "symmetric": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/1919",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "pir-motion-sensor": {
+   "type": "pir-motion-sensor",
+   "name": "PIR Motion Sensor",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "OUT",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "rpi-4b": {
+   "type": "rpi-4b",
+   "name": "Raspberry Pi 4 Model B",
+   "category": "single-board-computer",
+   "ports": [
+    {
+     "name": "GPIO_HEADER",
+     "kind": "header-pin"
+    },
+    {
+     "name": "USB_C_POWER",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_0",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_1",
+     "kind": "socket"
+    },
+    {
+     "name": "USB3_A",
+     "kind": "socket"
+    },
+    {
+     "name": "USB2_A",
+     "kind": "socket"
+    },
+    {
+     "name": "ETHERNET",
+     "kind": "socket"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/4296",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  }
+ },
+ "parts_list": [
+  {
+   "label": "PIR sensor",
+   "quantity": 1,
+   "catalogue_type": "pir-motion-sensor",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "Raspberry Pi",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "rpi-4b",
+   "search_query": "Raspberry Pi",
+   "category": "single-board-computer"
+  },
+  {
+   "label": "Female-to-female jumper cable",
+   "quantity": 3,
+   "catalogue_type": "jumper-wire-ff",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  }
+ ]
+}

@@ -1,0 +1,116 @@
+{
+ "case": "40457-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 420.8,
+  "input_tokens": 393094,
+  "output_tokens": 70886,
+  "cost_usd": 1.6147,
+  "repair_rounds_used": 1
+ },
+ "parts": 140,
+ "edges": 161,
+ "repeats": [
+  {
+   "group": "foot",
+   "times": 4,
+   "overrides": 2
+  },
+  {
+   "group": "eyes",
+   "times": 2,
+   "overrides": 2
+  },
+  {
+   "group": "bow",
+   "times": 2,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 10,
+ "new_types_added": 10,
+ "problems": [],
+ "notes": [
+  "Port fix: catalogue plates/bricks expose only one 'stud.1' and one 'anti-stud.1' port even though they have many studs, and each port may be used only once. All stud/anti-stud joins therefore use null ports (allowed: 'Ports may be null'); every real multi-stud connection is kept as a joined edge. Ports are named only where each is used once (axle holes/axles, clip/bar). The reported multi-use ports are not real problems, they were a modelling limitation of single-port catalogue entries.",
+  "The model is a flat 12x16 plate-built picture with a built-in back frame and fold-out stand. Pieces are stacked, so most joins are stud/anti-stud; exact stud-by-stud positions are not recoverable from the isometric pictures, so each piece is joined to the piece(s) it visibly sits on (best interpretation).",
+  "The four 4x8 white base plates (b1, b13, b14, b22) are not visibly joined to each other directly; they are held together by the pieces layered over them (blue plates, tiles, back frame). Which base plate each overlying tile sits on is approximate.",
+  "Back frame (steps 21-25): 1x16 bricks, 1x12 brick and 1x12 plates attach to the underside of the base; which base plates each frame piece touches is approximate.",
+  "Step 24: placement of the 2x3 rounded plate with hole (b75) and the two bar-handle plates (b76, b77) relative to the 1x3/1x4 plates is interpreted from the picture; clip connectors at the ends of the stand legs (b82, b83) clip onto the bars of b76/b77 (revolute).",
+  "Stand leg (step 26): two curved elbows joined by the red axle extender, an 11L axle in each free end, and a clip-end connector at the far end of each axle.",
+  "Step 29 checker sub-assembly (red round plate 2x2 with axle hole + 2 tan 1x1 plates + 2 red quarter-round plates) sits on the first red round plate (b36), which sits on the centre stud of the yellow 2x2 plate (b10).",
+  "Repeats: 'foot' = round brick + foot pad on frame corners (2 on each 1x16 brick); 'eyes' = half-round 2x4 with two curved eye tiles (step 34); 'bow' = heart plate with two white round plates (step 36). Edges inside repeats that name b110, b111/b112, b113/b114, b107 record what sits on them; attach overrides redirect copy 2 (or copies 3-4) to the other target.",
+  "Step 38's two white 1x1 plates (b108, b109) have no clear location in the pictures; they are placed on the lower white half-round (b49) as a guess.",
+  "New part types added for pieces not in the catalogue: 6284572, 6195358, 383221, 4159553, 6170390, 6066342, 6276193, 6315482, 6132201, 6126050. The name/colour of 6170390 (red quarter-round 1x1 plate) and 6276193 (red heart plate) are inferred from the images.",
+  "Inventory check: all piece counts match the parts list (e.g. 4560181 x10, 306924 x10, 6284572 x8, 6276193 x4, 6170390 x4)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 327.6,
+   "input_tokens": 169903,
+   "cache_read_tokens": 5507,
+   "output_tokens": 50298,
+   "cost_usd": 1.1617,
+   "check_seconds": 0.03,
+   "issues": 51,
+   "issue_rules": {
+    "V4": 51
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 93.1,
+   "input_tokens": 223191,
+   "cache_read_tokens": 169901,
+   "output_tokens": 20588,
+   "cost_usd": 0.453,
+   "check_seconds": 0.03,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 51,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 140,
+  "pieces_built": 140,
+  "pieces_unmapped": 0,
+  "inventory_matched": 140,
+  "exact_matched": 140,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 161,
+  "contacts_expected": 0,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": null
+ },
+ "score_initial": {
+  "pieces_expected": 140,
+  "pieces_built": 140,
+  "pieces_unmapped": 0,
+  "inventory_matched": 140,
+  "exact_matched": 140,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 161,
+  "contacts_expected": 0,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": null
+ },
+ "postprocess_ms": 36.0
+}

@@ -1,0 +1,144 @@
+{
+ "case": "7325-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 463.7,
+  "input_tokens": 268376,
+  "output_tokens": 75664,
+  "cost_usd": 1.4047,
+  "repair_rounds_used": 1
+ },
+ "parts": 201,
+ "edges": 238,
+ "repeats": [
+  {
+   "group": "seg",
+   "times": 4,
+   "overrides": 0
+  },
+  {
+   "group": "conn",
+   "times": 3,
+   "overrides": 0
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V3",
+   "e58: axle-hole \u2194 pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e59: axle-hole \u2194 pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e60: axle-hole \u2194 pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e61: axle-hole \u2194 pin is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The set has three sub-models: the jeep (b1-b53), the obelisk (b59-b91) and the cobra (b92-b137, seg and conn repeats). All 201 listed pieces are nodes.",
+  "The three models are tied together in the graph. The cobra's neck pin (b89) goes into the head ball-brick, which links cobra and obelisk. The shared sticker sheet (b53) links the jeep to the obelisk. The booklet really builds three models, so these links are a graph convenience, not a physical join between jeep and obelisk.",
+  "Minifigures (heads, torsos, legs, hair) are not in the parts list, so they are not nodes. The accessories (bag b54, dynamite b55, pistol b56, snakes b57 and b58) are carried by minifigs. To avoid isolated nodes I gave each a `contact` edge to where its minifig stands: bag, dynamite and pistol to the jeep's rear plate (b15), the two snakes to the obelisk top plate (b69). These are approximate.",
+  "Ports are null where the stud/anti-stud pairing is not clear from the pictures. Several plate-stacking edges are best guesses about which piece sits on which.",
+  "The jeep is built upside down at the end (steps 15-17). I assumed the two pin plates (b35, b36) sit on the tan plates and black 2x4s at the chassis ends.",
+  "Rifle (b34) and shovel (b16) are assumed to sit in the two 1x1 clip bricks (b11, b10) at the rear. The headlights are trans-clear round plates on the 4081b clips and on the 52038 bumper.",
+  "Obelisk: the three blue axle pins (b87-b89) are assumed to go two through the toggle joint into the Technic brick, with the third axle through the toggle's centre. Its protruding end enters the head ball-brick's axle hole (b104), as the arrow on page 46 shows.",
+  "Each cobra segment (seg) has two 92013 socket bricks. The ball bricks of the connectors (conn) and the head/tail 57909a bricks snap into them. Chain order: head b104, seg1, conn1, seg2, conn2, seg3, conn3, seg4, tail b94.",
+  "The cobra hood (b135) is held on two tan jumper plates, one on the head's tan plate (b114) and one on segment 1. Trans-clear studs and dishes cap them."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "check_seconds": 0.0,
+   "method": "rebrickable dump",
+   "cards_made": 0,
+   "pieces": 201
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 365.4,
+   "input_tokens": 106468,
+   "cache_read_tokens": 5507,
+   "output_tokens": 53791,
+   "cost_usd": 0.9429,
+   "check_seconds": 0.01,
+   "issues": 11,
+   "issue_rules": {
+    "V3": 4,
+    "V2": 5,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 98.3,
+   "input_tokens": 161908,
+   "cache_read_tokens": 106466,
+   "output_tokens": 21873,
+   "cost_usd": 0.4618,
+   "check_seconds": 0.02,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 4,
+    "L1": 1
+   }
+  }
+ ],
+ "issues_first": 11,
+ "issues_final": 5,
+ "score": {
+  "pieces_expected": 201,
+  "pieces_built": 201,
+  "pieces_unmapped": 0,
+  "inventory_matched": 201,
+  "exact_matched": 0,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 0.0,
+  "joined_edges": 233,
+  "contacts_expected": 8,
+  "contacts_predicted": 16,
+  "contacts_correct": 5,
+  "contact_precision": 0.312,
+  "contact_recall": 0.625
+ },
+ "score_initial": {
+  "pieces_expected": 201,
+  "pieces_built": 201,
+  "pieces_unmapped": 0,
+  "inventory_matched": 201,
+  "exact_matched": 0,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 0.0,
+  "joined_edges": 233,
+  "contacts_expected": 8,
+  "contacts_predicted": 16,
+  "contacts_correct": 5,
+  "contact_precision": 0.312,
+  "contact_recall": 0.625
+ },
+ "postprocess_ms": 23.9
+}

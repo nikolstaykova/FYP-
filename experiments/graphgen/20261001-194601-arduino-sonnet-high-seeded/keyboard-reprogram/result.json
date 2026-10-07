@@ -1,0 +1,113 @@
+{
+ "case": "keyboard-reprogram",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 32.8,
+  "input_tokens": 41121,
+  "output_tokens": 4747,
+  "cost_usd": 0.0965,
+  "repair_rounds_used": 1
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the catalogue: bank 't' = rows a-e, bank 'b' = rows f-j. In the image the upper half is labelled f-j and the lower half a-e, so upper = 'b', lower = 't'.",
+  "Corrected from the first attempt: the button legs are in columns 4 and 6 (not 5 and 7), straddling the centre channel. The upper legs (row f) are 4b.f / 6b.f (button side 2); the lower legs (row e) are 4t.e / 6t.e (side 1).",
+  "The blue wire from pin 2 ends at column 6, row i (6b.i), the same strip as the button's side-2 leg 6b.f. This fixes the earlier error where the signal wire sat in a different column and left side 2 unconnected.",
+  "The black wire from GND ends in column 4, row c (4t.c), the same strip as the button's side-1 leg 4t.e. This matches the schematic: pin 2 to one button terminal, GND to the other.",
+  "No external resistor is used; the sketch uses INPUT_PULLUP.",
+  "The Leonardo GND pin used is the one highlighted in the image (next to 5V), mapped to GND.1."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.5,
+   "input_tokens": 19391,
+   "cache_read_tokens": 10995,
+   "output_tokens": 2045,
+   "cost_usd": 0.0562,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.3,
+   "input_tokens": 21730,
+   "cache_read_tokens": 19389,
+   "output_tokens": 2702,
+   "cost_usd": 0.0403,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 2,
+  "nets_built": 2,
+  "nets_matched": 2,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 2,
+  "nets_built": 1,
+  "nets_matched": 1,
+  "net_precision": 1.0,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 12.5
+}

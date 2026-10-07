@@ -1,0 +1,157 @@
+{
+ "case": "pitch-follower",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 70.8,
+  "input_tokens": 22966,
+  "output_tokens": 5806,
+  "cost_usd": 0.1169,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard rows follow the image letters: the visual top half is rows f-j (catalogue bank 'b'), the visual bottom half is rows a-e (bank 't').",
+  "Column positions were estimated from the image. The 4.7K resistor appears to sit in columns 22-24 in the image, but it must share the photoresistor/A0 node, so I placed it at 21t.c to 24t.c.",
+  "The parts list says 6 hook-up wires, but the image shows 5 wires (red 5V, black GND, blue A0, blue pin 9, and a black one from the speaker). I treated the black one as the speaker's own lead going straight to the Arduino GND pin next to AREF (GND.1). I used 4 jumper-wire parts and no extra sixth wire.",
+  "Resistor values are 100 ohm (speaker series) and 4.7K (pull-down). The schematic mislabels the speaker resistor as 10K, but the manual text and parts list say 100 ohm. The resistor catalogue type has a value prop, so I set value=100 and value=4700."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 34.3,
+   "input_tokens": 7734,
+   "output_tokens": 826,
+   "cost_usd": 0.0271,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 7,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "8 ohm speaker",
+     "type": "speaker-8ohm",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/mini-speaker-1w-8-ohm.html"
+      ]
+     ],
+     "seconds": 29.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.5,
+   "input_tokens": 15232,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4980,
+   "cost_usd": 0.0898,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 2,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker-8ohm": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 24.5
+}

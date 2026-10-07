@@ -1,0 +1,199 @@
+{
+ "case": "input-pullup-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 32.9,
+  "input_tokens": 41019,
+  "output_tokens": 4880,
+  "cost_usd": 0.0978,
+  "repair_rounds_used": 1
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "No external resistor: the internal pull-up on pin 2 (INPUT_PULLUP) is used; pin 13 uses the onboard LED, so no external LED is added.",
+  "Breadboard row naming: the image shows rows a-e on the lower half, which the catalogue calls bank 't' (rows a-e), so the lower-half holes are written as 10t/12t and the upper-half (f-j) as 10b/12b.",
+  "The pushbutton straddles the centre gap at columns 10 and 12. Legs in the same column are one side of the switch (side 1 = column 10, side 2 = column 12). Each of the four legs now has both a joined and an electrical edge to its breadboard hole, which fixes the 'leg not connected' warnings for sides 1 and 2.",
+  "Teal wire goes from Arduino pin 2 to column 10 (row c); black wire goes from the power-header GND (GND.1) to column 12 (row c). The image does not show which GND pin exactly; GND.1 on the power header is assumed.",
+  "The USB cable to the computer for serial is not drawn in the circuit image and is omitted."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.9,
+   "input_tokens": 19178,
+   "cache_read_tokens": 11120,
+   "output_tokens": 2373,
+   "cost_usd": 0.0582,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.0,
+   "input_tokens": 21841,
+   "cache_read_tokens": 19176,
+   "output_tokens": 2507,
+   "cost_usd": 0.0396,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 0,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 28.5
+}

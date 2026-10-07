@@ -1,0 +1,1702 @@
+{
+ "graph": {
+  "title": "MKR IoT Carrier Smart Garden Setup",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-iot-carrier/smart-garden-setup",
+  "new_part_types": [
+   {
+    "type": "shield-arduino-mkr-iot-carrier",
+    "name": "Arduino MKR IoT Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MKR",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.SIG",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.NC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "R1.NO",
+      "kind": "lug"
+     },
+     {
+      "name": "R1.COM",
+      "kind": "lug"
+     },
+     {
+      "name": "R2.NO",
+      "kind": "lug"
+     },
+     {
+      "name": "R2.COM",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "R1.NO",
+      "R1.COM"
+     ],
+     [
+      "R2.NO",
+      "R2.COM"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "tubing-watering",
+    "name": "Watering pipe (1 m)",
+    "category": "tubing",
+    "ports": [
+     {
+      "name": "inlet",
+      "kind": "socket"
+     },
+     {
+      "name": "outlet",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "inlet",
+      "outlet"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   },
+   {
+    "type": "water-container",
+    "name": "Water container",
+    "category": "container",
+    "ports": [
+     {
+      "name": "inside",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   },
+   {
+    "type": "power-supply-usb-adapter",
+    "name": "USB wall adapter with 2 USB ports",
+    "category": "power",
+    "ports": [
+     {
+      "name": "USB1",
+      "kind": "socket"
+     },
+     {
+      "name": "USB2",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "USB1",
+      "USB2"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "shield-arduino-mkr-iot-carrier",
+    "label": "MKR IoT Carrier",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "pump-5v-submersible",
+    "label": "5V submersible pump",
+    "props": []
+   },
+   {
+    "id": "pipe1",
+    "type": "tubing-watering",
+    "label": "Watering pipe",
+    "props": []
+   },
+   {
+    "id": "tank1",
+    "type": "water-container",
+    "label": "Water container",
+    "props": []
+   },
+   {
+    "id": "psu1",
+    "type": "power-supply-usb-adapter",
+    "label": "USB adapter with 2 ports",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Micro-USB cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "Open ended USB cable",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "moisture-grove",
+    "label": "Soil moisture sensor",
+    "props": []
+   },
+   {
+    "id": "grove1",
+    "type": "cable-grove",
+    "label": "Grove cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "MKR",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "carrier1",
+    "v_port": "A6.SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "carrier1",
+    "v_port": "A6.SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B2",
+    "v": "carrier1",
+    "v_port": "A6.NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "carrier1",
+    "v_port": "A6.VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "carrier1",
+    "v_port": "A6.VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "carrier1",
+    "v_port": "A6.GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "carrier1",
+    "v_port": "A6.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "R1.NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "R1.NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "+",
+    "v": "carrier1",
+    "v_port": "R1.COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "+",
+    "v": "carrier1",
+    "v_port": "R1.COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "-",
+    "v": "usb2",
+    "v_port": null,
+    "method": "twisted/connector strip",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "-",
+    "v": "usb2",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pipe1",
+    "u_port": "inlet",
+    "v": "pump1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "contact",
+    "u": "pump1",
+    "u_port": null,
+    "v": "tank1",
+    "v_port": "inside",
+    "method": "rest",
+    "freedom": null,
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The catalogue usb-cable has no ports, so USB connections use null ports. The open-ended cable's + wire goes to relay 1 NO, and its - wire is joined to the pump's - wire. The edges cannot say which wire is which.",
+   "The tutorial text labels the relay on the carrier as relay 1 (NO/COM), but the sketch uses opla.Relay2. I modelled the wiring as relay 1 per the text and circuit images.",
+   "The Grove cable pin mapping (1=SIG, 2=NC, 3=VCC, 4=GND) is assumed from the Grove convention. A2/B2 is not connected to the sensor. The sensor's screw terminal has only VCC, GND and SIG.",
+   "The MKR board and carrier are joined as one assembly through a single 'MKR' header port on the carrier. Individual header pins are not modelled.",
+   "The micro-USB cable goes from the adapter to the MKR board, which powers the board and carrier. The open-ended USB cable goes from the adapter's second port to the pump and relay circuit.",
+   "The pump sits in the water container. The pipe's inlet is attached to the pump. The pipe's outlet goes to the plant pot, which is not a part.",
+   "The plant, plant pot and phone/cloud dashboard are not modelled as parts."
+  ]
+ },
+ "graph_initial": {
+  "title": "MKR IoT Carrier Smart Garden Setup",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-iot-carrier/smart-garden-setup",
+  "new_part_types": [
+   {
+    "type": "shield-arduino-mkr-iot-carrier",
+    "name": "Arduino MKR IoT Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MKR",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.SIG",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.NC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "R1.NO",
+      "kind": "lug"
+     },
+     {
+      "name": "R1.COM",
+      "kind": "lug"
+     },
+     {
+      "name": "R2.NO",
+      "kind": "lug"
+     },
+     {
+      "name": "R2.COM",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "R1.NO",
+      "R1.COM"
+     ],
+     [
+      "R2.NO",
+      "R2.COM"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "tubing-watering",
+    "name": "Watering pipe (1 m)",
+    "category": "tubing",
+    "ports": [
+     {
+      "name": "inlet",
+      "kind": "socket"
+     },
+     {
+      "name": "outlet",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "inlet",
+      "outlet"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   },
+   {
+    "type": "water-container",
+    "name": "Water container",
+    "category": "container",
+    "ports": [
+     {
+      "name": "inside",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   },
+   {
+    "type": "power-supply-usb-adapter",
+    "name": "USB wall adapter with 2 USB ports",
+    "category": "power",
+    "ports": [
+     {
+      "name": "USB1",
+      "kind": "socket"
+     },
+     {
+      "name": "USB2",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "USB1",
+      "USB2"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "shield-arduino-mkr-iot-carrier",
+    "label": "MKR IoT Carrier",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "pump-5v-submersible",
+    "label": "5V submersible pump",
+    "props": []
+   },
+   {
+    "id": "pipe1",
+    "type": "tubing-watering",
+    "label": "Watering pipe",
+    "props": []
+   },
+   {
+    "id": "tank1",
+    "type": "water-container",
+    "label": "Water container",
+    "props": []
+   },
+   {
+    "id": "psu1",
+    "type": "power-supply-usb-adapter",
+    "label": "USB adapter with 2 ports",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Micro-USB cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "Open ended USB cable",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "moisture-grove",
+    "label": "Soil moisture sensor",
+    "props": []
+   },
+   {
+    "id": "grove1",
+    "type": "cable-grove",
+    "label": "Grove cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "MKR",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A3",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A4",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "A1",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "carrier1",
+    "v_port": "A6.SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B1",
+    "v": "carrier1",
+    "v_port": "A6.SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B2",
+    "v": "carrier1",
+    "v_port": "A6.NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "carrier1",
+    "v_port": "A6.VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B3",
+    "v": "carrier1",
+    "v_port": "A6.VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "carrier1",
+    "v_port": "A6.GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "B4",
+    "v": "carrier1",
+    "v_port": "A6.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "R1.NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "carrier1",
+    "v_port": "R1.NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "+",
+    "v": "carrier1",
+    "v_port": "R1.COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "+",
+    "v": "carrier1",
+    "v_port": "R1.COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "-",
+    "v": "usb2",
+    "v_port": null,
+    "method": "twisted/connector strip",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "-",
+    "v": "usb2",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "psu1",
+    "v_port": "USB1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pipe1",
+    "u_port": "inlet",
+    "v": "pump1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "contact",
+    "u": "pump1",
+    "u_port": null,
+    "v": "tank1",
+    "v_port": "inside",
+    "method": "rest",
+    "freedom": null,
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The catalogue usb-cable has no ports, so USB connections use null ports. The open-ended cable's + wire goes to relay 1 NO, and its - wire is joined to the pump's - wire. The edges cannot say which wire is which.",
+   "The tutorial text labels the relay on the carrier as relay 1 (NO/COM), but the sketch uses opla.Relay2. I modelled the wiring as relay 1 per the text and circuit images.",
+   "The Grove cable pin mapping (1=SIG, 2=NC, 3=VCC, 4=GND) is assumed from the Grove convention. A2/B2 is not connected to the sensor. The sensor's screw terminal has only VCC, GND and SIG.",
+   "The MKR board and carrier are joined as one assembly through a single 'MKR' header port on the carrier. Individual header pins are not modelled.",
+   "The micro-USB cable goes from the adapter to the MKR board, which powers the board and carrier. The open-ended USB cable goes from the adapter's second port to the pump and relay circuit.",
+   "The pump sits in the water container. The pipe's inlet is attached to the pump. The pipe's outlet goes to the plant pot, which is not a part.",
+   "The plant, plant pot and phone/cloud dashboard are not modelled as parts."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 325.4,
+  "input_tokens": 155767,
+  "output_tokens": 11900,
+  "cost_usd": 0.4746,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 290.7,
+   "input_tokens": 142268,
+   "output_tokens": 6649,
+   "cost_usd": 0.3803,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 10,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino MKR IoT Carrier",
+     "type": "shield-arduino-mkr-iot-carrier",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-IoT-BUNDLE-p-3177.html (This page sells the Arduino MKR IoT Bundle. That is a starter kit built around a)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-CONNECTOR-CARRIER-GROVE-COMPATIBLE.html (The page sells the Arduino MKR Connector Carrier (Grove compatible, SKU 10399036)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 24.8
+    },
+    {
+     "part": "5V submersible pump",
+     "type": "pump-5v-submersible",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-500gph-12v.html (This page sells the SEAFLO 500GPH bilge pump (ROB-19222), which runs on 12V at 1)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-350gph-12v.html (The page sells a SEAFLO 12V, 1.5A, 350 GPH submersible pump (ROB-10455), not a 5)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/6V-Mini-Water-Pump-p-2732.html"
+      ]
+     ],
+     "seconds": 50.2
+    },
+    {
+     "part": "Watering pipe (1 m)",
+     "type": "tubing-watering",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-350gph-12v.html (This page sells a SEAFLO 12V 350GPH liquid pump (ROB-10455), not watering pipe o)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-500gph-12v.html (The page sells a SEAFLO 12V 500GPH submersible liquid pump (ROB-19222), not wate)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/6V-Mini-Water-Pump-p-2732.html (The page sells a 6V Mini Water Pump (SKU 108990019), not watering tubing or pipe)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/12V-DC-Water-Pump-p-1946.html (The page sells a 12V DC water pump (Seeed Studio), not watering tubing or pipe. )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 38.1
+    },
+    {
+     "part": "Water container",
+     "type": "water-container",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Water-Pressure-Sensor-G1-4-1-2MPa-p-2887.html (The page sells a Seeed Studio Water Pressure Sensor G1/4 1.2MPa. That is a press)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Water-Flow-Sensor-YF-B7-p-2884.html (The page sells the Seeed YF-B7 water flow sensor, which measures flow through a )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 45.1
+    },
+    {
+     "part": "USB adapter with 2 USB ports",
+     "type": "power-supply-usb-adapter",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/usb-wall-charger-5v-2a.html (The page sells a USB wall charger with a single standard USB-A output port. It d)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-usb-lipoly-charger-single-cell.html (This page sells the SparkFun USB LiPoly Charger (PRT-12711). It is a single-cell)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1773 (This page sells a single-output wall power adapter. It has a 1.5 m cable ending )"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1774 (The page sells a Pololu 12VDC 3A wall power adapter with a 5.5\u00d72.1mm barrel plug)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/American-Standard-USB-Wall-Power-Supply-5VDC-2-1A-FCC-UL.html (The page is the Seeed Studio \"American Standard USB Wall Power Supply 5VDC 2.1A\")"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Europe-Standard-USB-Wall-Power-Supply-5VDC-2-1A-CE-Intertek-GS.html (The page is Seeed Studio's Europe Standard USB Wall Power Supply (5VDC 2.1A). Th)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 75.0
+    },
+    {
+     "part": "Grove cable",
+     "type": "cable-grove",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/breadboard-to-jst-ghr-04v-cable-4-pin-x-1-25mm-pitch.html (The page sells a breadboard to JST-GHR-04V cable (4-pin, 1.25 mm pitch, SparkFun)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/breadboard-to-jst-zhr-cable-4-pin-x-1-5mm-pitch-single-connector.html (The page sells a 4-pin JST-ZHR cable with a 1.5mm pitch, ending in Dupont breadb)"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/5623"
+      ]
+     ],
+     "seconds": 49.6
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.7,
+   "input_tokens": 13499,
+   "cache_read_tokens": 3203,
+   "output_tokens": 5251,
+   "cost_usd": 0.0943,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "cards": {
+  "arduino-mkr-wifi-1010": {
+   "type": "arduino-mkr-wifi-1010",
+   "name": "Arduino MKR WiFi 1010",
+   "category": "board",
+   "ports": [
+    {
+     "name": "AREF",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A0",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A1",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A2",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A3",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A4",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A5",
+     "kind": "header-pin"
+    },
+    {
+     "name": "A6",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D0",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D1",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D2",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D3",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D4",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D5",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D6",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D7",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D8",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D9",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D10",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D11",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D12",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D13",
+     "kind": "header-pin"
+    },
+    {
+     "name": "D14",
+     "kind": "header-pin"
+    },
+    {
+     "name": "RESET",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    },
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "VIN",
+     "kind": "header-pin"
+    },
+    {
+     "name": "5V",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "seeed",
+    "url": "https://www.seeedstudio.com/ARDUINO-MKR-WiFi-1010-p-3165.html",
+    "title": "ARDUINO MKR WiFi 1010 p 3165"
+   }
+  },
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "cable-grove": {
+   "type": "cable-grove",
+   "name": "JST PH-Style Cable, 4-Pin, Female-Female, 10cm (Grove-style)",
+   "category": "cable",
+   "ports": [
+    {
+     "name": "A1",
+     "kind": "wire-end"
+    },
+    {
+     "name": "A2",
+     "kind": "wire-end"
+    },
+    {
+     "name": "A3",
+     "kind": "wire-end"
+    },
+    {
+     "name": "A4",
+     "kind": "wire-end"
+    },
+    {
+     "name": "B1",
+     "kind": "wire-end"
+    },
+    {
+     "name": "B2",
+     "kind": "wire-end"
+    },
+    {
+     "name": "B3",
+     "kind": "wire-end"
+    },
+    {
+     "name": "B4",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "A1",
+     "B1"
+    ],
+    [
+     "A2",
+     "B2"
+    ],
+    [
+     "A3",
+     "B3"
+    ],
+    [
+     "A4",
+     "B4"
+    ]
+   ],
+   "through": [],
+   "symmetric": [
+    [
+     "A1",
+     "B1"
+    ],
+    [
+     "A2",
+     "B2"
+    ],
+    [
+     "A3",
+     "B3"
+    ],
+    [
+     "A4",
+     "B4"
+    ]
+   ],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "180",
+   "status": "ingested",
+   "source": {
+    "platform": "pololu",
+    "url": "https://www.pololu.com/product/5623",
+    "title": "JST PH-Style Cable, 4-Pin, Female-Female, 10cm"
+   }
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "moisture-grove": {
+   "type": "moisture-grove",
+   "name": "Soil Moisture Sensor (analog, 3-pin screw terminal; SparkFun SEN-13637, Grove-style)",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "VCC",
+     "kind": "lug"
+    },
+    {
+     "name": "GND",
+     "kind": "lug"
+    },
+    {
+     "name": "SIG",
+     "kind": "lug"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "sparkfun",
+    "url": "https://www.sparkfun.com/sparkfun-soil-moisture-sensor-with-screw-terminals.html",
+    "title": "SparkFun Soil Moisture Sensor (with Screw Terminals)"
+   }
+  },
+  "pump-5v-submersible": {
+   "type": "pump-5v-submersible",
+   "name": "5V Submersible Water Pump (DC mini pump, 4-12V)",
+   "category": "pump",
+   "ports": [
+    {
+     "name": "+",
+     "kind": "wire-end"
+    },
+    {
+     "name": "-",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "+",
+     "-"
+    ]
+   ],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "seeed",
+    "url": "https://www.seeedstudio.com/6V-Mini-Water-Pump-p-2732.html",
+    "title": "6V Mini Water Pump p 2732"
+   }
+  },
+  "usb-cable": {
+   "type": "usb-cable",
+   "name": "USB Cable",
+   "category": "cable",
+   "ports": [],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Arduino MKR WiFi 1010",
+   "quantity": 1,
+   "catalogue_type": "arduino-mkr-wifi-1010",
+   "new_type": null,
+   "search_query": null,
+   "category": "board"
+  },
+  {
+   "label": "Arduino MKR IoT Carrier",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "shield-arduino-mkr-iot-carrier",
+   "search_query": "Arduino MKR IoT Carrier AIOTCARRIER",
+   "category": "shield"
+  },
+  {
+   "label": "5V submersible pump",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "pump-5v-submersible",
+   "search_query": "5V mini submersible water pump",
+   "category": "motor"
+  },
+  {
+   "label": "Watering pipe (1 m)",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "tubing-watering",
+   "search_query": "silicone tubing 6mm water pump hose 1m",
+   "category": "consumable"
+  },
+  {
+   "label": "Water container",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "water-container",
+   "search_query": "small water container",
+   "category": "utility"
+  },
+  {
+   "label": "USB adapter with 2 USB ports",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "power-supply-usb-adapter",
+   "search_query": "2-port USB wall charger 5V",
+   "category": "power-supply"
+  },
+  {
+   "label": "Micro-USB cable",
+   "quantity": 1,
+   "catalogue_type": "usb-cable",
+   "new_type": null,
+   "search_query": null,
+   "category": "cable"
+  },
+  {
+   "label": "Open ended USB cable",
+   "quantity": 1,
+   "catalogue_type": "usb-cable",
+   "new_type": null,
+   "search_query": null,
+   "category": "cable"
+  },
+  {
+   "label": "Soil moisture sensor (Grove)",
+   "quantity": 1,
+   "catalogue_type": "moisture-grove",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "Grove cable",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "cable-grove",
+   "search_query": "Grove cable 4-pin 20cm",
+   "category": "cable"
+  }
+ ]
+}

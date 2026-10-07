@@ -1,0 +1,718 @@
+{
+ "tutorial": "docs-zero-simple-audio-frequency-meter",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/hero/boards/zero/tutorials/simple-audio-frequency-meter/assets/ArduinoZeroAudioInput_bb.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/hero/boards/zero/tutorials/simple-audio-frequency-meter/assets/ArduinoZeroAudioInput_schem.png"
+ ],
+ "legs_and_ends": 45,
+ "with_position": 45,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "zero",
+     "type": "arduino-zero",
+     "label": "Arduino Zero"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "pot1",
+     "type": "potentiometer-10k",
+     "label": "R7 10k trimmer",
+     "props": {
+      "value": "10k"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "1t.e",
+       "mm": [
+        0.0,
+        10.16
+       ]
+      },
+      {
+       "leg": "SIG",
+       "part": "bb1",
+       "port": "2b.f",
+       "mm": [
+        2.54,
+        17.78
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "3t.e",
+       "mm": [
+        5.08,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r11",
+     "type": "resistor",
+     "label": "R11",
+     "props": {
+      "value": "47000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "3t.d",
+       "mm": [
+        5.08,
+        7.62
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "7t.d",
+       "mm": [
+        15.24,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "r10",
+     "type": "resistor",
+     "label": "R10",
+     "props": {
+      "value": "47000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "6t.b",
+       "mm": [
+        12.7,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "10t.b",
+       "mm": [
+        22.86,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r8",
+     "type": "resistor",
+     "label": "R8",
+     "props": {
+      "value": "100000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "12t.b",
+       "mm": [
+        27.94,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "16t.b",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "u2",
+     "type": "lmv358",
+     "label": "LMV358 (U2)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "17t.e",
+       "mm": [
+        40.64,
+        10.16
+       ]
+      },
+      {
+       "leg": "IN1+",
+       "part": "bb1",
+       "port": "16t.e",
+       "mm": [
+        38.1,
+        10.16
+       ]
+      },
+      {
+       "leg": "IN1-",
+       "part": "bb1",
+       "port": "15t.e",
+       "mm": [
+        35.56,
+        10.16
+       ]
+      },
+      {
+       "leg": "IN2+",
+       "part": "bb1",
+       "port": "17b.f",
+       "mm": [
+        40.64,
+        17.78
+       ]
+      },
+      {
+       "leg": "IN2-",
+       "part": "bb1",
+       "port": "16b.f",
+       "mm": [
+        38.1,
+        17.78
+       ]
+      },
+      {
+       "leg": "OUT1",
+       "part": "bb1",
+       "port": "14t.e",
+       "mm": [
+        33.02,
+        10.16
+       ]
+      },
+      {
+       "leg": "OUT2",
+       "part": "bb1",
+       "port": "15b.f",
+       "mm": [
+        35.56,
+        17.78
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "14b.f",
+       "mm": [
+        33.02,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "c1",
+     "type": "capacitor-22pf",
+     "label": "C1 100nF",
+     "props": {
+      "value": "100nF"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "16t.a",
+       "mm": [
+        38.1,
+        0.0
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "18t.a",
+       "mm": [
+        43.18,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "add": [
+    {
+     "id": "r9",
+     "type": "resistor",
+     "label": "R9",
+     "props": {
+      "value": "100000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "16t.c",
+       "mm": [
+        38.1,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "20t.c",
+       "mm": [
+        48.26,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "add": [
+    {
+     "id": "jack1",
+     "type": "audio-jack-35mm",
+     "label": "U1 3.5mm jack",
+     "props": {},
+     "polarised": false,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": false,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "purple",
+     "label": "trimmer wiper to output",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "2b.g",
+       "mm": [
+        2.54,
+        20.32
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "14t.d",
+       "mm": [
+        33.02,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": false,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "short jumper row E",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "7t.e",
+       "mm": [
+        15.24,
+        10.16
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.e",
+       "mm": [
+        22.86,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "power": false,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "short jumper row C",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "10t.c",
+       "mm": [
+        22.86,
+        5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "15t.c",
+       "mm": [
+        35.56,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "brown",
+     "label": "A0 to op-amp output",
+     "ends": [
+      {
+       "part": "zero",
+       "port": "A0",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "14t.a",
+       "mm": [
+        33.02,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": false,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "short GND jumper",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "17t.d",
+       "mm": [
+        40.64,
+        7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "20t.d",
+       "mm": [
+        48.26,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": false,
+   "add": [
+    {
+     "id": "wire13",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "jack signal to C1",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "18t.b",
+       "mm": [
+        43.18,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": true,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND rail wire left",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "6t.a",
+       "mm": [
+        12.7,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.5",
+       "mm": [
+        10.16,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "IOREF to top rail",
+     "ends": [
+      {
+       "part": "zero",
+       "port": "IOREF",
+       "mm": [
+        27.94,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.8",
+       "mm": [
+        17.78,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 18,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "rail to R8 column",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tp.10",
+       "mm": [
+        22.86,
+        -5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "12t.e",
+       "mm": [
+        27.94,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 19,
+   "power": true,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "rail to LMV358 VCC column",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tp.12",
+       "mm": [
+        27.94,
+        -5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "14b.j",
+       "mm": [
+        33.02,
+        27.94
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 20,
+   "power": true,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND rail wire right",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "20t.a",
+       "mm": [
+        48.26,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.17",
+       "mm": [
+        40.64,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 21,
+   "power": true,
+   "add": [
+    {
+     "id": "wire12",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "jack sleeve to GND rail",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "bn.18",
+       "mm": [
+        43.18,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 22,
+   "power": true,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Arduino GND to bottom rail",
+     "ends": [
+      {
+       "part": "zero",
+       "port": "GND.2",
+       "mm": [
+        40.64,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.25",
+       "mm": [
+        60.96,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

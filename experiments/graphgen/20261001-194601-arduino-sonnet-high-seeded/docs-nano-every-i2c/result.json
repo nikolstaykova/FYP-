@@ -1,0 +1,61 @@
+{
+ "case": "docs-nano-every-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 33.1,
+  "input_tokens": 21733,
+  "output_tokens": 5191,
+  "cost_usd": 0.0969,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Arduino Nano Every is not in the catalogue, so arduino-nano-every was added as a new type. The diagram labels the supply pin '3V'; it is named 3V3 here.",
+  "Wiring per the diagram: GND to GND, A5 (SCL) to A5, A4 (SDA) to A4. Each of A4 and A5 has a 4.7k pull-up resistor to 3V3 from the reader board.",
+  "The diagram shows the wires and resistors joined directly. The manual lists two mini breadboards, so I used one breadboard (bb1) as the junction for the shared SCL/SDA lines and the pull-up resistors. The catalogue has only a full-size breadboard, so hole names are from that. Column 5t is SCL, column 10t is SDA, and the top positive rail tp carries 3V3. The diagram does not specify these positions.",
+  "The GND wire goes directly between the two boards, as drawn.",
+  "Both boards connect to the computer by USB for power and serial. The computer is not modelled. The USB cable ports are not specified, so those edges use null ports.",
+  "The manual lists 10 jumper wires but the diagram needs only 6. Only the wires the diagram uses are included."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.1,
+   "input_tokens": 21733,
+   "cache_read_tokens": 11025,
+   "output_tokens": 5191,
+   "cost_usd": 0.0969,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-every",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 20.6
+}

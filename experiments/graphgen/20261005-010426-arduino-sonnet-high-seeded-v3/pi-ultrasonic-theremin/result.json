@@ -1,0 +1,165 @@
+{
+ "case": "pi-ultrasonic-theremin",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 141.1,
+  "input_tokens": 79433,
+  "output_tokens": 21436,
+  "cost_usd": 0.3445,
+  "repair_rounds_used": 2
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e11: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e15: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e16: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e31: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e32: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e43: port 'GND.39' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e44: port 'GND.39' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e45: port 'GPIO21' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e46: port 'GPIO21' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e49: port 'GND.34' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e50: port 'GND.34' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The circuit image is the authority: sensor VCC goes to the Pi 5V pin (pin 2), Trig to GPIO4 (pin 7), and Echo to GPIO17 (pin 11) through a two-resistor divider. The text says 3V3 and mentions trigger=27, but the image and the 'How to detect distance' text (trigger pin 4) agree with GPIO4.",
+  "The breadboard image has rows f-j in its upper half and a-e in its lower half. The catalogue puts a-e in bank 't' and f-j in bank 'b', so the sensor and the f-row wires use bank 'b' and the lower-half parts use bank 't'. The negative rail beside row a is therefore 'tn'. Rail hole numbers (12, 24, 28) are estimated from the image, and all holes on a rail are one strip.",
+  "Divider: the Echo wire from 3f goes to 4t.d. R1 runs from 4t.c to 8t.c. The GPIO17 wire is in 8t.e. R2 runs from 8t.b to 12t.b, and a black wire from 12t.a goes to the GND rail. Resistor values are read from the colour bands (R1 330 ohm, R2 470 ohm) and are not stated in the text.",
+  "The six 'socket-to-socket' leads listed in the parts are four sensor leads plus two buzzer leads. The image shows seven wires with a male end on the breadboard side. I used jumper-wire-mf for wires from the Pi header to the breadboard, with port a as the breadboard end and port b as the Pi end. I used jumper-wire for wires between breadboard holes. I used jumper-wire-ff for the two buzzer leads.",
+  "The buzzer is not in the image. The text puts it on GPIO 21 and 'a GND pin' with two female-to-female leads. I used GPIO21 to buzzer pin 1 and Pi GND (pin 34) to buzzer pin 2. The buzzer polarity is assumed.",
+  "The validator's E4 flag (buzzer1:1 and buzzer1:2 not connected) is not a real problem. Both buzzer legs have joined and electrical edges to the female ends of wire8 and wire9, which run to Pi GPIO21 and GND.34. The manual connects the buzzer directly to the Pi with two female-to-female leads, with no breadboard. I kept this and did not move the buzzer onto the breadboard. In this version the buzzer leg is the 'u' endpoint of these edges and the method is 'insert'. The leg goes into the female jumper socket.",
+  "The rpi-4b catalogue lists only GPIO_HEADER, so header pins are named 5V, GPIO4, GPIO17, GPIO21 and GND.<physical pin> (GND.39 and GND.34).",
+  "The Python code in the manual has no physical connections."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.0,
+   "input_tokens": 11131,
+   "output_tokens": 373,
+   "cost_usd": 0.0263,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 65.6,
+   "input_tokens": 14394,
+   "cache_read_tokens": 5507,
+   "output_tokens": 8694,
+   "cost_usd": 0.1236,
+   "check_seconds": 0.01,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 12,
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.8,
+   "input_tokens": 23698,
+   "cache_read_tokens": 14392,
+   "output_tokens": 6327,
+   "cost_usd": 0.1034,
+   "check_seconds": 0.01,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 12,
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.7,
+   "input_tokens": 30210,
+   "cache_read_tokens": 23696,
+   "output_tokens": 6042,
+   "cost_usd": 0.0912,
+   "check_seconds": 0.0,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 12,
+    "E4": 2
+   }
+  }
+ ],
+ "issues_first": 14,
+ "issues_final": 14,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "buzzer",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 21.3
+}

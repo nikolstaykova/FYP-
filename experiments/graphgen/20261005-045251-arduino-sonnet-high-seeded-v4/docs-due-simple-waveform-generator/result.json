@@ -1,0 +1,135 @@
+{
+ "case": "docs-due-simple-waveform-generator",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 71.2,
+  "input_tokens": 19574,
+  "output_tokens": 10961,
+  "cost_usd": 0.167,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 74,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Arduino Due is not in the catalogue, so a new arduino-due part type was created (digital 0-13, A0-A11, DAC0/DAC1, GND, 5V, 3.3V, etc.).",
+  "The Due is shown beside the breadboard (not plugged in); all connections to it are jumper wires into its header sockets.",
+  "Exact breadboard columns/rows are estimated from the picture; the potentiometer sits in columns 16-18 (VCC red, wiper yellow to A0, GND black).",
+  "The picture shows the blue pin wires landing on the opposite half of the breadboard from the resistor and power wire. Following the text instead, each button has its input-pin wire and 10K pull-down resistor to ground on the same side (side 1, bottom bank) and the 3.3V wire on the other side (side 2, top bank).",
+  "The two long red/black wires on the left link the top and bottom power/ground rails. The red wire carries 3.3V from the Due and the black wire carries GND.",
+  "DAC0 and DAC1 are outputs only (for an optional oscilloscope) and have no wires in the circuit.",
+  "Resistors are 10K (value=10000)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 9,
+   "matched": 6,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Due",
+     "card": "arduino-due",
+     "skipped": false
+    },
+    {
+     "item": "10K \u03a9 potentiometer",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "2x push buttons",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "2x 10K \u03a9 resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Waveforms library",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Oscilloscope (optional)",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 71.2,
+   "input_tokens": 19574,
+   "cache_read_tokens": 5507,
+   "output_tokens": 10961,
+   "cost_usd": 0.167,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-due",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.3
+}

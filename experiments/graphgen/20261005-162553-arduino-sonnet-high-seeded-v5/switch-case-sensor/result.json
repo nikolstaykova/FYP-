@@ -1,0 +1,109 @@
+{
+ "case": "switch-case-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 41.6,
+  "input_tokens": 38831,
+  "output_tokens": 6067,
+  "cost_usd": 0.0966,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct; no parts added or removed.",
+  "Circuit: 5V -> top + rail -> wire to column 6 -> photoresistor (col 6 to col 10) -> col 10 node (A0 via blue wire) -> 10k resistor (col 10 to col 13) -> black wire to GND rail -> Arduino GND. This matches the schematic voltage divider.",
+  "In the image the f-j half is at the top, next to the top rails. I mapped it to catalogue bank 'b' (rows f-j), with the top rails as tp (+) and tn (-).",
+  "Rail hole indices (tp.1, tp.5, tn.3, tn.11) are estimated from the image pixel positions. Any hole on the same rail is electrically equivalent.",
+  "The black GND wire goes to the second GND pin on the Arduino power header. I used GND.1, since the catalogue does not say which header pin that is. All GND pins are the same net.",
+  "The photoresistor legs are in row g, the resistor in row h, and the blue and black wires in row i. Row letters within a column strip are equivalent."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 8.1,
+   "input_tokens": 18839,
+   "cache_read_tokens": 12122,
+   "output_tokens": 969,
+   "cost_usd": 0.039,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.5,
+   "input_tokens": 19992,
+   "cache_read_tokens": 18837,
+   "output_tokens": 5098,
+   "cost_usd": 0.0576,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "photoresistor": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.9
+}

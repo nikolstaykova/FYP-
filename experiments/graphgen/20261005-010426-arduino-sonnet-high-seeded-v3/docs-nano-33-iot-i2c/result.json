@@ -1,0 +1,105 @@
+{
+ "case": "docs-nano-33-iot-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 55.6,
+  "input_tokens": 35704,
+  "output_tokens": 6482,
+  "cost_usd": 0.1602,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The circuit image shows the boards wired directly with no breadboard drawn. The parts list includes 2 mini breadboards, so I used bb1 as the junction for the shared SDA (A4) and SCL (A5) lines and the two pull-up resistors. I used bb2 as the GND junction between the boards.",
+  "The parts list gives 10 jumper wires, but the circuit only needs 7 with this layout. I included only those 7.",
+  "Both 4.7 k\u03a9 resistors pull their lines up to 3V3. The image shows the 3V3 rail coming from the reader board only. The resistor value is given as 4700 (ohms) because the catalogue resistor's default is 100\u03a9.",
+  "SDA is on A4 and SCL is on A5, matching the manual. A4 is joined to A4 and A5 to A5 between the boards.",
+  "GND uses the GND_1 pin on both boards. The image only labels 'GND', so this pin choice is an assumption.",
+  "Both boards are powered and programmed over USB cables to a computer. The USB cable catalogue entry has no ports, so those edges have no ports named.",
+  "The boards are not seated in the breadboards. They connect to the breadboards through jumper wires."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 19.4,
+   "input_tokens": 17573,
+   "output_tokens": 1415,
+   "cost_usd": 0.0579,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 6,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino Nano 33 IoT (reader)",
+     "type": "arduino-nano-33-iot",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-nano-33-iot-with-headers.html"
+      ]
+     ],
+     "seconds": 13.2
+    },
+    {
+     "part": "Arduino Nano 33 IoT (writer)",
+     "type": "arduino-nano-33-iot",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "arduino-nano-33-iot"
+      ]
+     ],
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.2,
+   "input_tokens": 18131,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5067,
+   "cost_usd": 0.1023,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.7
+}

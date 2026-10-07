@@ -1,0 +1,127 @@
+{
+ "case": "docs-nano-33-ble-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 59.8,
+  "input_tokens": 50119,
+  "output_tokens": 10339,
+  "cost_usd": 0.199,
+  "repair_rounds_used": 1
+ },
+ "parts": 15,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The circuit image shows the boards wired directly with two 4.7k pull-up resistors and no visible breadboard. I used one mini breadboard (bb1) as the junction for the shared SDA (A4) and SCL (A5) lines and the 3.3V pull-up rail. This matches the image's topology: A4 to A4, A5 to A5, GND to GND, and each pull-up between its line and 3V.",
+  "The manual lists two mini breadboards, but the image shows neither. To use bb2, I made it the GND junction: the single GND wire in the image is split into wire6 and wire7, which meet on the same bb2 ground rail (tn.1 and tn.2). Electrically this is the same as the image's direct GND-to-GND link. This split is an assumption.",
+  "The image labels the supply pin '3V'. I mapped it to the 3.3V port on the Nano 33 BLE.",
+  "arduino-nano-33-ble-sense wasn't in the provided catalogue, so I defined it as a new part type with Nano-style pin names.",
+  "Resistor value is 4.7k (4700 ohms), shown as value=4700.",
+  "Both boards are powered and programmed over USB cables to a computer. The computer isn't modelled, and the USB cable edges have no named ports.",
+  "The parts list says 10 jumper wires, but only 7 are needed here."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 5,
+   "matched": 5,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Nano 33 BLE",
+     "card": "arduino-nano-33-ble-sense",
+     "skipped": false
+    },
+    {
+     "item": "Arduino Nano 33 BLE (or any other Arduino board that supports I2C)",
+     "card": "arduino-nano-33-ble-sense",
+     "skipped": false
+    },
+    {
+     "item": "2 x mini breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "10 x jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "2 x 4.7k Ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.4,
+   "input_tokens": 22099,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5419,
+   "cost_usd": 0.1217,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.4,
+   "input_tokens": 28020,
+   "cache_read_tokens": 22097,
+   "output_tokens": 4920,
+   "cost_usd": 0.0773,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-33-ble-sense",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 26.3
+}

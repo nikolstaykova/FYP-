@@ -1,0 +1,686 @@
+{
+ "graph": {
+  "title": "Control a standard servo motor with Arduino UNO (Sweep)",
+  "source_id": "https://docs.arduino.cc/learn/electronics/servo-motors",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino UNO",
+    "props": []
+   },
+   {
+    "id": "servo1",
+    "type": "servo",
+    "label": "Servo motor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Power wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Signal wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "V+",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "V+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "9",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "PWM",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "PWM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No breadboard is used; three jumper wires connect the Arduino directly to the servo's 3-pin connector.",
+   "The circuit image shows the servo's signal wire as yellow/orange and power as red/orange-brown. The text says red = power, black = ground, white = signal. Wire colours here follow the text convention for power and ground, and the image for signal (yellow).",
+   "Signal goes to digital pin 9, as in the image and in the Sweep code (myservo.attach(9)).",
+   "Ground goes to a GND pin on the POWER header next to 5V. The catalogue has GND.1, GND.2 and GND.3, and the image doesn't say which one. GND.1 is assumed.",
+   "Wire ends at the servo are modelled as push-on joins to the servo's PWM, V+ and GND ports. Real servos have a female 3-pin connector that takes male header or jumper ends.",
+   "The first image only shows the servo's internals (DC motor, gearbox, potentiometer, control circuit). These are inside the servo part and are not separate nodes.",
+   "The Claude.ai Gmail, Google Calendar and Google Drive connectors need authorization (via the claude.ai connector settings). They were unavailable in this session and weren't needed for this graph."
+  ]
+ },
+ "graph_initial": {
+  "title": "Control a standard servo motor with Arduino UNO (Sweep)",
+  "source_id": "https://docs.arduino.cc/learn/electronics/servo-motors",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino UNO",
+    "props": []
+   },
+   {
+    "id": "servo1",
+    "type": "servo",
+    "label": "Servo motor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Power wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Ground wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Signal wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "V+",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "V+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "9",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "PWM",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "servo1",
+    "v_port": "PWM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "No breadboard is used; three jumper wires connect the Arduino directly to the servo's 3-pin connector.",
+   "The circuit image shows the servo's signal wire as yellow/orange and power as red/orange-brown. The text says red = power, black = ground, white = signal. Wire colours here follow the text convention for power and ground, and the image for signal (yellow).",
+   "Signal goes to digital pin 9, as in the image and in the Sweep code (myservo.attach(9)).",
+   "Ground goes to a GND pin on the POWER header next to 5V. The catalogue has GND.1, GND.2 and GND.3, and the image doesn't say which one. GND.1 is assumed.",
+   "Wire ends at the servo are modelled as push-on joins to the servo's PWM, V+ and GND ports. Real servos have a female 3-pin connector that takes male header or jumper ends.",
+   "The first image only shows the servo's internals (DC motor, gearbox, potentiometer, control circuit). These are inside the servo part and are not separate nodes.",
+   "The Claude.ai Gmail, Google Calendar and Google Drive connectors need authorization (via the claude.ai connector settings). They were unavailable in this session and weren't needed for this graph."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 22.0,
+  "input_tokens": 26013,
+  "output_tokens": 2150,
+  "cost_usd": 0.0774,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.5,
+   "input_tokens": 10269,
+   "output_tokens": 213,
+   "cost_usd": 0.016,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 3,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.5,
+   "input_tokens": 15744,
+   "cache_read_tokens": 5507,
+   "output_tokens": 1937,
+   "cost_usd": 0.0614,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "cards": {
+  "arduino-uno": {
+   "type": "arduino-uno",
+   "name": "Arduino Uno R3",
+   "category": "board",
+   "ports": [
+    {
+     "name": "0",
+     "kind": "header-socket"
+    },
+    {
+     "name": "1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "4",
+     "kind": "header-socket"
+    },
+    {
+     "name": "5",
+     "kind": "header-socket"
+    },
+    {
+     "name": "6",
+     "kind": "header-socket"
+    },
+    {
+     "name": "7",
+     "kind": "header-socket"
+    },
+    {
+     "name": "8",
+     "kind": "header-socket"
+    },
+    {
+     "name": "9",
+     "kind": "header-socket"
+    },
+    {
+     "name": "10",
+     "kind": "header-socket"
+    },
+    {
+     "name": "11",
+     "kind": "header-socket"
+    },
+    {
+     "name": "12",
+     "kind": "header-socket"
+    },
+    {
+     "name": "13",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A0",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A4",
+     "kind": "header-socket"
+    },
+    {
+     "name": "A5",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND.1",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND.2",
+     "kind": "header-socket"
+    },
+    {
+     "name": "GND.3",
+     "kind": "header-socket"
+    },
+    {
+     "name": "5V",
+     "kind": "header-socket"
+    },
+    {
+     "name": "3.3V",
+     "kind": "header-socket"
+    },
+    {
+     "name": "VIN",
+     "kind": "header-socket"
+    },
+    {
+     "name": "AREF",
+     "kind": "header-socket"
+    },
+    {
+     "name": "IOREF",
+     "kind": "header-socket"
+    },
+    {
+     "name": "RESET",
+     "kind": "header-socket"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": {
+    "mode": "prefix",
+    "prefixes": [
+     "GND"
+    ]
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  },
+  "servo": {
+   "type": "servo",
+   "name": "Servo Motor",
+   "category": "motor",
+   "ports": [
+    {
+     "name": "PWM",
+     "kind": "header-pin"
+    },
+    {
+     "name": "V+",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified"
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Arduino UNO",
+   "quantity": 1,
+   "catalogue_type": "arduino-uno",
+   "new_type": null,
+   "search_query": null,
+   "category": "board"
+  },
+  {
+   "label": "Servo motor",
+   "quantity": 1,
+   "catalogue_type": "servo",
+   "new_type": null,
+   "search_query": null,
+   "category": "motor"
+  },
+  {
+   "label": "Jumper wires",
+   "quantity": 3,
+   "catalogue_type": "jumper-wire",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  }
+ ]
+}

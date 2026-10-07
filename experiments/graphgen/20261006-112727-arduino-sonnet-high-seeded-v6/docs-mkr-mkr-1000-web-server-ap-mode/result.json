@@ -1,0 +1,99 @@
+{
+ "case": "docs-mkr-mkr-1000-web-server-ap-mode",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 44.5,
+  "input_tokens": 132086,
+  "output_tokens": 6530,
+  "cost_usd": 0.1476,
+  "repair_rounds_used": 1
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Fix: the catalogue's arduino-mkr1000 card has only USB, VIN, VCC, GND and BAT, so it has no pin 2. I changed mkr1 to arduino-mkr1000-wifi, which has D2 and GND. It is catalogued as the MKR WiFi 1010, but it has the same MKR form factor and the same pin 2 and GND positions as the MKR 1000 in the tutorial's image. Both are 3.3 V logic. With 3.3 V, a 2 V LED and 220 ohm, the LED draws about 6 mA, within that card's 7 mA per-pin limit.",
+  "Circuit: D2 -> green wire -> breadboard column 3 -> 220 ohm resistor -> column 6 -> LED anode. The LED cathode is in column 8 -> black wire -> GND. The resistor is on the anode side, as in the schematic.",
+  "The image labels the breadboard rows j-f on the top half. I used the catalogue's naming: bank 't', rows a-e. Column strips behave the same either way.",
+  "The bent LED leg (column 6) is taken as the anode and the straight leg (column 8) as the cathode, as the schematic's current path requires.",
+  "A1 is read in the sketch but nothing is wired to it, so it has no edge. The LED is red in the image.",
+  "The parts are otherwise unchanged from step 1."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.5,
+   "input_tokens": 63234,
+   "cache_read_tokens": 52645,
+   "output_tokens": 1076,
+   "cost_usd": 0.0636,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.0,
+   "input_tokens": 32819,
+   "cache_read_tokens": 31903,
+   "output_tokens": 3027,
+   "cost_usd": 0.0403,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.0,
+   "input_tokens": 36033,
+   "cache_read_tokens": 32817,
+   "output_tokens": 2427,
+   "cost_usd": 0.0437,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.9
+}

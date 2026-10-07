@@ -1,0 +1,88 @@
+{
+ "case": "docs-mkr-lora-button-press-649",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 88.8,
+  "input_tokens": 81078,
+  "output_tokens": 7965,
+  "cost_usd": 0.1871,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Same parts as step 1; none added or dropped.",
+  "Two separate circuits (sender with pushbutton, receiver with LED), so no repeats are used.",
+  "The catalogue card for arduino-mkr-wan-1300 has no digital pin ports. Pin 2 is used as port '2', as in the diagrams and sketches, even though the card does not list it.",
+  "The antenna's attachment point is not a port on the MKR card. The antenna is joined to the board with no port named, and not given an electrical edge.",
+  "Breadboard hole letters follow the catalogue naming (top half = bank 't', rows a-e). The image rows f, g and h on the top half are mapped to e, d and c. Only the column strip matters, since each strip is one node.",
+  "Sender: pin 2 wire at column 7 and GND wire at column 5. The pushbutton legs are in the same columns, so pressing connects pin 2 to GND. The sketch uses INPUT_PULLUP, so no external resistor is needed.",
+  "Pushbutton: only two legs are visible in the image. They are assigned to opposite sides, 1.l at column 5 and 2.l at column 7.",
+  "Receiver: GND wire at column 6 joins the LED cathode. The LED anode is at column 8, which is the bent leg in the image. The 220 ohm resistor runs from column 8 to column 11. The pin 2 wire is in column 11. The path is pin 2, resistor, LED anode, LED cathode, GND.",
+  "The resistor value is not stated in the manual, so 220 ohm is assumed.",
+  "USB cables are joined to each board's USB port. Their computer ends are not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.9,
+   "input_tokens": 52500,
+   "cache_read_tokens": 29261,
+   "output_tokens": 1927,
+   "cost_usd": 0.1167,
+   "check_seconds": 0.0,
+   "parts_listed": 15,
+   "changed_in_build": 0,
+   "looked_up": [
+    "antenna",
+    "arduino-mkr-wan-1300"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.9,
+   "input_tokens": 28578,
+   "cache_read_tokens": 26703,
+   "output_tokens": 6038,
+   "cost_usd": 0.0704,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "antenna",
+   "family": "antenna",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.7
+}

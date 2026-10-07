@@ -1,0 +1,220 @@
+{
+ "case": "virtual-color-mixer",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 128.1,
+  "input_tokens": 21452,
+  "output_tokens": 5828,
+  "cost_usd": 0.1459,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [
+  {
+   "group": "divider",
+   "times": 3,
+   "overrides": 12
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Each analog sensor is drawn as an FSR (the manual allows potentiometers/photocells too); the FSR's two bent legs (blue and red) plug directly into the breadboard, so no extra wires are modelled for them.",
+  "Each divider: FSR from +5V rail to a node column; 10k resistor from that node column to the GND rail; yellow wire from the node column to A0/A1/A2 (matches schematic).",
+  "The image labels the lower half of the breadboard rows a-e; the catalogue names the lower bank 'b' with rows f-j, so image row e/d/c/b/a maps to f/g/h/i/j. Yellow wires land on row f, the FSR leg on row i and the resistor on row j of the same column strip.",
+  "Rail hole indices (tp.1, tn.2, tp.30, tn.29, bp.4/12/22, bn.6/16/24, bn.29, bp.30) are estimated from the image; every rail is a single strip so exact index is not electrically significant.",
+  "Top-half rail polarity: red + line is 'tp', black/- line is 'tn'; the right-hand black and red wires at the end of the breadboard carry GND and 5V down to the lower rails.",
+  "The Processing / Max software and the USB connection to the computer are not part of the build graph."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 128.1,
+   "input_tokens": 21452,
+   "cache_read_tokens": 11025,
+   "output_tokens": 5828,
+   "cost_usd": 0.1459,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 3
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 3,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 27.9
+}

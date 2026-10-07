@@ -1,0 +1,143 @@
+{
+ "case": "knock",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 28.2,
+  "input_tokens": 82647,
+  "output_tokens": 3702,
+  "cost_usd": 0.0848,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct, so none were added or dropped.",
+  "The piezo disc is catalogue type 'buzzer'. Pin 2 (+) goes to A0 through the red wire and pin 1 (-) goes to GND through the black wire, as the card says.",
+  "The 1 Megohm resistor is in parallel with the piezo. Column 5 joins piezo pin 1, the resistor and the black GND wire. Column 8 joins piezo pin 2, the resistor and the red A0 wire. This matches the schematic.",
+  "The image shows the breadboard with rows f-j in the upper half. I used the catalogue hole naming, where bank 'b' means rows f-j, and put the parts in columns 5 and 8 of rows f-j (piezo in row i, resistor in row h, black wire in row g, red wire in row f).",
+  "The black wire goes to the GND pin next to pin 13 and AREF. I called it GND.1.",
+  "The schematic shows a 5V pin at the top of the Arduino, but no wire connects to it, so no 5V connection is made."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.6,
+   "input_tokens": 54408,
+   "cache_read_tokens": 46999,
+   "output_tokens": 896,
+   "cost_usd": 0.048,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.6,
+   "input_tokens": 28239,
+   "cache_read_tokens": 27428,
+   "output_tokens": 2806,
+   "cost_usd": 0.0368,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "buzzer": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "buzzer": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 23.3
+}

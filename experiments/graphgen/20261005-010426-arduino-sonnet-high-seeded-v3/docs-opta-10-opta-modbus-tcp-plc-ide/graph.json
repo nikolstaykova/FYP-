@@ -1,0 +1,170 @@
+{
+ "nodes": [
+  {
+   "id": "opta1",
+   "type": "arduino-opta",
+   "label": "Opta Slave (Server)",
+   "props": {
+    "role": "Modbus TCP Server",
+    "ip": "192.168.1.2"
+   }
+  },
+  {
+   "id": "opta2",
+   "type": "arduino-opta",
+   "label": "Opta Master (Client)",
+   "props": {
+    "role": "Modbus TCP Client",
+    "ip": "192.168.1.1"
+   }
+  },
+  {
+   "id": "usb1",
+   "type": "usb-cable",
+   "label": "USB-C Cable",
+   "props": {}
+  },
+  {
+   "id": "usb2",
+   "type": "usb-cable",
+   "label": "USB-C Cable",
+   "props": {}
+  },
+  {
+   "id": "eth1",
+   "type": "cable-ethernet",
+   "label": "RJ-45 Cable",
+   "props": {}
+  },
+  {
+   "id": "eth2",
+   "type": "cable-ethernet",
+   "label": "RJ-45 Cable",
+   "props": {}
+  },
+  {
+   "id": "sw1",
+   "type": "ethernet-switch",
+   "label": "Ethernet Switch (Optional)",
+   "props": {}
+  },
+  {
+   "id": "pc1",
+   "type": "computer",
+   "label": "Computer - PLC IDE",
+   "props": {}
+  }
+ ],
+ "edges": [
+  {
+   "type": "joined",
+   "u": "eth1",
+   "u_port": "A1",
+   "v": "opta1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e1"
+  },
+  {
+   "type": "joined",
+   "u": "eth1",
+   "u_port": "B1",
+   "v": "sw1",
+   "v_port": "P1",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e2"
+  },
+  {
+   "type": "electrical",
+   "u": "eth1",
+   "u_port": "B1",
+   "v": "sw1",
+   "v_port": "P1",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e3"
+  },
+  {
+   "type": "joined",
+   "u": "eth2",
+   "u_port": "A1",
+   "v": "opta2",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e4"
+  },
+  {
+   "type": "joined",
+   "u": "eth2",
+   "u_port": "B1",
+   "v": "sw1",
+   "v_port": "P2",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e5"
+  },
+  {
+   "type": "electrical",
+   "u": "eth2",
+   "u_port": "B1",
+   "v": "sw1",
+   "v_port": "P2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e6"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "opta1",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e7"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "pc1",
+   "v_port": "USB.1",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e8"
+  },
+  {
+   "type": "joined",
+   "u": "usb2",
+   "u_port": null,
+   "v": "opta2",
+   "v_port": null,
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e9"
+  },
+  {
+   "type": "joined",
+   "u": "usb2",
+   "u_port": null,
+   "v": "pc1",
+   "v_port": "USB.2",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e10"
+  }
+ ]
+}

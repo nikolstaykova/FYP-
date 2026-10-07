@@ -1,0 +1,70 @@
+{
+ "case": "analog-input",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 32.8,
+  "input_tokens": 16131,
+  "output_tokens": 4945,
+  "cost_usd": 0.1022,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The manual gives two alternative circuits (potentiometer OR photoresistor + 10k resistor). I modelled the potentiometer circuit; the photoresistor variant (5V -> LDR -> A0 node -> 10k resistor -> GND) is not included.",
+  "The breadboard images are drawn flipped relative to the catalogue naming: the image's lower half (rows a-e) is mapped to bank 't' and the upper half (rows f-j) to bank 'b'. Pot legs: GND at 10t.e, VCC at 12t.e; wiper pin points into the upper half at 11b.f.",
+  "Red wire goes from 5V to the pot's right outer pin (12t.c); black wire from the second GND header pin to the pot's left outer pin (10t.c); yellow wire from A0 to the wiper (11b.g).",
+  "The optional external LED circuit (220 ohm resistor + red LED on pin 13, cathode to GND next to pin 13) is described only in text; its breadboard placement (columns 20-25) and the use of GND.3 for the GND next to pin 13 are my assumptions. The built-in LED on pin 13 is part of the Uno and not a separate node.",
+  "The Arduino is assumed to be powered via USB, which is not shown in the images."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.8,
+   "input_tokens": 16131,
+   "cache_read_tokens": 3110,
+   "output_tokens": 4945,
+   "cost_usd": 0.1022,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 5,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 15.1
+}

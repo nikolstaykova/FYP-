@@ -1,0 +1,140 @@
+{
+ "case": "40182-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 634.2,
+  "input_tokens": 601523,
+  "output_tokens": 109188,
+  "cost_usd": 2.1057,
+  "repair_rounds_used": 2
+ },
+ "parts": 175,
+ "edges": 187,
+ "repeats": [
+  {
+   "group": "gt",
+   "times": 8,
+   "overrides": 0
+  },
+  {
+   "group": "wst",
+   "times": 3,
+   "overrides": 2
+  },
+  {
+   "group": "stk",
+   "times": 4,
+   "overrides": 0
+  },
+  {
+   "group": "tp",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 12,
+ "new_types_added": 10,
+ "problems": [],
+ "notes": [
+  "Piece types were matched to the inventory page (page 27) by picture, so some matches are guesses (dark-grey vs black plates, ridged 1x2 plates, 1x3/1x4 plates). Colours follow the pictures.",
+  "Exact stud positions are not legible at this resolution. Each new piece is joined to a plausible host from the same step. Where one part hosts several pieces, only one edge names its port and the other edges use a null port, because catalogue parts have a single stud/anti-stud port. The topology is approximate; the part list is complete.",
+  "SEPARATE MODELS (L3, not a real problem): the booklet builds three separate models: the fire station with its roof (steps 1-28), the fire truck (pp.22-23) and the helicopter (pp.24-25). No step connects them. Page 26 and the cover show the truck and helicopter standing beside the station, not attached to it. The graph therefore has three connected groups on purpose. The roof (b99-b109) is joined to the station through the four white cone pillars (repeat 'tp').",
+  "PIECE COUNTS (L1, not a real problem): the text layer of page 27 prints the entries '4x 4211445', '2x 4632575' and '2x 4211001' a second time after a garbage entry ('3x 454308'). The printed page shows each of them once (4x, 2x and 2x respectively). The graph uses 4 of 4211445 (step 2), 2 of 4632575 (truck wheel holders) and 2 of 4211001 (b17, b40). A check built from the text layer reports 8, 4 and 4 for these three parts; adding duplicate parts to match would invent pieces that are not in the build. All other counts match the parts page.",
+  "Incompatible port pairs were fixed earlier. The ring on the green plate in step 6 (b19, a 614126 tyre element) has null ports on both sides. The truck ladder arm (b124) clips onto b119 with its own port null. The rotor blade (b133) sits on the blue pin with its port null.",
+  "Repeats: gt = 8 grey 1x1 tiles (step 4); wst = three stacks of three white plates (step 14); stk = four stacks of three white plates (step 22); tp = four round-plate/tile/cone corner assemblies (steps 25-27, attached to the roof corners by overrides).",
+  "The truck ladder arm is attached in step 7 and flipped over in step 8. Both steps use the same connection, so there is one revolute edge. The blue rotor pin (4143005) goes into the top of the helicopter body; the tile side is recorded with a null port."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 381.6,
+   "input_tokens": 150249,
+   "cache_read_tokens": 5507,
+   "output_tokens": 57561,
+   "cost_usd": 1.1557,
+   "check_seconds": 0.03,
+   "issues": 37,
+   "issue_rules": {
+    "V3": 3,
+    "V4": 32,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 156.7,
+   "input_tokens": 210647,
+   "cache_read_tokens": 150247,
+   "output_tokens": 29733,
+   "cost_usd": 0.569,
+   "check_seconds": 0.03,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 95.8,
+   "input_tokens": 240627,
+   "cache_read_tokens": 210645,
+   "output_tokens": 21894,
+   "cost_usd": 0.381,
+   "check_seconds": 0.04,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 37,
+ "issues_final": 2,
+ "score": {
+  "pieces_expected": 175,
+  "pieces_built": 175,
+  "pieces_unmapped": 0,
+  "inventory_matched": 174,
+  "exact_matched": 174,
+  "inventory_precision": 0.994,
+  "inventory_recall": 0.994,
+  "exact_recall": 0.994,
+  "joined_edges": 185,
+  "contacts_expected": 69,
+  "contacts_predicted": 96,
+  "contacts_correct": 58,
+  "contact_precision": 0.604,
+  "contact_recall": 0.841
+ },
+ "score_initial": {
+  "pieces_expected": 175,
+  "pieces_built": 175,
+  "pieces_unmapped": 0,
+  "inventory_matched": 172,
+  "exact_matched": 171,
+  "inventory_precision": 0.983,
+  "inventory_recall": 0.983,
+  "exact_recall": 0.977,
+  "joined_edges": 185,
+  "contacts_expected": 69,
+  "contacts_predicted": 97,
+  "contacts_correct": 59,
+  "contact_precision": 0.608,
+  "contact_recall": 0.855
+ },
+ "postprocess_ms": 45.4
+}

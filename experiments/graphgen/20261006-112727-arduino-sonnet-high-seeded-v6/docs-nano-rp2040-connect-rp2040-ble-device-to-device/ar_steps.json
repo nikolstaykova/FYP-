@@ -1,0 +1,213 @@
+{
+ "tutorial": "docs-nano-rp2040-connect-rp2040-ble-device-to-device",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/nano/boards/nano-rp2040-connect/tutorials/rp2040-ble-device-to-device/assets/rp2040-bluetooth-img-01.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/nano/boards/nano-rp2040-connect/tutorials/rp2040-ble-device-to-device/assets/rp2040-bluetooth-img-02.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/nano/boards/nano-rp2040-connect/tutorials/rp2040-ble-device-to-device/assets/rp2040-bluetooth-img-03.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/nano/boards/nano-rp2040-connect/tutorials/rp2040-ble-device-to-device/assets/rp2040-bluetooth-img-04-new.png"
+ ],
+ "legs_and_ends": 12,
+ "with_position": 8,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "nano1",
+     "type": "arduino-nano-rp2040-connect",
+     "label": "Peripheral Arduino Nano RP2040 Connect"
+    },
+    {
+     "id": "nano2",
+     "type": "arduino-nano-rp2040-connect",
+     "label": "Central Arduino Nano RP2040 Connect"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "btn1",
+     "type": "pushbutton",
+     "label": "Pushbutton",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "8t.f",
+       "mm": [
+        17.78,
+        17.78
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "10t.f",
+       "mm": [
+        22.86,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "8b.e",
+       "mm": [
+        17.78,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "10b.e",
+       "mm": [
+        22.86,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "usb1",
+     "type": "usb-cable",
+     "label": "USB cable (peripheral)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "nano1",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "usb2",
+     "type": "usb-cable",
+     "label": "USB cable (central)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "nano2",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "teal",
+     "label": "Jumper wire pin 2 to pushbutton",
+     "ends": [
+      {
+       "part": "nano1",
+       "port": "D2",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "8b.d",
+       "mm": [
+        17.78,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "dark grey",
+     "label": "Jumper wire GND to breadboard rail",
+     "ends": [
+      {
+       "part": "nano1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "dark grey",
+     "label": "Jumper wire rail to pushbutton",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tn.8",
+       "mm": [
+        17.78,
+        -7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.g",
+       "mm": [
+        22.86,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

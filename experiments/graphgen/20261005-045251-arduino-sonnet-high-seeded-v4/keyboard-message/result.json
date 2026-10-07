@@ -1,0 +1,142 @@
+{
+ "case": "keyboard-message",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 74.5,
+  "input_tokens": 45746,
+  "output_tokens": 5493,
+  "cost_usd": 0.0928,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The catalogue has arduino-leonardo, so it is used even though the parts list said None.",
+  "The schematic shows the input on pin 2, but the text and the breadboard image use pin 4. I followed the image and text (pin 4).",
+  "Breadboard naming follows the catalogue: bank 't' is rows a-e and bank 'b' is rows f-j. The image draws a-e in the lower half, so the mapping of image halves to bank letters is assumed.",
+  "The button sits across the centre gap in columns 6 and 8. Column 6 (side 1) goes to pin 4 and the pull-down resistor. Column 8 (side 2) goes to 5V.",
+  "The pull-down resistor goes from column 6 to the bottom negative rail (bn), which is wired to GND. The red 5V wire goes to the bottom positive rail (bp). Exact rail hole numbers are approximate; each rail is one strip.",
+  "The resistor is 10k, taken from the manual text. Its colour bands in the image were not checked."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 40.5,
+   "check_seconds": 0.0,
+   "input_tokens": 27047,
+   "output_tokens": 1136,
+   "cost_usd": 0.0167,
+   "listed": 3,
+   "matched": 2,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Leonardo, Micro, or Due board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1947 (The content describes the Adafruit 2.8\" TFT Touch Shield with Capacitive Touch ()"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-uno-r4-minima.html (The page describes the Arduino UNO R4 Minima (SparkFun DEV-22633), not the Ardui)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2521 (The content describes the Pololu Zumo Shield for Arduino v1.3 (a motor driver sh)"
+      ],
+      [
+       "budget",
+       "stopped after 3 checks"
+      ]
+     ],
+     "seconds": 19.0
+    },
+    {
+     "item": "momentary pushbutton",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "10k ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.0,
+   "input_tokens": 18699,
+   "cache_read_tokens": 11120,
+   "output_tokens": 4357,
+   "cost_usd": 0.0761,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.3
+}

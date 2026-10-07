@@ -1,0 +1,1695 @@
+{
+ "graph": {
+  "title": "Light-dependent resistor and capacitor light sensor on Raspberry Pi (GPIO4)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/physical-computing",
+  "new_part_types": [
+   {
+    "type": "capacitor-1uf",
+    "name": "1uF Electrolytic Capacitor",
+    "category": "capacitor",
+    "ports": [
+     {
+      "name": "+",
+      "kind": "lead"
+     },
+     {
+      "name": "-",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "ldr1",
+    "type": "photoresistor",
+    "label": "Light Dependent Resistor",
+    "props": []
+   },
+   {
+    "id": "cap1",
+    "type": "capacitor-1uf",
+    "label": "1\u03bcF capacitor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1uF"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Red jumper (3V3)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Green jumper (GPIO4)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "Black jumper (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "+",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "+",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "-",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "-",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial covers many separate circuits (LED, button, buzzer, traffic lights, PIR, ultrasonic, MCP3008, motors). The two supplied images both show only the LDR + capacitor light-sensing circuit, so that is the circuit built here.",
+   "Image 1 (Fritzing) shows the Pi rotated 180\u00b0: red wire to top-row rightmost pin = physical pin 1 (3V3); green wire to pin 7 (GPIO4, matching LightSensor(4) in the code); black wire to bottom row pin 6 (GND).",
+   "Breadboard: wires in row a of columns 1, 3 and 5; LDR across columns 1 and 3 (row e); capacitor across columns 3 (+, long leg, same strip as the LDR leg) and 5 (-). Circuit: 3V3 -> LDR -> GPIO4 node -> capacitor -> GND. Column numbers are read as labelled on the breadboard images (column 1 at the right in image 1).",
+   "Breadboard bank/row naming: the components and wires are placed in the top half (rows a-e) as 't' holes.",
+   "The capacitor-1uf type is not in the catalogue, so a new part type was added (ports + and -, polarized).",
+   "Jumper-wire-mf port 'a' is taken as the male end (into the breadboard) and 'b' as the female end (onto the Pi header pin).",
+   "The Pi is matched to rpi-4b; its GPIO header pins are used as ports 3V3, GPIO4 and GND (physical pin 6) even though the catalogue lists only GPIO_HEADER.",
+   "The component types and the three wire colours (red, green, black) come from the Fritzing image; the manual does not name them."
+  ]
+ },
+ "graph_initial": {
+  "title": "Light-dependent resistor and capacitor light sensor on Raspberry Pi (GPIO4)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/physical-computing",
+  "new_part_types": [
+   {
+    "type": "capacitor-1uf",
+    "name": "1uF Electrolytic Capacitor",
+    "category": "capacitor",
+    "ports": [
+     {
+      "name": "+",
+      "kind": "lead"
+     },
+     {
+      "name": "-",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "rpi-4b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Solderless breadboard",
+    "props": []
+   },
+   {
+    "id": "ldr1",
+    "type": "photoresistor",
+    "label": "Light Dependent Resistor",
+    "props": []
+   },
+   {
+    "id": "cap1",
+    "type": "capacitor-1uf",
+    "label": "1\u03bcF capacitor",
+    "props": [
+     {
+      "key": "value",
+      "value": "1uF"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Red jumper (3V3)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Green jumper (GPIO4)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "Black jumper (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "1t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ldr1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "+",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "+",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "cap1",
+    "u_port": "-",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "cap1",
+    "u_port": "-",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The tutorial covers many separate circuits (LED, button, buzzer, traffic lights, PIR, ultrasonic, MCP3008, motors). The two supplied images both show only the LDR + capacitor light-sensing circuit, so that is the circuit built here.",
+   "Image 1 (Fritzing) shows the Pi rotated 180\u00b0: red wire to top-row rightmost pin = physical pin 1 (3V3); green wire to pin 7 (GPIO4, matching LightSensor(4) in the code); black wire to bottom row pin 6 (GND).",
+   "Breadboard: wires in row a of columns 1, 3 and 5; LDR across columns 1 and 3 (row e); capacitor across columns 3 (+, long leg, same strip as the LDR leg) and 5 (-). Circuit: 3V3 -> LDR -> GPIO4 node -> capacitor -> GND. Column numbers are read as labelled on the breadboard images (column 1 at the right in image 1).",
+   "Breadboard bank/row naming: the components and wires are placed in the top half (rows a-e) as 't' holes.",
+   "The capacitor-1uf type is not in the catalogue, so a new part type was added (ports + and -, polarized).",
+   "Jumper-wire-mf port 'a' is taken as the male end (into the breadboard) and 'b' as the female end (onto the Pi header pin).",
+   "The Pi is matched to rpi-4b; its GPIO header pins are used as ports 3V3, GPIO4 and GND (physical pin 6) even though the catalogue lists only GPIO_HEADER.",
+   "The component types and the three wire colours (red, green, black) come from the Fritzing image; the manual does not name them."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 135.1,
+  "input_tokens": 131050,
+  "output_tokens": 11980,
+  "cost_usd": 0.4013,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 98.9,
+   "input_tokens": 103909,
+   "output_tokens": 7100,
+   "cost_usd": 0.2649,
+   "check_seconds": 0.0,
+   "matched": 15,
+   "listed": 19,
+   "ingested": 3,
+   "ingest": [
+    {
+     "part": "1\u03bcF capacitor",
+     "type": "capacitor-1uf",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-220uf-20-6-3v.html (The content describes a 220uF, 6.3V Panasonic FK SMT aluminum electrolytic capac)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-47-f-20-35v.html (The page describes a 47\u00b5F 35V Panasonic FK SMT aluminum electrolytic capacitor ()"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/RTC-Module-Super-Capacitor-p-2137.html (The content is a Seeed Studio page for an RTC module with a super capacitor. It )"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/0805-SMT-Capacitor-sample-book-4416-pcs-in-92-values-free-shippin-p-571.html (The content is a Seeed Studio page for a 0805 SMT capacitor sample book (4416 pc)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 25.8
+    },
+    {
+     "part": "Motor controller",
+     "type": "motor-driver-l293d",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1438 (The page describes the Adafruit Motor/Stepper/Servo Shield v3, which uses TB6612)"
+      ],
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/4280 (Content describes the Adafruit DC & Stepper Motor Bonnet (product 4280), which u)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/tb6612-1-2a-dc-stepper-motor-driver-breakout-board.html (The wanted id motor-driver-l293d names an L293D driver, but the page describes t)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-full-bridge-motor-driver-breakout-l298n.html"
+      ]
+     ],
+     "seconds": 44.2
+    },
+    {
+     "part": "Battery pack",
+     "type": "battery-pack-aa",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/battery-holder-4xaa-square.html"
+      ]
+     ],
+     "seconds": 9.6
+    },
+    {
+     "part": "MCP3008 ADC",
+     "type": "adc-mcp3008",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/856"
+      ]
+     ],
+     "seconds": 10.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.2,
+   "input_tokens": 27141,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4880,
+   "cost_usd": 0.1364,
+   "check_seconds": 0.0,
+   "issues": 7,
+   "issue_rules": {
+    "V4": 7
+   }
+  }
+ ],
+ "issues_first": 7,
+ "issues_final": 7,
+ "final_issue_list": [
+  [
+   "V4",
+   "e11: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e15: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e16: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e19: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e20: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "single-use port bb1:3t.e used 2 times"
+  ]
+ ],
+ "cards": {
+  "adc-mcp3008": {
+   "type": "adc-mcp3008",
+   "name": "MCP3008 8-Channel 10-Bit ADC with SPI",
+   "category": "adc",
+   "ports": [
+    {
+     "name": "CH0",
+     "kind": "pin"
+    },
+    {
+     "name": "CH1",
+     "kind": "pin"
+    },
+    {
+     "name": "CH2",
+     "kind": "pin"
+    },
+    {
+     "name": "CH3",
+     "kind": "pin"
+    },
+    {
+     "name": "CH4",
+     "kind": "pin"
+    },
+    {
+     "name": "CH5",
+     "kind": "pin"
+    },
+    {
+     "name": "CH6",
+     "kind": "pin"
+    },
+    {
+     "name": "CH7",
+     "kind": "pin"
+    },
+    {
+     "name": "DGND",
+     "kind": "pin"
+    },
+    {
+     "name": "CS",
+     "kind": "pin"
+    },
+    {
+     "name": "DIN",
+     "kind": "pin"
+    },
+    {
+     "name": "DOUT",
+     "kind": "pin"
+    },
+    {
+     "name": "CLK",
+     "kind": "pin"
+    },
+    {
+     "name": "AGND",
+     "kind": "pin"
+    },
+    {
+     "name": "VREF",
+     "kind": "pin"
+    },
+    {
+     "name": "VDD",
+     "kind": "pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/856",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "battery-pack-aa": {
+   "type": "battery-pack-aa",
+   "name": "Battery Holder - 4xAA Square",
+   "category": "power",
+   "ports": [
+    {
+     "name": "positive",
+     "kind": "wire-end"
+    },
+    {
+     "name": "negative",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "sparkfun",
+    "url": "https://www.sparkfun.com/battery-holder-4xaa-square.html",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "breadboard": {
+   "type": "breadboard",
+   "name": "Solderless breadboard",
+   "category": "breadboard",
+   "ports": [
+    {
+     "name": "<column><bank>.<row>",
+     "kind": "breadboard-hole"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": {
+    "mode": "strip"
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "port_rule": "Holes are named '<column><bank>.<row>': column 1-30, bank 't' (top half, rows a-e) or 'b' (bottom half, rows f-j), e.g. '12t.c', '7b.h'. The 5 holes of one column-bank are one strip. Power rails: 'tp.<n>', 'tn.<n>', 'bp.<n>', 'bn.<n>' (each rail is one strip)."
+  },
+  "buzzer": {
+   "type": "buzzer",
+   "name": "Piezo Buzzer",
+   "category": "buzzer",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "dc-motor": {
+   "type": "dc-motor",
+   "name": "DC Motor (Hobby Motor - Gear, ROB-11696)",
+   "category": "motor",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "sparkfun",
+    "url": "https://www.sparkfun.com/hobby-motor-gear.html",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "hc-sr04": {
+   "type": "hc-sr04",
+   "name": "HC-SR04 Ultrasonic Distance Sensor",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "TRIG",
+     "kind": "header-pin"
+    },
+    {
+     "name": "ECHO",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire": {
+   "type": "jumper-wire",
+   "name": "Jumper wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "jumper-wire-ff": {
+   "type": "jumper-wire-ff",
+   "name": "Female-Female Jumper Wire",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "end_a",
+     "kind": "header-socket"
+    },
+    {
+     "name": "end_b",
+     "kind": "header-socket"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "symmetric": [
+    [
+     "end_a",
+     "end_b"
+    ]
+   ],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/1919",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "jumper-wire-mf": {
+   "type": "jumper-wire-mf",
+   "name": "Jumper wire, male to female",
+   "category": "wire",
+   "ports": [
+    {
+     "name": "a",
+     "kind": "wire-end"
+    },
+    {
+     "name": "b",
+     "kind": "wire-end"
+    }
+   ],
+   "conducts": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "through": [],
+   "symmetric": [],
+   "polarized": false,
+   "connector": true,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "led": {
+   "type": "led",
+   "name": "LED",
+   "category": "led",
+   "ports": [
+    {
+     "name": "A",
+     "kind": "lead"
+    },
+    {
+     "name": "C",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "A",
+     "C"
+    ]
+   ],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "motor-driver-l293d": {
+   "type": "motor-driver-l293d",
+   "name": "SparkFun Full-Bridge Motor Driver Breakout - L298N (BOB-09540)",
+   "category": "motor-driver",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "header-pin"
+    },
+    {
+     "name": "2",
+     "kind": "header-pin"
+    },
+    {
+     "name": "3",
+     "kind": "header-pin"
+    },
+    {
+     "name": "4",
+     "kind": "header-pin"
+    },
+    {
+     "name": "5",
+     "kind": "header-pin"
+    },
+    {
+     "name": "6",
+     "kind": "header-pin"
+    },
+    {
+     "name": "7",
+     "kind": "header-pin"
+    },
+    {
+     "name": "8",
+     "kind": "header-pin"
+    },
+    {
+     "name": "9",
+     "kind": "header-pin"
+    },
+    {
+     "name": "10",
+     "kind": "header-pin"
+    },
+    {
+     "name": "11",
+     "kind": "header-pin"
+    },
+    {
+     "name": "12",
+     "kind": "header-pin"
+    },
+    {
+     "name": "13",
+     "kind": "header-pin"
+    },
+    {
+     "name": "14",
+     "kind": "header-pin"
+    },
+    {
+     "name": "15",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [
+    [
+     "2",
+     "3"
+    ],
+    [
+     "13",
+     "14"
+    ]
+   ],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "sparkfun",
+    "url": "https://www.sparkfun.com/sparkfun-full-bridge-motor-driver-breakout-l298n.html",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  },
+  "photoresistor": {
+   "type": "photoresistor",
+   "name": "Photoresistor (LDR)",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "pir-motion-sensor": {
+   "type": "pir-motion-sensor",
+   "name": "PIR Motion Sensor",
+   "category": "sensor",
+   "ports": [
+    {
+     "name": "VCC",
+     "kind": "header-pin"
+    },
+    {
+     "name": "OUT",
+     "kind": "header-pin"
+    },
+    {
+     "name": "GND",
+     "kind": "header-pin"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "potentiometer-10k": {
+   "type": "potentiometer-10k",
+   "name": "10k Ohm Potentiometer (linear, \"B10K\")",
+   "category": "potentiometer",
+   "ports": [
+    {
+     "name": "GND",
+     "kind": "lug"
+    },
+    {
+     "name": "SIG",
+     "kind": "lug"
+    },
+    {
+     "name": "VCC",
+     "kind": "lug"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "GND",
+     "SIG"
+    ],
+    [
+     "SIG",
+     "VCC"
+    ]
+   ],
+   "symmetric": [
+    [
+     "GND",
+     "VCC"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "pushbutton": {
+   "type": "pushbutton",
+   "name": "Pushbutton",
+   "category": "button",
+   "ports": [
+    {
+     "name": "1.l",
+     "kind": "lead"
+    },
+    {
+     "name": "1.r",
+     "kind": "lead"
+    },
+    {
+     "name": "2.l",
+     "kind": "lead"
+    },
+    {
+     "name": "2.r",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": {
+    "mode": "prefix",
+    "prefixes": [
+     "1",
+     "2"
+    ]
+   },
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   },
+   "note": "4 legs in two pairs: 1.l and 1.r are ALWAYS joined inside (side 1), 2.l and 2.r are ALWAYS joined (side 2); pressing joins side 1 to side 2. Wire the input pin to one side and the supply to the OTHER side; a pull-down/pull-up resistor goes on the SAME side as the input pin."
+  },
+  "resistor": {
+   "type": "resistor",
+   "name": "100\u03a9 Resistor",
+   "category": "resistor",
+   "ports": [
+    {
+     "name": "1",
+     "kind": "lead"
+    },
+    {
+     "name": "2",
+     "kind": "lead"
+    }
+   ],
+   "conducts": [],
+   "through": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "symmetric": [
+    [
+     "1",
+     "2"
+    ]
+   ],
+   "polarized": false,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "verified",
+   "source": {
+    "platform": "circuitquest",
+    "url": null,
+    "external_id": null,
+    "made_by": "verified"
+   }
+  },
+  "rpi-4b": {
+   "type": "rpi-4b",
+   "name": "Raspberry Pi 4 Model B",
+   "category": "single-board-computer",
+   "ports": [
+    {
+     "name": "GPIO_HEADER",
+     "kind": "header-pin"
+    },
+    {
+     "name": "USB_C_POWER",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_0",
+     "kind": "socket"
+    },
+    {
+     "name": "MICRO_HDMI_1",
+     "kind": "socket"
+    },
+    {
+     "name": "USB3_A",
+     "kind": "socket"
+    },
+    {
+     "name": "USB2_A",
+     "kind": "socket"
+    },
+    {
+     "name": "ETHERNET",
+     "kind": "socket"
+    }
+   ],
+   "conducts": [],
+   "through": [],
+   "symmetric": [],
+   "polarized": true,
+   "connector": false,
+   "alias": null,
+   "mirror_of": null,
+   "rotation_symmetry": "none",
+   "status": "ingested",
+   "source": {
+    "platform": "adafruit",
+    "url": "https://www.adafruit.com/product/4296",
+    "external_id": null,
+    "made_by": "claude"
+   }
+  }
+ },
+ "parts_list": [
+  {
+   "label": "Raspberry Pi 4",
+   "quantity": 1,
+   "catalogue_type": "rpi-4b",
+   "new_type": null,
+   "search_query": null,
+   "category": "single-board-computer"
+  },
+  {
+   "label": "Solderless breadboard",
+   "quantity": 1,
+   "catalogue_type": "breadboard",
+   "new_type": null,
+   "search_query": null,
+   "category": "breadboard"
+  },
+  {
+   "label": "Male-to-female jumper leads",
+   "quantity": 10,
+   "catalogue_type": "jumper-wire-mf",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  },
+  {
+   "label": "Female-to-female jumper leads",
+   "quantity": 4,
+   "catalogue_type": "jumper-wire-ff",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  },
+  {
+   "label": "Male-to-male jumper leads",
+   "quantity": 15,
+   "catalogue_type": "jumper-wire",
+   "new_type": null,
+   "search_query": null,
+   "category": "wire"
+  },
+  {
+   "label": "Tactile button",
+   "quantity": 1,
+   "catalogue_type": "pushbutton",
+   "new_type": null,
+   "search_query": null,
+   "category": "button"
+  },
+  {
+   "label": "LED",
+   "quantity": 3,
+   "catalogue_type": "led",
+   "new_type": null,
+   "search_query": null,
+   "category": "led"
+  },
+  {
+   "label": "Ultrasonic distance sensor",
+   "quantity": 1,
+   "catalogue_type": "hc-sr04",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "Passive infrared motion sensor",
+   "quantity": 1,
+   "catalogue_type": "pir-motion-sensor",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "Light Dependent Resistor",
+   "quantity": 1,
+   "catalogue_type": "photoresistor",
+   "new_type": null,
+   "search_query": null,
+   "category": "sensor"
+  },
+  {
+   "label": "5V Motor",
+   "quantity": 1,
+   "catalogue_type": "dc-motor",
+   "new_type": null,
+   "search_query": null,
+   "category": "motor"
+  },
+  {
+   "label": "330\u03a9 resistor",
+   "quantity": 3,
+   "catalogue_type": "resistor",
+   "new_type": null,
+   "search_query": null,
+   "category": "resistor"
+  },
+  {
+   "label": "470\u03a9 resistor",
+   "quantity": 1,
+   "catalogue_type": "resistor",
+   "new_type": null,
+   "search_query": null,
+   "category": "resistor"
+  },
+  {
+   "label": "1\u03bcF capacitor",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "capacitor-1uf",
+   "search_query": "1uF electrolytic capacitor",
+   "category": "capacitor"
+  },
+  {
+   "label": "Buzzer",
+   "quantity": 1,
+   "catalogue_type": "buzzer",
+   "new_type": null,
+   "search_query": null,
+   "category": "buzzer"
+  },
+  {
+   "label": "Motor controller",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "motor-driver-l293d",
+   "search_query": "L293D motor driver board",
+   "category": "driver"
+  },
+  {
+   "label": "Battery pack",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "battery-pack-aa",
+   "search_query": "4xAA battery holder with leads",
+   "category": "power-source"
+  },
+  {
+   "label": "MCP3008 ADC",
+   "quantity": 1,
+   "catalogue_type": null,
+   "new_type": "adc-mcp3008",
+   "search_query": "MCP3008 8-channel 10-bit ADC SPI",
+   "category": "chip"
+  },
+  {
+   "label": "Potentiometer",
+   "quantity": 1,
+   "catalogue_type": "potentiometer-10k",
+   "new_type": null,
+   "search_query": null,
+   "category": "potentiometer"
+  }
+ ]
+}

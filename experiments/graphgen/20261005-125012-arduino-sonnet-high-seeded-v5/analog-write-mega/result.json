@@ -1,0 +1,89 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 107.8,
+  "input_tokens": 42719,
+  "output_tokens": 21358,
+  "cost_usd": 0.2587,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as in step 1; no parts added or dropped.",
+  "Circuit: each Mega pin 2-13 goes through a jumper wire to a breadboard column, then a 220 ohm resistor to the LED anode. The LED cathode column is joined by a black jumper to the ground rail, and the ground rail is wired to Mega GND.",
+  "Mapping read from the image: pin 13 feeds the left-most resistor/LED and pin 2 the right-most. LED k is on pin k+1.",
+  "Breadboard holes are approximate. Columns were estimated from the image: 2,4,6,8,10,12,15,17,20,23,26,28 for the LED anode columns, with the cathode in the next column. The image labels rows in the opposite order from the catalogue, so each resistor bridges the centre gap, from the LED (t) bank to the wire (b) bank.",
+  "The ground rail is tn, and the 12 cathode jumpers use tn.2 to tn.13. Each rail is one strip, so the exact hole number does not change the electrical result.",
+  "The Mega's ground port is assumed to be named GND.1; the catalogue lists it as one of 75 ports, so this name is a guess based on the Uno naming.",
+  "LED polarity: the anode (long leg) is on the resistor side, and the cathode (short leg) goes to ground, as the text says."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.8,
+   "input_tokens": 19512,
+   "cache_read_tokens": 12122,
+   "output_tokens": 3354,
+   "cost_usd": 0.0655,
+   "check_seconds": 0.0,
+   "parts_listed": 51,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 89.0,
+   "input_tokens": 23207,
+   "cache_read_tokens": 19510,
+   "output_tokens": 18004,
+   "cost_usd": 0.1932,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 16.5
+}

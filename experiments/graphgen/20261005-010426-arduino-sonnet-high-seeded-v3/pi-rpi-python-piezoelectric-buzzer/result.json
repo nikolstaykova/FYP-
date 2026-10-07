@@ -1,0 +1,91 @@
+{
+ "case": "pi-rpi-python-piezoelectric-buzzer",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 21.2,
+  "input_tokens": 18281,
+  "output_tokens": 2260,
+  "cost_usd": 0.0627,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e7: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e8: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "single-use port bb1:15t.a used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:18t.a used 2 times"
+  ]
+ ],
+ "notes": [
+  "The catalogue names the Pi's header port GPIO_HEADER; I used 'GND' and 'GPIO17' as header-pin names on rpi1, as the task instructions suggest. GND is physical pin 9 and GPIO17 is physical pin 11, as in the image.",
+  "The breadboard uses the catalogue naming where bank 't' is rows a-e. The image shows rows a-e as the lower half, so both buzzer legs and wire ends go in row a: columns 15 (negative) and 18 (positive).",
+  "The buzzer's port 1 is assumed to be positive and port 2 negative. The black wire and black leg are on column 15 (GND). The purple leg is on column 18 (GPIO 17).",
+  "The tutorial's jumper wires are jumper-wire per the matched parts list, though the Pi end would physically need a female connector."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 5.8,
+   "input_tokens": 7825,
+   "output_tokens": 283,
+   "cost_usd": 0.022,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 4,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.4,
+   "input_tokens": 10456,
+   "cache_read_tokens": 5507,
+   "output_tokens": 1977,
+   "cost_usd": 0.0407,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 6,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 13.4
+}

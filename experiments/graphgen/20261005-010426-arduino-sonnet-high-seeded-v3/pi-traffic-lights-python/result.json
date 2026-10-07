@@ -1,0 +1,103 @@
+{
+ "case": "pi-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 47.8,
+  "input_tokens": 20828,
+  "output_tokens": 6183,
+  "cost_usd": 0.1018,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 40,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GPIO22' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GPIO22' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e13: port 'GPIO27' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e14: port 'GPIO27' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e25: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e26: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e37: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e38: port 'GND' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The diagram shows a pi-stop board plugged directly onto GPIO header pins (R=GPIO22, A=GPIO27, G=GPIO17, GND). The tutorial also lists the 'or 3x LEDs and resistors' option, and the parts list includes a breadboard and 4 jumper wires, so I built the external LED circuit on a breadboard instead of modelling the pi-stop.",
+  "The catalogue entry for rpi-4b lists only GPIO_HEADER as a header port. I used per-pin port names (GPIO22, GPIO27, GPIO17, GND) on pi1, as the task instructions allow. The GND pin is the one next to GPIO17 in the diagram (physical pin 14).",
+  "The tutorial gives no resistor value. I assumed 330 ohm, which is typical for LEDs on a 3.3 V GPIO pin.",
+  "The tutorial gives no breadboard hole positions. I chose them: each channel uses its own column (5, 10, 15). The wire goes in the top bank, the resistor spans the centre gap, and the LED anode shares the resistor's bottom-bank strip. All LED cathodes go to the bottom negative rail (bn), which the GND wire feeds.",
+  "Jumper wires are modelled as plain jumper-wire (4 total). Real build would likely use male-to-female wires at the Pi end, but the parts list specifies jumper-wire."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.6,
+   "input_tokens": 8935,
+   "output_tokens": 421,
+   "cost_usd": 0.0175,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 7,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.2,
+   "input_tokens": 11893,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5762,
+   "cost_usd": 0.0843,
+   "check_seconds": 0.01,
+   "issues": 8,
+   "issue_rules": {
+    "V4": 8
+   }
+  }
+ ],
+ "issues_first": 8,
+ "issues_final": 8,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 14.3
+}

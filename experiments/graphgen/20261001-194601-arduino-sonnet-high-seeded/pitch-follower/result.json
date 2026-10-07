@@ -1,0 +1,134 @@
+{
+ "case": "pitch-follower",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 30.8,
+  "input_tokens": 18620,
+  "output_tokens": 4702,
+  "cost_usd": 0.0797,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The manual's hardware list says 100 ohm resistor, but the schematic labels it 10K; the text and parts list (100 ohm) are used.",
+  "The speaker is not in the catalogue (only a piezo buzzer), so a new 'speaker' type was added. Port 1 is the lead to the breadboard (red), port 2 is the lead to GND (black).",
+  "The speaker's black lead goes directly into the Uno GND socket beside AREF (named GND.3 here). The power-header GND (GND.1) feeds the 4.7k resistor's ground.",
+  "Breadboard hole positions are read from the circuit image: speaker lead at 9t.g, 100 ohm resistor bridging 9t.f to 9b.e, pin 9 wire at 9b.d, photoresistor bridging 21t.f to 21b.e, 5V at 21t.h, A0 at 21b.d, 4.7k resistor from 21b.c to 24b.c, GND wire at 24b.b.",
+  "Resistor values are given as ohms (100 and 4700)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.8,
+   "input_tokens": 18620,
+   "cache_read_tokens": 10995,
+   "output_tokens": 4702,
+   "cost_usd": 0.0797,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 2,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [
+  {
+   "type": "speaker",
+   "family": "speaker",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 16.0
+}

@@ -1,0 +1,126 @@
+{
+ "case": "41071-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 516.1,
+  "input_tokens": 434151,
+  "output_tokens": 92243,
+  "cost_usd": 1.672,
+  "repair_rounds_used": 2
+ },
+ "parts": 98,
+ "edges": 109,
+ "repeats": [
+  {
+   "group": "wing",
+   "times": 2,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 42,
+ "new_types_added": 37,
+ "problems": [],
+ "notes": [
+  "The booklet builds separate models: (1) the workshop desk with jars/flower/scissors/ruler, (2) the small step stool, (3) the arched tower with the bird, (4) the wing chair, (5) the Aira mini-doll. No numbered step joins them, so the graph legitimately has separate groups (the L3 warning is expected and kept). The tower and bird are connected; Aira only touches her held bowl and map tile.",
+  "Element IDs from the inventory pages are used as lego-<id>; catalogue types are used where the id matches, others are new types. Colours come from the pictures.",
+  "Stud-level positions are inferred from small isometric pictures, so the choice of which stud/anti-stud port is used is approximate, especially for the desk side bricks (b2,b5,b6,b9,b10) and the tower base bricks. Each port is used by at most one joined edge; where a piece physically spans two parts but its catalogue type has only one matching port (b7 over b6, b63 over b61, b80 over b78, second stair tile b36 on b34) the second link is recorded as a contact edge.",
+  "The stair-block brick b34 is element 300301 (white 2x2, catalogue type with a single stud port), as listed in the booklet. It carries two tiles: b35 is joined, b36 is a contact because the catalogue type has only one stud port.",
+  "Pillars b52/b53 are put on the purple 2x4 plate b45 (not on the dark bricks) so that each brick port is used once.",
+  "The dark-brown plate 1x2 (b66) in tower step 16 is not clearly visible; assumed to sit under the 1x4 plate that carries the orange slope and cookie.",
+  "Compatible port kinds: the feathers and wings have a bar end that clips into clip ports (flower, T-bar, purple/orange clip plates); scissors hang by a bar on the clip brick; mini-doll parts use ball/socket. Wing branches (catalogue pin only) are joined to the side-hole bricks with a pin; their link to the clip plate has null ports because the catalogue part has a single pin port.",
+  "The jumper plate b62 is attached to the white bracket b63 by one stud into a side hole; the emblem sits on its other stud. The bracket b63 rests on corner plate b60 and only touches b61.",
+  "The two wing assemblies (steps 13-14) are one repeat, mirrored for copy 2, attached to the second tan side-hole brick (b59). Wings pivot on the brown peg (red arrows, p19).",
+  "The inventory shows three white feathers: one on the desk flower, two on the wing chair. Aira is not attached to the chair in any numbered step."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 251.7,
+   "input_tokens": 106047,
+   "cache_read_tokens": 5507,
+   "output_tokens": 39755,
+   "cost_usd": 0.8008,
+   "check_seconds": 0.02,
+   "issues": 37,
+   "issue_rules": {
+    "V3": 14,
+    "V4": 22,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 172.5,
+   "input_tokens": 148203,
+   "cache_read_tokens": 106045,
+   "output_tokens": 31512,
+   "cost_usd": 0.505,
+   "check_seconds": 0.02,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 91.8,
+   "input_tokens": 179901,
+   "cache_read_tokens": 148201,
+   "output_tokens": 20976,
+   "cost_usd": 0.3662,
+   "check_seconds": 0.02,
+   "issues": 1,
+   "issue_rules": {
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 37,
+ "issues_final": 1,
+ "score": {
+  "pieces_expected": 94,
+  "pieces_built": 98,
+  "pieces_unmapped": 0,
+  "inventory_matched": 92,
+  "exact_matched": 92,
+  "inventory_precision": 0.939,
+  "inventory_recall": 0.979,
+  "exact_recall": 0.979,
+  "joined_edges": 101,
+  "contacts_expected": 16,
+  "contacts_predicted": 16,
+  "contacts_correct": 11,
+  "contact_precision": 0.688,
+  "contact_recall": 0.688
+ },
+ "score_initial": {
+  "pieces_expected": 94,
+  "pieces_built": 98,
+  "pieces_unmapped": 0,
+  "inventory_matched": 92,
+  "exact_matched": 92,
+  "inventory_precision": 0.939,
+  "inventory_recall": 0.979,
+  "exact_recall": 0.979,
+  "joined_edges": 105,
+  "contacts_expected": 16,
+  "contacts_predicted": 17,
+  "contacts_correct": 11,
+  "contact_precision": 0.647,
+  "contact_recall": 0.688
+ },
+ "postprocess_ms": 10.9
+}

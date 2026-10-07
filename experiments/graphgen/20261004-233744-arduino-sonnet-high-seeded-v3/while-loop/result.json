@@ -1,0 +1,147 @@
+{
+ "case": "while-loop",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 69.8,
+  "input_tokens": 24670,
+  "output_tokens": 9794,
+  "cost_usd": 0.1545,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 68,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard row letters: the picture's top half (rows j-f) is mapped to catalogue bank 't' (rows a-e, image j->a ... f->e) and the bottom half (rows e-a) to bank 'b' (rows f-j, image e->f ... a->j). Only strip membership matters.",
+  "Rail naming assumed: top '-' row = tn, top '+' row = tp, bottom '-' row = bn, bottom '+' row = bp. Rail hole numbers are approximate positions from the picture.",
+  "Pushbutton straddles the centre gap in columns 4 and 6: column 4 (side 1) carries pin 2 and the 10k pull-down to ground, column 6 (side 2) is tied to 5V.",
+  "Photoresistor spans columns 10 and 14: column 10 goes to A0 and a 10k resistor to ground, column 14 goes to 5V.",
+  "LED anode (18t) is fed from pin 9 via the 220 ohm resistor (15t to 18t); cathode (19t) goes to the top ground rail via a black wire.",
+  "Both ground rails are linked by a black wire and both 5V rails by a red wire at the right edge. Arduino GND.2 was chosen for the ground wire.",
+  "The text says 'analog input 2' but the picture, schematic and code use A0."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.9,
+   "input_tokens": 8646,
+   "output_tokens": 484,
+   "cost_usd": 0.0182,
+   "check_seconds": 0.0,
+   "matched": 8,
+   "listed": 8,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.9,
+   "input_tokens": 16024,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9310,
+   "cost_usd": 0.1363,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 6,
+  "nets_matched": 5,
+  "net_precision": 0.833,
+  "net_recall": 0.625,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 5,
+   "button": 1,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 4,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 31.0
+}

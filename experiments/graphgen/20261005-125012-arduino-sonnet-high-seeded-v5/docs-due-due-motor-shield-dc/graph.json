@@ -1,0 +1,194 @@
+{
+ "nodes": [
+  {
+   "id": "due1",
+   "type": "arduino-due",
+   "label": "Arduino Due",
+   "props": {}
+  },
+  {
+   "id": "shield1",
+   "type": "arduino-motor-shield-rev3",
+   "label": "Arduino Motor Shield",
+   "props": {}
+  },
+  {
+   "id": "motor1",
+   "type": "dc-motor-12v",
+   "label": "DC motor (fan)",
+   "props": {
+    "voltage": "12"
+   }
+  },
+  {
+   "id": "psu1",
+   "type": "wall-wart-12v",
+   "label": "Wall wart power supply",
+   "props": {
+    "voltage": "12"
+   }
+  },
+  {
+   "id": "usb1",
+   "type": "usb-cable",
+   "label": "USB cable to computer",
+   "props": {}
+  }
+ ],
+ "edges": [
+  {
+   "type": "joined",
+   "u": "shield1",
+   "u_port": null,
+   "v": "due1",
+   "v_port": null,
+   "method": "push-on",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e1"
+  },
+  {
+   "type": "joined",
+   "u": "shield1",
+   "u_port": "VIN",
+   "v": "due1",
+   "v_port": "VIN",
+   "method": "push-on",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e2"
+  },
+  {
+   "type": "electrical",
+   "u": "shield1",
+   "u_port": "VIN",
+   "v": "due1",
+   "v_port": "VIN",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e3"
+  },
+  {
+   "type": "joined",
+   "u": "shield1",
+   "u_port": "GND",
+   "v": "due1",
+   "v_port": "GND",
+   "method": "push-on",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e4"
+  },
+  {
+   "type": "electrical",
+   "u": "shield1",
+   "u_port": "GND",
+   "v": "due1",
+   "v_port": "GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e5"
+  },
+  {
+   "type": "joined",
+   "u": "motor1",
+   "u_port": "1",
+   "v": "shield1",
+   "v_port": "MOTOR_A+",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e6"
+  },
+  {
+   "type": "electrical",
+   "u": "motor1",
+   "u_port": "1",
+   "v": "shield1",
+   "v_port": "MOTOR_A+",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e7"
+  },
+  {
+   "type": "joined",
+   "u": "motor1",
+   "u_port": "2",
+   "v": "shield1",
+   "v_port": "MOTOR_A-",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e8"
+  },
+  {
+   "type": "electrical",
+   "u": "motor1",
+   "u_port": "2",
+   "v": "shield1",
+   "v_port": "MOTOR_A-",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e9"
+  },
+  {
+   "type": "joined",
+   "u": "psu1",
+   "u_port": null,
+   "v": "due1",
+   "v_port": "power-jack",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e10"
+  },
+  {
+   "type": "electrical",
+   "u": "psu1",
+   "u_port": "tip",
+   "v": "due1",
+   "v_port": "power-jack",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e11"
+  },
+  {
+   "type": "electrical",
+   "u": "psu1",
+   "u_port": "sleeve",
+   "v": "due1",
+   "v_port": "power-jack",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e12"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "due1",
+   "v_port": "usb-micro",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e13"
+  },
+  {
+   "type": "electrical",
+   "u": "usb1",
+   "u_port": null,
+   "v": "due1",
+   "v_port": "usb-micro",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e14"
+  }
+ ]
+}

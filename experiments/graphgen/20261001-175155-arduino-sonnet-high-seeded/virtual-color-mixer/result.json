@@ -1,0 +1,200 @@
+{
+ "case": "virtual-color-mixer",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 42.5,
+  "api_seconds": 38.9,
+  "first_token_seconds": 19.6,
+  "input_tokens": 19980,
+  "cache_read_tokens": 9602,
+  "output_tokens": 6580,
+  "cost_usd": 0.1092,
+  "turns": 2
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Manual allows any analog sensors; the circuit image shows three force-sensing resistors (FSRs), so fsr parts are used.",
+  "Each FSR forms a voltage divider with a 10k resistor: 5V rail -> FSR -> junction (to A0/A1/A2) -> 10k -> GND rail.",
+  "Breadboard hole names follow the catalogue convention (rows a-e = bank 't'). In the image the a-e half is drawn at the bottom and the rails are drawn top (tp/tn) and bottom (bp/bn); positive rail is the red-line row, negative the black-line row.",
+  "Column and rail-hole numbers are estimated from pixel positions: sensor columns 6, 16, 24; the two rail-to-rail jumpers at columns 28 (black) and 29 (red).",
+  "Resistor value prop is given as 10000 (10k ohm).",
+  "The FSR images show three drawn legs but the FSR part has two ports; the blue lead goes to the sense junction and the red lead to the + rail.",
+  "Arduino is shown unpowered by USB in the image; no USB cable is included. GND wire goes to the second GND pin (GND.2)."
+ ],
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 3
+  },
+  "inventory_built": {
+   "board": 1,
+   "fsr": 3,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 10.0
+}

@@ -1,0 +1,62 @@
+{
+ "case": "docs-nano-matter-06-matter-temp-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 52.8,
+  "input_tokens": 20341,
+  "output_tokens": 8244,
+  "cost_usd": 0.1432,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 53,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The tutorial's wiring diagram image was not available to me; the connections follow the text (OLED and DHT powered from 3.3V, OLED on I2C, DHT data on D4) and the thumbnail photo (Nano Matter, OLED and DHT11 on one breadboard joined by short jumper wires).",
+  "Exact breadboard hole positions are assumed. The Nano Matter is placed in columns 1-15 straddling the centre channel, with its 3V3, A4 (SDA), A5 (SCL) and GND pins on the top bank and D4 on the bottom bank. Pins that are not used by the circuit are not listed as joined.",
+  "The Nano Matter is not in the catalogue, so I created it as a new part type. Its SDA/SCL are modelled as A4/A5, which is how the Nano form factor maps I2C.",
+  "The DHT11 is a new type with three pins (VCC, DATA, GND), not the 4-pin DHT22. A 3-pin module is assumed, so no pull-up resistor is used.",
+  "The Google Nest Hub Max (Thread border router) and the phone app are network infrastructure, not part of the build, so they are not nodes. The USB-C cable plugs into the Nano Matter for power and programming.",
+  "Software libraries (U8g2, DHT) and the sketch are not part of the physical graph."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 52.8,
+   "input_tokens": 20341,
+   "cache_read_tokens": 5414,
+   "output_tokens": 8244,
+   "cost_usd": 0.1432,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "dht11",
+   "family": "dht11",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 21.4
+}

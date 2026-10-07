@@ -1,0 +1,560 @@
+{
+ "case": "row-column-scanning",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 214.4,
+  "input_tokens": 127941,
+  "output_tokens": 37649,
+  "cost_usd": 0.5863,
+  "repair_rounds_used": 2
+ },
+ "parts": 37,
+ "edges": 124,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "E6 ('parts list has 8 x led, graph has 1') is a false positive and the graph is unchanged on this point. The list item '8 x 8 LED Matrix' is ONE matrix that is 8 columns by 8 rows. It is not eight LEDs. The circuit image shows a single 64-dot matrix with 16 pins, and the manual says 'The 16 pins of the matrix are hooked up'. The 64 LEDs are inside the single led-matrix-8x8 part (matrix1), and the catalogue describes what is inside it. Adding 8 separate led parts would put wrong parts in the build. The only '8x' quantity in the list is the 8 x 1k resistors, and the graph has all 8 (r1-r8).",
+  "Used the catalogue's led-matrix-8x8 (1088AS style) instead of the suggested led-matrix-me-8x16, since this is a plain 8x8 matrix with 16 pins.",
+  "The manual's matrix pin/row/column table matches the catalogue pin mapping exactly (R1-R8 = pins 9,14,8,12,1,7,2,5; C1-C8 = pins 13,3,4,10,6,11,15,16), so each Arduino pin goes to the matching R/C port.",
+  "Arduino pins 2-9 each have a 1k resistor in the yellow wire. Each resistor's leg 1 goes into the Uno header and leg 2 is twisted to a jumper wire that runs to the matrix. Pins 10-13 and A2-A5 are direct green wires.",
+  "Breadboard hole positions for the pots and the rail positions are approximate readings of the image (breadboard rows are the image's numbered lines). The pot wiper wires go to A1 (pot1, upper) and A0 (pot2, lower).",
+  "The 5V and GND wires go to the breadboard's right power rail (red to +, black to -). Each pot's GND and VCC wires go to the same rails. The GND wire is assumed to go to GND.1.",
+  "The resistor value prop is value=1000, meaning 1k ohm."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 27.6,
+   "check_seconds": 0.0,
+   "input_tokens": 27505,
+   "output_tokens": 1881,
+   "cost_usd": 0.0551,
+   "listed": 6,
+   "matched": 5,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "8 x 8 LED Matrix",
+     "card": "led-matrix-me-8x16",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "quarantined: https://www.adafruit.com/product/3153"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/356 (The content describes an 8\u00d72 character LCD (HD44780 parallel interface), not an )"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Me-LED-Matrix-8-16-p-2735.html"
+      ]
+     ],
+     "seconds": 27.6
+    },
+    {
+     "item": "2x 10k ohm potentiometers",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "8x 1k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 81.3,
+   "input_tokens": 19856,
+   "cache_read_tokens": 5507,
+   "output_tokens": 13682,
+   "cost_usd": 0.1953,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E6": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.2,
+   "input_tokens": 34690,
+   "cache_read_tokens": 19854,
+   "output_tokens": 11033,
+   "cost_usd": 0.1736,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E6": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 52.3,
+   "input_tokens": 45890,
+   "cache_read_tokens": 34688,
+   "output_tokens": 11053,
+   "cost_usd": 0.1623,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E6": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "nets_expected": 28,
+  "nets_built": 28,
+  "nets_matched": 19,
+  "net_precision": 0.679,
+  "net_recall": 0.679,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 8,
+   "pot": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "pot": 2,
+   "resistor": 8
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "led",
+     "R1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "R2"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "led",
+     "R4"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "led",
+     "C3"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "led",
+     "C2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "led",
+     "C5"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 28,
+  "nets_built": 28,
+  "nets_matched": 19,
+  "net_precision": 0.679,
+  "net_recall": 0.679,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 8,
+   "pot": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "pot": 2,
+   "resistor": 8
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "led",
+     "R1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "R2"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "led",
+     "R4"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "led",
+     "C3"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "led",
+     "C2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "led",
+     "C5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 19.8
+}

@@ -47,6 +47,11 @@ def metrics(rows):
                   "Inventory precision (by design)": mean(r["score"]["inventory_precision"] for r in rows),
                   "Contact recall": mean(r["score"]["contact_recall"] for r in rows),
                   "Contact precision": mean(r["score"]["contact_precision"] for r in rows)})
+    for ph in ("parts", "build", "repair1", "repair2"):
+        runs = [p for r in rows for p in r.get("phases", []) if p["phase"] == ph]
+        if runs:
+            m[f"Phase {ph}: runs / mean s / mean $"] = (f"{len(runs)} / {mean(p['seconds'] for p in runs)} / "
+                                                        f"{mean(p['cost_usd'] for p in runs)}")
     rep = [r for r in rows if r.get("issues_first") is not None]
     if rep:
         m.update({"Manuals with check failures after first build": sum(1 for r in rep if r["issues_first"]),

@@ -1,0 +1,87 @@
+{
+ "case": "docs-mkr-arduino-mkr-gsm-1400-and-dtmf",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 88.1,
+  "input_tokens": 55296,
+  "output_tokens": 8979,
+  "cost_usd": 0.1157,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 47,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The schematic image was not available. I built the standard 2N7000 level shifter, as the text describes: gate to the board's 3.3 V (VCC), source to the 3.3 V data pin, drain to the NeoPixel DIN, and the 10k resistor from the drain to the 5 V rail. The NeoPixel is powered from the 5 V rail.",
+  "I added wire7 (GND rail to NeoPixel VSS), which step 1 did not have. The NeoPixel needs a ground return and the count in step 1 was only an estimate.",
+  "The catalogue card for arduino-mkr-gsm-1400 has no digital pins. I used 'D6' for the data pin, assuming pin 6, which the tutorial text does not state. The name is not on the card.",
+  "I used one single `neopixel` instead of the ring, as the tutorial's breadboard layout does. DOUT is inserted but left unconnected.",
+  "The LiPo battery plugs into the board's JST connector, so I modelled it as bat1 '+' joined to mkr1 BAT. The battery's negative terminal is not modelled separately.",
+  "The board is powered over USB for programming. The USB cable is not on the parts list, so it is not a node.",
+  "Breadboard positions are my own choice, since there was no image. Rails: tp is 5 V and tn is GND."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.1,
+   "input_tokens": 34933,
+   "cache_read_tokens": 31857,
+   "output_tokens": 2459,
+   "cost_usd": 0.0413,
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 1,
+   "looked_up": [
+    "arduino-mkr-gsm-1400",
+    "mosfet-2n7000"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.0,
+   "input_tokens": 20363,
+   "cache_read_tokens": 18125,
+   "output_tokens": 6520,
+   "cost_usd": 0.0744,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [
+   "led"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [
+  {
+   "type": "mosfet-2n7000",
+   "family": "mosfet-2n7000",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 24.8
+}

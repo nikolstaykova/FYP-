@@ -1,0 +1,146 @@
+{
+ "case": "docs-opta-10-opta-modbus-tcp-plc-ide",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 174.4,
+  "input_tokens": 67028,
+  "output_tokens": 5061,
+  "cost_usd": 0.2296,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 10,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The Opta's USB-C and ETH RJ45 ports are not in the catalogue's port list, so edges to them have a null port on the Opta side. The USB cable has no ports, so its ports are null as well.",
+  "In the diagram both Opta ETH cables join a shared blue network line. I modelled that line as the optional Ethernet switch, with each Opta cabled to a separate switch port.",
+  "The diagram's Modbus TCP compatible device is not in the hardware list, and its link to the network is dashed. I left it out as an optional field-deployment extra.",
+  "Each Opta's USB-C cable goes to the computer running the PLC IDE. The computer is modelled as a new part type with two USB ports (USB.1 and USB.2); this is an assumption, since in practice a hub or sequential connection may be used.",
+  "The Opta in the diagram's left position is the Slave/Server (192.168.1.2) and the right one is the Master/Client (192.168.1.1).",
+  "Software configuration (IP addresses, Modbus roles, PLC code) is recorded only as part properties, not as graph edges."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 150.6,
+   "input_tokens": 45852,
+   "output_tokens": 2114,
+   "cost_usd": 0.1364,
+   "check_seconds": 0.0,
+   "matched": 2,
+   "listed": 4,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Opta",
+     "type": "arduino-opta",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-opta-lite.html"
+      ]
+     ],
+     "seconds": 75.4
+    },
+    {
+     "part": "Ethernet Switch",
+     "type": "ethernet-switch",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/5-way-tactile-switch.html (The page sells a 5-way tactile switch (COM-10063), which is a joystick-style inp)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/rj45-ethernet-magjack-compatible.html (The page sells a single-port RJ45 jack with integrated magnetics and LEDs (Spark)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Grove-5-Way-Switch.html (The page sells the Seeed Grove 5-Way Switch, a navigation/joystick-style switch )"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/accessories-for-cm4-ethernet-carrier-board.html (The page is a Seeed Studio category page called \"Accessories for CM4 Ethernet Ca)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 69.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.8,
+   "input_tokens": 21176,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2947,
+   "cost_usd": 0.0932,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ethernet-switch",
+   "family": "button",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  },
+  {
+   "type": "computer",
+   "family": "computer",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.3
+}

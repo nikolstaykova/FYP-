@@ -1,0 +1,59 @@
+{
+ "case": "pi-interactive-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 54.9,
+  "input_tokens": 22893,
+  "output_tokens": 8622,
+  "cost_usd": 0.1572,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The wiring diagram is treated as the authority: the Pi header pins used are GPIO25 (orange wire, red LED), GPIO8 (green wire, amber LED), GPIO7 (pink wire, green LED), GPIO21 (purple wire, button) and GPIO15 (blue wire, buzzer). The manual text lists amber=28 and green=27, which do not match the diagram.",
+  "Resistor value is not stated in the manual; 330 ohm assumed.",
+  "The black wire from the Pi goes to the GND pin next to GP3 (physical pin 6); mapped to GND.1.",
+  "The right-hand breadboard rail that all grounds use is modelled as the 'tn' rail (one strip); hole numbers on it (tn.3, tn.6, tn.9, tn.15, tn.21, tn.28) are approximate, since they all sit on the same strip.",
+  "LED anodes are on the resistor side (column j, rows 9/15/21) and cathodes go to the ground rail; buzzer + (port 1) is on row 4 column j, its other leg to the ground rail.",
+  "Button: row 28 is side 1 (1.l/1.r) wired to the GND rail, row 30 is side 2 (2.l/2.r) wired to GPIO21; button straddles the centre gap (e and f columns). Button uses Pi internal pull-up in software.",
+  "The colour of the middle LED is yellow in the diagram but called 'amber' in the manual."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 54.9,
+   "input_tokens": 22893,
+   "cache_read_tokens": 5414,
+   "output_tokens": 8622,
+   "cost_usd": 0.1572,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 15.8
+}

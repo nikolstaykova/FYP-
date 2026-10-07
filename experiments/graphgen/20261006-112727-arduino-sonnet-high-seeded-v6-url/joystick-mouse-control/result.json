@@ -1,0 +1,359 @@
+{
+ "case": "joystick-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 71.5,
+  "input_tokens": 102851,
+  "output_tokens": 10731,
+  "cost_usd": 0.1661,
+  "repair_rounds_used": 1
+ },
+ "parts": 13,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Same parts as before; none added or dropped.",
+  "Fix: the micro-USB cable now has a joined and an electrical edge to the Leonardo. The tutorial says to connect the board to the computer with a micro-USB cable. Neither the USB cable nor the Leonardo has a catalogue port for it, so both ports are null. The computer isn't a part in this graph.",
+  "Wiring follows the schematic: joystick VCC to 5V, GND to GND, HORZ (x-axis) to A0, VERT (y-axis) to A1, SEL (pushbutton) to pin 6. The joystick connects directly to the Leonardo with male-to-female jumpers: the female end (port a) is on the joystick pin and the male end (port b) is in the Leonardo header.",
+  "The page's text mentions an optional status LED on pin 5. The circuit is pin 5, then a jumper, then the 220 ohm resistor, then the LED anode. The LED cathode goes by jumper to GND. The breadboard is my assumption, because the schematic doesn't show one. Resistor, LED anode and the pin-5 wire share strips 1t and 5t. The LED cathode and the GND wire share strip 6t.",
+  "No pulldown resistor is drawn, so the 10k one is omitted. The page says it is needed only if the joystick has no integrated pulldown. The optional second pushbutton on D3 is also omitted.",
+  "The circuit image did not render. Wiring comes from the schematic and the text."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.8,
+   "input_tokens": 45615,
+   "cache_read_tokens": 42759,
+   "output_tokens": 2170,
+   "cost_usd": 0.0417,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/usb/JoystickMouseControl/\"}",
+    "StructuredOutput {\"title\": \"Joystick Mouse Control\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/JoystickMouseControl/\", "
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 13,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.2,
+   "input_tokens": 26161,
+   "cache_read_tokens": 23873,
+   "output_tokens": 4539,
+   "cost_usd": 0.0593,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Joystick Mouse Control\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/JoystickMouseControl/\", "
+   ],
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.5,
+   "input_tokens": 31075,
+   "cache_read_tokens": 26159,
+   "output_tokens": 4022,
+   "cost_usd": 0.0651,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Joystick Mouse Control\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/JoystickMouseControl/\", "
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 8,
+  "nets_matched": 4,
+  "net_precision": 0.5,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "joystick": 1,
+   "led": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "joystick",
+     "SEL"
+    ]
+   ],
+   [
+    [
+     "board",
+     "NONE"
+    ],
+    [
+     "wire",
+     "NONE"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 8,
+  "nets_built": 7,
+  "nets_matched": 4,
+  "net_precision": 0.571,
+  "net_recall": 0.5,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "joystick": 1,
+   "led": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "joystick",
+     "SEL"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 24.0
+}

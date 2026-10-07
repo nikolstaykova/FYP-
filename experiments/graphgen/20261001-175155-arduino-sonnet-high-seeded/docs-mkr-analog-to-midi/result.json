@@ -1,0 +1,49 @@
+{
+ "case": "docs-mkr-analog-to-midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 117.9,
+  "api_seconds": 114.4,
+  "first_token_seconds": 78.5,
+  "input_tokens": 19176,
+  "cache_read_tokens": 5414,
+  "output_tokens": 17297,
+  "cost_usd": 0.2291,
+  "turns": 2
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The MKR1000 is not in the catalogue, so it is a new part type with only the pins this circuit uses. The red wire goes to VCC (3.3V), the black wire to GND, and the brown wire to A0/DAC0. I read these from the picture and the schematic.",
+  "The breadboard picture labels rows J\u2013F in the top half and E\u2013A in the bottom half. I mapped them to the catalogue naming: top bank 't' is J,I,H,G,F = a,b,c,d,e, and bottom bank 'b' is E,D,C,B,A = f,g,h,i,j.",
+  "Rail holes are numbered in order from the left, five per group. The top rails are tp (red line) and tn (blue line). The bottom row next to the blue line is bn (ground) and is used here. Both ground wires, the jack sleeve wire and the MKR GND wire land on the bn rail.",
+  "The LMV358 is placed with pin 1 at column 14, bottom half, and the pins run 1\u20134 along the bottom and 5\u20138 back along the top. Column 14 top is V+ (pin 8) and column 17 bottom is GND (pin 4). The wiring follows the breadboard picture, so the amp used is amplifier A. The schematic draws the DAC0/A0 output on the second op-amp, which does not match the picture.",
+  "The 10k trimmer is modelled as potentiometer-10k. Its wiper (SIG) is in column 2 of the top half. Its end pins are in columns 1 and 3 of the bottom half. Only the column 3 end is connected, to the 47k resistor R11, and the column 1 end is left floating. The wiper connects by the purple wire to the op-amp output at column 14.",
+  "The jack's left pin in the picture goes to ground, so it is the SLEEVE. The right-hand (red) pin carries the signal through C1, so it is the RIGHT pin. The picture does not label the jack pins, so this is an assumption.",
+  "Resistor values are from the colour bands: yellow-violet-orange is 47k and brown-black-yellow is 100k. The tutorial's hardware list matches this.",
+  "The tutorial has no extra external LED circuit."
+ ],
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr1000",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 18.3
+}

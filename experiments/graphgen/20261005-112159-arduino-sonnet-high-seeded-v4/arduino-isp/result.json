@@ -1,0 +1,510 @@
+{
+ "case": "arduino-isp",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 46.2,
+  "input_tokens": 17646,
+  "output_tokens": 8076,
+  "cost_usd": 0.0843,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 80,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The two images (ATmega328P memory map and the Arduino IDE Tools > Programmer menu) are not circuit diagrams; the circuit is taken from the text: Uno programmer to Uno target using the 'old style' wiring (D11 MOSI, D12 MISO, D13 SCK, D10 to target RESET, 5V, GND).",
+  "The ICSP-header wiring alternative was not used; the equivalent D11-D13 pin wiring is shown.",
+  "The 10 \u00b5F capacitor (POS to programmer RESET, NEG to programmer GND) is included because the programmer is an Uno; it is fitted after the ArduinoISP sketch has been uploaded.",
+  "The three optional feedback LEDs follow the ArduinoISP sketch pin defaults: heartbeat D9, error D8, programming D7. The manual gives no resistor value; 220 \u03a9 resistors and the breadboard layout are assumptions.",
+  "The USB cable from the programmer to the computer is not modelled; the manual says to leave boards unpowered while wiring.",
+  "The target is assumed to be an Uno; the manual also shows a Nano, Mega and MKR1000 as variants, which are not built here."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 46.2,
+   "input_tokens": 17646,
+   "cache_read_tokens": 17644,
+   "output_tokens": 8076,
+   "cost_usd": 0.0843,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 15,
+  "nets_built": 13,
+  "nets_matched": 7,
+  "net_precision": 0.538,
+  "net_recall": 0.467,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 3,
+   "resistor": 3,
+   "led": 3
+  },
+  "inventory_built": {
+   "board": 2,
+   "capacitor": 1,
+   "resistor": 3,
+   "led": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "20"
+    ],
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "neg"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "crystal",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "crystal",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "board",
+     "12"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "board",
+     "RESET"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "neg"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 15,
+  "nets_built": 13,
+  "nets_matched": 7,
+  "net_precision": 0.538,
+  "net_recall": 0.467,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 3,
+   "resistor": 3,
+   "led": 3
+  },
+  "inventory_built": {
+   "board": 2,
+   "capacitor": 1,
+   "resistor": 3,
+   "led": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "20"
+    ],
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "neg"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "crystal",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "crystal",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "board",
+     "12"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "board",
+     "RESET"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "neg"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 7.2
+}

@@ -1,0 +1,611 @@
+{
+ "tutorial": "tone-keyboard",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/02.digital/toneKeyboard/assets/circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/02.digital/toneKeyboard/assets/schematic.png"
+ ],
+ "legs_and_ends": 32,
+ "with_position": 32,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "uno",
+     "type": "arduino-uno",
+     "label": "Arduino Board"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "10k resistor (sense 1)",
+     "props": {
+      "value": "10000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "6b.h",
+       "mm": [
+        12.7,
+        22.86
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "bn.6",
+       "mm": [
+        12.7,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r4",
+     "type": "resistor",
+     "label": "100 ohm resistor (speaker)",
+     "props": {
+      "value": "100"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "10t.b",
+       "mm": [
+        22.86,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "12t.b",
+       "mm": [
+        27.94,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "spk1",
+     "type": "speaker-8ohm",
+     "label": "8 ohm speaker",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "12t.c",
+       "mm": [
+        27.94,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.10",
+       "mm": [
+        22.86,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "10k resistor (sense 2)",
+     "props": {
+      "value": "10000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "16b.h",
+       "mm": [
+        38.1,
+        22.86
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "bn.16",
+       "mm": [
+        38.1,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "r3",
+     "type": "resistor",
+     "label": "10k resistor (sense 3)",
+     "props": {
+      "value": "10000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "24b.h",
+       "mm": [
+        58.42,
+        22.86
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "bn.24",
+       "mm": [
+        58.42,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "fsr1",
+     "type": "fsr",
+     "label": "force sensing resistor 1",
+     "props": {},
+     "polarised": false,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "add": [
+    {
+     "id": "fsr2",
+     "type": "fsr",
+     "label": "force sensing resistor 2",
+     "props": {},
+     "polarised": false,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "add": [
+    {
+     "id": "fsr3",
+     "type": "fsr",
+     "label": "force sensing resistor 3",
+     "props": {},
+     "polarised": false,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "A0 signal",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A0",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "6b.f",
+       "mm": [
+        12.7,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": false,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "FSR1 signal lead",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "6b.g",
+       "mm": [
+        12.7,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "pin 8 to resistor",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "8",
+       "mm": [
+        44.2,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "A1 signal",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A1",
+       "mm": [
+        50.8,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "16b.f",
+       "mm": [
+        38.1,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": false,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "FSR2 signal lead",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "16b.g",
+       "mm": [
+        38.1,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": false,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "A2 signal",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A2",
+       "mm": [
+        53.34,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "24b.f",
+       "mm": [
+        58.42,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": false,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "FSR3 signal lead",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "24b.g",
+       "mm": [
+        58.42,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "5V to rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.1",
+       "mm": [
+        0.0,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 18,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.2",
+       "mm": [
+        2.54,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 19,
+   "power": true,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "FSR1 5V lead",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "bp.4",
+       "mm": [
+        7.62,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 20,
+   "power": true,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "FSR2 5V lead",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "bp.12",
+       "mm": [
+        27.94,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 21,
+   "power": true,
+   "add": [
+    {
+     "id": "wire12",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "FSR3 5V lead",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "bp.22",
+       "mm": [
+        53.34,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 22,
+   "power": true,
+   "add": [
+    {
+     "id": "wire13",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND rail link",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tn.28",
+       "mm": [
+        68.58,
+        -7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.28",
+       "mm": [
+        68.58,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 23,
+   "power": true,
+   "add": [
+    {
+     "id": "wire14",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "5V rail link",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tp.29",
+       "mm": [
+        71.12,
+        -5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bp.29",
+       "mm": [
+        71.12,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

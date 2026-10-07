@@ -1,0 +1,103 @@
+{
+ "case": "button",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 42.2,
+  "input_tokens": 22709,
+  "output_tokens": 5678,
+  "cost_usd": 0.0613,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts list says 3 hook-up wires, but the circuit image shows 5 jumper wires: red (5V to + rail), black (GND to - rail), teal (pin 2 to button), orange (button leg to + rail) and a short black wire (resistor to - rail). I followed the image.",
+  "Button side 1 (legs 1.l/1.r) is placed in column 4 and side 2 (2.l/2.r) in column 6, straddling the centre gap. Column 4 goes to 5V through the orange wire. Column 6 goes to Arduino pin 2 through the teal wire and to the resistor.",
+  "The resistor runs from column 6 to column 9 on the lower half. Column 9 goes to the GND rail through the short black wire. This forms the pull-down.",
+  "The image shows the black GND wire on the second GND pin of the power header, so I used GND.2.",
+  "The catalogue puts rows a-e in the 't' bank and f-j in the 'b' bank. The image labels the halves the other way round. I mapped the upper half of the image to 't' and the lower half to 'b'. Exact row letters are arbitrary; only the column strips matter.",
+  "Rail hole numbers are estimated from the image. Red wire at bp.1, orange at bp.3, black GND wire at bn.1, short black wire at bn.7. The bottom rails are used: bp is the red + rail, bn is the - rail."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 5.4,
+   "input_tokens": 7669,
+   "output_tokens": 326,
+   "cost_usd": 0.0048,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.8,
+   "input_tokens": 15040,
+   "cache_read_tokens": 15038,
+   "output_tokens": 5352,
+   "cost_usd": 0.0565,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 6.0
+}

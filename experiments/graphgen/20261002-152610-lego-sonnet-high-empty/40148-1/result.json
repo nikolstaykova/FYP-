@@ -1,0 +1,103 @@
+{
+ "case": "40148-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 441.6,
+  "input_tokens": 143201,
+  "output_tokens": 66812,
+  "cost_usd": 1.2086,
+  "repair_rounds_used": 1
+ },
+ "parts": 99,
+ "edges": 103,
+ "repeats": [
+  {
+   "group": "leg",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 36,
+ "new_types_added": 33,
+ "problems": [],
+ "notes": [
+  "Fixed port-reuse errors: every stud/anti-stud port is now used by at most one edge. The new part types that sit under several parts (white/green/brown plates, blue 2x4 brick, 2x4 brown slope, 3x2 white slope, 2x2 plate with side studs) now declare numbered stud/anti-stud ports. Port lists on these types are abbreviated to the ports actually used, not every stud.",
+  "Piece Element IDs on the inventory page are blurry. Some are best guesses, for example 4211396 vs 4211397 for the head plate, and 4107762 as a green 1x2 tile. Catalogue types are used only where the ID and description match.",
+  "Which exact stud each piece sits on is an approximation of the pictured stacking. The body is built in steps that flip the model (b1-b21), and the base (b39-b59) is layered in ways the small drawings don't fully show. Stud numbers were chosen so each port is used once.",
+  "Steps 4 and 5 of the body put one pin through each of four tan Technic bricks (b5, b6, b10, b11). Each leg's Technic brick turns on one of these pins (revolute), so the leg repeat uses attach overrides for copies 2-4.",
+  "The head joins the body by its 2x4 plate sitting on the neck 2x3 plate. The tongue clip plate (b35) clips onto the mudguard bar (b20).",
+  "The finished sheep just rests on the base, since page 27 has no build step. The four feet are modelled as contact edges to green tile b53. This is a real contact and not a mistake, so the edges are kept.",
+  "The grey pin with stud (b37, step 14) goes into the rear hole of b4, and the 1x2 plate (b38, step 15) sits on its stud.",
+  "Instruction numbering restarts for each submodel. The body is pages 3-7, the head is pages 8-12 (step 10 attaches it), the legs are steps 12-13, then the pin, the tail plate and the base (pages 16-26)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 246.6,
+   "input_tokens": 61422,
+   "cache_read_tokens": 3110,
+   "output_tokens": 35759,
+   "cost_usd": 0.5915,
+   "check_seconds": 0.01,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 14
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 195.0,
+   "input_tokens": 81779,
+   "cache_read_tokens": 5414,
+   "output_tokens": 31053,
+   "cost_usd": 0.6171,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 14,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 100,
+  "pieces_built": 99,
+  "pieces_unmapped": 5,
+  "inventory_matched": 93,
+  "exact_matched": 93,
+  "inventory_precision": 0.939,
+  "inventory_recall": 0.93,
+  "exact_recall": 0.93,
+  "joined_edges": 99,
+  "contacts_expected": 6,
+  "contacts_predicted": 9,
+  "contacts_correct": 5,
+  "contact_precision": 0.556,
+  "contact_recall": 0.833
+ },
+ "score_initial": {
+  "pieces_expected": 100,
+  "pieces_built": 99,
+  "pieces_unmapped": 5,
+  "inventory_matched": 93,
+  "exact_matched": 93,
+  "inventory_precision": 0.939,
+  "inventory_recall": 0.93,
+  "exact_recall": 0.93,
+  "joined_edges": 99,
+  "contacts_expected": 6,
+  "contacts_predicted": 9,
+  "contacts_correct": 5,
+  "contact_precision": 0.556,
+  "contact_recall": 0.833
+ },
+ "postprocess_ms": 4.0
+}

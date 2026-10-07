@@ -1,0 +1,122 @@
+{
+ "case": "4431-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 868.2,
+  "input_tokens": 694060,
+  "output_tokens": 152490,
+  "cost_usd": 2.7343,
+  "repair_rounds_used": 2
+ },
+ "parts": 205,
+ "edges": 209,
+ "repeats": [
+  {
+   "group": "wheel",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 62,
+ "new_types_added": 58,
+ "problems": [],
+ "notes": [
+  "Element IDs come from the inventory pages (pp. 66-67). Many are not in the catalogue, so new part types were drafted. Their port lists are simplified (generic stud / anti-stud, plus hinge/pin where obvious).",
+  "Two inventory labels, 9342 (red minifig legs, x2) and 9553 (steering wheel on plate, x1), are not valid element IDs, and the catalogue stand-ins lego-970c00 and lego-9566 were also rejected. The red legs b4/b11 now use the generic catalogue type lego-minifig-legs (colour=red). The steering wheel b89 uses a new descriptively named type lego-steering-wheel-on-plate. The original inventory labels are kept in the part labels.",
+  "Counts: 300901 (brick 1x6 white) is 6 and 663601 (tile 1x6 white) is 8, as on the parts page. The extra 300901 are b191-b193 and the extra 663601 are b194-b197. Their stud positions are inferred because the step pictures are small.",
+  "Stickers (star of life, licence plate, ambulance lettering) are not parts and are omitted.",
+  "Most stud edges between repeated pieces (red 1x4 plates, white 1x6 bricks, light grey 1x2 bricks) are plausible rather than read exactly from the pictures. Per-ID piece counts are what I matched.",
+  "Uncertain assignments: 4537987 (white bracket piece, placed at the cab pillar), 4527637 (stretcher pad), 4222017 (medic case body), 4211658 and 4211881 (stretcher IV arm and wheel holders), 4527947 (cab roof plate). The dark-red lights 3005741 and 3000841 are also uncertain: two on the rear roof, two as ends of the rear light row, one on the traffic light and one on the bike.",
+  "Connectivity: the booklet builds the ambulance, the street scene (pavement, bin, hydrant, traffic light) and the bicycle as separate small models, and the minifigs and stretcher separately. The graph links them with contact edges only: paramedics hold the stretcher, the driver sits in the seat, the man stands by the bike, the bike leans on the pavement, and the ambulance's first tire touches the pavement as in the cover scene. Those contact links are display arrangements and not fastened joins. No joined edge crosses between models.",
+  "Wheels are a repeat of 4 (hub 4211764 + tire 4568644) attached to the four wheel holders b28, b29, b34, b35 via attach overrides. The contact edge to 'wheel1.tire' refers to the first expanded copy.",
+  "The rear door pivots on the black hinge plates b119/b120. The roof hatch pivots on the red clip pieces b121/b122. The catalogue has no named hinge ports for those red pieces, so their ports are left null."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 539.7,
+   "input_tokens": 160596,
+   "cache_read_tokens": 3203,
+   "output_tokens": 82256,
+   "cost_usd": 1.4528,
+   "check_seconds": 0.02,
+   "issues": 5,
+   "issue_rules": {
+    "L1": 1,
+    "L2": 3,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 173.6,
+   "input_tokens": 248547,
+   "cache_read_tokens": 160594,
+   "output_tokens": 36148,
+   "cost_usd": 0.7454,
+   "check_seconds": 0.02,
+   "issues": 3,
+   "issue_rules": {
+    "L2": 3
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 154.8,
+   "input_tokens": 284917,
+   "cache_read_tokens": 248545,
+   "output_tokens": 34086,
+   "cost_usd": 0.5361,
+   "check_seconds": 0.02,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 187,
+  "pieces_built": 205,
+  "pieces_unmapped": 3,
+  "inventory_matched": 179,
+  "exact_matched": 179,
+  "inventory_precision": 0.873,
+  "inventory_recall": 0.957,
+  "exact_recall": 0.957,
+  "joined_edges": 201,
+  "contacts_expected": 34,
+  "contacts_predicted": 45,
+  "contacts_correct": 14,
+  "contact_precision": 0.311,
+  "contact_recall": 0.412
+ },
+ "score_initial": {
+  "pieces_expected": 187,
+  "pieces_built": 198,
+  "pieces_unmapped": 3,
+  "inventory_matched": 179,
+  "exact_matched": 179,
+  "inventory_precision": 0.904,
+  "inventory_recall": 0.957,
+  "exact_recall": 0.957,
+  "joined_edges": 194,
+  "contacts_expected": 34,
+  "contacts_predicted": 39,
+  "contacts_correct": 14,
+  "contact_precision": 0.359,
+  "contact_recall": 0.412
+ },
+ "postprocess_ms": 29.7
+}

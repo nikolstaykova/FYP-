@@ -1,0 +1,232 @@
+{
+ "case": "docs-uno-barometric-pressure-web-server",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 261.7,
+  "input_tokens": 125206,
+  "output_tokens": 17522,
+  "cost_usd": 0.4035,
+  "repair_rounds_used": 2
+ },
+ "parts": 12,
+ "edges": 31,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e6: port 'SCK' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e7: port 'SCK' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e10: port 'MOSI' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e11: port 'MOSI' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e14: port 'MISO' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e15: port 'MISO' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e18: port 'DRDY' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e19: port 'DRDY' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e22: port 'CSB' not on pressure-scp1000"
+  ],
+  [
+   "V4",
+   "e23: port 'CSB' not on pressure-scp1000"
+  ]
+ ],
+ "notes": [
+  "The circuit images wire the sensor directly to the shield headers with 7 jumper wires, with no breadboard. The parts list includes a breadboard, but it is omitted because nothing is placed on it.",
+  "The Arduino Uno is stacked under the Ethernet shield, as the manual says. Shield-to-Uno is a single joined edge with no ports.",
+  "The catalogue entry for pressure-scp1000 lists ports VCC, GND, SDA, SCL, XCLR, EOC. The images show a 7-pin SCP1000 breakout, so I used the pin labels printed on it: GND, 3.3V (as VCC), SCK, MOSI, MISO, CSB, DRDY. These do not all exist in the catalogue port list.",
+  "DRDY goes to D6 and CSB goes to D7, as in the manual text and the schematic crossover.",
+  "D13 goes to SCK, D12 to MOSI and D11 to MISO, as the images show. The sketch comments say MOSI is 11 and MISO is 12, which the images contradict. I followed the images.",
+  "Power comes from the shield's 3V3 pin (red wire) and ground from a shield Gnd pin (black wire, GND_1).",
+  "The Ethernet cable plugs into the shield's RJ45 jack, which has no catalogue port, so that edge has no shield port. Only end A1 is named on the cable. The far end goes to a network and is not drawn. The USB cable powers and programs the Uno, with no port named.",
+  "The E2 findings (shield1:ICSP_GND wired to GND, shield1:ICSP_5V wired to 5V) are not real problems in this build, so I changed nothing. No edge in this graph touches ICSP_GND, ICSP_5V or the 5V pin. They are reported only because the catalogue's shield ties ICSP_GND to the GND pins and ICSP_5V to 5V inside the board. That is how the real shield works, and the manual does not wire the ICSP header. The only power and ground connections are the 3V3 wire and the GND_1 wire."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 196.2,
+   "input_tokens": 67526,
+   "output_tokens": 5524,
+   "cost_usd": 0.2031,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 7,
+   "ingested": 3,
+   "ingest": [
+    {
+     "part": "SCP1000 Pressure Sensor Breakout Board",
+     "type": "pressure-scp1000",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/barometric-pressure-sensor-mpl115a1.html (The page sells the bare MPL115A1 (SEN-09602), a 5x3 mm SPI barometer chip. It is)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-pressure-sensor-breakout-ms5803-14ba.html (The page sells the SparkFun MS5803-14BA breakout (SEN-12909). That is a differen)"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/1646"
+      ]
+     ],
+     "seconds": 76.6
+    },
+    {
+     "part": "Arduino Ethernet Shield",
+     "type": "arduino-ethernet-shield",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-micromod-ethernet-function-board-w5500.html (The page sells the SparkFun MicroMod Ethernet Function Board (W5500, COM-18708).)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/w5500-evb-pico.html (This page sells the W5500-EVB-Pico. It is an RP2040 microcontroller board with a)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2472 (This page sells the Arduino Y\u00fan (a Leonardo-class board with built-in Linux, Eth)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/W5500-Ethernet-Shield.html"
+      ]
+     ],
+     "seconds": 85.2
+    },
+    {
+     "part": "Ethernet cable",
+     "type": "cable-ethernet",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Black-Ethernet-Cable-1-Meter.html"
+      ]
+     ],
+     "seconds": 28.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.0,
+   "input_tokens": 14411,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4651,
+   "cost_usd": 0.0832,
+   "check_seconds": 0.0,
+   "issues": 12,
+   "issue_rules": {
+    "V4": 10,
+    "E2": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.4,
+   "input_tokens": 19636,
+   "cache_read_tokens": 14409,
+   "output_tokens": 3692,
+   "cost_usd": 0.0607,
+   "check_seconds": 0.0,
+   "issues": 12,
+   "issue_rules": {
+    "V4": 10,
+    "E2": 2
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.1,
+   "input_tokens": 23633,
+   "cache_read_tokens": 19634,
+   "output_tokens": 3655,
+   "cost_usd": 0.0565,
+   "check_seconds": 0.0,
+   "issues": 12,
+   "issue_rules": {
+    "V4": 10,
+    "E2": 2
+   }
+  }
+ ],
+ "issues_first": 12,
+ "issues_final": 12,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 13.8
+}

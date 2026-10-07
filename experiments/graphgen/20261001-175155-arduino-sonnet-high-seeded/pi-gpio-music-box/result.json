@@ -1,0 +1,46 @@
+{
+ "case": "pi-gpio-music-box",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 44.1,
+  "api_seconds": 39.9,
+  "first_token_seconds": 16.3,
+  "input_tokens": 20078,
+  "cache_read_tokens": 5414,
+  "output_tokens": 7275,
+  "cost_usd": 0.1325,
+  "turns": 2
+ },
+ "parts": 16,
+ "edges": 68,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V2",
+   "part spk1 (speaker) has no connection"
+  ]
+ ],
+ "notes": [
+  "The manual's wiring diagrams are pulled in from include blocks and not shown, so the exact breadboard layout is assumed from the standard Raspberry Pi 'wiring a button' pattern.",
+  "Each button straddles the breadboard centre gap. Its 1.l and 1.r legs sit in the top bank and its 2.l and 2.r legs in the bottom bank. I assumed 1.l/1.r are one internal side and 2.l/2.r the other, and that pressing joins the two sides.",
+  "Four of the five pin-to-socket jumper leads carry GPIO4, GPIO17, GPIO27 and GPIO10 (the pins used in the code listing) to the top strip of each button. The fifth carries Pi GND.1 to the bottom negative rail (bn.1).",
+  "The four pin-to-pin jumper leads link the bottom strip of each button to that ground rail. The socket end of each pin-to-socket lead (port a) goes on the Pi header and the pin end (port b) goes into the breadboard.",
+  "The speakers or headphones plug into the Pi's 3.5 mm audio jack, which is not a port in the catalogue's raspberry-pi entry. The speaker is therefore listed as a part with no edge.",
+  "The sound files, pygame and gpiozero are software and are not part of the graph."
+ ],
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 10.6
+}

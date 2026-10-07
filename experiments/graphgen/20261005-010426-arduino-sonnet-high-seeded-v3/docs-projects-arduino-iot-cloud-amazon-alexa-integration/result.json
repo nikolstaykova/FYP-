@@ -1,0 +1,142 @@
+{
+ "case": "docs-projects-arduino-iot-cloud-amazon-alexa-integration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 88.4,
+  "input_tokens": 57678,
+  "output_tokens": 8870,
+  "cost_usd": 0.2115,
+  "repair_rounds_used": 0
+ },
+ "parts": 16,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [
+  [
+   "V3",
+   "e1: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e3: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e5: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e7: header-pin \u2194 header-pin is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The schematic image was not available; wiring is inferred from the sketch pin defines: D5 = white LED (meeting room), D2 = RGB red, D3 = RGB blue, D4 = RGB green, common cathode and white LED cathode to GND.",
+  "The 4 x 220 ohm resistors are one per LED channel (1 white, 3 RGB), each in series between the Arduino pin and the LED anode/colour lead.",
+  "Breadboard hole positions are my own layout choice; the manual doesn't give them. Resistors bridge the centre gap of the breadboard.",
+  "The MKR ENV Shield is stacked on top of the MKR WiFi 1010 and is used over I2C (SDA=D11, SCL=D12) plus power. It isn't in the catalogue, so a minimal new part type was added with only its power and I2C ports. Jumper wires are attached to the MKR board pins, which the shield passes through.",
+  "The Arduino Cloud and Alexa steps are software only and add no parts."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 36.4,
+   "input_tokens": 42997,
+   "output_tokens": 1267,
+   "cost_usd": 0.0977,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 7,
+   "ingested": 0,
+   "ingest": [
+    {
+     "part": "Arduino MKR ENV Shield",
+     "type": "shield-arduino-mkr-env",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/teensy-arduino-shield-adapter.html (This page sells the SparkFun Teensy Arduino Shield Adapter (KIT-15716). It is an)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-qwiic-shield-for-arduino-nano.html (This page sells the SparkFun Qwiic Shield for Arduino Nano (DEV-16789). That is )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The page sells the Arduino MKR CAN Shield, not the MKR ENV Shield. These are dif)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-485-SHIELD-p-3179.html (The page sells the Arduino MKR 485 Shield (RS-485 serial). The part asked for wa)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 28.7
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 52.0,
+   "input_tokens": 14681,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7603,
+   "cost_usd": 0.1138,
+   "check_seconds": 0.01,
+   "issues": 4,
+   "issue_rules": {
+    "V3": 4
+   }
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 4,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "shield-arduino-mkr-env",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.2
+}

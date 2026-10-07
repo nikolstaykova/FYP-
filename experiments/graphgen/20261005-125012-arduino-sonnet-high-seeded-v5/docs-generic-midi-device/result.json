@@ -1,0 +1,78 @@
+{
+ "case": "docs-generic-midi-device",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 99.7,
+  "input_tokens": 62835,
+  "output_tokens": 17479,
+  "cost_usd": 0.2419,
+  "repair_rounds_used": 0
+ },
+ "parts": 30,
+ "edges": 136,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as in step 1; no changes.",
+  "Each button straddles the breadboard centre gap. Side 1 (1.l/1.r) is in the top half (rows f-j, bank 'b'). Side 2 (2.l/2.r) is in the bottom half (rows a-e, bank 't'). The image labels rows J..A from top to bottom, so I mapped rows f-j to bank 'b' and rows a-e to bank 't' to match the catalogue naming.",
+  "Button columns, read from the image: S1 1/3, S2 7/9, S3 13/15, S4 19/21, S5 25/27, S6 31/33, S7 37/39. The signal jumper (D2-D8) goes in the right-hand column of the top half. The ground jumper goes in the same column of the bottom half (row a) and runs to the bottom negative rail. Both are on the button's right-hand column, so the signal and ground sides are on opposite sides of the switch, as in the schematic.",
+  "Rail hole numbers are my estimate of the position in the image: groups of 5 holes, with the first hole at column 3. The top rail row next to the blue line is 'tn' and the row next to the red line is 'tp'. The same applies to the bottom rails. The exact hole numbers could be off, but each wire ends on the correct rail.",
+  "The image shows the long black jumper joining the top negative rail to the bottom negative rail (tn.48 to bn.48). Arduino GND feeds tn.29, so every button and the potentiometer GND share ground.",
+  "The potentiometer's supply comes from the Zero's IOREF pin (3.3 V, as in the schematic and image) through the red jumper to the tp rail, then on to the pot. IOREF is 3.3 V here, which suits the Zero's 3.3 V-only analog input.",
+  "Pot VCC and GND are interchangeable (symmetric). The yellow wire from A0 goes to the wiper (SIG).",
+  "The Zero's digital-header GND is mapped to the catalogue port GND.1.",
+  "No external resistors: the buttons use INPUT_PULLUP in the sketch, and the tutorial lists none."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.9,
+   "input_tokens": 29990,
+   "cache_read_tokens": 17357,
+   "output_tokens": 2611,
+   "cost_usd": 0.0801,
+   "check_seconds": 0.0,
+   "parts_listed": 30,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 81.8,
+   "input_tokens": 32845,
+   "cache_read_tokens": 29988,
+   "output_tokens": 14868,
+   "cost_usd": 0.1618,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 16.9
+}

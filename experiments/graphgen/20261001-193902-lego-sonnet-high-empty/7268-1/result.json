@@ -1,0 +1,98 @@
+{
+ "case": "7268-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 98.9,
+  "input_tokens": 30485,
+  "output_tokens": 16528,
+  "cost_usd": 0.2022,
+  "repair_rounds_used": 1
+ },
+ "parts": 26,
+ "edges": 25,
+ "repeats": [],
+ "new_types_declared": 9,
+ "new_types_added": 9,
+ "problems": [],
+ "notes": [
+  "The supplied PDF contains only the instruction pages (steps 1-8); the inventory page with Element IDs was not included, so part types use LEGO design numbers (lego-<design id>, with a/b suffix variants for the antenna and round brick) from visual identification, not verified Element IDs.",
+  "The steps are small isometric pictures, so part identities, counts and exact attachment points (especially the leg/claw joints, modelled as stud connections on 1x2 handle plates) are best-effort estimates.",
+  "Each stud/anti-stud port is used by at most one join; the specific stud numbers are arbitrary labels chosen to keep joins distinct, not exact grid positions from the pictures.",
+  "The antenna is modelled with an anti-stud base (it sits on a stud) rather than a pin, so the stud/anti-stud join is compatible.",
+  "The leg plates (b16-b19, b25, b26) are modelled as hanging below the red handle plates, the side with their anti-studs; this is an approximation.",
+  "Step 8 sub-assembly (claw: dark grey handle plate, red 2x2, black 2x2, two orange plates) is attached at the left front of the body; I approximated this with a single clip joint to the base plate with no specific port.",
+  "Page 2 is a promotional page showing other models (scorpion, bird, combined spider); these are not built from this booklet and are not included."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.5,
+   "input_tokens": 11183,
+   "cache_read_tokens": 11181,
+   "output_tokens": 7339,
+   "cost_usd": 0.0756,
+   "check_seconds": 0.0,
+   "issues": 13,
+   "issue_rules": {
+    "V3": 2,
+    "V4": 8,
+    "L2": 3
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 51.4,
+   "input_tokens": 19302,
+   "cache_read_tokens": 11181,
+   "output_tokens": 9189,
+   "cost_usd": 0.1266,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 13,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 32,
+  "pieces_built": 26,
+  "pieces_unmapped": 0,
+  "inventory_matched": 8,
+  "exact_matched": 0,
+  "inventory_precision": 0.308,
+  "inventory_recall": 0.25,
+  "exact_recall": 0.0,
+  "joined_edges": 25,
+  "contacts_expected": 2,
+  "contacts_predicted": 8,
+  "contacts_correct": 0,
+  "contact_precision": 0.0,
+  "contact_recall": 0.0
+ },
+ "score_initial": {
+  "pieces_expected": 32,
+  "pieces_built": 26,
+  "pieces_unmapped": 3,
+  "inventory_matched": 8,
+  "exact_matched": 0,
+  "inventory_precision": 0.308,
+  "inventory_recall": 0.25,
+  "exact_recall": 0.0,
+  "joined_edges": 25,
+  "contacts_expected": 2,
+  "contacts_predicted": 8,
+  "contacts_correct": 0,
+  "contact_precision": 0.0,
+  "contact_recall": 0.0
+ },
+ "postprocess_ms": 2.1
+}

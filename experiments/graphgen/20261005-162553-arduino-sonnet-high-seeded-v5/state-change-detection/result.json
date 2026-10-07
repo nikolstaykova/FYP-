@@ -1,0 +1,204 @@
+{
+ "case": "state-change-detection",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 55.1,
+  "input_tokens": 39362,
+  "output_tokens": 7526,
+  "cost_usd": 0.1123,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1; no part was added or dropped.",
+  "Circuit: 5V -> red wire -> + rail -> orange wire -> button column 4 (side 1). Button column 6 (side 2) -> teal wire to Arduino pin 2, and also -> 10k resistor -> column 9 -> short black wire -> GND rail -> black wire -> Arduino GND. This matches the schematic: pin 2 sits between the button and the pull-down resistor.",
+  "The breadboard image is drawn with rows j-f at the top and e-a at the bottom. The catalogue calls rows a-e bank 't' and rows f-j bank 'b'. So the lower half of the image is bank 't' and the rails next to it are 'tp' (+, lower line) and 'tn' (-, upper line).",
+  "Rail hole numbers (tp.1, tp.3, tn.1, tn.8) only record roughly where each wire sits. Each rail is one strip, so the numbers don't change the connectivity.",
+  "The button straddles the centre gap with legs in columns 4 and 6. I took the two legs in the same column (top and bottom of the gap) to be the internally joined pair. Side 1 is column 4 (1.l = 4b.f, 1.r = 4t.e). Side 2 is column 6 (2.l = 6b.f, 2.r = 6t.e).",
+  "The black wire goes to the GND pin on the Uno power header. I mapped it to GND.1, since the image doesn't say which GND pin it is. All Uno GND pins are the same net.",
+  "The LED on pin 13 is the Arduino's built-in LED, so no external LED is built."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 9.5,
+   "input_tokens": 19094,
+   "cache_read_tokens": 12122,
+   "output_tokens": 993,
+   "cost_usd": 0.0402,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 45.6,
+   "input_tokens": 20268,
+   "cache_read_tokens": 19092,
+   "output_tokens": 6533,
+   "cost_usd": 0.0721,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.1
+}

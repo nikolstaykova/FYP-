@@ -1,0 +1,95 @@
+{
+ "case": "docs-uno-barometric-pressure-web-server",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 93.1,
+  "input_tokens": 61893,
+  "output_tokens": 8052,
+  "cost_usd": 0.1235,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1. lookup_part found neither the Ethernet Shield nor the SCP1000 breakout, so both are new part types.",
+  "Correction to the step 1 note: the manual text, circuit image and schematic agree. D6 goes to DRDY and D7 goes to CSB (the schematic crosses the lines to show this).",
+  "The SPI wires follow the image and schematic: D13 to SCK, D12 to MOSI, D11 to MISO. This matches the image even though the sketch comment lists MOSI=11 and MISO=12.",
+  "The sensor is powered from the 3.3 V pin (red wire) and grounded through the shield's first Gnd pin (black wire). These are the power-header pins the image shows.",
+  "The Uno sits under the Ethernet shield. I modelled this as one joined edge with no ports, plus electrical pass-through edges for the pins the circuit uses.",
+  "No breadboard is used. The Ethernet cable to the network is not a circuit part, so it is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.8,
+   "input_tokens": 39194,
+   "cache_read_tokens": 32279,
+   "output_tokens": 2562,
+   "cost_usd": 0.0581,
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-ethernet-shield",
+    "scp1000"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.3,
+   "input_tokens": 22699,
+   "cache_read_tokens": 20125,
+   "output_tokens": 5490,
+   "cost_usd": 0.0654,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-ethernet-shield",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "scp1000",
+   "family": "scp1000",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.3
+}

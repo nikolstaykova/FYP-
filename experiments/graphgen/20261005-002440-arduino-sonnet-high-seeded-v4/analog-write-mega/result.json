@@ -1,0 +1,77 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 62.2,
+  "input_tokens": 19305,
+  "output_tokens": 9578,
+  "cost_usd": 0.1307,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [
+  {
+   "group": "ledch",
+   "times": 12,
+   "overrides": 88
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Each of the 12 channels is a jumper wire from Mega pins 13 down to 2 into the breadboard bottom half (bank 't'), a 220 ohm resistor across the centre gap, a red LED in the upper half (bank 'b'), and a black jumper from the LED cathode column to the ground rail. The ground rail is wired to a Mega GND pin.",
+  "Pin-to-column mapping read from the circuit image: 13->col2, 12->4, 11->6, 10->8, 9->10, 8->12, 7->15, 6->17, 5->20, 4->23, 3->26, 2->28. The LED anode shares the resistor's column, and the cathode is in the next column (N+1).",
+  "The image shows the breadboard rotated, so rows a-e are at the bottom and f-j at the top. I mapped the bottom half to bank 't' and the top half to bank 'b'. Exact row letters (c, e, f, h, j) are approximate.",
+  "The catalogue doesn't say which rail is the top ground rail. I used 'tn' and numbered its holes to match the column position of each wire. Rail hole numbers are approximate.",
+  "The manual calls for 220 ohm resistors, red LEDs and 'hook-up wires', and I used jumper-wire for all of them. The tutorial doesn't use the Mega GND header pin number, so I used GND.1 for the ground wire. The image shows it going to the digital-side GND next to AREF."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.2,
+   "input_tokens": 19305,
+   "cache_read_tokens": 11120,
+   "output_tokens": 9578,
+   "cost_usd": 0.1307,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 17.5
+}

@@ -1,0 +1,104 @@
+{
+ "case": "30055-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 137.5,
+  "input_tokens": 218045,
+  "output_tokens": 19250,
+  "cost_usd": 0.6714,
+  "repair_rounds_used": 1
+ },
+ "parts": 31,
+ "edges": 30,
+ "repeats": [
+  {
+   "group": "pod",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The booklet has no inventory page with Element IDs, so every element ID was matched by eye to the closest catalogue entry. Colours are in props.",
+  "The main body is a dark-grey wedge plate. The nearest catalogue entry, lego-wedge-plate-4x4-cut, is a guess.",
+  "The body is drawn with a blue plate already on it in step 1, and a light-grey piece appears between the two blue plates in step 2. I modelled two blue 2x2 plates plus a light-grey 2x2 plate, all on body studs.",
+  "The black arm in cockpit step 2 does not appear in any parts box. To keep clip joins valid I modelled it as a plain rod (lego-6093525) clipped between the cockpit plate (lego-4219913) and the body's underside clip plate (lego-clip-plate-1x2, step 6). The real piece has a curled end.",
+  "Catalogue entries with a single stud port cannot name a separate port per attached part (the body wedge plate, the round plate under the sub-assembly, the plate with side pins, and the pod blue plates). Where a port holds several parts I named it on one edge and left it null on the others, which means a stud connection with no specific port.",
+  "The sub-assembly in step 5 is a round plate 2x2, a blue 1x2 plate, a light-grey 1x2 plate with side pins and two trans-light-blue round plates. Its two pins hold the clips of the two side pods in step 7.",
+  "The side pod is built 2x (copy 2 clips onto pin.2). Per pod I modelled two blue 1x4 plates, two curved slopes and two grille tiles. Step 4 may show an extra blue plate per pod, which I could not confirm.",
+  "The black clip plate under the body (step 3) is modelled as joined to the body, but it may press onto the blue plate."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 102.7,
+   "input_tokens": 100289,
+   "cache_read_tokens": 3203,
+   "output_tokens": 13430,
+   "cost_usd": 0.5233,
+   "check_seconds": 0.03,
+   "issues": 8,
+   "issue_rules": {
+    "V3": 1,
+    "V4": 7
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.7,
+   "input_tokens": 117756,
+   "cache_read_tokens": 100287,
+   "output_tokens": 5820,
+   "cost_usd": 0.1481,
+   "check_seconds": 0.04,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 8,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 42,
+  "pieces_built": 31,
+  "pieces_unmapped": 2,
+  "inventory_matched": 15,
+  "exact_matched": 7,
+  "inventory_precision": 0.484,
+  "inventory_recall": 0.357,
+  "exact_recall": 0.167,
+  "joined_edges": 30,
+  "contacts_expected": 0,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": null
+ },
+ "score_initial": {
+  "pieces_expected": 42,
+  "pieces_built": 31,
+  "pieces_unmapped": 1,
+  "inventory_matched": 16,
+  "exact_matched": 8,
+  "inventory_precision": 0.516,
+  "inventory_recall": 0.381,
+  "exact_recall": 0.19,
+  "joined_edges": 30,
+  "contacts_expected": 0,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": null
+ },
+ "postprocess_ms": 34.6
+}

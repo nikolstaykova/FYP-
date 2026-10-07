@@ -1,0 +1,472 @@
+{
+ "case": "joystick-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 130.3,
+  "input_tokens": 80698,
+  "output_tokens": 12719,
+  "cost_usd": 0.2495,
+  "repair_rounds_used": 1
+ },
+ "parts": 12,
+ "edges": 46,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The Leonardo is in the catalogue as arduino-leonardo, although the parts list matched it to None.",
+  "The joystick breakout's VER pin goes to A0 and its HOR pin to A1 (circuit image and schematic). The tutorial text says x-axis on A0 and y-axis on A1, so VER is mapped to catalogue port Xout and HOR to Yout.",
+  "Fix for the reported short: the earlier version put all five joystick pins, and all five jumper-wire ends, in rows f-j of a single column. On a real breadboard that is one strip, so it tied 5V, GND, pin 6, A0 and A1 together. Each joystick signal now has its own column (8 to 12). Each jumper wire sits in the same column as its pin, one row below it, so each wire still reaches only its own pin.",
+  "The image draws the pins in a vertical line at a single column. That is a drawing simplification; the electrical connections are the same as in the image and schematic.",
+  "In the image the breadboard has row labels j-f on the top half and e-a on the bottom half. I followed those labels: the top half is bank 'b' (rows f-j) and the bottom half is bank 't' (rows a-e). This is the reverse of the catalogue's bank naming.",
+  "The optional status LED on pin 5 (via the 220 ohm resistor to GND) is included. Its breadboard placement is my own choice, since the manual gives no layout. The LED cathode returns to the Leonardo's GND.2, which is the same GND net as the joystick ground, as intended.",
+  "The optional second pushbutton (pin 3, 10k pulldown) is not built because the manual refers to the separate button tutorial for it. The Leonardo's micro-USB cable to the computer is also not modelled.",
+  "The pushbutton is integrated in the joystick (SEL pin), so no separate pulldown is used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 65.1,
+   "check_seconds": 0.0,
+   "input_tokens": 35744,
+   "output_tokens": 1633,
+   "cost_usd": 0.0523,
+   "listed": 6,
+   "matched": 4,
+   "looked_up": 2,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Leonardo, Micro, or Due board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1947 (The content describes the Adafruit 2.8\" TFT Touch Shield with Capacitive Touch ()"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-uno-r4-minima.html (The page describes the Arduino UNO R4 Minima (DEV-22633, Renesas RA4M1). The par)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2521 (The content describes the Pololu Zumo Shield for Arduino v1.3 (a motor driver sh)"
+      ],
+      [
+       "budget",
+       "stopped after 3 checks"
+      ]
+     ],
+     "seconds": 19.9
+    },
+    {
+     "item": "2 axis joystick",
+     "card": "joystick-analog-2axis",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/512"
+      ]
+     ],
+     "seconds": 26.1
+    },
+    {
+     "item": "momentary pushbutton (possibly integrated in the joystick)",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "LED",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "220 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "10k ohm resistor (if needed as pulldown)",
+     "card": "resistor",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.2,
+   "input_tokens": 19096,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6068,
+   "cost_usd": 0.1161,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "E1": 1,
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.0,
+   "input_tokens": 25858,
+   "cache_read_tokens": 19094,
+   "output_tokens": 5018,
+   "cost_usd": 0.0811,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 7,
+  "nets_matched": 2,
+  "net_precision": 0.286,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "joystick": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "joystick",
+     "VERT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "joystick",
+     "HORZ"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "joystick",
+     "XOUT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "joystick",
+     "YOUT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "joystick",
+     "SEL"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 8,
+  "nets_built": 4,
+  "nets_matched": 2,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "joystick": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "joystick",
+     "VERT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "joystick",
+     "HORZ"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "joystick",
+     "SEL"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ],
+    [
+     "joystick",
+     "XOUT"
+    ],
+    [
+     "joystick",
+     "YOUT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "6"
+    ],
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.7
+}

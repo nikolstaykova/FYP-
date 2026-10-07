@@ -1,0 +1,152 @@
+{
+ "case": "60059-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 854.6,
+  "input_tokens": 771578,
+  "output_tokens": 149370,
+  "cost_usd": 2.8043,
+  "repair_rounds_used": 2
+ },
+ "parts": 227,
+ "edges": 274,
+ "repeats": [
+  {
+   "group": "log",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "wheelstation",
+   "times": 6,
+   "overrides": 4
+  },
+  {
+   "group": "guard",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 57,
+ "new_types_added": 53,
+ "problems": [
+  [
+   "V2",
+   "part b16 (lego-243528) has no connection"
+  ],
+  [
+   "V2",
+   "part b17 (lego-243528) has no connection"
+  ]
+ ],
+ "notes": [
+  "Steps are pictures only; where the picture does not show exactly which stud a piece sits on, I chose the most plausible neighbouring part. Ports are left null on most joins for that reason.",
+  "Element IDs were read from the inventory pages (78-79). Parts not in the catalogue got new types, with names and ports inferred from the step images.",
+  "b68 uses lego-9566 because the booklet's parts page prints exactly '9566' for the blue steering wheel on a plate. I reverted my earlier invented 956623, which is not on the page. Page 78 prints this id as shown, so I kept it.",
+  "[L1] The two count mismatches look like artifacts of the extracted text, which lists some ids twice. 4211452 (grey plate 2x6): the picture shows '2x', and the build uses it exactly twice, in steps 14 and 16. 6037621 (roof rack): only one rack is pictured and built, in step 31. I kept 2 and 1 pieces. Adding pieces that no step uses would make the graph wrong.",
+  "[L3] The booklet builds one model, the logging truck. The chainsaw rests on the truck rear in the final picture (page 74), so it has a contact edge to the rear deck plate. It is also held by the chainsaw minifig (page 5), so that minifig is linked through a contact edge. The lumberjack in the cab has a contact edge to the cab floor. The two logs rest on the deck, so each has a contact edge to the green 4x6 or 2x3 deck plates. These contact edges are approximate.",
+  "[V2/L3] Tree 1 (b16) and tree 2 (b17) are loose accessories. Pages 3 and 5 show them as separate pieces, and page 74 shows them standing on the ground beside the truck, touching nothing. I kept them as separate nodes and did not invent a connection. That is why they have no edges and why the graph has two extra separate groups.",
+  "Catalogue entries lego-614126, lego-4225201 and lego-4538007 were reused because the ID matches. Their catalogue descriptions differ from the booklet pictures (small black round plate; cab mirror; liftarm piece).",
+  "Element 4210678 is drawn as a black 2x10 plate. 6039176 is a black plate roughly 3x3. 4184169 is the black pin rod on the crane claw. Names are best guesses.",
+  "The two logs are one repeat (2x). Each is 10 round bricks (4211166) on a ribbed rod (370826), with one end clip (4648118) placed after the 5th brick. The 6 wheel stations (holder, green plate, mudguard, hub, tyre) are one repeat. The wheel-holder-to-chassis joins are approximate: copies 1-2 sit on the rear plate, 3-4 on the middle plate and 5-6 on the front plate.",
+  "Both side-guard assemblies (step 15, 2x) are one repeat. They attach to the two 1x16 side bricks.",
+  "Stickers (grille, number plate, hazard stripes, side logos) are not parts and are omitted.",
+  "Chain joins (pair across the truck) and the exact position of cab clips, mirrors and beacons are approximated from the small step images."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 490.8,
+   "input_tokens": 192965,
+   "cache_read_tokens": 5507,
+   "output_tokens": 72886,
+   "cost_usd": 1.4798,
+   "check_seconds": 0.02,
+   "issues": 5,
+   "issue_rules": {
+    "V2": 2,
+    "L1": 1,
+    "L2": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 202.2,
+   "input_tokens": 268805,
+   "cache_read_tokens": 192963,
+   "output_tokens": 40718,
+   "cost_usd": 0.7491,
+   "check_seconds": 0.07,
+   "issues": 4,
+   "issue_rules": {
+    "V2": 2,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 161.5,
+   "input_tokens": 309808,
+   "cache_read_tokens": 268803,
+   "output_tokens": 35766,
+   "cost_usd": 0.5754,
+   "check_seconds": 0.02,
+   "issues": 5,
+   "issue_rules": {
+    "V2": 2,
+    "L1": 1,
+    "L2": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 5,
+ "score": {
+  "pieces_expected": 219,
+  "pieces_built": 227,
+  "pieces_unmapped": 1,
+  "inventory_matched": 217,
+  "exact_matched": 217,
+  "inventory_precision": 0.956,
+  "inventory_recall": 0.991,
+  "exact_recall": 0.991,
+  "joined_edges": 269,
+  "contacts_expected": 25,
+  "contacts_predicted": 37,
+  "contacts_correct": 7,
+  "contact_precision": 0.189,
+  "contact_recall": 0.28
+ },
+ "score_initial": {
+  "pieces_expected": 219,
+  "pieces_built": 227,
+  "pieces_unmapped": 1,
+  "inventory_matched": 217,
+  "exact_matched": 217,
+  "inventory_precision": 0.956,
+  "inventory_recall": 0.991,
+  "exact_recall": 0.991,
+  "joined_edges": 269,
+  "contacts_expected": 25,
+  "contacts_predicted": 37,
+  "contacts_correct": 7,
+  "contact_precision": 0.189,
+  "contact_recall": 0.28
+ },
+ "postprocess_ms": 12.1
+}

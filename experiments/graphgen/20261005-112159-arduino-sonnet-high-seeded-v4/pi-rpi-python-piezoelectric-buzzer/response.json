@@ -1,0 +1,420 @@
+{
+ "graph": {
+  "title": "Piezoelectric buzzer on Raspberry Pi (GPIO17)",
+  "source_id": "buzzer-circuit (Raspberry Pi Foundation gpiozero buzzer tutorial)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "buzzer1",
+    "type": "buzzer",
+    "label": "Piezoelectric buzzer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Black jumper wire (ground)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Purple jumper wire (GPIO17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "purple"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "18t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "18t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The image labels the breadboard's lower half rows a-e (row a at the bottom), which matches catalogue bank 't' (rows a-e). The buzzer legs go in 15t.a (black, negative) and 18t.a (purple, positive).",
+   "A breadboard hole holds one lead. The image draws each wire end in the same column as a buzzer leg, but the two can't share a hole. I put each jumper wire in the next hole up the same column strip (15t.b and 18t.b). The electrical result is the same.",
+   "Buzzer port '1' is assumed to be the positive leg and '2' the negative leg. The catalogue does not say which is which.",
+   "The ground wire goes to the GND pin next to GPIO17 (physical pin 9). I assumed this is catalogue port GND.2, because the catalogue does not give the GND numbering.",
+   "Jumper wires are male-to-female. Port 'a' is the male end in the breadboard and port 'b' is the female end on the Pi header pin.",
+   "The image labels the header with Pico-style names (GP17), but the manual says GPIO 17 on a Raspberry Pi, so I used the raspberry-pi part.",
+   "No resistor is used, as in the manual."
+  ]
+ },
+ "graph_initial": {
+  "title": "Piezoelectric buzzer on Raspberry Pi (GPIO17)",
+  "source_id": "buzzer-circuit (Raspberry Pi Foundation gpiozero buzzer tutorial)",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "buzzer1",
+    "type": "buzzer",
+    "label": "Piezoelectric buzzer",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Black jumper wire (ground)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Purple jumper wire (GPIO17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "purple"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "buzzer1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "18t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The image labels the breadboard's lower half rows a-e (row a at the bottom), which matches catalogue bank 't' (rows a-e). The buzzer legs and wire ends are therefore at 15t.a (black, negative) and 18t.a (purple, positive).",
+   "Buzzer port '1' is assumed to be the positive leg and '2' the negative leg. The catalogue does not say which is which.",
+   "The ground wire goes to the GND pin next to GPIO17 (physical pin 9). I assumed this is catalogue port GND.2, because the catalogue does not give the GND numbering.",
+   "Jumper wires are male-to-female. Port 'a' is the male end in the breadboard and port 'b' is the female end on the Pi header pin.",
+   "The image labels the header with Pico-style names (GP17), but the manual says GPIO 17 on a Raspberry Pi, so I used the raspberry-pi part.",
+   "No resistor is used, as in the manual."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 30.5,
+  "input_tokens": 39108,
+  "output_tokens": 4064,
+  "cost_usd": 0.0704,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.8,
+   "input_tokens": 18285,
+   "cache_read_tokens": 15067,
+   "output_tokens": 2247,
+   "cost_usd": 0.0384,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.7,
+   "input_tokens": 20823,
+   "cache_read_tokens": 18283,
+   "output_tokens": 1817,
+   "cost_usd": 0.032,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "final_issue_list": []
+}

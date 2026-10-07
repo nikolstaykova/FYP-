@@ -1,0 +1,659 @@
+{
+ "graph": {
+  "title": "Connect motors and battery pack to a Raspberry Pi motor controller board",
+  "source_id": "camjam-edukit3-motor-controller-connect",
+  "new_part_types": [
+   {
+    "type": "motor-controller-camjam",
+    "name": "CamJam EduKit 3 Motor Controller Board (Pi GPIO HAT, 3 terminal blocks)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MOTOR_A.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "MOTOR_A.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "MOTOR_B.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "MOTOR_B.2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "lug"
+     },
+     {
+      "name": "GND",
+      "kind": "lug"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO_HEADER",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "MOTOR_A.1",
+      "MOTOR_A.2"
+     ],
+     [
+      "MOTOR_B.1",
+      "MOTOR_B.2"
+     ]
+    ],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "rpi-3b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "mc1",
+    "type": "motor-controller-camjam",
+    "label": "motor controller board",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "battery-holder-4xaa",
+    "label": "battery pack",
+    "props": [
+     {
+      "key": "cells",
+      "value": "4xAA"
+     }
+    ]
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "motor (left)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "motor (right)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mc1",
+    "v_port": "VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mc1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mc1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mc1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_B.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_B.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_B.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_B.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_A.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_A.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_A.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_A.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Fix: the motor leads are 'lead' ports and the controller's motor terminals were 'lug' ports, which is not a compatible pair. The motor terminal ports (Motor A and Motor B) are now kind header-socket, which accepts a lead. The connections are unchanged.",
+   "Parts are the same as in step 1. No parts were added or dropped.",
+   "The battery pack's red lead goes to VIN and its black lead to GND, as the manual requires. The pack must be switched off while this is wired.",
+   "The motors can go either way round. Motor 1 is on the Motor B block and motor 2 on the Motor A block. Which motor goes on which block is not specified.",
+   "The board plugs straight onto the Pi's GPIO header. The catalogue's rpi-3b card only has a GPIO_HEADER port, so the join is made between the two GPIO_HEADER ports. GPIO 7, 8, 9 and 10 are the pins the board uses.",
+   "The motor and battery leads are attached to the motors and the battery pack, so no separate jumper wires are used. They are clamped in the terminal blocks with screws.",
+   "The Pi is powered separately (its own USB supply), not from the battery pack."
+  ]
+ },
+ "graph_initial": {
+  "title": "Connect motors and battery pack to a Raspberry Pi motor controller board",
+  "source_id": "camjam-edukit3-motor-controller-connect",
+  "new_part_types": [
+   {
+    "type": "motor-controller-camjam",
+    "name": "CamJam EduKit 3 Motor Controller Board (Pi GPIO HAT, 3 terminal blocks)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MOTOR_A.1",
+      "kind": "lug"
+     },
+     {
+      "name": "MOTOR_A.2",
+      "kind": "lug"
+     },
+     {
+      "name": "MOTOR_B.1",
+      "kind": "lug"
+     },
+     {
+      "name": "MOTOR_B.2",
+      "kind": "lug"
+     },
+     {
+      "name": "VIN",
+      "kind": "lug"
+     },
+     {
+      "name": "GND",
+      "kind": "lug"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO_HEADER",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "MOTOR_A.1",
+      "MOTOR_A.2"
+     ],
+     [
+      "MOTOR_B.1",
+      "MOTOR_B.2"
+     ]
+    ],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "rpi-3b",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "mc1",
+    "type": "motor-controller-camjam",
+    "label": "motor controller board",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "battery-holder-4xaa",
+    "label": "battery pack",
+    "props": [
+     {
+      "key": "cells",
+      "value": "4xAA"
+     }
+    ]
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "motor (left)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "motor (right)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mc1",
+    "v_port": "VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "positive",
+    "v": "mc1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mc1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "negative",
+    "v": "mc1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_B.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_B.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_B.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_B.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_A.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "mc1",
+    "v_port": "MOTOR_A.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_A.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "mc1",
+    "v_port": "MOTOR_A.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO_HEADER",
+    "v": "pi1",
+    "v_port": "GPIO_HEADER",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are the same as in step 1. No parts were added or dropped.",
+   "The battery pack's red lead goes to VIN and its black lead to GND, as the manual requires. The pack must be switched off while this is wired.",
+   "The motors can go either way round. Motor 1 is on the Motor B block and motor 2 on the Motor A block. Which motor goes on which block is not specified.",
+   "The board plugs straight onto the Pi's GPIO header. The catalogue's rpi-3b card only has a GPIO_HEADER port, so the join is made between the two GPIO_HEADER ports. GPIO 7, 8, 9 and 10 are the pins the board uses.",
+   "The motor and battery leads are attached to the motors and the battery pack, so no separate jumper wires are used. They are clamped in the terminal blocks with screws.",
+   "The Pi is powered separately (its own USB supply), not from the battery pack."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 78.0,
+  "input_tokens": 136109,
+  "output_tokens": 6773,
+  "cost_usd": 0.1486,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 48.7,
+   "input_tokens": 64579,
+   "cache_read_tokens": 54785,
+   "output_tokens": 1674,
+   "cost_usd": 0.0669,
+   "tools_used": [
+    "lookup_part {\"name\": \"CamJam EduKit 3 motor controller board\"}",
+    "lookup_part {\"name\": \"Raspberry Pi 3 Model B\"}",
+    "StructuredOutput {\"title\": \"Connect motors and battery pack to a Raspberry Pi motor controller board\", \"source_id\": \"camjam-edukit3-motor"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": [
+    "motor-controller-camjam",
+    "rpi-3b"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.9,
+   "input_tokens": 34377,
+   "cache_read_tokens": 32826,
+   "output_tokens": 2537,
+   "cost_usd": 0.0381,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Connect motors and battery pack to a Raspberry Pi motor controller board\", \"source_id\": \"camjam-edukit3-motor"
+   ],
+   "check_seconds": 0.01,
+   "issues": 4,
+   "issue_rules": {
+    "V3": 4
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.4,
+   "input_tokens": 37153,
+   "cache_read_tokens": 34375,
+   "output_tokens": 2562,
+   "cost_usd": 0.0436,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Connect motors and battery pack to a Raspberry Pi motor controller board\", \"source_id\": \"camjam-edukit3-motor"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 22.6,
+  "cost_usd": 0.0618,
+  "types": [
+   {
+    "type": "motor-controller-camjam",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/sparkfun-brushless-motor-driver-3-phase-tmc6300.html (The content describes the SparkFun Brushless Motor Driver (TMC6300), a 3-phase B)"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/2761 (Content describes the Pololu Dual TB9051FTG Motor Driver for Raspberry Pi (item )"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/40-Pin-Raspberry-Pi-Hat-Adapter-Board-For-Wio-Terminal-p-4730.html (The content is a Seeed Studio page for a 40-pin Raspberry Pi HAT adapter board f)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

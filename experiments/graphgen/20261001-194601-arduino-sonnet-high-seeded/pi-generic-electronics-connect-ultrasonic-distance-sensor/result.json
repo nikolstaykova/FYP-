@@ -1,0 +1,53 @@
+{
+ "case": "pi-generic-electronics-connect-ultrasonic-distance-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 42.0,
+  "input_tokens": 19972,
+  "output_tokens": 6491,
+  "cost_usd": 0.0812,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard orientation: the image labels its upper half j-f and lower half e-a, so the upper half is catalogue bank 'b' (rows f-j) and the lower half is bank 't' (rows a-e). The rail drawn along the bottom of the breadboard (next to row a) is therefore catalogue rail 'tn'.",
+  "The sensor's four pins go into column 1-4 of row j (VCC, Trig, Echo, GND). Jumper wires leave from row f of the same columns.",
+  "The image colours column 4 (rows e-a) black, but the Echo (blue) wire ends in column 4 row d and the 330 ohm resistor starts at 4c. I treated this as the Echo node and not as ground, since it would otherwise short Echo to ground.",
+  "Potential divider: Echo -> 330 ohm (r1) -> junction at column 8 -> GPIO17 (blue wire) and junction -> 470 ohm (r2) -> column 12 -> black wire to the ground rail. The junction is column 8 bank t: r1 at 8t.c, wire at 8t.e, r2 at 8t.b. This is the same strip.",
+  "Pi pins: 5V is the first pin in the top header row (physical pin 2, named 5V.1). Trig goes to GPIO4 (pin 7). The divider output goes to GPIO17 (pin 11). Ground is the last pin in the bottom row (physical pin 39). I chose the port name GND.8 for it, because the catalogue treats all GND pins as interchangeable.",
+  "Ground rail wires are plugged into rail holes tn.12, tn.24 and tn.28. They are treated as one rail strip, as the catalogue defines."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 42.0,
+   "input_tokens": 19972,
+   "cache_read_tokens": 16735,
+   "output_tokens": 6491,
+   "cost_usd": 0.0812,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 13.2
+}

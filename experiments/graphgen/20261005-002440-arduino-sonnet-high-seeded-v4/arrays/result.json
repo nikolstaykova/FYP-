@@ -1,0 +1,72 @@
+{
+ "case": "arrays",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 64.6,
+  "input_tokens": 16120,
+  "output_tokens": 11134,
+  "cost_usd": 0.1636,
+  "repair_rounds_used": 0
+ },
+ "parts": 27,
+ "edges": 100,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the image row letters: the upper half (rows f-j in the picture) is written as bank 'b' and the lower half (rows a-e) as bank 't'. This differs from the catalogue's description, so the bank letters may need swapping.",
+  "Each LED sits in the upper half with anode in column 7/10/13/16/19/22 and cathode in the next column. The schematic shows pin -> 220 ohm resistor -> LED anode -> ground, so the leg in the resistor's column is taken as the anode.",
+  "Each resistor straddles the centre gap, from row f of the upper half to row e of the lower half, in the same column as the LED anode. A blue jumper from the Uno pin lands in the lower half of that column.",
+  "Uno pins 7, 6, 5, 4, 3, 2 feed LEDs 1 to 6 left to right, as in the circuit image.",
+  "Each LED cathode column has a short black jumper to the top negative rail, and a black jumper runs from Uno GND (next to pin 13) to that rail. The exact rail hole numbers (tn.1, 11, 14, 17, 20, 23, 26) are estimates read from the image; all holes in one rail are one strip, so the choice doesn't change the circuit.",
+  "The manual lists 220 ohm resistors. The code array order (2,7,4,6,5,3) only changes the lighting order, not the wiring."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 64.6,
+   "input_tokens": 16120,
+   "cache_read_tokens": 3203,
+   "output_tokens": 11134,
+   "cost_usd": 0.1636,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 13,
+  "nets_built": 13,
+  "nets_matched": 13,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 6,
+   "led": 6
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 6,
+   "resistor": 6
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 18.2
+}

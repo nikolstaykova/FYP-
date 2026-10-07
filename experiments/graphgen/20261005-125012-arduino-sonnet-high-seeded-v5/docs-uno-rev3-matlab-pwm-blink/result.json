@@ -1,0 +1,75 @@
+{
+ "case": "docs-uno-rev3-matlab-pwm-blink",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 36.8,
+  "input_tokens": 44615,
+  "output_tokens": 5885,
+  "cost_usd": 0.105,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 35,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The USB cable joins the UNO to the computer running MATLAB. The computer is not modelled as a part, and the catalogue gives the USB cable no ports, so it only has a port-less joined edge to the UNO.",
+  "The resistor value is not stated; 220 ohm is assumed. The LED colour is not stated; red is assumed.",
+  "Breadboard positions are assumed because the tutorial image is not available as detail. Left board: potentiometer GND/SIG/VCC in columns 5/6/7 (top half). Right board: red wire in column 10, resistor from column 10 to 14, LED anode in column 14 and cathode in column 15, green wire in column 15.",
+  "Wiring follows the circuit text: white wire from 5V to the potentiometer VCC, orange wire from GND to the potentiometer GND, gray wire from the wiper (SIG) to A0, red wire from D11 to the resistor, resistor to LED anode, LED cathode through the green wire to GND.",
+  "The text says A0 reads the voltage 'from pin13'. This is read as the potentiometer powered from 5V, as the white wire describes. D13 is only set HIGH in the code and is the built-in LED pin, so nothing is wired to D13.",
+  "The two breadboards are only linked through the UNO. Each potentiometer wire and the green wire go to different UNO pins (GND.1 and GND.2), since the text does not say which GND pins are used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.6,
+   "input_tokens": 21478,
+   "cache_read_tokens": 12687,
+   "output_tokens": 1462,
+   "cost_usd": 0.0523,
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.2,
+   "input_tokens": 23137,
+   "cache_read_tokens": 21476,
+   "output_tokens": 4423,
+   "cost_usd": 0.0527,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 12.4
+}

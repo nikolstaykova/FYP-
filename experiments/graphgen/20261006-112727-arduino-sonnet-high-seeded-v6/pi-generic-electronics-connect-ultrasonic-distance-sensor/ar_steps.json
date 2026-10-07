@@ -1,0 +1,357 @@
+{
+ "tutorial": "pi-generic-electronics-connect-ultrasonic-distance-sensor",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/ultrasonic-distance-sensor.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/wiring-uds.png"
+ ],
+ "legs_and_ends": 22,
+ "with_position": 21,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi1",
+     "type": "raspberry-pi-4-gpio",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "uds1",
+     "type": "hc-sr04",
+     "label": "Ultrasonic distance sensor",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "ECHO",
+       "part": "bb1",
+       "port": "3b.j",
+       "mm": [
+        5.08,
+        27.94
+       ]
+      },
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "4b.j",
+       "mm": [
+        7.62,
+        27.94
+       ]
+      },
+      {
+       "leg": "TRIG",
+       "part": "bb1",
+       "port": "2b.j",
+       "mm": [
+        2.54,
+        27.94
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "1b.j",
+       "mm": [
+        0.0,
+        27.94
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "330 ohm resistor",
+     "props": {
+      "value": "330"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "4t.c",
+       "mm": [
+        7.62,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "8t.c",
+       "mm": [
+        17.78,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "470 ohm resistor",
+     "props": {
+      "value": "470"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "8t.b",
+       "mm": [
+        17.78,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "12t.b",
+       "mm": [
+        27.94,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "VCC to 5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "1b.f",
+       "mm": [
+        0.0,
+        17.78
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "2",
+       "mm": [
+        60.96,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "Trig to GPIO4",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "2b.f",
+       "mm": [
+        2.54,
+        17.78
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "7",
+       "mm": [
+        48.26,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "Echo to resistor divider",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "3b.f",
+       "mm": [
+        5.08,
+        17.78
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "4t.d",
+       "mm": [
+        7.62,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "Divider midpoint to GPIO17",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "8t.e",
+       "mm": [
+        17.78,
+        10.16
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": true,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to ground rail",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "4b.f",
+       "mm": [
+        7.62,
+        17.78
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.28",
+       "mm": [
+        68.58,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Divider bottom to ground rail",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "12t.a",
+       "mm": [
+        27.94,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.12",
+       "mm": [
+        27.94,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": true,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Ground rail to Pi GND",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "bn.24",
+       "mm": [
+        58.42,
+        35.56
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "39",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

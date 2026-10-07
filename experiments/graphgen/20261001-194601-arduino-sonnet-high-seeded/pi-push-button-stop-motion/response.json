@@ -1,0 +1,943 @@
+{
+ "graph": {
+  "title": "Push button stop motion animation (Raspberry Pi camera + button)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/push-button-stop-motion",
+  "new_part_types": [
+   {
+    "type": "raspberry-pi",
+    "name": "Raspberry Pi (40-pin GPIO header, CSI camera connector)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO15",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO17",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO18",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO27",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO22",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO23",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO24",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO25",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "CSI",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3",
+      "GND.4",
+      "GND.5"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3",
+      "GND.4",
+      "GND.5"
+     ]
+    ],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "rpi-camera-module",
+    "name": "Raspberry Pi Camera Module",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "CSI",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "csi-ribbon-cable",
+    "name": "CSI flat ribbon cable (camera)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "cam1",
+    "type": "rpi-camera-module",
+    "label": "Raspberry Pi camera module",
+    "props": []
+   },
+   {
+    "id": "ribbon1",
+    "type": "csi-ribbon-cable",
+    "label": "Camera ribbon cable",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Full size breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Tactile button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (GPIO17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The breadboard diagram labels vertical positions 1-13 and horizontal positions a-e; these are mapped to the catalogue naming as column=number, row=letter (e.g. diagram 3a = '3t.a').",
+   "Black jumper goes from the Pi's GND pin (physical pin 6, first GND in the right-hand column of the header, named GND.1) to breadboard 3a; the orange jumper goes from GPIO17 (left column of the header) to breadboard 5a.",
+   "The button's exact leg holes are not labelled in the diagram; assumed it straddles columns 3 and 5 with legs in rows c and e, so side 1 (column 3) is on the GND strip and side 2 (column 5) is on the GPIO17 strip. No external pull resistor is used; gpiozero's Button enables the Pi's internal pull-up.",
+   "The jumpers are 'pin-socket' (female) leads, modelled as jumper-wire-mf with the female end (a) on the Pi header and the male end (b) in the breadboard.",
+   "Pi, camera module and CSI ribbon cable are not in the catalogue, so they are new part types. The camera ribbon cable connects the camera module to the Pi's camera (CSI) connector.",
+   "Software steps (picamzero, gpiozero, ffmpeg, vlc), power supply, display and other peripherals are not part of the wiring graph. The LEGO subject is not modelled."
+  ]
+ },
+ "graph_initial": {
+  "title": "Push button stop motion animation (Raspberry Pi camera + button)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/push-button-stop-motion",
+  "new_part_types": [
+   {
+    "type": "raspberry-pi",
+    "name": "Raspberry Pi (40-pin GPIO header, CSI camera connector)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO15",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO17",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO18",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO27",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO22",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO23",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO24",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO25",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "CSI",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3",
+      "GND.4",
+      "GND.5"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3",
+      "GND.4",
+      "GND.5"
+     ]
+    ],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "rpi-camera-module",
+    "name": "Raspberry Pi Camera Module",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "CSI",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "csi-ribbon-cable",
+    "name": "CSI flat ribbon cable (camera)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "cam1",
+    "type": "rpi-camera-module",
+    "label": "Raspberry Pi camera module",
+    "props": []
+   },
+   {
+    "id": "ribbon1",
+    "type": "csi-ribbon-cable",
+    "label": "Camera ribbon cable",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Full size breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Tactile button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (GPIO17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The breadboard diagram labels vertical positions 1-13 and horizontal positions a-e; these are mapped to the catalogue naming as column=number, row=letter (e.g. diagram 3a = '3t.a').",
+   "Black jumper goes from the Pi's GND pin (physical pin 6, first GND in the right-hand column of the header, named GND.1) to breadboard 3a; the orange jumper goes from GPIO17 (left column of the header) to breadboard 5a.",
+   "The button's exact leg holes are not labelled in the diagram; assumed it straddles columns 3 and 5 with legs in rows c and e, so side 1 (column 3) is on the GND strip and side 2 (column 5) is on the GPIO17 strip. No external pull resistor is used; gpiozero's Button enables the Pi's internal pull-up.",
+   "The jumpers are 'pin-socket' (female) leads, modelled as jumper-wire-mf with the female end (a) on the Pi header and the male end (b) in the breadboard.",
+   "Pi, camera module and CSI ribbon cable are not in the catalogue, so they are new part types. The camera ribbon cable connects the camera module to the Pi's camera (CSI) connector.",
+   "Software steps (picamzero, gpiozero, ffmpeg, vlc), power supply, display and other peripherals are not part of the wiring graph. The LEGO subject is not modelled."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 34.1,
+  "input_tokens": 22182,
+  "output_tokens": 5040,
+  "cost_usd": 0.1186,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.1,
+   "input_tokens": 22182,
+   "cache_read_tokens": 5414,
+   "output_tokens": 5040,
+   "cost_usd": 0.1186,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

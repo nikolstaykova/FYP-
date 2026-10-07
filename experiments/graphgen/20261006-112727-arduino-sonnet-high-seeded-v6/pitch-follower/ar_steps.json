@@ -1,0 +1,284 @@
+{
+ "tutorial": "pitch-follower",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/02.digital/tonePitchFollower/assets/circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/02.digital/tonePitchFollower/assets/schematic.png"
+ ],
+ "legs_and_ends": 16,
+ "with_position": 16,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "uno",
+     "type": "arduino-uno",
+     "label": "Arduino Board"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "100 ohm resistor",
+     "props": {
+      "value": "100"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "9t.e",
+       "mm": [
+        20.32,
+        10.16
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "9b.f",
+       "mm": [
+        20.32,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "spk1",
+     "type": "speaker-8ohm",
+     "label": "8 ohm speaker",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "9t.a",
+       "mm": [
+        20.32,
+        0.0
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "uno",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "ldr1",
+     "type": "photoresistor",
+     "label": "photoresistor",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "21t.e",
+       "mm": [
+        50.8,
+        10.16
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "21b.f",
+       "mm": [
+        50.8,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "4.7K ohm resistor",
+     "props": {
+      "value": "4700"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "21b.i",
+       "mm": [
+        50.8,
+        25.4
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "23b.i",
+       "mm": [
+        55.88,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "hook-up wire (pin 9 to 100 ohm resistor)",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "9",
+       "mm": [
+        41.66,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "9b.g",
+       "mm": [
+        20.32,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "hook-up wire (A0 to photoresistor/4.7K junction)",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A0",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "21b.g",
+       "mm": [
+        50.8,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "hook-up wire (5V to photoresistor)",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "21t.a",
+       "mm": [
+        50.8,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": true,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "hook-up wire (GND to 4.7K resistor)",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "GND.2",
+       "mm": [
+        40.64,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "23b.j",
+       "mm": [
+        55.88,
+        27.94
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

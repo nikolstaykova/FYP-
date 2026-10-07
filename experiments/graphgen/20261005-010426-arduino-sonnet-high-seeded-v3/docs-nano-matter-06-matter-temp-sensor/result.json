@@ -1,0 +1,216 @@
+{
+ "case": "docs-nano-matter-06-matter-temp-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 348.1,
+  "input_tokens": 101497,
+  "output_tokens": 12799,
+  "cost_usd": 0.3059,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 62,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 1,
+ "problems": [
+  [
+   "V3",
+   "e20: header-socket \u2194 breadboard-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e22: header-socket \u2194 breadboard-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e23: header-socket \u2194 breadboard-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e25: header-socket \u2194 breadboard-hole is not a compatible pair"
+  ],
+  [
+   "V2",
+   "part hub1 (google-nest-hub-max) has no connection"
+  ]
+ ],
+ "notes": [
+  "The wiring diagram image (diagram-v1.png) was not provided; connections follow the text: OLED and DHT11 powered from 3V3, OLED on I2C (SDA/SCL = A4/A5 on the Nano form factor), DHT11 signal on D4, GND shared.",
+  "The Arduino Nano Matter and Google Nest Hub Max are not in the supplied catalogue listing, so they are defined as new part types. Nano Matter pin names/positions are approximated from the Nano form factor.",
+  "Breadboard hole positions are assumed: the Nano straddles the centre gap (left pins in row e, right pins in row f), OLED at columns 20-23 and DHT11 at columns 26-29 in the top half, with jumper wires to the power rails. Only the pins actually used are listed as joined to the breadboard.",
+  "The DHT11 NC pin is inserted but not connected to anything.",
+  "The Nest Hub Max is only a wireless Thread border router / Matter hub (commissioning over Thread), so it has no physical edge. The USB-C cable powers and programs the board.",
+  "Software steps (libraries, sketch, commissioning in the Google Home app) are not physical parts."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 282.8,
+   "input_tokens": 84985,
+   "output_tokens": 3396,
+   "cost_usd": 0.1668,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 7,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Nano Matter",
+     "type": "arduino-nano-matter",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-nano-every.html (The page sells the Arduino Nano Every (ATMega4809, DEV-15590). The part asked fo)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-nano-stackable-header-set.html (This page sells the Arduino Nano Stackable Header Set (SparkFun PRT-16279). That)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Arduino-Nano-v3-p-1928.html (The page sells the Arduino Nano v3 (ATmega328 based), not the Arduino Nano Matte)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Grove-Shield-for-Arduino-Nano-p-4112.html (This page sells the Seeed Grove Shield for Arduino Nano, which is a Grove adapte)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 137.6
+    },
+    {
+     "part": "DHT11 Temperature and Humidity sensor",
+     "type": "temp-dht11",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "page did not match: https://www.adafruit.com/product/3721 (The page sells an AM2320, not a DHT11. The AM2320 looks similar, but it uses I2C)"
+      ],
+      [
+       "adafruit",
+       "page did not match: https://www.adafruit.com/product/5183 (This page sells the DHT20 (AHT20), an I2C sensor with pins Power, SDA, Ground, S)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/humidity-and-temperature-sensor-dht20.html (The page sells the SparkFun DHT20 (SEN-18364), which has an I2C interface. The D)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/co-humidity-and-temperature-sensor-scd30.html (This page sells the Sensirion SCD30, a CO2 sensor with built-in temperature and )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-Temperature-Humidity-Sensor-DHT11.html"
+      ]
+     ],
+     "seconds": 110.1
+    },
+    {
+     "part": "Google Nest Hub Max (Thread Border Router)",
+     "type": "google-nest-hub-max",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/google-coral.html (The page is a Seeed Studio \"Google Coral\" listing. The text is only store boiler)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Khadas-VIM2-Max-Open-Source-SBC-TV-Box-3GB-64GB-Wi-Fi-Gigabit-LAN-with-WOL-Multi-System-Compatibility-4K-p-3190.html (The page sells a Khadas VIM2 Max single-board computer, not a Google Nest Hub Ma)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 28.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 65.3,
+   "input_tokens": 16512,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9403,
+   "cost_usd": 0.1391,
+   "check_seconds": 0.0,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 4,
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 5,
+ "score": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "google-nest-hub-max",
+   "family": "google-nest-hub-max",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.7
+}

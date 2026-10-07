@@ -1,0 +1,1451 @@
+{
+ "graph": {
+  "title": "Build a robot buggy (CamJam EduKit 3 motor controller on a Raspberry Pi)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/build-a-robot-buggy",
+  "new_part_types": [
+   {
+    "type": "motor-controller-board",
+    "name": "Motor controller board (CamJam EduKit 3 style, Pi 26-pin HAT)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "GPIO7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A.1",
+      "kind": "lug"
+     },
+     {
+      "name": "A.2",
+      "kind": "lug"
+     },
+     {
+      "name": "B.1",
+      "kind": "lug"
+     },
+     {
+      "name": "B.2",
+      "kind": "lug"
+     },
+     {
+      "name": "BAT+",
+      "kind": "lug"
+     },
+     {
+      "name": "BAT-",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "battery-holder-4aa",
+    "name": "4 x AA battery holder with red/black leads",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "wire-end"
+     },
+     {
+      "name": "NEG",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "aa-battery",
+    "name": "AA battery",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "lug"
+     },
+     {
+      "name": "NEG",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "wheel",
+    "name": "Wheel",
+    "category": "mechanical",
+    "ports": [
+     {
+      "name": "HUB",
+      "kind": "axle-hole"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   },
+   {
+    "type": "ball-caster",
+    "name": "Ball caster",
+    "category": "mechanical",
+    "ports": [
+     {
+      "name": "MOUNT",
+      "kind": "screw"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "cardboard-box",
+    "name": "Cardboard or plastic box (chassis)",
+    "category": "mechanical",
+    "ports": [],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "usb-power-bank",
+    "name": "USB power bank",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "USB",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "mc1",
+    "type": "motor-controller-board",
+    "label": "Motor controller board",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "Left motor",
+    "props": []
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "Right motor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Left motor wire 1",
+    "props": []
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Left motor wire 2",
+    "props": []
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Right motor wire 1",
+    "props": []
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Right motor wire 2",
+    "props": []
+   },
+   {
+    "id": "bat1",
+    "type": "battery-holder-4aa",
+    "label": "AA battery holder",
+    "props": []
+   },
+   {
+    "id": "aa1",
+    "type": "aa-battery",
+    "label": "AA battery 1",
+    "props": []
+   },
+   {
+    "id": "aa2",
+    "type": "aa-battery",
+    "label": "AA battery 2",
+    "props": []
+   },
+   {
+    "id": "aa3",
+    "type": "aa-battery",
+    "label": "AA battery 3",
+    "props": []
+   },
+   {
+    "id": "aa4",
+    "type": "aa-battery",
+    "label": "AA battery 4",
+    "props": []
+   },
+   {
+    "id": "wheel1",
+    "type": "wheel",
+    "label": "Left wheel",
+    "props": []
+   },
+   {
+    "id": "wheel2",
+    "type": "wheel",
+    "label": "Right wheel",
+    "props": []
+   },
+   {
+    "id": "caster1",
+    "type": "ball-caster",
+    "label": "Ball caster",
+    "props": []
+   },
+   {
+    "id": "box1",
+    "type": "cardboard-box",
+    "label": "Chassis box",
+    "props": []
+   },
+   {
+    "id": "pbank1",
+    "type": "usb-power-bank",
+    "label": "USB power bank",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Pi power USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO7",
+    "v": "pi1",
+    "v_port": "GPIO7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO7",
+    "v": "pi1",
+    "v_port": "GPIO7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO8",
+    "v": "pi1",
+    "v_port": "GPIO8",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO8",
+    "v": "pi1",
+    "v_port": "GPIO8",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO9",
+    "v": "pi1",
+    "v_port": "GPIO9",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO9",
+    "v": "pi1",
+    "v_port": "GPIO9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO10",
+    "v": "pi1",
+    "v_port": "GPIO10",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO10",
+    "v": "pi1",
+    "v_port": "GPIO10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "1",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "1",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "mc1",
+    "v_port": "BAT+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "mc1",
+    "v_port": "BAT+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "mc1",
+    "v_port": "BAT-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "mc1",
+    "v_port": "BAT-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "aa1",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa2",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa3",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa4",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wheel1",
+    "u_port": "HUB",
+    "v": "motor1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wheel2",
+    "u_port": "HUB",
+    "v": "motor2",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "adhesive putty or tape",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "adhesive putty or tape",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "caster1",
+    "u_port": "MOUNT",
+    "v": "box1",
+    "v_port": null,
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "contact",
+    "u": "pi1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "contact",
+    "u": "bat1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pbank1",
+    "v_port": "USB",
+    "method": "plug",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pi1",
+    "v_port": null,
+    "method": "plug",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The motor controller is not in the catalogue, so it is a new type. Only the GPIO pins the code uses (GPIO7-10) are modelled as header sockets. The board physically sits on the first 26 GPIO pins, so it also touches 5V, 3V3 and GND pins that are not modelled.",
+   "The code is Robot(left=(7,8), right=(9,10)). I assume GPIO7/8 drive the board's A terminals and GPIO9/10 drive B. Which motor is left or right is set by testing, so the motor1/motor2 labels are provisional. The driver chip is not modelled, so there are no electrical edges inside the board.",
+   "The motors' wires may arrive pre-attached or be soldered on. They are modelled as jumper-wire parts soldered to the motor terminals and screwed into terminal blocks A and B. The photos show red and black wires on the motors. Which wire goes to which terminal does not matter.",
+   "The battery holder's red and black leads are treated as part of the holder: red goes to the + terminal and black to the - terminal.",
+   "The four AA batteries are linked to the holder by contact-style joins with no ports. Cell-level wiring is not modelled.",
+   "The Pi's USB-C power port is not a named catalogue port, so the USB cable links to the Pi with a null port. The manual does not name a specific cable.",
+   "The chassis (box, wheels, caster, putty or tape) is included because the manual describes assembling it. The optional breadboard, distance sensor and line sensors are listed but not wired in this tutorial, so they are left out.",
+   "The manual does not say how the Pi, battery holder or controller are fixed in the box. I modelled only loose contact with the box."
+  ]
+ },
+ "graph_initial": {
+  "title": "Build a robot buggy (CamJam EduKit 3 motor controller on a Raspberry Pi)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/build-a-robot-buggy",
+  "new_part_types": [
+   {
+    "type": "motor-controller-board",
+    "name": "Motor controller board (CamJam EduKit 3 style, Pi 26-pin HAT)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "GPIO7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A.1",
+      "kind": "lug"
+     },
+     {
+      "name": "A.2",
+      "kind": "lug"
+     },
+     {
+      "name": "B.1",
+      "kind": "lug"
+     },
+     {
+      "name": "B.2",
+      "kind": "lug"
+     },
+     {
+      "name": "BAT+",
+      "kind": "lug"
+     },
+     {
+      "name": "BAT-",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "battery-holder-4aa",
+    "name": "4 x AA battery holder with red/black leads",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "wire-end"
+     },
+     {
+      "name": "NEG",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "aa-battery",
+    "name": "AA battery",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "lug"
+     },
+     {
+      "name": "NEG",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "wheel",
+    "name": "Wheel",
+    "category": "mechanical",
+    "ports": [
+     {
+      "name": "HUB",
+      "kind": "axle-hole"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   },
+   {
+    "type": "ball-caster",
+    "name": "Ball caster",
+    "category": "mechanical",
+    "ports": [
+     {
+      "name": "MOUNT",
+      "kind": "screw"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "cardboard-box",
+    "name": "Cardboard or plastic box (chassis)",
+    "category": "mechanical",
+    "ports": [],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "usb-power-bank",
+    "name": "USB power bank",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "USB",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "mc1",
+    "type": "motor-controller-board",
+    "label": "Motor controller board",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "Left motor",
+    "props": []
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "Right motor",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Left motor wire 1",
+    "props": []
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Left motor wire 2",
+    "props": []
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Right motor wire 1",
+    "props": []
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Right motor wire 2",
+    "props": []
+   },
+   {
+    "id": "bat1",
+    "type": "battery-holder-4aa",
+    "label": "AA battery holder",
+    "props": []
+   },
+   {
+    "id": "aa1",
+    "type": "aa-battery",
+    "label": "AA battery 1",
+    "props": []
+   },
+   {
+    "id": "aa2",
+    "type": "aa-battery",
+    "label": "AA battery 2",
+    "props": []
+   },
+   {
+    "id": "aa3",
+    "type": "aa-battery",
+    "label": "AA battery 3",
+    "props": []
+   },
+   {
+    "id": "aa4",
+    "type": "aa-battery",
+    "label": "AA battery 4",
+    "props": []
+   },
+   {
+    "id": "wheel1",
+    "type": "wheel",
+    "label": "Left wheel",
+    "props": []
+   },
+   {
+    "id": "wheel2",
+    "type": "wheel",
+    "label": "Right wheel",
+    "props": []
+   },
+   {
+    "id": "caster1",
+    "type": "ball-caster",
+    "label": "Ball caster",
+    "props": []
+   },
+   {
+    "id": "box1",
+    "type": "cardboard-box",
+    "label": "Chassis box",
+    "props": []
+   },
+   {
+    "id": "pbank1",
+    "type": "usb-power-bank",
+    "label": "USB power bank",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Pi power USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO7",
+    "v": "pi1",
+    "v_port": "GPIO7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO7",
+    "v": "pi1",
+    "v_port": "GPIO7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO8",
+    "v": "pi1",
+    "v_port": "GPIO8",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO8",
+    "v": "pi1",
+    "v_port": "GPIO8",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO9",
+    "v": "pi1",
+    "v_port": "GPIO9",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO9",
+    "v": "pi1",
+    "v_port": "GPIO9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mc1",
+    "u_port": "GPIO10",
+    "v": "pi1",
+    "v_port": "GPIO10",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mc1",
+    "u_port": "GPIO10",
+    "v": "pi1",
+    "v_port": "GPIO10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "1",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "motor1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "1",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "2",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "motor2",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "A.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "mc1",
+    "v_port": "B.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "mc1",
+    "v_port": "BAT+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "mc1",
+    "v_port": "BAT+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "mc1",
+    "v_port": "BAT-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "mc1",
+    "v_port": "BAT-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "aa1",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa2",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa3",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "aa4",
+    "u_port": null,
+    "v": "bat1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wheel1",
+    "u_port": "HUB",
+    "v": "motor1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wheel2",
+    "u_port": "HUB",
+    "v": "motor2",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "revolute",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "adhesive putty or tape",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "adhesive putty or tape",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "caster1",
+    "u_port": "MOUNT",
+    "v": "box1",
+    "v_port": null,
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "contact",
+    "u": "pi1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "contact",
+    "u": "bat1",
+    "u_port": null,
+    "v": "box1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pbank1",
+    "v_port": "USB",
+    "method": "plug",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pi1",
+    "v_port": null,
+    "method": "plug",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The motor controller is not in the catalogue, so it is a new type. Only the GPIO pins the code uses (GPIO7-10) are modelled as header sockets. The board physically sits on the first 26 GPIO pins, so it also touches 5V, 3V3 and GND pins that are not modelled.",
+   "The code is Robot(left=(7,8), right=(9,10)). I assume GPIO7/8 drive the board's A terminals and GPIO9/10 drive B. Which motor is left or right is set by testing, so the motor1/motor2 labels are provisional. The driver chip is not modelled, so there are no electrical edges inside the board.",
+   "The motors' wires may arrive pre-attached or be soldered on. They are modelled as jumper-wire parts soldered to the motor terminals and screwed into terminal blocks A and B. The photos show red and black wires on the motors. Which wire goes to which terminal does not matter.",
+   "The battery holder's red and black leads are treated as part of the holder: red goes to the + terminal and black to the - terminal.",
+   "The four AA batteries are linked to the holder by contact-style joins with no ports. Cell-level wiring is not modelled.",
+   "The Pi's USB-C power port is not a named catalogue port, so the USB cable links to the Pi with a null port. The manual does not name a specific cable.",
+   "The chassis (box, wheels, caster, putty or tape) is included because the manual describes assembling it. The optional breadboard, distance sensor and line sensors are listed but not wired in this tutorial, so they are left out.",
+   "The manual does not say how the Pi, battery holder or controller are fixed in the box. I modelled only loose contact with the box."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 41.6,
+  "input_tokens": 24865,
+  "output_tokens": 6595,
+  "cost_usd": 0.1018,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.6,
+   "input_tokens": 24865,
+   "cache_read_tokens": 16735,
+   "output_tokens": 6595,
+   "cost_usd": 0.1018,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

@@ -1,0 +1,369 @@
+{
+ "tutorial": "joystick-mouse-control",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/09.usb/JoystickMouseControl/assets/circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/09.usb/JoystickMouseControl/assets/schematic.png"
+ ],
+ "legs_and_ends": 23,
+ "with_position": 23,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "leo1",
+     "type": "arduino-leonardo",
+     "label": "Arduino Leonardo"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "joy1",
+     "type": "analog-joystick",
+     "label": "2 axis joystick (with integrated pushbutton)",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "15t.a",
+       "mm": [
+        35.56,
+        0.0
+       ]
+      },
+      {
+       "leg": "HORZ",
+       "part": "bb1",
+       "port": "13t.a",
+       "mm": [
+        30.48,
+        0.0
+       ]
+      },
+      {
+       "leg": "SEL",
+       "part": "bb1",
+       "port": "14t.a",
+       "mm": [
+        33.02,
+        0.0
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "11t.a",
+       "mm": [
+        25.4,
+        0.0
+       ]
+      },
+      {
+       "leg": "VERT",
+       "part": "bb1",
+       "port": "12t.a",
+       "mm": [
+        27.94,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "LED series resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "20t.a",
+       "mm": [
+        48.26,
+        0.0
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "22t.a",
+       "mm": [
+        53.34,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "Status LED (optional, pin 5)",
+     "props": {
+      "colour": "red"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "22t.b",
+       "mm": [
+        53.34,
+        2.54
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "23t.b",
+       "mm": [
+        55.88,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "A0 to joystick VERT",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "A0",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "12t.b",
+       "mm": [
+        27.94,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "A1 to joystick HORZ",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "A1",
+       "mm": [
+        50.8,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "13t.b",
+       "mm": [
+        30.48,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "Pin 6 to joystick SEL (button)",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "6",
+       "mm": [
+        50.8,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "14t.b",
+       "mm": [
+        33.02,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": false,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": "Pin 5 to resistor",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "5",
+       "mm": [
+        53.34,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "20t.b",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "5V to joystick VCC",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "11t.b",
+       "mm": [
+        25.4,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to joystick GND",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "15t.b",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": true,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to LED cathode",
+     "ends": [
+      {
+       "part": "leo1",
+       "port": "GND.2",
+       "mm": [
+        40.64,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "23t.c",
+       "mm": [
+        55.88,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

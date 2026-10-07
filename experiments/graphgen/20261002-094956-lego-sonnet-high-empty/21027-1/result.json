@@ -1,0 +1,145 @@
+{
+ "case": "21027-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 972.3,
+  "input_tokens": 1077602,
+  "output_tokens": 171111,
+  "cost_usd": 3.5332,
+  "repair_rounds_used": 2
+ },
+ "parts": 289,
+ "edges": 312,
+ "repeats": [
+  {
+   "group": "tower",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "tl",
+   "times": 4,
+   "overrides": 9
+  },
+  {
+   "group": "ss",
+   "times": 5,
+   "overrides": 0
+  },
+  {
+   "group": "cs",
+   "times": 10,
+   "overrides": 0
+  },
+  {
+   "group": "gc",
+   "times": 2,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 38,
+ "new_types_added": 37,
+ "problems": [],
+ "notes": [
+  "The booklet shows pieces only as pictures, so every connection is an estimate from the step images. Each piece is joined to the piece or pieces it sits on. Exact stud positions are not modelled.",
+  "Port usage follows the 'single-use port' rule. Each stud or anti-stud port is used on at most one edge. Many catalogue and new LEGO types expose only one stud.1 and one anti-stud.1, so additional contacts on the same part are joined with a null port. Where a part has numbered studs (302026, 4211395, 302326, 4655080, 4211094), I used stud.2, stud.3 and so on for the extra children.",
+  "Piece counts were reconciled with the parts page. The page lists 6 of 6066097 and 3 of 3005740. The booklet pictures of the small round grey plates are ambiguous, so b64 and b65 (base step 26) are typed as 3005740 to match those counts, alongside b79 (Reichstag step 34). The other six single-stud grey plates are 6066097.",
+  "The ten 1x1 side-stud bricks of the Bahn Tower (b118, b119, tl1-tl4 a/b) have no side-stud port in the catalogue. They are joined to the 2x10 plate b120 with null ports. The strips and curved slopes on b120 are also approximate.",
+  "The TV-tower rods (b148, b160) plug into the pin-with-stud pieces b149 and b159. The catalogue has no compatible axle-to-stud pair, so those two joins carry no ports.",
+  "Element IDs come from the inventory page (127). Where one inventory ID is used for several look-alike parts in different steps, I assigned IDs by shape, colour and count. The dark-grey tile IDs are the least certain.",
+  "Some inventory IDs differ from the catalogue's description of the same ID (for example 416226, 4211052 and 4211356 are drawn as long tiles). I kept the catalogue type for the ID anyway.",
+  "Both Reichstag corner towers are one repeat (group 'tower', 2 copies, the second mirrored). Both copies attach to the tan base plate b4, because the exact stud positions are not distinguishable.",
+  "The Bahn Tower layers (tl, 4 copies) stack on each other through 'attach' overrides.",
+  "The Brandenburg Gate columns are repeat 'gc' (2 clusters of 6 two-plate columns, 4 sand-green slopes and 1 tile each). Cluster 1 is anchored to b20 and cluster 2 to b22 via a port-less attach override. This is an assumption. The centre fences b180 and b181 stand on tan plate b21.",
+  "Ids b124-b128 and b137-b146 are intentionally unused because those pieces are in the 'ss' and 'cs' repeats. The booklet builds one model, so there are no separate models to add.",
+  "Dishes and rods are modelled as rigid joins, although the TV tower head dishes may rotate slightly on their rod."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 583.5,
+   "input_tokens": 279529,
+   "cache_read_tokens": 0,
+   "output_tokens": 88534,
+   "cost_usd": 2.0035,
+   "check_seconds": 0.02,
+   "issues": 68,
+   "issue_rules": {
+    "V4": 65,
+    "V3": 2,
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 223.5,
+   "input_tokens": 375305,
+   "cache_read_tokens": 279527,
+   "output_tokens": 45197,
+   "cost_usd": 0.891,
+   "check_seconds": 0.03,
+   "issues": 1,
+   "issue_rules": {
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 165.2,
+   "input_tokens": 422768,
+   "cache_read_tokens": 375303,
+   "output_tokens": 37380,
+   "cost_usd": 0.6387,
+   "check_seconds": 0.02,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 68,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 289,
+  "pieces_built": 289,
+  "pieces_unmapped": 0,
+  "inventory_matched": 283,
+  "exact_matched": 283,
+  "inventory_precision": 0.979,
+  "inventory_recall": 0.979,
+  "exact_recall": 0.979,
+  "joined_edges": 312,
+  "contacts_expected": 32,
+  "contacts_predicted": 54,
+  "contacts_correct": 20,
+  "contact_precision": 0.37,
+  "contact_recall": 0.625
+ },
+ "score_initial": {
+  "pieces_expected": 289,
+  "pieces_built": 289,
+  "pieces_unmapped": 0,
+  "inventory_matched": 281,
+  "exact_matched": 281,
+  "inventory_precision": 0.972,
+  "inventory_recall": 0.972,
+  "exact_recall": 0.972,
+  "joined_edges": 312,
+  "contacts_expected": 32,
+  "contacts_predicted": 54,
+  "contacts_correct": 20,
+  "contact_precision": 0.37,
+  "contact_recall": 0.625
+ },
+ "postprocess_ms": 35.4
+}

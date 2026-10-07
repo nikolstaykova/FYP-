@@ -1,0 +1,80 @@
+{
+ "case": "pi-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 13.1,
+  "input_tokens": 16635,
+  "output_tokens": 1823,
+  "cost_usd": 0.0726,
+  "repair_rounds_used": 0
+ },
+ "parts": 2,
+ "edges": 8,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The pi-stop plugs directly onto the GPIO header (no breadboard or jumper wires), on physical pins 9 (GND), 11 (GPIO17), 13 (GPIO27), 15 (GPIO22) per the diagram.",
+  "The pi-stop is a new part type with ports R, A, G, GND; each LED is modelled as passing R/A/G to GND (resistors are built into the board).",
+  "The GND pin at physical pin 9 is assumed to be named GND.2 in the raspberry-pi catalogue entry (GND.1 = pin 6).",
+  "The manual also lists an alternative of 3 discrete LEDs with resistors; the diagram uses the pi-stop, so that is what was modelled.",
+  "Colour-to-pin mapping per the manual: Red=GPIO22, Amber=GPIO27, Green=GPIO17."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.1,
+   "input_tokens": 16635,
+   "cache_read_tokens": 3203,
+   "output_tokens": 1823,
+   "cost_usd": 0.0726,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [
+   "led",
+   "resistor"
+  ],
+  "hardware_recall": 0.0
+ },
+ "drafts": [
+  {
+   "type": "pi-stop",
+   "family": "pi-stop",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 17.8
+}

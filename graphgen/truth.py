@@ -15,7 +15,22 @@ import sys
 
 from .catalogue import CQ, brick_dims
 
-LDU_HEIGHT = {"brick": 24, "plate": 8, "tile": 8}
+LDU_HEIGHT = {"brick": 24, "plate": 8, "tile": 8, "slope": 24, "slope-low": 16}
+NOTHING_ON_TOP = {"tile", "slope", "slope-low"}  # no studs to clutch (a slope's few top studs are ignored)
+
+
+def extended_dims(description):
+    """v5 scoring: also slopes and round/special/modified bricks, plates and tiles, by their footprint
+    ('Slope 45 2 x 2', 'Plate Round 1 x 1 with Solid Stud', 'Brick Special 1 x 2 with Handle')."""
+    import re as _re
+    d = _re.sub(r"\s+", " ", description).strip()
+    m = _re.match(r"^(Brick|Plate|Tile|Slope)\b.*?(\d+) x (\d+)( x (\d+(/\d+)?))?", d, _re.I)
+    if not m:
+        return None
+    kind = m.group(1).lower()
+    if kind == "slope" and m.group(5) == "2/3":
+        kind = "slope-low"
+    return kind, int(m.group(2)), int(m.group(3))
 
 
 # --- Arduino ---------------------------------------------------------------------
@@ -49,18 +64,42 @@ def _apply(m, v):
     return [sum(m[i][k] * v[k] for k in range(3)) for i in range(3)]
 
 
-def flatten_mpd(text, index):
-    """[(part_file, colour, pos, rot)] for every real part, submodels expanded."""
+PART_ORG = re.compile(r"(?m)^0 !LDRAW_ORG\s+(Unofficial_)?(Part|Subpart|Primitive|8_Primitive|48_Primitive|Shortcut)\b",
+                      re.I)
+
+
+def ldraw_key(name):
+    """One spelling for a file name: references write `s\\x.dat` or `s/x.dat`, in any case."""
+    return name.strip().lower().replace("\\", "/")
+
+
+def mpd_sections(text):
+    """{name: lines} of a model file, and the names that are PARTS embedded in it (custom or unofficial pieces,
+    marked Part/Subpart/Primitive/Shortcut) rather than sub-models. A part is one piece: never expanded."""
     files, current = {}, None
     for line in text.splitlines():
         m = re.match(r"^0 FILE (.+?)\s*$", line)
         if m:
-            current = m.group(1).strip().lower()
+            current = ldraw_key(m.group(1))
             files[current] = []
         elif current is not None:
             files[current].append(line)
     if not files:  # a single-model .ldr file without "0 FILE" sections
         files["main"] = text.splitlines()
+    parts = {n for n, lines in files.items() if PART_ORG.search("\n".join(lines[:15]))}
+    return files, parts
+
+
+def embedded_parts(text):
+    """{name: file text} of the parts a model file carries itself (the library does not have them)."""
+    files, parts = mpd_sections(text)
+    return {n: "\n".join(files[n]) for n in parts}
+
+
+def flatten_mpd(text, index=None):
+    """[(part_file, colour, pos, rot)] for every real piece, sub-models expanded. Parts embedded in the file are
+    pieces too (until v7 they were expanded into their primitives: discs, edges, cylinders counted as pieces)."""
+    files, embedded = mpd_sections(text)
     main = next(iter(files))
     out = []
 
@@ -69,12 +108,12 @@ def flatten_mpd(text, index):
             b = line.split()
             if len(b) < 15 or b[0] != "1":
                 continue
-            ref = " ".join(b[14:]).strip().lower().replace("\\", "/")
+            ref = ldraw_key(" ".join(b[14:]))
             p = [float(x) for x in b[2:5]]
             r = _mat([float(x) for x in b[5:14]])
             abs_pos = [pos[i] + _apply(rot, p)[i] for i in range(3)]
             abs_rot = _mul(rot, r)
-            if ref in files and depth < 10:
+            if ref in files and ref not in embedded and depth < 10:
                 walk(ref, abs_pos, abs_rot, depth + 1)
             else:
                 out.append((ref, b[1], abs_pos, abs_rot))
@@ -93,22 +132,22 @@ def _footprint(dims, pos, rot):
     return min(xs), max(xs), min(zs), max(zs)
 
 
-def lego_truth(mpd_text, index, describe):
+def lego_truth(mpd_text, index, describe, extended=False):
     parts = flatten_mpd(mpd_text, index)
     nodes = []
     for i, (ref, colour, pos, rot) in enumerate(parts, 1):
         desc = describe(ref, index)
         nodes.append({"id": f"b{i}", "part": ref, "desc": desc, "colour": colour,
                       "pos": [round(x, 1) for x in pos], "rot": [[round(x, 3) for x in r] for r in rot],
-                      "dims": brick_dims(desc)})
+                      "dims": brick_dims(desc) or (extended_dims(desc) if extended else None)})
     contacts = set()
     boxy = [n for n in nodes if n["dims"] and abs(n["rot"][1][1]) > 0.99]
     for a in boxy:
         ha = LDU_HEIGHT[a["dims"][0]]
         fa = _footprint(a["dims"], a["pos"], a["rot"])
         for b in boxy:
-            if a is b or a["dims"][0] == "tile":
-                continue  # nothing clutches on top of a tile
+            if a is b or a["dims"][0] in NOTHING_ON_TOP:
+                continue  # nothing clutches on top of a tile or a slope
             hb = LDU_HEIGHT[b["dims"][0]]
             # LDraw: -Y is up; a part's origin is its top surface, it extends +Y by its height.
             if abs((b["pos"][1] + hb) - a["pos"][1]) > 0.5:
@@ -141,11 +180,11 @@ def element_map():
         return {r["element_id"]: (r["part_num"], r["color_id"]) for r in csv.DictReader(f)}
 
 
-def lego_pdf_truth(entry, mpd_text, index, describe):
+def lego_pdf_truth(entry, mpd_text, index, describe, extended=False):
     """Answer key for one official manual: Rebrickable inventory (parts) and LDraw geometry
     (which plain brick/plate/tile designs clutch which), compared at design level because the
     model sees pictures, not LDraw part ids."""
-    geo = lego_truth(mpd_text, index, describe)
+    geo = lego_truth(mpd_text, index, describe, extended)
     design = {n["id"]: n["part"][:-4] if n["part"].endswith(".dat") else n["part"] for n in geo["nodes"]}
     pairs = collections.Counter(tuple(sorted(design[x] for x in c)) for c in geo["contacts"])
     return {"inventory": entry["inventory"], "pieces": sum(entry["inventory"].values()),

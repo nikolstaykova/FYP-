@@ -1,0 +1,139 @@
+{
+ "case": "docs-nano-matter-04-matter-relay-lightbulb",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 165.3,
+  "input_tokens": 136618,
+  "output_tokens": 19600,
+  "cost_usd": 0.2926,
+  "repair_rounds_used": 2
+ },
+ "parts": 11,
+ "edges": 27,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 3,
+ "problems": [
+  [
+   "V2",
+   "part hub1 (google-nest-hub-max) has no connection"
+  ]
+ ],
+ "notes": [
+  "hub1 (Google Nest Hub Max) has no edge, and I kept it that way because that is correct for this manual. The hub is listed only as the Thread border router. The Nano Matter reaches it over a wireless Thread/Matter link, and the tutorial describes no cable, mount or physical contact between them. Any edge I added (contact, joined or electrical) would be invented, and the catalogue has no wireless edge type. I kept the part because the parts list names it and the rule is to use exactly the listed parts.",
+  "The relay's NO contact reaches the bulb through wire4. This is the wire in the photo that runs from the relay to the bulb socket. The tutorial does not list it, so I added it to avoid a lug-to-lug join.",
+  "Circuit: the Nano Matter 3V3 powers the relay VCC, GND goes to relay GND, and D4 drives relay SIG, as the text says. The relay contacts (COM to NO) are in series with the live conductor of the AC cable, so the relay interrupts the current path when open. The neutral conductor goes straight to the bulb.",
+  "The tutorial does not give breadboard hole positions. I placed the Nano Matter's D4, 3V3 and GND pins in holes on the centre-split breadboard and chose the holes. The jumper wires use the same columns as the Nano pins. Only the pins the circuit uses are placed.",
+  "The Grove cable shown in the photo is modelled as three jumper wires from the breadboard to the relay's SIG, VCC and GND pins. The relay's NC pin is unused.",
+  "The USB-C cable powers and programs the Nano Matter. The usb-cable catalogue entry has no ports, so that edge has no port on the cable side.",
+  "The AC plug end (plug.L, plug.N) goes to a mains outlet, which is not a part here. The orange wire nut in the photo is modelled as direct twisted joins. The lightbulb-socket-e10 type covers both the socket and the bulb."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 82.9,
+   "input_tokens": 42229,
+   "cache_read_tokens": 32546,
+   "output_tokens": 4310,
+   "cost_usd": 0.0863,
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": [
+    "ac-cable",
+    "arduino-nano-matter",
+    "google-nest-hub-max",
+    "grove-relay"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.2,
+   "input_tokens": 26044,
+   "cache_read_tokens": 21801,
+   "output_tokens": 5295,
+   "cost_usd": 0.0679,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 1,
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.8,
+   "input_tokens": 31529,
+   "cache_read_tokens": 26042,
+   "output_tokens": 5122,
+   "cost_usd": 0.0701,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.4,
+   "input_tokens": 36816,
+   "cache_read_tokens": 31527,
+   "output_tokens": 4873,
+   "cost_usd": 0.0683,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "score_initial": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "grove-relay",
+   "family": "grove-relay",
+   "checked": false
+  },
+  {
+   "type": "ac-cable",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "google-nest-hub-max",
+   "family": "google-nest-hub-max",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.0
+}

@@ -1,0 +1,47 @@
+{
+ "case": "docs-mkr-mkr-relay-shield-basic",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 46.8,
+  "api_seconds": 43.3,
+  "first_token_seconds": 21.1,
+  "input_tokens": 22667,
+  "cache_read_tokens": 5414,
+  "output_tokens": 7327,
+  "cost_usd": 0.1434,
+  "turns": 2
+ },
+ "parts": 12,
+ "edges": 50,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The circuit images (IMG04, IMG05, IMG07) were not provided, so the LED wiring is inferred from the sketch: LED_1 on pin 3, LED_2 on pin 4. Each LED has a series resistor, and each cathode goes to a GND rail.",
+  "Breadboard hole positions are my assumption: the images were not available, so the exact holes and the 220 ohm resistor value are guesses.",
+  "The tutorial says 'Arduino MKR family board' without naming one. I used arduino-mkr-1000 as a stand-in, because its ports include 1-4, GND, VCC and 5V.",
+  "The MKR board's pins plug into the shield's female headers. The LED jumper wires are attached to the board's own pins 3, 4 and GND, which are electrically the same as the shield's pass-through sockets.",
+  "Relays are wired internally to pins 1 and 2. The shield's high-power terminals (R1/R2 NO, COM, NC) are modelled as ports. The tutorial's high-power example (24V supply plus a 24V lamp on the NC contact) was only described as an image and has no catalogue part, so I left it out. The screw terminals and the NC/NO/COM contacts are left unconnected.",
+  "The shield's low-power logic (relay coils, driver, flyback diodes, A1-A4 solder jumpers) is internal to the shield and not modelled as separate parts. The proto area is unused.",
+  "The Arduino IDE, the USB cable and the code are not physical parts in the build graph."
+ ],
+ "score": {
+  "families_listed": [
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-relay-shield",
+   "family": "mkr-relay-shield",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 9.0
+}

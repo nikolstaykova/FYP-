@@ -1,0 +1,344 @@
+{
+ "case": "pi-build-a-buggy",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 295.9,
+  "input_tokens": 243546,
+  "output_tokens": 15946,
+  "cost_usd": 0.6169,
+  "repair_rounds_used": 0
+ },
+ "parts": 20,
+ "edges": 40,
+ "repeats": [
+  {
+   "group": "motor",
+   "times": 2,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GPIO_HEADER' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GPIO_HEADER' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'USB_C_POWER' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'USB_C_POWER' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e17: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e18: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e19: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e20: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e29: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e30: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e31: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e32: port '2' not on dc-motor"
+  ]
+ ],
+ "notes": [
+  "Optional components (breadboard, VL53L0X/ultrasonic sensor, line sensors) are only mentioned as future additions with no wiring in this tutorial, so they are omitted.",
+  "The motor controller board is not in the catalogue, so it is a new type. The GPIO header is a single port and the 26-pin push-on is modelled as one edge; GPIO 7/8/9/10 are not modelled as separate pins.",
+  "The wheel is also a new type, with one axle-hole port 'hub'. dc-motor has no axle port, so the wheel-to-motor edge has no motor port.",
+  "The battery holder's red wire goes to + and its black wire to -. The wires are integral to the pack, so they are modelled as pack ports connected straight to the screw terminals.",
+  "The motor wires are modelled as jumper-wire parts soldered to the motor terminals and screwed into terminal blocks A and B. Which wire goes to which terminal does not matter. The motors are on terminal blocks A and B, but which motor is left or right is set in software.",
+  "The batteries sit in the holder with no port-specific edges because the pack has only positive and negative ports.",
+  "The power bank to Pi USB-C link is shown directly because no cable is in the parts list.",
+  "Solder and electrical tape are shared single parts. The tape is optional and is used to protect the soldered joints. The solder is only needed if the motors have no wires attached.",
+  "Motors are fixed in the box with putty or tape, which is not in the parts list. The wheels attach to the axles through the box walls."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 260.5,
+   "input_tokens": 230618,
+   "output_tokens": 10760,
+   "cost_usd": 0.5255,
+   "check_seconds": 0.0,
+   "matched": 8,
+   "listed": 15,
+   "ingested": 4,
+   "ingest": [
+    {
+     "part": "Motor controller board (CamJam EduKit 3)",
+     "type": "motor-driver-camjam-edukit3",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-brushless-motor-driver-3-phase-tmc6300.html (The content describes the SparkFun TMC6300 3-phase brushless motor driver breako)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-experiential-robotics-platform-xrp-controller.html (The content describes the SparkFun XRP Controller (ROB-26619, RP2350B-based robo)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/5006 (Content describes the Pololu 3pi+ 2040 Control Board (a robot control board with)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/3735 (Content describes the Pololu 3pi+ 32U4 Control Board (a robot control board with)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Replicape-Rev-B-3D-printer-controller-board-p-2942.html (The content is a Seeed Studio page for the Replicape Rev B 3D printer controller)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Expansion-Board-3-0-compatible-with-all-Pycom-module-p-2788.html (The content describes the Pycom Expansion Board 3.0 (a development/expansion boa)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 48.6
+    },
+    {
+     "part": "Wheels",
+     "type": "wheel",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/kitronik-move-mini-mk2-buggy-kit.html (The page is for the Kitronik :MOVE mini MK2 buggy kit, a whole robot kit. It is )"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/wheel-encoder-kit.html (The page describes the DAGU Wheel Encoder Kit (ROB-12629): two 8-pole magnets wi)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/1520 (The content describes a Pololu 120:1 Mini Plastic Gearmotor HP (item 1520), a br)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/3050 (Content describes a Pololu 50:1 Micro Metal Gearmotor HPCB 12V (item 3050), a DC)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/MD13S-Cytron-13Amp-DC-Motor-Driver-p-3014.html (The content describes the MD13S Cytron 13Amp DC motor driver, not a wheel. The p)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Crazyflie-2-0-7x16mm-Coreless-DC-Motor-Pack-4-Motor-p-2794.html (The content is a Seeed Studio page for a Crazyflie 7x16mm coreless DC motor pack)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 81.1
+    },
+    {
+     "part": "AA batteries",
+     "type": "battery-aa",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/4779 (The page is for a 3x AA battery holder with on/off switch and 2-pin JST (Adafrui)"
+      ],
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/3905 (The page is for a 2x2 AA battery holder with header wires (Adafruit 3905), not f)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/panasonic-alkaline-battery-aa.html"
+      ]
+     ],
+     "seconds": 24.8
+    },
+    {
+     "part": "Ball caster",
+     "type": "ball-caster",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/3244 (The page is for the Mini 3-Layer Round Robot Chassis Kit (2WD with DC motors, pr)"
+      ],
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/4466 (Content describes the Adafruit Octagon Chassis Frame (product 4466), not a ball )"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/jetbot-chassis-kit-v2.html"
+      ]
+     ],
+     "seconds": 21.8
+    },
+    {
+     "part": "USB power bank",
+     "type": "power-bank-usb",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/4288"
+      ]
+     ],
+     "seconds": 16.4
+    },
+    {
+     "part": "Line following sensors (optional)",
+     "type": "line-sensor-tcrt5000",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/961 (The page is the Pololu QTR-8RC 8-channel reflectance sensor array. It does not d)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/960 (The content describes the Pololu QTR-8A, an 8-channel analog reflectance array, )"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Doppler-X-band-Radar-detector-sensor-module-10-525GHz-p-2383.html (The content is a Seeed Studio page for a Doppler X-band radar detector module (1)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Mini-PIR-Motion-Sensor-Module-p-1729.html (The content is a Seeed Studio page for the Mini PIR Motion Sensor Module. It is )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 42.1
+    },
+    {
+     "part": "Small cardboard or plastic box",
+     "type": "chassis-box",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/4988 (Content describes a 2 x CR2032 coin cell battery holder with on-off switch and w)"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Plastic-storage-box-transparent-small-p-1307.html"
+      ]
+     ],
+     "seconds": 16.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.4,
+   "input_tokens": 12928,
+   "cache_read_tokens": 3203,
+   "output_tokens": 5186,
+   "cost_usd": 0.0914,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "V3": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "motor-driver-camjam-edukit3",
+   "family": "motor-driver-camjam-edukit3",
+   "checked": false
+  },
+  {
+   "type": "wheel",
+   "family": "wheel",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 13.1
+}

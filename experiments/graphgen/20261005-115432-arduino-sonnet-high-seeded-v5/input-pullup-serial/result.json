@@ -1,0 +1,117 @@
+{
+ "case": "input-pullup-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 30.2,
+  "input_tokens": 18162,
+  "output_tokens": 3649,
+  "cost_usd": 0.0672,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "No external resistor or LED: the tutorial uses the internal pull-up on pin 2 (INPUT_PULLUP) and the Uno's onboard LED on pin 13.",
+  "The breadboard image labels the half nearest the top as rows f-j and the lower half as rows a-e. Following the catalogue, the lower half (rows a-e) is bank 't' and the upper half (rows f-j) is bank 'b'. The button straddles the centre gap in columns 10 and 12.",
+  "Pushbutton sides are mapped so the two legs in column 10 are one side (1.l, 1.r) and the two legs in column 12 are the other side (2.l, 2.r). This is the only mapping that gives a working switch with the wires in columns 10 and 12 as drawn. Pressing joins column 10 (pin 2) to column 12 (GND).",
+  "The black wire goes to the second GND pin on the Uno's power header, which is mapped to GND.2.",
+  "The wires are drawn in row c of the lower half (rows a-e). The exact row does not matter because the whole column strip is one node."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.2,
+   "input_tokens": 18162,
+   "cache_read_tokens": 11032,
+   "output_tokens": 3649,
+   "cost_usd": 0.0672,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 17.5
+}

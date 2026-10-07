@@ -1,0 +1,86 @@
+{
+ "case": "docs-uno-msr3-controlling-dc-motor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 75.8,
+  "input_tokens": 68623,
+  "output_tokens": 4714,
+  "cost_usd": 0.1354,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 29,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The shield is stacked on the Uno's headers. I made joined and electrical edges for the shield pins the tutorial uses: channel A D12/D3/D9/A0, channel B D13/D11/D8/A1, plus GND and VIN. Only channel A is driven in the sketch.",
+  "The motor goes on channel A (orange lead to A+, black lead to A-), as in the image. The motor is not polarised, so swapping the leads only reverses direction.",
+  "The battery holder's orange lead goes to the VIN screw terminal and its black lead to GND. Two 3.7 V cells in series give about 7.4 V, which is inside the shield's 5-12 V range and the motor's 6-12 V range.",
+  "The shield's VIN terminal also feeds the Uno's VIN pin through the stacked header. I recorded that as a stacked-pin edge.",
+  "The USB cable joins the Uno to the computer. The catalogue has no named USB port on the Uno, so the edge has no ports. The computer is not modelled.",
+  "No breadboard or jumper wires are used, because the leads go straight into the screw terminals."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 56.6,
+   "input_tokens": 44575,
+   "cache_read_tokens": 25094,
+   "output_tokens": 1316,
+   "cost_usd": 0.0941,
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-motor-shield-rev3",
+    "battery-holder-2x18650",
+    "dc-motor-12v"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.2,
+   "input_tokens": 24048,
+   "cache_read_tokens": 22945,
+   "output_tokens": 3398,
+   "cost_usd": 0.0413,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.9
+}

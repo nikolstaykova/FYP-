@@ -1,0 +1,101 @@
+{
+ "case": "midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 28.0,
+  "input_tokens": 18768,
+  "output_tokens": 4107,
+  "cost_usd": 0.0744,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 26,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Circuit: MIDI jack pin 5 -> 220 ohm -> Uno digital pin 1 (TX); pin 2 -> GND; pin 4 -> 220 ohm -> 5V.",
+  "The MIDI jack is placed on the breadboard with pins 5, 2, 4 in columns 7, 8, 9 (left to right in the image, matching the schematic). Pins 1 and 3 are unused and not connected.",
+  "Breadboard hole names follow the catalogue convention (top bank 't' = rows a-e, bottom bank 'b' = rows f-j), which is the reverse of the row letters printed in the image. The exact rows are assumed; columns come from the image.",
+  "Each resistor bridges the centre gap, from the jack's column in the top half to the same column in the bottom half, where the jumper wire to the Uno lands.",
+  "Which Uno GND pin the black wire uses is not specified; GND.1 (next to AREF) is assumed.",
+  "On Leonardo/Due-type boards, the sketch should use Serial1 instead of Serial (software note only)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.0,
+   "input_tokens": 18768,
+   "cache_read_tokens": 10995,
+   "output_tokens": 4107,
+   "cost_usd": 0.0744,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 15.9
+}

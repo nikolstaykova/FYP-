@@ -1,0 +1,173 @@
+{
+ "case": "docs-due-due-motor-shield-dc",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 226.6,
+  "input_tokens": 102275,
+  "output_tokens": 15133,
+  "cost_usd": 0.3303,
+  "repair_rounds_used": 2
+ },
+ "parts": 5,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "arduino-due was listed as matched but is not in the provided catalogue, so a new part type is defined.",
+  "Motor shield is stacked on the Due; only the headers used by the sketch (D3 PWM_A, D12 DIR_A, D9 BRAKE_A, A0 SNS_A) plus power/reference pins are listed as edges. Other stacked header pins are not enumerated.",
+  "Motor wires go to channel A screw terminals (OUT1/OUT2); which wire goes to which terminal is assumed (red to OUT1/+, black to OUT2/-).",
+  "Wall wart (12V in the example) plugs into the Due's DC jack; USB cable goes to the programming port (assumed). The USB cable has no ports in the catalogue so port is null.",
+  "E2 (jack negative on the same net as GND) is not a real fault. The barrel-jack sleeve is the Due's ground by design, and the wall wart's negative terminal must connect to board GND. I renamed the jack ports to JACK_TIP and GND_JACK so the sleeve is clearly a ground pin rather than a separate power pin. The connection itself is kept because the manual requires it. The jack tip to VIN path is modelled as 'through' because it passes via the board's protection diode."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 144.8,
+   "input_tokens": 55771,
+   "output_tokens": 2007,
+   "cost_usd": 0.1335,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 5,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Due",
+     "type": "arduino-due",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-giga-r1-wifi.html (The page sells the Arduino Giga R1 WiFi (SparkFun WRL-23319), not the Arduino Du)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-mega-2560-r3.html (The page sells the Arduino Mega 2560 R3 (ATmega2560, AVR, 5V). The requested par)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2512 (This page sells the Pololu A4990 Dual Motor Driver Shield. It is not an Arduino )"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2510 (This page sells the Pololu Zumo Robot for Arduino, a tracked robot kit. It is no)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Ameba-RTL8195-Arduino-Wireless-Board-p-2699.html (This page sells the Ameba RTL8195 Arduino Wireless Board from Seeed Studio. That)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Blend-Micro-an-Arduino-Development-Board-with-BLE-p-1834.html (The page sells the Blend Micro (ATmega32u4 plus nRF8001 BLE board), not an Ardui)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 82.5
+    },
+    {
+     "part": "Wall wart power supply",
+     "type": "power-supply-wall-wart",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/wall-adapter-power-supply-12vdc-600ma-barrel-jack.html"
+      ]
+     ],
+     "seconds": 56.2
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.6,
+   "input_tokens": 10595,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4469,
+   "cost_usd": 0.0661,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.6,
+   "input_tokens": 15584,
+   "cache_read_tokens": 10593,
+   "output_tokens": 4483,
+   "cost_usd": 0.0669,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.6,
+   "input_tokens": 20325,
+   "cache_read_tokens": 15582,
+   "output_tokens": 4174,
+   "cost_usd": 0.0638,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-due",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 30.7
+}

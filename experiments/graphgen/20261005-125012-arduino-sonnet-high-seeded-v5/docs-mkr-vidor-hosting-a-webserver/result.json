@@ -1,0 +1,78 @@
+{
+ "case": "docs-mkr-vidor-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 39.4,
+  "input_tokens": 75915,
+  "output_tokens": 3731,
+  "cost_usd": 0.1363,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct, so I kept them unchanged.",
+  "The circuit image is the authority on connections. Signal path: Vidor D2 -> green wire -> column 3 -> 82 ohm resistor -> column 6 -> LED anode. LED cathode (column 8) -> black wire -> Vidor GND.",
+  "The catalogue calls the half of the breadboard holding rows f-j bank 'b'. The image's upper half is labelled j-f, so I used 'b' ids: green wire at 3b.g, resistor legs at 3b.h and 6b.h, LED legs at 6b.i and 8b.i, black wire at 8b.h.",
+  "The LED's bent, longer leg (anode) is in column 6, next to the resistor. The straight leg (cathode) is in column 8 and goes to GND. This puts the resistor on the anode side, as drawn.",
+  "The pin labelled '2' on the image is D2 on the catalogue card. The sketch's ledPin = 2 agrees.",
+  "The 82 ohm resistor limits the current at the Vidor's 3.3 V logic level. Each physical join has both a joined and an electrical edge.",
+  "The USB cable for power and programming is implied but not drawn, so it is not in the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.1,
+   "input_tokens": 49799,
+   "cache_read_tokens": 28077,
+   "output_tokens": 895,
+   "cost_usd": 0.1006,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-mkr-vidor-4000"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.3,
+   "input_tokens": 26116,
+   "cache_read_tokens": 25186,
+   "output_tokens": 2836,
+   "cost_usd": 0.0357,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 14.9
+}

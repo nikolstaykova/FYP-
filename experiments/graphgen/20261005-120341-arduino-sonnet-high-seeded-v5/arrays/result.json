@@ -1,0 +1,88 @@
+{
+ "case": "arrays",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 73.6,
+  "input_tokens": 39518,
+  "output_tokens": 12445,
+  "cost_usd": 0.1696,
+  "repair_rounds_used": 0
+ },
+ "parts": 27,
+ "edges": 100,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct; no parts added or dropped (1 Uno, 1 breadboard, 6 LEDs, 6 x 220 ohm resistors, 13 jumper wires).",
+  "Each LED has its own 220 ohm series resistor between its Uno pin and the LED anode; cathodes go via short black wires to the top negative rail, which the Uno GND wire feeds. LEDs on pins 7,6,5,4,3,2 in order left to right.",
+  "Breadboard coordinates are read from the image. The image's top half is rows j-f (LEDs and resistor tops) and its lower half is rows e-a; these are mapped to catalogue banks 'b' (rows f-j) and 't' (rows a-e). LED anode columns 7,10,13,16,19,22; cathode columns 8,11,14,17,20,23. Each resistor spans the centre gap from row f (bank b) to row e (bank t) in its anode column; the blue wire lands at row c of the same column.",
+  "Exact rail hole numbers (tn.1 for the Uno GND wire, tn.8/11/14/17/20/23 for the black wires) are approximate; all tn holes are one strip so the connectivity is unaffected.",
+  "Uno GND pin is the GND next to pin 13 on the digital header; it is mapped to GND.1 (all Uno GNDs are common).",
+  "The array in the code only changes the order the LEDs are lit in software, not the wiring."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.7,
+   "input_tokens": 18581,
+   "cache_read_tokens": 11144,
+   "output_tokens": 2083,
+   "cost_usd": 0.0528,
+   "check_seconds": 0.0,
+   "parts_listed": 27,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 55.9,
+   "input_tokens": 20937,
+   "cache_read_tokens": 18579,
+   "output_tokens": 10362,
+   "cost_usd": 0.1168,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 13,
+  "nets_built": 13,
+  "nets_matched": 13,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 6,
+   "led": 6
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 6,
+   "resistor": 6
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 16.3
+}

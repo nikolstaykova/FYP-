@@ -1,0 +1,83 @@
+{
+ "case": "docs-uno-wifi-rev2-uno-wifi-r2-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 55.1,
+  "input_tokens": 69564,
+  "output_tokens": 5260,
+  "cost_usd": 0.1431,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct; no parts added or dropped.",
+  "Arduino UNO WiFi Rev2 is not in the catalogue and lookup_part found nothing, so it is defined as a new part type with Uno-style header ports.",
+  "Circuit read from the image: pin 2 -> green wire -> breadboard column 3 -> 220 ohm resistor (column 3 to column 6) -> LED anode (column 6, the bent/longer leg) -> LED cathode (column 8) -> black wire in column 8 -> GND next to AREF on the digital header.",
+  "Breadboard hole names follow the catalogue: rows f-j are bank 'b'. The image shows rows j-f in the top half, so the LED legs are at row i, the resistor at row h, and the wire ends at rows g (green) and h (black).",
+  "The LED anode is assumed to be the bent (longer) leg, which is the one connected to the resistor.",
+  "The sketch also reads analog pin A1 but no sensor is connected to it, so A1 is left unconnected."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.9,
+   "input_tokens": 45060,
+   "cache_read_tokens": 25731,
+   "output_tokens": 1625,
+   "cost_usd": 0.0979,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-uno-wifi-rev2"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.2,
+   "input_tokens": 24504,
+   "cache_read_tokens": 22793,
+   "output_tokens": 3635,
+   "cost_usd": 0.0452,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-uno-wifi-rev2",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.7
+}

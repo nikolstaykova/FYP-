@@ -1,0 +1,122 @@
+{
+ "case": "docs-nano-matter-03-matter-fan",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 145.4,
+  "input_tokens": 207716,
+  "output_tokens": 16427,
+  "cost_usd": 0.289,
+  "repair_rounds_used": 2
+ },
+ "parts": 8,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "Arduino Nano Matter was not found by lookup_part, so it is defined as a new part type.",
+  "The Google Nest Hub Max (Thread Border Router) is network infrastructure, not part of the circuit, so it is left out.",
+  "The checker rejects wire-end/pin and motor-lead/screw pairings on the Grove motor driver card, because its ports are pin and screw kinds, not sockets. The manual still physically connects these wires and motor leads to the module, so I kept the connections as edges to the driver with no port named.",
+  "Intended driver ports: wire1 (3V3) to VCC, wire2 (GND) to GND, wire3 (D4 PWM) to SDA, motor lead 1 to OUT1, motor lead 2 to OUT2. The tutorial only says the driver is powered from 3.3V and the motor speed comes from PWM on D4. Which signal pin the D4 wire goes to is a guess.",
+  "The photo shows a Grove cable and a green Grove breakout adapter between the board and the driver. The parts list has neither, so they are not included.",
+  "The Nano Matter sits on the breadboard with only 3V3, D4 and GND in holes. Hole positions (5t.a, 6t.a, 7t.a) are assumed, and each jumper wire's breadboard end is in the same column in row b.",
+  "The motor's polarity is not specified, and the motor is symmetric in the catalogue.",
+  "The USB-C cable powers the board from the computer."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.8,
+   "input_tokens": 57228,
+   "cache_read_tokens": 48187,
+   "output_tokens": 2480,
+   "cost_usd": 0.0706,
+   "check_seconds": 0.0,
+   "parts_listed": 8,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-nano-matter"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.9,
+   "input_tokens": 31442,
+   "cache_read_tokens": 29060,
+   "output_tokens": 4554,
+   "cost_usd": 0.0609,
+   "check_seconds": 0.01,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 5
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.8,
+   "input_tokens": 36266,
+   "cache_read_tokens": 31440,
+   "output_tokens": 4334,
+   "cost_usd": 0.0689,
+   "check_seconds": 0.0,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 5
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 58.9,
+   "input_tokens": 82780,
+   "cache_read_tokens": 77132,
+   "output_tokens": 5059,
+   "cost_usd": 0.0886,
+   "check_seconds": 0.01,
+   "issues": 4,
+   "issue_rules": {
+    "E1": 1,
+    "E2": 1,
+    "E8": 2
+   }
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 4,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 14.4
+}

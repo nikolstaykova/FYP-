@@ -1,0 +1,76 @@
+{
+ "case": "docs-projects-gnome-forecaster",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 35.5,
+  "input_tokens": 31563,
+  "output_tokens": 6144,
+  "cost_usd": 0.1759,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "No breadboard is used; the manual solders wires directly to the Nano Every pads and module pins, so jumper-wire nodes are used with solder joints.",
+  "The catalogue types led-strip, ds3231-rtc/ds1307-rtc and bme280 have no usable ports, so new types (ws2812b-strip-8, ds3231-module, bme280-breakout) were defined with named ports.",
+  "The DS3231 module pass-through is modelled as two port sets (.1 = side wired to the Nano, .2 = side wired to the BME280) joined internally per signal.",
+  "The manual does not say which Nano GND pad is used. GND.1 goes to the RTC and GND.2 to the LED strip; this is an assumption.",
+  "The manual says the LED strip GND is wired but does not name the pad. It is assumed to go to a Nano GND pin.",
+  "Power comes from USB. The Nano Every catalogue entry has no USB port, so the USB cable is not modelled.",
+  "The 3D-printed gnome enclosure and the strip's DOUT end are not modelled. DOUT is left unconnected.",
+  "The RTC and BME280 are wired in parallel on the same I2C bus (3V3, GND, A4/SDA, A5/SCL) through the RTC pass-through pins."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.5,
+   "input_tokens": 31563,
+   "cache_read_tokens": 3110,
+   "output_tokens": 6144,
+   "cost_usd": 0.1759,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [
+  {
+   "type": "bme280-breakout",
+   "family": "bme280-breakout",
+   "checked": false
+  },
+  {
+   "type": "ds3231-module",
+   "family": "ds3231-module",
+   "checked": false
+  },
+  {
+   "type": "ws2812b-strip-8",
+   "family": "ws2812b-strip-8",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 21.2
+}

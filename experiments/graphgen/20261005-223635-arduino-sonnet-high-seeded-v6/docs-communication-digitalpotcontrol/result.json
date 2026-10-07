@@ -1,0 +1,85 @@
+{
+ "case": "docs-communication-digitalpotcontrol",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 141.1,
+  "input_tokens": 80305,
+  "output_tokens": 21701,
+  "cost_usd": 0.3308,
+  "repair_rounds_used": 0
+ },
+ "parts": 36,
+ "edges": 180,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Step 1 was wrong in one place: I added wire21 (Uno GND.2 to the bottom ground rail). The bottom-half B pins and the bottom LED cathodes use the bottom ground rail, and a separate ground feed to it is needed. All other parts are unchanged.",
+  "The manual gives no wire layout, so the breadboard positions are my own. The AD5206 sits across the centre gap with pins 1-12 in holes 5t.e to 16t.e, left to right, and pins 24 down to 13 in holes 5b.f to 16b.f. Pin 1 faces pin 24.",
+  "All six A pins and VDD go to the +5V rail. A1-A4 are on the bottom half, so their wires run to the top + rail. All six B pins go to ground: B5 and B6 to the top - rail, B1-B4 to the bottom - rail. VSS and the GND pin go to the top - rail. The top - rail and bottom - rail are both fed from Uno ground.",
+  "CS goes to Uno pin 10, SDI to pin 11 and CLK to pin 13, as the code comments say.",
+  "Each channel's W pin goes through a 220 ohm resistor to the LED anode. The LED cathode goes to a ground rail. Channels 1-6 use led1-led6 and r1-r6. The resistor is on the anode side, as in the schematic.",
+  "The wiper (W) is used as the voltage-divider output. The ad5206 part's 'through' pairs model the A-W and W-B resistor tracks, so there are no edges inside the chip.",
+  "Bank 'b' rows are f-j and bank 't' rows are a-e. Rail hole numbers are arbitrary, because each rail is one strip."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.3,
+   "input_tokens": 51108,
+   "cache_read_tokens": 28805,
+   "output_tokens": 3188,
+   "cost_usd": 0.1268,
+   "check_seconds": 0.0,
+   "parts_listed": 35,
+   "changed_in_build": 1,
+   "looked_up": [
+    "ad5206"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 101.8,
+   "input_tokens": 29197,
+   "cache_read_tokens": 25767,
+   "output_tokens": 18513,
+   "cost_usd": 0.204,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ad5206",
+   "family": "ad5206",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 24.6
+}

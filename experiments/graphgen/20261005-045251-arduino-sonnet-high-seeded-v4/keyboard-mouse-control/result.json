@@ -1,0 +1,151 @@
+{
+ "case": "keyboard-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 103.9,
+  "input_tokens": 45837,
+  "output_tokens": 12230,
+  "cost_usd": 0.1606,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 108,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The catalogue lists no ports for pushbutton beyond 1.l/1.r/2.l/2.r; side 1 (top half, 't' bank) is wired to +5V and side 2 (bottom half, 'b' bank) to the signal pin and pull-down resistor.",
+  "The catalogue names the upper half of the breadboard bank 't' (rows a-e) and the lower half bank 'b' (rows f-j); the image labels rows the other way round, so hole names follow the catalogue and strips are what matter. Exact rows and rail column numbers are approximated from the picture.",
+  "The Leonardo is in the catalogue as arduino-leonardo even though the parts list marked it as None. The tutorial also allows Micro or Due, but the circuit images show a Leonardo.",
+  "Resistors are 10k pull-downs from each signal column (pins 6, 5, 4, 3, 2) to the ground rail (bn), which is tied to Arduino GND by the black wire. The top rail (tp) is tied to 5V by the red wire.",
+  "Pin 6 to button 1, pin 5 to button 2, pin 4 to button 3, pin 3 to button 4, pin 2 to button 5, from left to right as in the schematic."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 39.3,
+   "check_seconds": 0.0,
+   "input_tokens": 27047,
+   "output_tokens": 1157,
+   "cost_usd": 0.017,
+   "listed": 5,
+   "matched": 4,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Leonardo, Micro or Arduino Due board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1947 (The content describes the Adafruit 2.8\" TFT Touch Shield with Capacitive Touch ()"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-uno-r4-minima.html (The page describes the Arduino UNO R4 Minima (DEV-22633, RA4M1, 5V). It mentions)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2521 (The content describes the Pololu Zumo Shield for Arduino v1.3 (a motor driver sh)"
+      ],
+      [
+       "budget",
+       "stopped after 3 checks"
+      ]
+     ],
+     "seconds": 19.9
+    },
+    {
+     "item": "5 pushbuttons",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "5 10k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 64.6,
+   "input_tokens": 18790,
+   "cache_read_tokens": 11120,
+   "output_tokens": 11073,
+   "cost_usd": 0.1436,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.5
+}

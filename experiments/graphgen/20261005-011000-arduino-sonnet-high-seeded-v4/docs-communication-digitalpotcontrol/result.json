@@ -1,0 +1,140 @@
+{
+ "case": "docs-communication-digitalpotcontrol",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 165.5,
+  "input_tokens": 31575,
+  "output_tokens": 20195,
+  "cost_usd": 0.2761,
+  "repair_rounds_used": 0
+ },
+ "parts": 41,
+ "edges": 200,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "AD5206 is not in the catalogue; added as ad5206 with ports named by pin function (A1-A6, W1-W6, B1-B6, GND, CS, VDD, SDI, CLK, VSS). Each channel's A-W-B is modelled as 'through' pairs.",
+  "The Fritzing image was not available; breadboard hole placement is an assumption. The DIP-24 chip straddles the centre gap: pins 1-12 in top-bank row e (columns 4-15), pins 13-24 in bottom-bank row f (columns 15-4).",
+  "Wiring follows the code comments: all A pins to +5V, all B pins to GND, VDD to 5V, VSS and GND to ground, CS to D10, SDI to D11 (MOSI), CLK to D13 (SCK).",
+  "Each wiper (W1-W6) goes by jumper wire to an LED anode; each LED cathode goes through a 220 ohm resistor to the ground rail (tn). Rail 'tp' is 5V, rail 'tn' is GND, fed from the Uno 5V and GND.1.",
+  "Channel numbers in code (0-5) map to the datasheet wiper addresses; the tutorial wires W1-W6 each to its own LED.",
+  "Uno 5V, GND.1 and the SPI pins are connected by jumper wires into header sockets."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 53.3,
+   "check_seconds": 0.0,
+   "input_tokens": 13929,
+   "output_tokens": 865,
+   "cost_usd": 0.0331,
+   "listed": 6,
+   "matched": 5,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "AD5206 Digital Potentiometer",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/digital-potentiometer-10k.html (The page is SparkFun COM-10613, a 10K digital potentiometer. Its description lin)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-16g-Ultra-low-Power-BMA400.html (The content describes the Grove 3-Axis Digital Accelerometer (BMA400), not the A)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 19.9
+    },
+    {
+     "item": "6 LEDs",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "6 220 ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "Hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 112.2,
+   "input_tokens": 17646,
+   "cache_read_tokens": 5507,
+   "output_tokens": 19330,
+   "cost_usd": 0.243,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [
+   "pot"
+  ],
+  "hardware_recall": 0.667
+ },
+ "drafts": [
+  {
+   "type": "ad5206",
+   "family": "ad5206",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 11.9
+}

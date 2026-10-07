@@ -1,0 +1,821 @@
+{
+ "graph": {
+  "title": "Python Quick Reaction Game (Raspberry Pi: two buttons and an LED)",
+  "source_id": "https://projects.raspberrypi.org/en/projects/python-quick-reaction-game",
+  "new_part_types": [
+   {
+    "type": "raspberry-pi",
+    "name": "Raspberry Pi (40-pin GPIO header)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "3V3.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO15",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO17",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO18",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO27",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO22",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO23",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO24",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO25",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "DNC.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "DNC.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO19",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO16",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO26",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO20",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO21",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2",
+      "GND.3",
+      "GND.4",
+      "GND.5",
+      "GND.6",
+      "GND.7",
+      "GND.8"
+     ],
+     [
+      "5V.1",
+      "5V.2"
+     ],
+     [
+      "3V3.1",
+      "3V3.2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "330 ohm resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "330"
+     }
+    ]
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Left tactile button",
+    "props": []
+   },
+   {
+    "id": "btn2",
+    "type": "pushbutton",
+    "label": "Right tactile button",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Left button to GND rail (pin-to-pin)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Right button to GND rail (pin-to-pin)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire-mf",
+    "label": "GPIO14 to left button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire-mf",
+    "label": "GPIO15 to right button",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire-mf",
+    "label": "GPIO4 to LED long leg",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire-mf",
+    "label": "GND to blue rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "15t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb1",
+    "v_port": "15t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "16t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb1",
+    "v_port": "16t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "15t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "bn.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "1b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "1b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "1b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "3b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "3b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "28b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "28b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "30b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "30b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "28b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "28b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn2",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "30b.h",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn2",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "30b.h",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "1b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "30b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "30b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.25",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "bn.25",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "3b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO14",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO14",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "28b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "28b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO15",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO15",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "16t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GPIO4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bn.19",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "bn.19",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Raspberry Pi is not in the catalogue, so a new 'raspberry-pi' type with the 40-pin header was created. GND pins are numbered GND.1-GND.8 in physical pin order (6, 9, 14, 20, 25, 30, 34, 39). The GND wire goes to physical pin 9, which is GND.2.",
+   "The breadboard catalogue uses bank 't' for rows a-e and 'b' for rows f-j. The photo draws rows f-j at the top, so the buttons and their wires are in 'b' holes and the LED and resistor are in 't' holes.",
+   "The blue strip is taken to be the 'bn' rail. Rail hole numbers are estimated from the picture. Wires go to bn.1, bn.25 and bn.19. The resistor goes to bn.10.",
+   "Button pin convention: '1' is the row j side, '2' is the row h side, 'l' is the left column and 'r' is the right column. Left button: columns 1 and 3. Right button: columns 28 and 30.",
+   "Wire ends: for pin-to-socket wires (jumper-wire-mf), port a is the male pin end into the breadboard and port b is the female socket end on the Pi header.",
+   "The LED short leg (cathode) is in column 15 with the resistor. The long leg (anode) is in column 16 with the GPIO4 wire, as in the image. The manual text says D15/D16 but the image shows row e.",
+   "The manual's resistor sentence says 'short leg of the resistor' but means the LED. The 330 ohm value comes from the parts list.",
+   "Each wire and lead gets a joined edge and an electrical edge to the same port."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 56.7,
+  "api_seconds": 52.9,
+  "first_token_seconds": 29.6,
+  "input_tokens": 22216,
+  "cache_read_tokens": 5414,
+  "output_tokens": 9131,
+  "cost_usd": 0.1596,
+  "turns": 2
+ }
+}

@@ -11,8 +11,13 @@ import collections
 import re
 
 FAMILIES = [("board", r"arduino|uno"), ("breadboard", r"breadboard"), ("wire", r"wire|jumper|cable"),
-            ("pot", r"potentiometer|\bpot\b|pot-|trimmer"), ("led", r"\bled\b|led-|-led|^led"),
-            ("resistor", r"resistor"), ("button", r"button|switch")]
+            ("pot", r"potentiometer|\bpot\b|pot-|trimmer"),
+            ("photoresistor", r"photo.?resistor|photocell|\bldr\b"), ("fsr", r"\bfsr\b|force.?sens"),
+            ("led", r"\bled\b|led-|-led|^led"),
+            ("resistor", r"resistor"), ("button", r"button|switch"),
+            ("capacitor", r"capacitor"), ("crystal", r"crystal|xtal"), ("joystick", r"joystick")]
+# Part kinds are compared by family, so naming differences between catalogues (capacitor-22pf vs capacitor-ceramic,
+# crystal-16mhz vs crystal, analog-joystick vs joystick-analog-2axis) are not counted as different parts.
 
 
 def family(type_):
@@ -45,8 +50,10 @@ def role(fam, port):
         return up
     if fam == "pot":
         return "wiper" if up in ("SIG", "WIPER", "W", "MIDDLE", "CENTER", "2", "OUT") else "end"
-    if fam in ("resistor", "button"):
+    if fam in ("resistor", "button", "crystal"):
         return "x"
+    if fam == "capacitor":  # electrolytic legs are polar, ceramic legs are not
+        return "neg" if up in ("NEG", "-", "C", "K") else "pos" if up in ("POS", "+", "A") else "x"
     return up
 
 
@@ -195,3 +202,167 @@ def score_hardware(flat, hardware):
     present = {fam for fam in listed if re.search(dict(HW_FAMILIES)[fam], built, re.I) or fam in built}
     return {"families_listed": sorted(listed), "families_missing": sorted(listed - present),
             "hardware_recall": round(len(present) / len(listed), 3) if listed else None}
+
+
+# --- Equivalent circuits (v5 scoring): series order does not matter -------------------------
+SERIES = ("resistor", "led")
+
+
+def _series_chains(nets, types):
+    """Replace every chain of two-legged parts in series (resistors, LEDs) by one virtual part, so that
+    pin 13 -> resistor -> LED -> GND and pin 13 -> LED -> resistor -> GND compare equal.
+    Returns (nets with chain ends renamed, types for the virtual parts)."""
+    fam = lambda pid: family(types.get(pid))
+    legs = collections.defaultdict(list)  # series part -> [(net index, port)]
+    for i, net in enumerate(nets):
+        for k in net:
+            pid, port = k.split(":", 1)
+            if fam(pid) in SERIES:
+                legs[pid].append((i, port))
+    internal = {i for i, net in enumerate(nets)
+                if len(net) == 2 and all(fam(k.split(":", 1)[0]) in SERIES for k in net)
+                and len({k.split(":", 1)[0] for k in net}) == 2}
+    adj = collections.defaultdict(set)
+    for i in internal:
+        a, b = (k.split(":", 1)[0] for k in nets[i])
+        adj[a].add(b)
+        adj[b].add(a)
+    seen, renamed, new_types = set(), {}, {}
+    for start in sorted(legs):
+        if start in seen or len(adj[start]) > 1:
+            continue  # start chains at an end (0 or 1 series neighbour)
+        chain, prev, cur = [], None, start
+        while cur and cur not in seen:
+            seen.add(cur)
+            chain.append(cur)
+            nxt = [n for n in adj[cur] if n != prev and n not in seen]
+            prev, cur = cur, (nxt[0] if nxt else None)
+        ends = []
+        for pid in (chain[0], chain[-1]):
+            for i, port in legs[pid]:
+                if i not in internal and (len(chain) > 1 or len(ends) < 2):
+                    ends.append((pid, port, i))
+        ends = ends[:2]
+        if len(ends) < 2:
+            continue
+        # LED direction along the chain, from end 0 to end 1: forward if it is entered at its anode
+        forward = backward = 0
+        for n, pid in enumerate(chain):
+            if fam(pid) != "led":
+                continue
+            if n == 0:  # entered from the chain's first end
+                in_port = ends[0][1]
+            else:  # entered through the net it shares with the previous part
+                prev = chain[n - 1]
+                in_port = next((p for i, p in legs[pid] if i in internal and any(k.startswith(prev + ":") for k in nets[i])), None)
+            forward += role("led", in_port) == "A"
+            backward += role("led", in_port) == "C"
+        n_r = sum(1 for p in chain if fam(p) == "resistor")
+        n_l = sum(1 for p in chain if fam(p) == "led")
+        cid = f"chain{len(new_types) + 1}"
+        new_types[cid] = f"series-r{n_r}-l{n_l}"
+        if n_l and (forward == n_l or backward == n_l):  # polarised: the anode end is 'p'
+            a_end, c_end = (ends[0], ends[1]) if forward == n_l else (ends[1], ends[0])
+            renamed[f"{a_end[0]}:{a_end[1]}"] = f"{cid}:p"
+            renamed[f"{c_end[0]}:{c_end[1]}"] = f"{cid}:q"
+        else:
+            for pid, port, _ in ends:
+                renamed[f"{pid}:{port}"] = f"{cid}:x"
+    out = []
+    for i, net in enumerate(nets):
+        if i in internal and all(k.split(":", 1)[0] in seen for k in net):
+            continue
+        out.append(frozenset(renamed.get(k, k) for k in net))
+    return out, {**types, **new_types}
+
+
+UNPOLAR = ("buzzer", "speaker")  # a piezo disc or a speaker plays the same either way round
+
+
+def _unpolar(nets, types):
+    """Equivalent scoring: the two legs of a piezo buzzer or speaker are interchangeable."""
+    def key(k):
+        part, port = k.split(":", 1)
+        return f"{part}:x" if any(u in family(types.get(part)) for u in UNPOLAR) else k
+    return [frozenset(key(k) for k in n) for n in nets]
+
+
+def score_equivalent(flat, nets, truth, drop_parts=(), unpolar=True):
+    """Like score_arduino's nets, but series order of resistors/LEDs and the legs of a buzzer/speaker do not matter."""
+    types = {n["id"]: n["type"] for n in flat["nodes"]}
+    t_nets = [frozenset(p for p in n if p.split(":")[0] not in drop_parts) for n in truth["nets"]]
+    t_nets = [n for n in t_nets if len(n) >= 2]
+    loose = _unpolar if unpolar else (lambda n, t: list(n))
+    g_nets, g_types = _series_chains(loose(nets, types), types)
+    w_nets, w_types = _series_chains(loose(t_nets, truth["types"]), truth["types"])
+    want = collections.Counter(signature(n, w_types) for n in w_nets)
+    got = collections.Counter(signature(n, g_types) for n in g_nets)
+    matched = sum((want & got).values())
+    return {"eq_nets_expected": sum(want.values()), "eq_nets_built": sum(got.values()), "eq_nets_matched": matched,
+            "eq_all_correct": want == got}
+
+
+# --- Substitute board pins (v5 scoring, CircuitQuest's rule) ----------------------------------
+# CircuitQuest (core/engine.py, _try_pin_substitution) accepts a component on another pin of the SAME pool: any
+# digital pin for a digital pin, any analog pin for an analog one, and rewrites the code to match. Not substitutable:
+# 5V/GND/3V3, pins wired to a part's bus legs (I2C/SPI/serial are fixed in hardware), and every pin of a sketch that
+# loops over pin numbers. Added here: a pin the code drives with analogWrite()/tone() needs a PWM substitute.
+PWM = {"3", "5", "6", "9", "10", "11"}  # Arduino Uno
+BUS_LEGS = re.compile(r"^(SDA|SCL|MOSI|MISO|SCK|SS|CS|TX|RX|TXD|RXD|DIN|CLK)$", re.I)
+
+
+def pins_fixed(manual):
+    """A sketch that walks its pins in a loop and uses the loop variable AS the pin (for (pin = 2; pin < 8; pin++)
+    digitalWrite(pin, ...)) cannot follow a moved pin. A loop over an array of pins (col[thisPin]) can."""
+    for var in re.findall(r"for\s*\(\s*(?:int\s+|byte\s+)?(\w+)\s*=\s*\d+\s*;", manual):
+        if re.search(rf"(?:pinMode|digitalWrite|digitalRead|analogWrite|analogRead|tone)\s*\(\s*{re.escape(var)}\s*[,)]", manual):
+            return True
+    return False
+
+
+def _pin_class(sig_role, pwm_needed):
+    """Pool a board role belongs to, or None if it must stay exactly as it is."""
+    if re.fullmatch(r"A[0-5]", sig_role):
+        return "analog"
+    if sig_role.isdigit() and sig_role not in ("0", "1"):
+        return "pwm" if pwm_needed and sig_role in PWM else "digital"
+    return None
+
+
+def score_substitute(flat, nets, truth, drop_parts=(), manual=""):
+    """Every connection right if board pins may be swapped within their pool (see above). Series order and
+    buzzer legs are accepted too (score_equivalent). Returns {"sub_all_correct": bool, ...}."""
+    types = {n["id"]: n["type"] for n in flat["nodes"]}
+    t_nets = [frozenset(p for p in n if p.split(":")[0] not in drop_parts) for n in truth["nets"]]
+    t_nets = [n for n in t_nets if len(n) >= 2]
+    g_nets, g_types = _series_chains(_unpolar(nets, types), types)
+    w_nets, w_types = _series_chains(_unpolar(t_nets, truth["types"]), truth["types"])
+    fixed = pins_fixed(manual)
+    pwm_needed = bool(re.search(r"analogWrite|tone\s*\(", manual))
+
+    def abstract(net_list, tps):
+        """Replace substitutable board pins by their pool; returns [(signature, {pool: [pins]})]."""
+        out = []
+        for net in net_list:
+            sig, pins = [], collections.defaultdict(list)
+            bus = any(BUS_LEGS.match(k.split(":", 1)[1]) for k in net if family(tps.get(k.split(":")[0])) != "board")
+            for k in net:
+                part, port = k.split(":", 1)
+                fam = family(tps.get(part))
+                r = role(fam, port)
+                cls = None if (fixed or bus or fam != "board") else _pin_class(r, pwm_needed)
+                if cls:
+                    pins[cls].append(r)
+                    sig.append((fam, cls))
+                else:
+                    sig.append((fam, r))
+            out.append((tuple(sorted(sig)), pins))
+        return out
+
+    want, got = abstract(w_nets, w_types), abstract(g_nets, g_types)
+    if collections.Counter(s for s, _ in want) != collections.Counter(s for s, _ in got):
+        return {"sub_all_correct": False}
+    # The same shapes exist; a PWM pin in the answer key needs a PWM pin in the graph (the abstraction already
+    # demands it when the code uses analogWrite/tone), and no board pin may serve two nets.
+    used = [p for _, pins in got for ps in pins.values() for p in ps]
+    return {"sub_all_correct": len(used) == len(set(used))}

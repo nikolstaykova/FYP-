@@ -1,0 +1,360 @@
+{
+ "tutorial": "docs-projects-full-control-of-your-tv-using-alexa-and-arduino-iot-cloud",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/schermata_2019-12-12_alle_16_05_26_LtBGCOShIZ.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/friz_4q5bVgaPTT.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/00_ta5XeWkmSQ.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/01_bVgI8slCKA.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/02_uDc9tBNOdM.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/03_78vdhMQFnC.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/04_05yOAI3pmE.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/05_cxYAb64Kpe.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/06_eEr9LwQeSJ.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/07_OvIgBsQf23.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/08_gyYYNIYDPZ.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/09_YWActHwwBB.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/full-control-of-your-tv-using-alexa-and-arduino-iot-cloud/assets/10_7Zxb7TTmih.png"
+ ],
+ "legs_and_ends": 21,
+ "with_position": 21,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard (generic)"
+    },
+    {
+     "id": "nano1",
+     "type": "arduino-nano-33-iot",
+     "label": "Arduino Nano 33 IoT"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "irrx1",
+     "type": "ir-receiver",
+     "label": "IR receiver (generic)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "DAT",
+       "part": "bb1",
+       "port": "3t.e",
+       "mm": [
+        5.08,
+        10.16
+       ]
+      },
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "1t.e",
+       "mm": [
+        0.0,
+        10.16
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "2t.e",
+       "mm": [
+        2.54,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "irled1",
+     "type": "ir-led",
+     "label": "IR transmitter (generic)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "anode",
+       "part": "bb1",
+       "port": "8t.c",
+       "mm": [
+        17.78,
+        5.08
+       ]
+      },
+      {
+       "leg": "cathode",
+       "part": "bb1",
+       "port": "7t.c",
+       "mm": [
+        15.24,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "Resistor 330 ohm",
+     "props": {
+      "value": "330"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "8t.b",
+       "mm": [
+        17.78,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "13t.b",
+       "mm": [
+        30.48,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "3t.d",
+       "mm": [
+        5.08,
+        7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "27t.d",
+       "mm": [
+        66.04,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "13t.c",
+       "mm": [
+        30.48,
+        5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "25t.c",
+       "mm": [
+        60.96,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "2t.a",
+       "mm": [
+        2.54,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bp.1",
+       "mm": [
+        0.0,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "1t.a",
+       "mm": [
+        0.0,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.3",
+       "mm": [
+        5.08,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": true,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "7t.a",
+       "mm": [
+        15.24,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.7",
+       "mm": [
+        15.24,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "17t.a",
+       "mm": [
+        40.64,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.17",
+       "mm": [
+        40.64,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": true,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Jumper wire",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "27b.j",
+       "mm": [
+        66.04,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bp.27",
+       "mm": [
+        66.04,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

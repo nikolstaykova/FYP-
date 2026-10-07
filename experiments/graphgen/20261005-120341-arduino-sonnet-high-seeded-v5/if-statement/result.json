@@ -1,0 +1,134 @@
+{
+ "case": "if-statement",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 27.1,
+  "input_tokens": 36606,
+  "output_tokens": 3684,
+  "cost_usd": 0.0728,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct and are unchanged: Uno, breadboard, potentiometer, and three jumper wires (red, black, yellow). No external LED or resistor, because the tutorial uses the built-in LED on pin 13.",
+  "From the circuit image, the potentiometer straddles the centre gap. Its outer legs are in columns 10 and 12 of the bottom half, and its wiper leg is in column 11 of the top half. Columns are read from the image labels, so this is an estimate.",
+  "Black wire goes to column 10, the potentiometer's GND leg. Red wire goes to column 12, the VCC leg. The potentiometer is symmetric, so the two outer legs could be swapped.",
+  "Yellow wire goes to the wiper strip (11t) and on to A0. Red goes to 5V and black to the second GND pin of the power header, which I assumed is GND.2.",
+  "The schematic matches: 5V to one end of the potentiometer, GND to the other, wiper to A0.",
+  "The built-in LED on pin 13 is part of the Uno, so no edge is needed for it."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 6.6,
+   "input_tokens": 17907,
+   "cache_read_tokens": 11144,
+   "output_tokens": 627,
+   "cost_usd": 0.0355,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.5,
+   "input_tokens": 18699,
+   "cache_read_tokens": 17905,
+   "output_tokens": 3057,
+   "cost_usd": 0.0373,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.5
+}

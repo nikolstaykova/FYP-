@@ -1,0 +1,88 @@
+{
+ "case": "docs-projects-arduino-iot-cloud-amazon-alexa-integration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 84.3,
+  "input_tokens": 49179,
+  "output_tokens": 15335,
+  "cost_usd": 0.2782,
+  "repair_rounds_used": 1
+ },
+ "parts": 16,
+ "edges": 66,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The schematic image was not readable, so the wiring is inferred from the sketch: pin 5 drives the white LED (meeting room), pins 2/4/3 drive the RGB LED's R/G/B (lounge area).",
+  "I assumed one 220 ohm resistor per LED channel (4 in total). The exact breadboard columns and rows are my own choice.",
+  "The MKR ENV Shield is not in the catalogue, so I added it as a new part type. It stacks on the MKR WiFi 1010 and passes pins 2-5 and GND through to its top headers, and the jumper wires attach to those top headers.",
+  "Fix for the validator errors: the MKR WiFi 1010's pins are header-pins, so the shield's underside ports (2, 3, 4, 5, GND) are now header-sockets. That makes the stacking joins header-pin to header-socket, which is a compatible pair. Physically the shield's pins plug into the board, but the catalogue's kind rules take priority here.",
+  "The MKR ENV Shield's I2C sensors use the board's own bus, so no external wiring is added for the temperature sensor.",
+  "The RGB LED has a common cathode, so COM goes to the breadboard's negative rail, which is connected to the board's GND.",
+  "The Arduino Cloud and Alexa steps are software only and add no parts or connections.",
+  "The board is powered over USB, which is not drawn."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.9,
+   "input_tokens": 19821,
+   "cache_read_tokens": 3110,
+   "output_tokens": 8114,
+   "cost_usd": 0.1486,
+   "check_seconds": 0.01,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 5
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.4,
+   "input_tokens": 29358,
+   "cache_read_tokens": 15788,
+   "output_tokens": 7221,
+   "cost_usd": 0.1296,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-env-shield",
+   "family": "mkr-env-shield",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 8.9
+}

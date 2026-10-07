@@ -1,0 +1,151 @@
+{
+ "case": "60001-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 376.5,
+  "input_tokens": 371196,
+  "output_tokens": 63199,
+  "cost_usd": 1.0988,
+  "repair_rounds_used": 2
+ },
+ "parts": 79,
+ "edges": 81,
+ "repeats": [
+  {
+   "group": "sidepanel",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "wheel",
+   "times": 4,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 26,
+ "new_types_added": 26,
+ "problems": [
+  [
+   "V3",
+   "e74: ball \u2194 pin-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e76: ball \u2194 pin-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e78: ball \u2194 pin-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e80: ball \u2194 pin-hole is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "Element IDs were read from the inventory page (page 31) and matched to steps by shape and count. Where an inventory ID is not in the catalogue, a new lego-<ID> type was created.",
+  "302101 is assumed to be a white plate 2x3 (used 2x in step 11). 302001 is the white plate 2x4 (steps 3 and 10).",
+  "The inventory numbers '9327' (white minifig legs) and '9553' (yellow steering wheel on plate) are not valid element IDs, probably because the printed numbers are truncated. I used generic catalogue types instead: lego-minifig-legs (colour white) and lego-seat-stand-blue (colour yellow). The seat-stand entry is the catalogue's 'steering wheel on plate' type, which its label says is booklet label 9566.",
+  "The woman's hip-to-legs join uses a null port on the legs side, because the generic legs port kind is not stud-compatible.",
+  "Colours are inferred from the pictures. Dark grey is shown as 'dark grey'.",
+  "The catalogue chassis, brackets and wheel holders have only one stud or pin port each. Where several pieces attach to the same one, the port is left null, so each port is used by at most one edge. This is a modelling simplification.",
+  "Wheels are a 4-copy repeat. Each rim is pushed onto a wheel-holder pin and spins freely, and each rim is pushed into a tire. The catalogue pin kind of the holder is not pin-hole compatible, so the rim-to-holder link is a contact edge with null ports. It is not a joined edge. Copies 1 and 2 go on holder b15 and copies 3 and 4 on b16.",
+  "Rear light assembly (step 4): the picture is ambiguous about which studs each piece uses. I joined the red 1x1 plates, black 1x4 plate and red brick to the bracket, the slopes to the black plate, the tile to the red brick and the trans-red rounds to the red plates.",
+  "Stacking detail for steps 10-13, 16 and 17 is approximate. The white plates all sit on the chassis, each red 1x4 plate sits on a white plate, and the blue seat panels sit on the white plates.",
+  "The two clip plates (b53, b54) both hold the front windscreen (b58). The rear windscreen (b59) is assumed to sit on a rear red plate.",
+  "Minifigs, cat, fish and tree are built on pages 3-4. The fireman sits in the car on page 27, so his legs are joined to the yellow seat plate. The booklet shows the figures standing beside the tree base (page 4), so the fireman and woman have contact edges to the tree base plate. This ties all pieces into one graph. The fish, cat and walkie-talkie are 'contact' edges because they are only held or resting.",
+  "Minifig port kinds use stud/anti-stud so that every join is a compatible pair."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 185.5,
+   "input_tokens": 97336,
+   "cache_read_tokens": 43715,
+   "output_tokens": 27770,
+   "cost_usd": 0.5009,
+   "check_seconds": 0.02,
+   "issues": 26,
+   "issue_rules": {
+    "V3": 10,
+    "V4": 13,
+    "L2": 2,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 112.8,
+   "input_tokens": 126828,
+   "cache_read_tokens": 97334,
+   "output_tokens": 19874,
+   "cost_usd": 0.3362,
+   "check_seconds": 0.02,
+   "issues": 7,
+   "issue_rules": {
+    "V3": 5,
+    "L2": 2
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 78.1,
+   "input_tokens": 147032,
+   "cache_read_tokens": 126826,
+   "output_tokens": 15555,
+   "cost_usd": 0.2617,
+   "check_seconds": 0.02,
+   "issues": 4,
+   "issue_rules": {
+    "V3": 4
+   }
+  }
+ ],
+ "issues_first": 26,
+ "issues_final": 4,
+ "score": {
+  "pieces_expected": 72,
+  "pieces_built": 79,
+  "pieces_unmapped": 2,
+  "inventory_matched": 64,
+  "exact_matched": 64,
+  "inventory_precision": 0.81,
+  "inventory_recall": 0.889,
+  "exact_recall": 0.889,
+  "joined_edges": 72,
+  "contacts_expected": 8,
+  "contacts_predicted": 4,
+  "contacts_correct": 4,
+  "contact_precision": 1.0,
+  "contact_recall": 0.5
+ },
+ "score_initial": {
+  "pieces_expected": 72,
+  "pieces_built": 79,
+  "pieces_unmapped": 2,
+  "inventory_matched": 64,
+  "exact_matched": 64,
+  "inventory_precision": 0.81,
+  "inventory_recall": 0.889,
+  "exact_recall": 0.889,
+  "joined_edges": 76,
+  "contacts_expected": 8,
+  "contacts_predicted": 4,
+  "contacts_correct": 4,
+  "contact_precision": 1.0,
+  "contact_recall": 0.5
+ },
+ "postprocess_ms": 19.0
+}

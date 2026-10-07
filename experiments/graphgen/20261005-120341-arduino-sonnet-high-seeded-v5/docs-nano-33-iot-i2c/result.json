@@ -1,0 +1,116 @@
+{
+ "case": "docs-nano-33-iot-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 96.9,
+  "input_tokens": 109346,
+  "output_tokens": 17491,
+  "cost_usd": 0.2866,
+  "repair_rounds_used": 2
+ },
+ "parts": 16,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "I kept the nano1 3V3 connection and did not change the graph, because the E8 warning is not a real problem for this manual. The catalogue's 4.5-21 V supply range is for powering the board in. This tutorial powers both boards over USB (5 V), which is within range. The 3V3 pin is the board's 3.3 V regulated output, so it is not a power input and does not need 4.5 V. The circuit image labels the pin '3V' and uses it only as the pull-up voltage for SDA and SCL. Moving the pull-ups to 5 V or VUSB would be the real error here, because the Nano 33 IoT's I/O pins are 3.3 V only and not 5 V tolerant.",
+  "Step 1 listed 10 jumper wires, including wire9 and wire10 as spares. I dropped them in step 2 because neither the circuit image nor the text gives them any connection. The 8 wires kept are the ones the circuit needs. The parts list of 10 is a pack size.",
+  "The image shows no breadboards. I assumed the two mini breadboards from the parts list: bb1 on the reader side holds both 4.7 k\u03a9 pull-ups and the 3V3 rail, and bb2 on the writer side is a junction. wire7 and wire8 carry SCL and SDA between them. Exact hole positions are my choice.",
+  "SCL is on A5 and SDA is on A4 of both boards, as the tutorial says. Each line has one 4.7 k\u03a9 pull-up resistor to the 3V3 rail on bb1, which the reader's 3V3 pin feeds. The image shows the same layout.",
+  "GND is a single direct wire between the two boards' GND pins (the image shows it that way).",
+  "In the catalogue every 'tp' hole is one strip, so tp.1, tp.2 and tp.3 are the same node.",
+  "Each board is powered by its own USB cable from the computer. The computer is not a graph node, so each USB cable connects only to its board's USB port."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.5,
+   "input_tokens": 21103,
+   "cache_read_tokens": 11144,
+   "output_tokens": 2362,
+   "cost_usd": 0.0657,
+   "check_seconds": 0.0,
+   "parts_listed": 18,
+   "changed_in_build": 2,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.7,
+   "input_tokens": 23694,
+   "cache_read_tokens": 21101,
+   "output_tokens": 5554,
+   "cost_usd": 0.0701,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.8,
+   "input_tokens": 29776,
+   "cache_read_tokens": 23692,
+   "output_tokens": 4811,
+   "cost_usd": 0.0772,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.9,
+   "input_tokens": 34773,
+   "cache_read_tokens": 29774,
+   "output_tokens": 4764,
+   "cost_usd": 0.0736,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.1
+}

@@ -1,0 +1,105 @@
+{
+ "case": "pi-rpi-gpio-connect-pir",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 46.3,
+  "input_tokens": 17126,
+  "output_tokens": 2279,
+  "cost_usd": 0.0484,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e3: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e4: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e7: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e8: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'GPIO4' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The catalogue rpi-4b lists only a GPIO_HEADER port; individual header pins are named 5V, GND and GPIO4 as the task instructs, and these are not in the catalogue port list.",
+  "From the diagram, the 5V wire goes to the top-right header pin (physical pin 2), the GND wire to physical pin 6, and the GPIO 4 wire to physical pin 7.",
+  "Wire colours (red, black, orange) come from the diagram. The PIR pin-to-wire mapping follows the manual text: VCC to 5V, GND to GND, OUT to GPIO 4.",
+  "The wires are female-to-female, so each end pushes onto a male pin: the PIR's pins and the Pi's header pins.",
+  "GPIO 4 is the example choice. Any numbered GPIO pin would work."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 31.7,
+   "input_tokens": 7560,
+   "output_tokens": 243,
+   "cost_usd": 0.0107,
+   "check_seconds": 0.0,
+   "matched": 2,
+   "listed": 3,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Raspberry Pi",
+     "type": "rpi-4b",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "rpi-4b"
+      ]
+     ],
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.6,
+   "input_tokens": 9566,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2036,
+   "cost_usd": 0.0377,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 6,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 16.4
+}

@@ -1,0 +1,167 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 71.9,
+  "api_seconds": 68.7,
+  "first_token_seconds": 41.7,
+  "input_tokens": 17605,
+  "cache_read_tokens": 9602,
+  "output_tokens": 11046,
+  "cost_usd": 0.1444,
+  "turns": 2
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [
+  {
+   "group": "unit",
+   "times": 12,
+   "overrides": 94
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GND' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e2: port 'GND' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e13: port '13' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e14: port '13' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e29: port '12' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e30: port '12' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e45: port '11' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e46: port '11' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e61: port '10' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e62: port '10' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e77: port '9' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e78: port '9' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e93: port '8' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e94: port '8' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e109: port '7' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e110: port '7' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e125: port '6' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e126: port '6' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e141: port '5' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e142: port '5' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e157: port '4' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e158: port '4' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e173: port '3' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e174: port '3' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e189: port '2' not on arduino-mega"
+  ],
+  [
+   "V4",
+   "e190: port '2' not on arduino-mega"
+  ]
+ ],
+ "notes": [
+  "The catalogue entry for arduino-mega lists no ports; pins are named as printed on the board in the image ('2'..'13', 'GND').",
+  "The Mega GND used is the one next to AREF (top of the digital header), as drawn in the circuit image.",
+  "Breadboard bank mapping: the image is drawn with rows j-f in the upper half and a-e in the lower half, so the upper half is catalogue bank 'b' (rows f-j) and the lower half is bank 't' (rows a-e). The upper power rail with the black '-' line is treated as 'tn'.",
+  "Column positions were estimated from the image: each LED anode shares a column with its resistor (cols 2,4,6,8,10,12,15,17,20,23,26,28) and the cathode sits in the next column (3,5,7,9,11,13,16,18,21,24,27,29).",
+  "Each resistor spans the centre gap (upper-half row f to lower-half row e); the signal wire from the Mega pin goes into the lower half in the resistor's column, so the pin connects through the resistor to the LED anode.",
+  "Pin to LED mapping from the image: 13->col 2, 12->4, 11->6, 10->8, 9->10, 8->12, 7->15, 6->17, 5->20, 4->23, 3->26, 2->28.",
+  "The short black jumpers run from the ground rail to each LED's cathode column (shown ending at row i); the rail hole used (tn.<n>) is arbitrary since the rail is one strip. One black wire (wire0) connects Mega GND to the rail.",
+  "Resistors are 220 ohm and LEDs red per the manual; the anode is the longer leg, drawn on the column that has the resistor."
+ ],
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 15.2
+}

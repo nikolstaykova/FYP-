@@ -1,0 +1,162 @@
+{
+ "case": "docs-projects-arduino-iot-cloud-amazon-alexa-integration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 81.2,
+  "input_tokens": 47867,
+  "output_tokens": 7995,
+  "cost_usd": 0.1904,
+  "repair_rounds_used": 0
+ },
+ "parts": 16,
+ "edges": 57,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The MKR ENV Shield was matched to 'arduino-mkr-relay-proto-shield', which is not in the catalogue and is the wrong product, so I added a new part type 'mkr-env-shield'. It stacks on the MKR WiFi 1010 (one joined edge). Its I2C sensor connections are internal to the stack.",
+  "The shield stacks on the MKR and passes the header pins through. I attached the jumper wires directly to the MKR board's pin ports (2, 3, 4, 5, GND) instead of the shield's sockets.",
+  "The schematic image was not available, so the breadboard positions are my own layout. The pin assignments come from the sketch: pin 5 is the white LED (meeting room), pin 2 is RGB red, pin 3 is RGB blue and pin 4 is RGB green (lounge area).",
+  "The 'High Brightness LED, White' is not in the catalogue, so I used the catalogue 'led' type with colour=white.",
+  "Each LED has one 220 ohm series resistor. The white LED's resistor sits on the anode side. The RGB LED has three resistors, one per colour leg, each bridging the breadboard centre gap. The common cathode and the white LED cathode go to the top negative rail, which is wired to the MKR GND.",
+  "The Arduino Cloud and Alexa skill setup steps are software only and add no parts or edges."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 37.4,
+   "check_seconds": 0.0,
+   "input_tokens": 26252,
+   "output_tokens": 1364,
+   "cost_usd": 0.0586,
+   "listed": 7,
+   "matched": 4,
+   "looked_up": 2,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino MKR WiFi 1010",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Arduino MKR ENV Shield",
+     "card": "arduino-mkr-relay-proto-shield",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard (generic)",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "High Brightness LED, White",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2535 (The page describes an addressable 5mm RGB LED with a WS2811 driver (10-pack). It)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/10-Segment-LED-White-p-2072.html (The page is for a '10 Segment LED - White' product, not the 'High Brightness LED)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 19.5
+    },
+    {
+     "item": "Jumper wires (generic)",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "LED RGB common cathode",
+     "card": "led-rgb-common-cathode",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/led-rgb-diffused-common-cathode.html"
+      ]
+     ],
+     "seconds": 10.4
+    },
+    {
+     "item": "Resistor 220 ohm",
+     "card": "resistor",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 43.8,
+   "input_tokens": 21615,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6631,
+   "cost_usd": 0.1318,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-env-shield",
+   "family": "mkr-env-shield",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.5
+}

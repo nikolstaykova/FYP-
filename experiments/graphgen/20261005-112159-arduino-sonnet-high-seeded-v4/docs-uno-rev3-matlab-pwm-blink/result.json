@@ -1,0 +1,123 @@
+{
+ "case": "docs-uno-rev3-matlab-pwm-blink",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 43.0,
+  "input_tokens": 26000,
+  "output_tokens": 5290,
+  "cost_usd": 0.1247,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The circuit image was not available, so the wiring follows the text. Hole positions on both breadboards are assumed.",
+  "The text says the white wire sends 5 V to the potentiometer and also that A0 reads the voltage 'coming in from pin13'. The code sets D13 HIGH to supply the potentiometer, so the white wire goes from D13 to pot leg 1. It could instead go to the 5V pin.",
+  "The gray wire goes to the potentiometer wiper (pot pin 2) and to A0. The orange wire goes from GND to pot leg 3.",
+  "The LED circuit is: red wire from D11, to the resistor, to the LED anode (longer leg), to the LED cathode, to the green wire, to GND. The resistor value is not given, so it is left unset.",
+  "The Uno's built-in D13 LED, the MATLAB software and the Arduino server upload are not parts and are not modelled.",
+  "The two breadboards are not joined to each other. Both are wired separately to the Uno.",
+  "The laptop is a new part type. The usb-cable catalogue entry has no ports, so the USB cable edges use no port names."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 10.6,
+   "check_seconds": 0.0,
+   "input_tokens": 4682,
+   "output_tokens": 602,
+   "cost_usd": 0.0135,
+   "listed": 5,
+   "matched": 1,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "UNO R3",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "USB 2.0 Cable Type A/B",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Potentiometer trough-hole",
+     "card": "potentiometer",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/potentiometer-thumbwheel-type-25k.html"
+      ]
+     ],
+     "seconds": 10.6
+    },
+    {
+     "item": "Valid MATLAB\u00ae licence",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "MATLAB\u00ae Support Package for Arduino\u00ae Hardware",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.4,
+   "input_tokens": 21318,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4688,
+   "cost_usd": 0.1112,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "laptop",
+   "family": "laptop",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.3
+}

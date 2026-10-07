@@ -1,0 +1,93 @@
+{
+ "case": "pi-build-a-buggy",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 41.6,
+  "input_tokens": 24865,
+  "output_tokens": 6595,
+  "cost_usd": 0.1018,
+  "repair_rounds_used": 0
+ },
+ "parts": 19,
+ "edges": 41,
+ "repeats": [],
+ "new_types_declared": 7,
+ "new_types_added": 7,
+ "problems": [],
+ "notes": [
+  "The motor controller is not in the catalogue, so it is a new type. Only the GPIO pins the code uses (GPIO7-10) are modelled as header sockets. The board physically sits on the first 26 GPIO pins, so it also touches 5V, 3V3 and GND pins that are not modelled.",
+  "The code is Robot(left=(7,8), right=(9,10)). I assume GPIO7/8 drive the board's A terminals and GPIO9/10 drive B. Which motor is left or right is set by testing, so the motor1/motor2 labels are provisional. The driver chip is not modelled, so there are no electrical edges inside the board.",
+  "The motors' wires may arrive pre-attached or be soldered on. They are modelled as jumper-wire parts soldered to the motor terminals and screwed into terminal blocks A and B. The photos show red and black wires on the motors. Which wire goes to which terminal does not matter.",
+  "The battery holder's red and black leads are treated as part of the holder: red goes to the + terminal and black to the - terminal.",
+  "The four AA batteries are linked to the holder by contact-style joins with no ports. Cell-level wiring is not modelled.",
+  "The Pi's USB-C power port is not a named catalogue port, so the USB cable links to the Pi with a null port. The manual does not name a specific cable.",
+  "The chassis (box, wheels, caster, putty or tape) is included because the manual describes assembling it. The optional breadboard, distance sensor and line sensors are listed but not wired in this tutorial, so they are left out.",
+  "The manual does not say how the Pi, battery holder or controller are fixed in the box. I modelled only loose contact with the box."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.6,
+   "input_tokens": 24865,
+   "cache_read_tokens": 16735,
+   "output_tokens": 6595,
+   "cost_usd": 0.1018,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "motor-controller-board",
+   "family": "motor-controller-board",
+   "checked": false
+  },
+  {
+   "type": "battery-holder-4aa",
+   "family": "battery-holder-4aa",
+   "checked": false
+  },
+  {
+   "type": "aa-battery",
+   "family": "aa-battery",
+   "checked": false
+  },
+  {
+   "type": "wheel",
+   "family": "wheel",
+   "checked": false
+  },
+  {
+   "type": "ball-caster",
+   "family": "ball-caster",
+   "checked": false
+  },
+  {
+   "type": "cardboard-box",
+   "family": "cardboard-box",
+   "checked": false
+  },
+  {
+   "type": "usb-power-bank",
+   "family": "usb-power-bank",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 22.3
+}

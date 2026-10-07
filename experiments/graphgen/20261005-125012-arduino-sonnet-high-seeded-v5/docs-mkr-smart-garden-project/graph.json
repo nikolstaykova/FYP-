@@ -1,0 +1,376 @@
+{
+ "nodes": [
+  {
+   "id": "mkr1",
+   "type": "arduino-mkr1000-wifi",
+   "label": "MKR WiFi 1010",
+   "props": {}
+  },
+  {
+   "id": "carrier1",
+   "type": "arduino-mkr-iot-carrier",
+   "label": "MKR IoT Carrier",
+   "props": {}
+  },
+  {
+   "id": "moist1",
+   "type": "grove-moisture-sensor",
+   "label": "Soil moisture sensor",
+   "props": {}
+  },
+  {
+   "id": "grove1",
+   "type": "grove-cable",
+   "label": "Grove cable",
+   "props": {}
+  },
+  {
+   "id": "pump1",
+   "type": "pump-5v",
+   "label": "5V submersible pump",
+   "props": {}
+  },
+  {
+   "id": "pipe1",
+   "type": "water-pipe",
+   "label": "Watering pipe",
+   "props": {
+    "length": "1 m"
+   }
+  },
+  {
+   "id": "tank1",
+   "type": "water-container",
+   "label": "Water container",
+   "props": {}
+  },
+  {
+   "id": "psu1",
+   "type": "usb-power-adapter",
+   "label": "USB adapter with at least 2 USB ports",
+   "props": {}
+  },
+  {
+   "id": "usb1",
+   "type": "usb-cable",
+   "label": "Micro-USB cable",
+   "props": {}
+  },
+  {
+   "id": "usbopen1",
+   "type": "usb-cable-open-end",
+   "label": "Open ended USB cable",
+   "props": {}
+  }
+ ],
+ "edges": [
+  {
+   "type": "joined",
+   "u": "carrier1",
+   "u_port": "MKR.socket",
+   "v": "mkr1",
+   "v_port": null,
+   "method": "push-on",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e1"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "grove.GND",
+   "v": "moist1",
+   "v_port": "GND",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e2"
+  },
+  {
+   "type": "electrical",
+   "u": "grove1",
+   "u_port": "grove.GND",
+   "v": "moist1",
+   "v_port": "GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e3"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "grove.VCC",
+   "v": "moist1",
+   "v_port": "VCC",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e4"
+  },
+  {
+   "type": "electrical",
+   "u": "grove1",
+   "u_port": "grove.VCC",
+   "v": "moist1",
+   "v_port": "VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e5"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "grove.SCL",
+   "v": "moist1",
+   "v_port": "SIG",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e6"
+  },
+  {
+   "type": "electrical",
+   "u": "grove1",
+   "u_port": "grove.SCL",
+   "v": "moist1",
+   "v_port": "SIG",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e7"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "grove.SDA",
+   "v": "moist1",
+   "v_port": "NC",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e8"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "qwiic.GND",
+   "v": "carrier1",
+   "v_port": "A6.GND",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e9"
+  },
+  {
+   "type": "electrical",
+   "u": "grove1",
+   "u_port": "qwiic.GND",
+   "v": "carrier1",
+   "v_port": "A6.GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e10"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "qwiic.3V3",
+   "v": "carrier1",
+   "v_port": "A6.VCC",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e11"
+  },
+  {
+   "type": "electrical",
+   "u": "grove1",
+   "u_port": "qwiic.3V3",
+   "v": "carrier1",
+   "v_port": "A6.VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e12"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "qwiic.SCL",
+   "v": "carrier1",
+   "v_port": "A6.SIG",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e13"
+  },
+  {
+   "type": "electrical",
+   "u": "grove1",
+   "u_port": "qwiic.SCL",
+   "v": "carrier1",
+   "v_port": "A6.SIG",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e14"
+  },
+  {
+   "type": "joined",
+   "u": "grove1",
+   "u_port": "qwiic.SDA",
+   "v": "carrier1",
+   "v_port": "A6.NC",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e15"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "mkr1",
+   "v_port": "USB",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e16"
+  },
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "psu1",
+   "v_port": "usb.1",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e17"
+  },
+  {
+   "type": "joined",
+   "u": "usbopen1",
+   "u_port": null,
+   "v": "psu1",
+   "v_port": "usb.2",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e18"
+  },
+  {
+   "type": "electrical",
+   "u": "usbopen1",
+   "u_port": "usb.VBUS",
+   "v": "psu1",
+   "v_port": "usb.2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e19"
+  },
+  {
+   "type": "electrical",
+   "u": "usbopen1",
+   "u_port": "usb.GND",
+   "v": "psu1",
+   "v_port": "usb.2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e20"
+  },
+  {
+   "type": "joined",
+   "u": "usbopen1",
+   "u_port": "wire.+",
+   "v": "carrier1",
+   "v_port": "RELAY1.NO",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e21"
+  },
+  {
+   "type": "electrical",
+   "u": "usbopen1",
+   "u_port": "wire.+",
+   "v": "carrier1",
+   "v_port": "RELAY1.NO",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e22"
+  },
+  {
+   "type": "joined",
+   "u": "pump1",
+   "u_port": "1",
+   "v": "carrier1",
+   "v_port": "RELAY1.COM",
+   "method": "screw",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e23"
+  },
+  {
+   "type": "electrical",
+   "u": "pump1",
+   "u_port": "1",
+   "v": "carrier1",
+   "v_port": "RELAY1.COM",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e24"
+  },
+  {
+   "type": "joined",
+   "u": "usbopen1",
+   "u_port": "wire.-",
+   "v": "pump1",
+   "v_port": "2",
+   "method": "twist",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e25"
+  },
+  {
+   "type": "electrical",
+   "u": "usbopen1",
+   "u_port": "wire.-",
+   "v": "pump1",
+   "v_port": "2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e26"
+  },
+  {
+   "type": "joined",
+   "u": "pipe1",
+   "u_port": "a",
+   "v": "pump1",
+   "v_port": null,
+   "method": "push-on",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e27"
+  },
+  {
+   "type": "contact",
+   "u": "pump1",
+   "u_port": null,
+   "v": "tank1",
+   "v_port": "inside",
+   "method": "rest",
+   "freedom": null,
+   "reversible": null,
+   "id": "e28"
+  }
+ ]
+}

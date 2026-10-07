@@ -1,0 +1,51 @@
+{
+ "case": "docs-due-simple-waveform-generator",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 79.3,
+  "api_seconds": 74.8,
+  "first_token_seconds": 47.1,
+  "input_tokens": 18187,
+  "cache_read_tokens": 5414,
+  "output_tokens": 11652,
+  "cost_usd": 0.1687,
+  "turns": 2
+ },
+ "parts": 18,
+ "edges": 74,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "single-use port bb1:tp.10 used 2 times"
+  ],
+  [
+   "V4",
+   "single-use port bb1:tn.12 used 2 times"
+  ]
+ ],
+ "notes": [
+  "Arduino Due is not in the catalogue, so a new type arduino-due was added with only the ports used (2, 3, A0, DAC0, DAC1, 3.3V, 5V, GND.1, GND.2, VIN).",
+  "DAC0 and DAC1 are outputs only probed with an optional oscilloscope. Nothing is wired to them in the image, so they have no edges.",
+  "Power is 3.3V (not 5V) per the manual. The red and black jumpers from the Due header feed the top rails. The two long left-hand jumpers carry power and ground to the bottom rails.",
+  "Exact breadboard rows and columns are estimated from the image. The pot sits in the top half (columns 10-12, VCC left, SIG middle, GND right, as in the image). The buttons straddle the centre gap at columns 17/19 and 25/27.",
+  "Pushbutton ports are assumed: l and r are the two switch terminals, so 1.l and 2.l are one terminal and 1.r and 2.r are the other. The 3.3V jumper goes to the left column of each button. The Due pin wire and the 10k pull-down resistor go to the right column. In the image the blue pin wires land in the top half of the right column and the resistor in the bottom half. Both are the same strip net through the button's right terminals, so the circuit matches the text.",
+  "Pull-down resistors go to the bottom ground rail (bn). Button power jumpers come from the bottom power rail (bp)."
+ ],
+ "score": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 21.8
+}

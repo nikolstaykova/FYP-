@@ -1,0 +1,106 @@
+{
+ "case": "docs-projects-make-it-rain-clap-machine",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 81.5,
+  "api_seconds": 77.8,
+  "first_token_seconds": 39.6,
+  "input_tokens": 25444,
+  "cache_read_tokens": 14056,
+  "output_tokens": 13519,
+  "cost_usd": 0.1835,
+  "turns": 2
+ },
+ "parts": 29,
+ "edges": 112,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V4",
+   "e57: port '2' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e58: port '2' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e61: port '3' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e62: port '3' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e65: port 'A6' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e66: port 'A6' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e103: port 'SIGNAL' not on servo"
+  ],
+  [
+   "V4",
+   "e104: port 'SIGNAL' not on servo"
+  ],
+  [
+   "V4",
+   "e105: port 'GND' not on servo"
+  ],
+  [
+   "V4",
+   "e106: port 'GND' not on servo"
+  ],
+  [
+   "V4",
+   "e109: port '5V' not on servo"
+  ],
+  [
+   "V4",
+   "e110: port '5V' not on servo"
+  ]
+ ],
+ "notes": [
+  "Schematic image was not viewable; the wiring is reconstructed from the text (I2S mic on A6/2/3, N-channel MOSFET + 2.2k pull-down + diode for the DC motor, N-channel MOSFET + 2.2k pull-up for the 5V servo signal, 0.1uF and 100uF noise capacitors). Exact breadboard columns are my own layout.",
+  "Pin numbers for the DC motor gate (pin 0) and servo signal (pin 1) are assumptions; the manual does not state them.",
+  "The catalogue arduino-mkr-zero entry does not list ports A6, 2 and 3, which this circuit uses; the names are used anyway. The catalogue 'servo' entry has no ports, so GND, SIGNAL and 5V are used, matching the servo label (1=GND, 2=Signal, 3=5V).",
+  "MOSFET type: both N-channel MOSFETs are modelled as mosfet-2n7000 (the photo shows TO-220 parts). The 100uF electrolytic uses capacitor-10uf with value=100uF.",
+  "Servo MOSFET: gate to 3.3V (VCC), source to MKR pin, drain to servo signal with the 2.2k pull-up to 5V. The ICS43432 LR pin is tied to GND. The MKR 'VCC' (3.3V) pin powers the microphone.",
+  "The 100uF capacitor sits across the 5V and GND rails near the servo. The 0.1uF ceramic capacitor is soldered across the DC motor terminals, as seen in the photo.",
+  "The flyback diode runs from the MOSFET drain column (anode) to the 5V rail (cathode).",
+  "The laser-cut MDF box, wheel, lifting arm, rubber band, hot glue and card stock are mechanical and are not modelled; the rubber band has no ports to join to."
+ ],
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "diode",
+   "motor",
+   "resistor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ics43432",
+   "family": "ics43432",
+   "checked": false
+  },
+  {
+   "type": "diode",
+   "family": "diode",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 56.6
+}

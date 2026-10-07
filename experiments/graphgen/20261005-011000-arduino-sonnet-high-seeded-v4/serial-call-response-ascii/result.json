@@ -1,0 +1,242 @@
+{
+ "case": "serial-call-response-ascii",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 63.4,
+  "input_tokens": 19080,
+  "output_tokens": 9981,
+  "cost_usd": 0.1339,
+  "repair_rounds_used": 0
+ },
+ "parts": 21,
+ "edges": 72,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts list matched the sensors to ntc-temperature-sensor, but the circuit image and schematic show force-sensitive resistors (FSRs), so the catalogue type fsr was used.",
+  "The FSR legs are extended with red and blue hook-up wires in the image. Each is modelled as a jumper wire joined (clipped) to an FSR lead at one end and plugged into the breadboard at the other.",
+  "Breadboard rail hole numbers (tp/tn/bp/bn) are approximated from the picture. Only the rail they belong to matters electrically.",
+  "Sensor 1 (the left FSR, column 6) feeds A1 and sensor 2 (the right FSR, column 16) feeds A0, following the yellow wire routing in the image.",
+  "Each FSR connects between the bottom + rail (5V) and its divider node. A 10K resistor runs from that node to the bottom - rail (GND).",
+  "The pushbutton straddles the centre gap in columns 5 and 7. Column 5 (5V) is side 1 and column 7 (pin 2 and the 10K pull-down to GND) is side 2.",
+  "The top and bottom rails are linked by a red wire (+) and a black wire (-) at the right-hand end of the breadboard.",
+  "Resistor values are 10 k\u03a9, given as 10000 in the value prop."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 6,
+   "matched": 6,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "2x analog sensors (potentiometer, photocell, FSR, etc.)",
+     "card": "ntc-temperature-sensor",
+     "skipped": false
+    },
+    {
+     "item": "pushbutton",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "3x 10K ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 63.4,
+   "input_tokens": 19080,
+   "cache_read_tokens": 11120,
+   "output_tokens": 9981,
+   "cost_usd": 0.1339,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.2,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 2,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 3,
+   "fsr": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "pot",
+     "end"
+    ],
+    [
+     "pot",
+     "end"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "pot",
+     "wiper"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "fsr",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 12.5
+}

@@ -1,0 +1,94 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 102.1,
+  "input_tokens": 74270,
+  "output_tokens": 19814,
+  "cost_usd": 0.2396,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1; step 1 was correct.",
+  "Each LED is on its own pair of top-half columns: cathode in column 2n-1, anode in column 2n (row a). LED n is driven from Mega pin n+1 (LED 1 on pin 2, up to LED 12 on pin 13).",
+  "The 220 ohm resistor sits on the anode side. Leg 1 is in the anode column (row e) and leg 2 is across the centre gap in the same column (row f). The signal wire is in that bottom-half column (row j) and goes to the Mega pin.",
+  "Each LED cathode column is joined by a short black wire to the top negative rail (tn). One black wire joins the Mega GND to the same rail. The Mega port 'GND.1' is assumed to be a ground pin.",
+  "The exact breadboard hole positions are my own tidy layout. The circuit image only shows which LED, resistor and pin go together."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.9,
+   "input_tokens": 46241,
+   "cache_read_tokens": 42759,
+   "output_tokens": 3273,
+   "cost_usd": 0.0552,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/analog/AnalogWriteMega/\"}",
+    "StructuredOutput {\"title\": \"Analog Write with 12 LEDs on an Arduino Mega\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/analog"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 51,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 78.2,
+   "input_tokens": 28029,
+   "cache_read_tokens": 24499,
+   "output_tokens": 16541,
+   "cost_usd": 0.1844,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Analog Write with 12 LEDs on an Arduino Mega\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/analog"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 16.3
+}

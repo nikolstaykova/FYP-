@@ -1,0 +1,141 @@
+{
+ "case": "docs-projects-full-control-of-your-tv-using-alexa-and-arduino-iot-cloud",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 239.6,
+  "input_tokens": 42882,
+  "output_tokens": 17661,
+  "cost_usd": 0.2873,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 50,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The Fritzing image shows a breadboard with columns numbered ~30-64, but the catalogue breadboard only has columns 1-30. I used the column numbers printed in the image directly (31-62); they would need remapping to the catalogue's 1-30 range.",
+  "The half of the board with rows a-e (the lower half in the image, A at the bottom) is named bank 't' per the catalogue; the upper half (rows f-j) is bank 'b'. Rail names (bp/bn) use the nearest column number of the image because rail hole numbering is not given.",
+  "The image does not label the Nano 33 IoT pins. I assumed the IR LED drive pin (breadboard column 60) is D9 and the IR receiver output (column 62) is D11, matching the IRremote defaults and IRrecvDumpV2. The pin at column 51 is GND as shown by the black wire. The pin wired to the red long jumper (top row, column 62) is taken as 3.3V because the Nano 33 IoT is a 3.3V board.",
+  "The Nano 33 IoT is not in the catalogue, so the Nano 33 BLE Sense entry was used, as in the PARTS list. Its pin names for the used pins (9, 11, GND.1, 3.3V) exist.",
+  "IR receiver legs from left to right in the image: VCC (column 31, red wire to + rail), GND (column 32, black wire to - rail), signal (column 34, green wire to the board). Their order was inferred from the wire colours.",
+  "IR LED polarity: the leg at column 43 is the cathode and goes to the GND rail through a black wire. The leg at column 44 is the anode and goes through the 330 ohm resistor (columns 44 to 49) and the blue wire to the board pin. The image does not show polarity explicitly.",
+  "The IR transmitter is not in the catalogue, so a new part type 'ir-led' was added.",
+  "The USB cable that powers and programs the board is not shown in the tutorial, so it is not in the graph. Arduino Cloud, the Alexa app and the sketch code are software only and have no nodes."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 108.7,
+   "check_seconds": 0.0,
+   "input_tokens": 17120,
+   "output_tokens": 687,
+   "cost_usd": 0.0354,
+   "listed": 6,
+   "matched": 5,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Nano 33 IoT",
+     "card": "arduino-nano-33-ble-sense",
+     "skipped": false
+    },
+    {
+     "item": "Resistor 330 ohm",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "IR receiver (generic)",
+     "card": "ir-receiver",
+     "skipped": false
+    },
+    {
+     "item": "IR transmitter (generic)",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/ir-receiver-diode-tsop38238.html (The content describes an IR receiver (TSOP38238, SEN-10266), not an IR transmitt)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/IRduino-Arduino-compatible-USB-IR-Receiver-p-2933.html (The content describes IRduino, a USB infrared RECEIVER (ATmega32u4 plus an SMD I)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 41.5
+    },
+    {
+     "item": "Jumper wires (generic)",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard (generic)",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 130.9,
+   "input_tokens": 25762,
+   "cache_read_tokens": 5507,
+   "output_tokens": 16974,
+   "cost_usd": 0.2519,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ir-led",
+   "family": "led",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  }
+ ],
+ "postprocess_ms": 20.1
+}

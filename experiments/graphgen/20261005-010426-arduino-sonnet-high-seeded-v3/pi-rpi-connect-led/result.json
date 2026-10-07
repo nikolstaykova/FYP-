@@ -1,0 +1,85 @@
+{
+ "case": "pi-rpi-connect-led",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 22.3,
+  "input_tokens": 18613,
+  "output_tokens": 2595,
+  "cost_usd": 0.0505,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e11: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e15: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e16: port 'GND' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The manual gives no exact columns. The LED anode goes in column 1 on the top (left of ravine) half, and the cathode in column 1 on the bottom half, as the manual says 'row 1' on both sides of the ravine.",
+  "The resistor's first leg shares the LED cathode's strip (1b). Its other leg goes in free column 5 on the same side, an arbitrary choice. The GND wire male end goes in the same strip (5b).",
+  "The 3V3 wire's male end goes in the LED anode strip (1t) on the left side of the ravine.",
+  "The catalogue rpi-4b lists only GPIO_HEADER as a header port. The 3V3 and GND header pins are used as port names here, as the task instructions suggest.",
+  "The jumper wire's 'a' end is the male end (into the breadboard) and 'b' is the female end (onto the Pi pin).",
+  "The Pi is assumed to be powered on and the LED orientation (long leg = anode) is as described."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.1,
+   "input_tokens": 8270,
+   "output_tokens": 331,
+   "cost_usd": 0.0137,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.2,
+   "input_tokens": 10343,
+   "cache_read_tokens": 7163,
+   "output_tokens": 2264,
+   "cost_usd": 0.0368,
+   "check_seconds": 0.01,
+   "issues": 4,
+   "issue_rules": {
+    "V4": 4
+   }
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 4,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 5.5
+}

@@ -1,0 +1,91 @@
+{
+ "case": "switch-case-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 68.7,
+  "input_tokens": 38901,
+  "output_tokens": 10928,
+  "cost_usd": 0.1527,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 84,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as in step 1; none were added or dropped.",
+  "Each LED is wired the same way: Uno pin -> blue wire -> resistor -> LED anode, and LED cathode -> black wire -> ground rail -> Uno GND. The schematic shows the same circuit.",
+  "LED n has its anode in column 10, 13, 16, 19 or 22 and its cathode in the next column. Both legs are in the top bank, row j. Those columns are read from the image and are approximate.",
+  "Each resistor sits in the same column as its LED's anode. One leg is in the top bank at row f and the other is in the bottom bank at row e, so it bridges the centre gap. The blue wire ends in the same bottom column at row d.",
+  "Pin 6 feeds the LED in column 10, pin 5 column 13, pin 4 column 16, pin 3 column 19 and pin 2 column 22, as the image shows.",
+  "Each black wire goes from the cathode column (row i, top bank) to the top negative rail 'tn'. The Uno GND wire goes to the same rail, tn.1.",
+  "The GND wire goes to the Uno GND pin next to AREF. I named it GND.1, but the catalogue doesn't say which GND index that header pin is.",
+  "The 220 ohm value comes from the schematic and the parts list.",
+  "The 5 V pin and the positive rails are not used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.6,
+   "input_tokens": 18380,
+   "cache_read_tokens": 11144,
+   "output_tokens": 1911,
+   "cost_usd": 0.0503,
+   "check_seconds": 0.0,
+   "parts_listed": 23,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.1,
+   "input_tokens": 20521,
+   "cache_read_tokens": 18378,
+   "output_tokens": 9017,
+   "cost_usd": 0.1024,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 11,
+  "nets_built": 11,
+  "nets_matched": 11,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 5,
+   "led": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 23.7
+}

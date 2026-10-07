@@ -1,0 +1,114 @@
+{
+ "case": "analog-in-out-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 57.4,
+  "input_tokens": 44925,
+  "output_tokens": 8527,
+  "cost_usd": 0.1475,
+  "repair_rounds_used": 1
+ },
+ "parts": 10,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "In the image the breadboard is drawn with rows j..f on top and a..e on the bottom, so the top half maps to catalogue bank 'b' (rows f-j) and the bottom half to bank 't' (rows a-e).",
+  "Fixed the single-use hole conflicts: each wire and the pot leg that share a column now use different holes of the same 5-hole strip. The pot legs are in row e (22t.e GND, 24t.e VCC) and row f (23b.f wiper). The black GND wire is in 22t.d, the red 5V wire in 24t.d and the yellow wire in 23b.g. The wire and leg in each pair are electrically the same node.",
+  "Column numbers were estimated from the image: resistor 4g-6g, LED anode 6h / cathode 8h, black LED-ground wire at 8g, blue pin-9 wire at 4f.",
+  "The pot straddles the centre gap: its wiper pin is in the top half (column 23) and the two outer legs are in the bottom half (columns 22 and 24).",
+  "The LED's longer anode leg goes to the resistor's strip. The cathode goes to ground through the black wire, as the text says.",
+  "Uno GND pin choice: the power-header GND is GND.1 and the digital-header GND next to pin 13 is GND.3. Both are the same ground net.",
+  "Resistor value is 220 ohm per the manual. The schematic shows the pot's outer pins on 5V and GND and the wiper on A0."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.2,
+   "input_tokens": 19794,
+   "cache_read_tokens": 11120,
+   "output_tokens": 4844,
+   "cost_usd": 0.0854,
+   "check_seconds": 0.0,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 3
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.2,
+   "input_tokens": 25131,
+   "cache_read_tokens": 19792,
+   "output_tokens": 3683,
+   "cost_usd": 0.0621,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 5,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 5,
+  "nets_built": 5,
+  "nets_matched": 5,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 7.2
+}

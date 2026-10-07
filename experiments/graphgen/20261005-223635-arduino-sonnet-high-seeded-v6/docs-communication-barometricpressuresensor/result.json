@@ -1,0 +1,72 @@
+{
+ "case": "docs-communication-barometricpressuresensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 27.2,
+  "input_tokens": 54136,
+  "output_tokens": 4416,
+  "cost_usd": 0.0757,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1: no breadboard, the SCP1000 breakout is wired directly to the Arduino Uno with 7 hook-up wires (5 blue signal, 1 red 3.3 V, 1 black GND).",
+  "Pin mapping follows the schematic and sketch: SCK-D13, MISO-D12, MOSI-D11, CSB-D7, DRDY-D6. In the schematic the DRDY and CSB lines cross, so D7 goes to CSB and D6 goes to DRDY. (The step 1 note describing this was worded confusingly.)",
+  "The sensor is powered from the Uno 3.3V pin (red wire), not 5V, because the SCP1000 is a 3.3 V part. GND goes to the Uno's GND pin next to the power header, taken as GND.1.",
+  "The SCP1000 breakout's logic pins are connected directly to the Uno's 5V I/O as the tutorial shows, without level shifters. The tutorial does not add any."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 9.5,
+   "input_tokens": 26412,
+   "cache_read_tokens": 22269,
+   "output_tokens": 1129,
+   "cost_usd": 0.0323,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.7,
+   "input_tokens": 27724,
+   "cache_read_tokens": 26410,
+   "output_tokens": 3287,
+   "cost_usd": 0.0434,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.0
+}

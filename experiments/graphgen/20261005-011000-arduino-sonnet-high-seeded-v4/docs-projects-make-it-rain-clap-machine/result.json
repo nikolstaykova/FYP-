@@ -1,0 +1,259 @@
+{
+ "case": "docs-projects-make-it-rain-clap-machine",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 350.3,
+  "input_tokens": 82918,
+  "output_tokens": 21517,
+  "cost_usd": 0.3789,
+  "repair_rounds_used": 0
+ },
+ "parts": 34,
+ "edges": 139,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "The catalogue auto-match 'Diode -> led' is wrong; a new `diode` type (A anode, C cathode) is used. '0.1 uF ceramic capacitor -> capacitor-22pf' is also wrong; `capacitor-100nf` is used.",
+  "The Arduino MKR Zero is in the catalogue, so `arduino-mkr-zero` is used. The microphone, diode and rubber band are new part types.",
+  "The schematic image was not available, so the breadboard layout, hole positions and rail assignments are my own, built from the text and the parts photo. Rails: tp = 3.3V (MKR VCC), tn = GND, bp = 5V, bn = GND. The two GND rails are joined by a wire.",
+  "The manual gives only the I2S pins (SD on A6, SCK on 2, FS/WS on 3). The motor MOSFET gate pin (6) and servo PWM pin (5) are assumed.",
+  "The DC motor is switched low-side by MOSFET q1. Its 2.2k pull-down r1 sits on the gate, and the flyback diode d1 runs from drain (anode) to the 5V side (cathode). The 0.1 uF capacitor c1 is placed across the motor terminals, as in the photo of the motor.",
+  "The servo signal goes through MOSFET q2 as a 3.3V-to-5V level shifter: gate to 3.3V, source to the MKR pin, drain to the servo PWM with a 2.2k pull-up r2 to 5V. The 100 uF electrolytic capacitor c2 sits across the 5V and GND rails next to the servo.",
+  "Microphone power is 3.3V (ICS43432 VDD) and its L/R pin is tied to GND. The microphone is a 6-pin breakout in the top half of the breadboard.",
+  "The servo and DC motor leads are modelled as plugged directly into breadboard holes. In reality, jumper or soldered leads are used.",
+  "The MDF laser-cut box, wheel, lifting arm and hot glue are not electrical parts and are omitted. The rubber band is included with a contact edge to the DC motor (it is woven onto the wheel on the motor gear).",
+  "The photo shows 'MKRZERO' printed on the bills (a stack of paper), not a part."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 231.7,
+   "check_seconds": 0.0,
+   "input_tokens": 56751,
+   "output_tokens": 3680,
+   "cost_usd": 0.1168,
+   "listed": 11,
+   "matched": 6,
+   "looked_up": 5,
+   "found": 2,
+   "items": [
+    {
+     "item": "Arduino MKR Zero",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield, a CAN bus shield for MKR board)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 22.4
+    },
+    {
+     "item": "Medium breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Jumper Wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Diode",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "Mosfet N-Channel",
+     "card": "mosfet-n-channel",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/n-channel-mosfet-55v-30a.html"
+      ]
+     ],
+     "seconds": 12.0
+    },
+    {
+     "item": "ICS43432 I2S digital microphone",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-i2s-audio-breakout-max98357a.html (The page describes the SparkFun I2S Audio Breakout with the MAX98357A, a DAC and)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-16g-Ultra-low-Power-BMA400.html (The content describes the Grove 3-Axis Digital Accelerometer (BMA400), not the I)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 53.7
+    },
+    {
+     "item": "micro servo motor+ DC motor",
+     "card": "servo",
+     "skipped": false
+    },
+    {
+     "item": "0.1 uF ceramic capacitor",
+     "card": "capacitor-22pf",
+     "skipped": false
+    },
+    {
+     "item": "100 uF electrolitic capacitor",
+     "card": "capacitor-electrolytic",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/capacitor-aluminum-electrolytic-47-f-20-35v.html"
+      ]
+     ],
+     "seconds": 13.5
+    },
+    {
+     "item": "2.2Kohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "Rubber band",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-rtk-replacement-parts-facet-rubber-sock.html (The page is a black silicone protective sock for the SparkFun RTK Facet GNSS rec)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Raspberry-Pi-Dual-band-Radio-hotspot-p-2979.html (The content is a Seeed Studio page for a Raspberry Pi dual band radio hotspot, b)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 16.9
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 118.6,
+   "input_tokens": 26167,
+   "cache_read_tokens": 5507,
+   "output_tokens": 17837,
+   "cost_usd": 0.2621,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "diode",
+   "motor",
+   "resistor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ics43432",
+   "family": "ics43432",
+   "checked": false
+  },
+  {
+   "type": "diode",
+   "family": "diode",
+   "checked": false
+  },
+  {
+   "type": "rubber-band",
+   "family": "rubber-band",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 36.1
+}

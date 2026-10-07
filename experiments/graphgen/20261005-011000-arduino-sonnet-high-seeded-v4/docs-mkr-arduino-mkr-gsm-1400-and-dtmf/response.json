@@ -1,0 +1,1307 @@
+{
+ "graph": {
+  "title": "Arduino MKR GSM 1400 DTMF Tone Decoder with NeoPixel",
+  "source_id": "mkrgsm1400dtmf (hackster.io, Arduino MKR GSM 1400 DTMF tutorial)",
+  "new_part_types": [
+   {
+    "type": "2n7000",
+    "name": "ON Semiconductor 2N7000 N-channel MOSFET",
+    "category": "transistor",
+    "ports": [
+     {
+      "name": "S",
+      "kind": "lead"
+     },
+     {
+      "name": "G",
+      "kind": "lead"
+     },
+     {
+      "name": "D",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "D",
+      "S"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-gsm-1400",
+    "label": "Arduino MKR GSM 1400",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "lipo-battery",
+    "label": "3.7 V LiPo Battery",
+    "props": []
+   },
+   {
+    "id": "ring1",
+    "type": "led-ring-ws2812-24",
+    "label": "Adafruit NeoPixel Ring WS2812 5050",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor 10k ohm",
+    "props": [
+     {
+      "key": "value",
+      "value": "10000"
+     }
+    ]
+   },
+   {
+    "id": "q1",
+    "type": "2n7000",
+    "label": "ON Semiconductor 2N7000",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR data pin to MOSFET source",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR VCC (3.3V) to MOSFET gate",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR 5V to + rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR GND to - rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Micro USB cable",
+    "props": []
+   },
+   {
+    "id": "laptop1",
+    "type": "laptop",
+    "label": "PC",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": null,
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "+",
+    "v": "mkr1",
+    "v_port": "BATT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "-",
+    "v": "mkr1",
+    "v_port": "BATT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "S",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "S",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "D",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "D",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ring1",
+    "u_port": "DIN",
+    "v": "bb1",
+    "v_port": "12t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ring1",
+    "u_port": "DIN",
+    "v": "bb1",
+    "v_port": "12t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ring1",
+    "u_port": "PWR",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ring1",
+    "u_port": "PWR",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ring1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ring1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The schematic image was not visible, so the wiring is inferred from the text. It is the usual single-MOSFET 3.3V-to-5V level shifter: 2N7000 gate to 3.3V (VCC), source to the MKR data pin, drain to the NeoPixel DIN, and the 10k resistor pulling the drain up to 5V.",
+   "The catalogue entry for arduino-mkr-gsm-1400 has no digital pin ports. The data-pin jumper (wire1) therefore uses a null board port. The original example most likely uses pin 6, but that is an assumption.",
+   "Fix for the validation errors: the battery's lead ports cannot be joined to the board's BATT socket port. The battery plugs into the board through its connector, so there is now one port-less joined edge between batt1 and mkr1. The + and - electrical edges to BATT are kept.",
+   "The 2N7000 is not in the catalogue, so I added it as a new type with ports S, G and D, and a D-S channel.",
+   "The tutorial's layout shows a single NeoPixel, but the parts list names the 24-LED ring, so I used the ring. I put its PWR, GND and DIN pads directly into breadboard holes. DOUT is left unconnected.",
+   "The antenna and the micro SIM are in the setup steps but not in the parts list or the catalogue, so I left them out.",
+   "The USB cable and PC are included because the setup steps call for them.",
+   "The Gmail, Google Calendar and Google Drive MCP servers need authorization before they can be used. This session is non-interactive and could not do that. Authorize them in your claude.ai connector settings if you need them. They were not needed for this graph."
+  ]
+ },
+ "graph_initial": {
+  "title": "Arduino MKR GSM 1400 DTMF Tone Decoder with NeoPixel",
+  "source_id": "mkrgsm1400dtmf (hackster.io, Arduino MKR GSM 1400 DTMF tutorial)",
+  "new_part_types": [
+   {
+    "type": "2n7000",
+    "name": "ON Semiconductor 2N7000 N-channel MOSFET",
+    "category": "transistor",
+    "ports": [
+     {
+      "name": "S",
+      "kind": "lead"
+     },
+     {
+      "name": "G",
+      "kind": "lead"
+     },
+     {
+      "name": "D",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "D",
+      "S"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-gsm-1400",
+    "label": "Arduino MKR GSM 1400",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "lipo-battery",
+    "label": "3.7 V LiPo Battery",
+    "props": []
+   },
+   {
+    "id": "ring1",
+    "type": "led-ring-ws2812-24",
+    "label": "Adafruit NeoPixel Ring WS2812 5050",
+    "props": []
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "Resistor 10k ohm",
+    "props": [
+     {
+      "key": "value",
+      "value": "10000"
+     }
+    ]
+   },
+   {
+    "id": "q1",
+    "type": "2n7000",
+    "label": "ON Semiconductor 2N7000",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR data pin to MOSFET source",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR VCC (3.3V) to MOSFET gate",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR 5V to + rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Jumper wire: MKR GND to - rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "Micro USB cable",
+    "props": []
+   },
+   {
+    "id": "laptop1",
+    "type": "laptop",
+    "label": "PC",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "+",
+    "v": "mkr1",
+    "v_port": "BATT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "+",
+    "v": "mkr1",
+    "v_port": "BATT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "-",
+    "v": "mkr1",
+    "v_port": "BATT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "-",
+    "v": "mkr1",
+    "v_port": "BATT",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "S",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "S",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "G",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "q1",
+    "u_port": "D",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "q1",
+    "u_port": "D",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb1",
+    "v_port": "12t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ring1",
+    "u_port": "DIN",
+    "v": "bb1",
+    "v_port": "12t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ring1",
+    "u_port": "DIN",
+    "v": "bb1",
+    "v_port": "12t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ring1",
+    "u_port": "PWR",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ring1",
+    "u_port": "PWR",
+    "v": "bb1",
+    "v_port": "tp.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ring1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ring1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "tn.10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The schematic image was not visible, so the wiring is inferred from the text. It is the usual single-MOSFET 3.3V-to-5V level shifter: 2N7000 gate to 3.3V (VCC), source to the MKR data pin, drain to the NeoPixel DIN, and the 10k resistor pulling the drain up to 5V.",
+   "The catalogue entry for arduino-mkr-gsm-1400 has no digital pin ports. The data-pin jumper (wire1) therefore uses a null board port. The original example most likely uses pin 6, but that is an assumption.",
+   "The 2N7000 is not in the catalogue, so I added it as a new type with ports S, G and D, and a D-S channel.",
+   "The tutorial's layout shows a single NeoPixel, but the parts list names the 24-LED ring, so I used the ring. I put its PWR, GND and DIN pads directly into breadboard holes. DOUT is left unconnected.",
+   "The LiPo battery has + and - leads, but the board has one BATT port. Both leads are joined to BATT.",
+   "The antenna and the micro SIM are in the setup steps but not in the parts list or the catalogue, so I left them out.",
+   "The USB cable and PC are included because the setup steps call for them.",
+   "The Gmail, Google Calendar and Google Drive MCP servers need authorization before they can be used. This session is non-interactive and could not do that. Authorize them in your claude.ai connector settings if you need them. They were not needed for this graph."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 193.1,
+  "input_tokens": 111681,
+  "output_tokens": 15169,
+  "cost_usd": 0.3423,
+  "repair_rounds_used": 1
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 129.9,
+   "check_seconds": 0.0,
+   "input_tokens": 74137,
+   "output_tokens": 4786,
+   "cost_usd": 0.1686,
+   "listed": 7,
+   "matched": 3,
+   "looked_up": 4,
+   "found": 3,
+   "items": [
+    {
+     "item": "Arduino MKR GSM 1400",
+     "card": "arduino-mkr-gsm-1400",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-GSM-1400-p-3162.html"
+      ]
+     ],
+     "seconds": 13.1
+    },
+    {
+     "item": "3.7 V LiPo Battery",
+     "card": "lipo-battery",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-battery-babysitter-lipo-battery-manager.html (The page describes the SparkFun Battery Babysitter (PRT-13777), a LiPo charger a)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2245 (The page describes a 7.2 V NiMH battery pack (6x 2/3-AAA cells, 350 mAh, JR conn)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Battery-Detector-with-Polymer-Lithium-Ion-1050mAh-3-7V-p-2648.html"
+      ]
+     ],
+     "seconds": 24.1
+    },
+    {
+     "item": "Adafruit\u00ae NeoPixel Ring: WS2812 5050 RGB LED",
+     "card": "led-ring-ws2812-24",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/apa102c-5050-smd-addressable-rgb-led-cut-tape.html (The page describes a single APA102C-5050 SMD addressable RGB LED (DotStar, COM-2)"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/2538"
+      ]
+     ],
+     "seconds": 23.0
+    },
+    {
+     "item": "Resistor 10k ohm",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "ON Semiconductor 2N7000",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-16-x-2-LCD-Black-on-Yellow.html (The content is the Seeed Studio Grove 16x2 LCD (Black on Yellow) page, which is )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 10.4
+    },
+    {
+     "item": "Breadboard (generic)",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires (generic)",
+     "card": "jumper-wire",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.2,
+   "input_tokens": 15644,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5733,
+   "cost_usd": 0.099,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.0,
+   "input_tokens": 21900,
+   "cache_read_tokens": 15642,
+   "output_tokens": 4650,
+   "cost_usd": 0.0747,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 15.1,
+  "cost_usd": 0.0386,
+  "types": [
+   {
+    "type": "2n7000",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "no search result"
+     ],
+     [
+      "pololu",
+      "did not match: https://www.pololu.com/product/2484 (Content describes the Pololu Basic 2-Channel SPDT Relay Carrier (item 2484), not)"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/LG01-N-Single-Channel-LoRa-IoT-Gateway-p-2921.html (The content is a Seeed Studio page for the LG01-N single channel LoRa IoT gatewa)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

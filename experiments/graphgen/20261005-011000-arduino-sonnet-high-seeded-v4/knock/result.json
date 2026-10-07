@@ -1,0 +1,218 @@
+{
+ "case": "knock",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 37.3,
+  "input_tokens": 32685,
+  "output_tokens": 3338,
+  "cost_usd": 0.0907,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The 1 Megohm resistor is modelled with the catalogue 'resistor' type and value=1000000.",
+  "In the image the upper breadboard half is labelled rows f-j. It is named bank 'b' (rows f-j) in the catalogue, so the circuit uses holes such as 5b.i.",
+  "Piezo legs are in columns 5 (black wire, ground side) and 8 (red wire, A0 side), row i. The resistor is in row h across columns 5 and 8, in parallel with the piezo. The black wire goes to 5b.g and the red wire to 8b.f.",
+  "Buzzer port 1 is taken as the positive (red) lead and port 2 as the negative (black) lead.",
+  "The black wire goes to the GND pin next to AREF on the digital header, mapped to GND.1.",
+  "The tutorial lists 'solid surface' as hardware. It is not a circuit part, so it is not modelled.",
+  "The piezo disc is shown with its own lead wires in the image. These are treated as the buzzer's legs and are not separate parts."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 18.4,
+   "check_seconds": 0.0,
+   "input_tokens": 13729,
+   "output_tokens": 774,
+   "cost_usd": 0.0315,
+   "listed": 4,
+   "matched": 2,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "Piezo electric disc",
+     "card": "buzzer",
+     "skipped": false
+    },
+    {
+     "item": "1 Megohm resistor",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/resistor-4-7k-ohm-1-10w-1.html (The content describes a 4.7 kOhm 1/10W 1% SMD resistor (COM-18280), not a megohm)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/0-2-Inch-Thin-Film-Resistor-type-Pressure-Sensor-FSR400-A301-p-2091.html (The content describes a 0.2 inch thin film pressure sensor (FSR400 A301), a forc)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 18.4
+    },
+    {
+     "item": "solid surface",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.9,
+   "input_tokens": 18956,
+   "cache_read_tokens": 11120,
+   "output_tokens": 2564,
+   "cost_usd": 0.0592,
+   "check_seconds": 0.04,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "buzzer": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "buzzer": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "buzzer",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 26.0
+}

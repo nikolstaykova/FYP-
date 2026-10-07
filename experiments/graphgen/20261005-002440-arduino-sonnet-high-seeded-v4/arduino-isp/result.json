@@ -1,0 +1,295 @@
+{
+ "case": "arduino-isp",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 48.7,
+  "input_tokens": 17646,
+  "output_tokens": 8246,
+  "cost_usd": 0.1108,
+  "repair_rounds_used": 0
+ },
+ "parts": 22,
+ "edges": 73,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The manual's main wiring photo shows two UNO boards with 'old style' wiring (D10->RESET, D11->D11, D12->D12, D13->D13, 5V, GND). I used that: uno1 is the programmer and uno2 is the target. The ICSP-header wiring and the Nano/MEGA/MKR1000 variants are alternatives and aren't modelled.",
+  "The 10uF capacitor goes between the programmer's RESET and GND, with the positive leg on RESET. The manual says to fit it after the ArduinoISP sketch is uploaded. It is shown on the breadboard, with the programmer RESET and GND brought in by jumper wires.",
+  "The three optional LEDs from the ArduinoISP sketch are included. Heartbeat is on D9, error on D8 and programming on D7, which are the sketch's default pins. The manual doesn't give resistor values, so I assumed 220 ohm for each LED. Breadboard hole positions are assumed.",
+  "The manual says not to power the boards while wiring. The USB cable is shown on the programmer only, since it is needed to upload the sketch and run the programming. The target is powered from the programmer's 5V.",
+  "The Arduino IDE settings are software only and not part of the graph: Board 'Arduino Nano' / Processor ATmega328P in the screenshot (the target board type), Programmer 'Arduino as ISP', then Burn Bootloader. The memory-map figure is also not part of the graph.",
+  "The usb-cable catalogue entry has no ports, so its joined edge to uno1 has no port names."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 48.7,
+   "input_tokens": 17646,
+   "cache_read_tokens": 11120,
+   "output_tokens": 8246,
+   "cost_usd": 0.1108,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 15,
+  "nets_built": 13,
+  "nets_matched": 6,
+  "net_precision": 0.462,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor-ceramic": 2,
+   "capacitor-electrolytic": 1,
+   "resistor": 3,
+   "led": 3
+  },
+  "inventory_built": {
+   "board": 2,
+   "capacitor-10uf": 1,
+   "resistor": 3,
+   "led": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "20"
+    ],
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor-ceramic",
+     "1"
+    ],
+    [
+     "capacitor-ceramic",
+     "2"
+    ],
+    [
+     "capacitor-electrolytic",
+     "NEG"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor-ceramic",
+     "2"
+    ],
+    [
+     "crystal",
+     "1"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor-ceramic",
+     "1"
+    ],
+    [
+     "crystal",
+     "2"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "RESET"
+    ],
+    [
+     "capacitor-electrolytic",
+     "POS"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "board",
+     "12"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "board",
+     "RESET"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor-10uf",
+     "NEG"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "RESET"
+    ],
+    [
+     "capacitor-10uf",
+     "POS"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 9.6
+}

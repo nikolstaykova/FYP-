@@ -1,0 +1,345 @@
+{
+ "case": "docs-nano-matter-04-matter-relay-lightbulb",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 443.2,
+  "input_tokens": 168572,
+  "output_tokens": 24178,
+  "cost_usd": 0.5733,
+  "repair_rounds_used": 1
+ },
+ "parts": 11,
+ "edges": 85,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 3,
+ "problems": [
+  [
+   "V4",
+   "e63: port 'VCC' not on relay-module"
+  ],
+  [
+   "V4",
+   "e64: port 'VCC' not on relay-module"
+  ],
+  [
+   "V4",
+   "e67: port 'GND' not on relay-module"
+  ],
+  [
+   "V4",
+   "e68: port 'GND' not on relay-module"
+  ],
+  [
+   "V4",
+   "e71: port 'SIG' not on relay-module"
+  ],
+  [
+   "V4",
+   "e72: port 'SIG' not on relay-module"
+  ],
+  [
+   "V4",
+   "e76: port 'COM' not on relay-module"
+  ],
+  [
+   "V4",
+   "e77: port 'COM' not on relay-module"
+  ],
+  [
+   "V4",
+   "e78: port 'NO' not on relay-module"
+  ],
+  [
+   "V4",
+   "e79: port 'NO' not on relay-module"
+  ],
+  [
+   "V3",
+   "e80: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e82: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e84: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V2",
+   "part hub1 (hub-google-nest-hub-max) has no connection"
+  ]
+ ],
+ "notes": [
+  "The earlier short circuit came from my own modelling. The catalogue's relay-module entry has no ports, so I attached every wire to relay1 with a null port. That merged 3V3, GND, D4 and the mains side into one node. I now name the relay's pins on each edge: VCC, GND and SIG on the low-voltage Grove side, and COM and NO on the switched mains side. The catalogue entry lists no ports, so these names are my own labels for the Grove relay's pins.",
+  "The relay is a switch, so the mains path is acc1 live -> relay COM, then relay NO -> socket terminal 1. Control and mains sides are separate nodes. The manual only says the relay interrupts the current path; it doesn't name relay terminals.",
+  "The relay's three low-voltage connections are modelled as three jumper wires: 3V3 -> VCC, GND -> GND, D4 -> SIG. The photo shows them going to the Grove connector. The manual doesn't say which relay pin each uses.",
+  "AC cable neutral goes directly to socket terminal 2 (twist or wire nut in the photo). The bulb screws into the socket on terminals 1 and 2. The bulb has a through path 1-2. The socket entry marks 1=2 only as interchangeable, not shorted, so I kept the bulb and socket joins.",
+  "Nano Matter pin layout and breadboard placement are assumed: the board straddles the centre channel in columns 1-15, left pins in row e and right pins in row f. The manual doesn't give columns. The jumper wires share strips with 3V3 (col 2), GND (col 14) and D4 (col 9).",
+  "The Google Nest Hub Max connects over Thread/Matter wirelessly, so it has no physical edges. The USB-C cable powers the Nano Matter and attaches with a null port because the catalogue's usb-cable has no ports.",
+  "The relay module is shown resting on the breadboard in the photo, so it has a contact edge with the breadboard."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 339.2,
+   "input_tokens": 125363,
+   "output_tokens": 4938,
+   "cost_usd": 0.2878,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 9,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Nano Matter",
+     "type": "arduino-nano-matter",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-nano-every.html (This page sells the Arduino Nano Every (ATMega4809, DEV-15590), not the Arduino )"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-nano-stackable-header-set.html (This page sells the SparkFun Arduino Nano Stackable Header Set (PRT-16279). It i)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Arduino-Nano-v3-p-1928.html (The page sells the Arduino Nano v3 (ATmega328-based), not the Arduino Nano Matte)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Grove-Shield-for-Arduino-Nano-p-4112.html (This page sells the Grove Shield for Arduino Nano from Seeed Studio. That is a G)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 29.9
+    },
+    {
+     "part": "Lightbulb socket",
+     "type": "lightbulb-socket",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/e10-screw-bulb-socket.html"
+      ]
+     ],
+     "seconds": 41.6
+    },
+    {
+     "part": "AC lightbulb",
+     "type": "lightbulb-ac",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Pimoroni-Mood-Light-Pi-Zero-W-Project-Kit-internet-connected-p-2985.html (The page sells a Pimoroni Mood Light kit. It is a Pi Zero W with a Unicorn pHAT )"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/mBot-Add-on-Pack-Interactive-Light-Sound-p-2734.html (This page sells the mBot Add-on Pack Interactive Light & Sound. It contains ligh)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 64.7
+    },
+    {
+     "part": "AC cable",
+     "type": "cable-ac",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "page did not match: https://www.adafruit.com/product/1995 (This page sells a 5V 2.5A switching power supply (wall adapter) with a attached )"
+      ],
+      [
+       "adafruit",
+       "page did not match: https://www.adafruit.com/product/4880 (This page sells an adjustable DC power supply (KJS-1509, 3-12V 5A) with a 2-pron)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/obd-ii-to-de9-cable.html (The page sells an OBD-II to DE9 automotive diagnostic cable (SparkFun CAB-10087))"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/n20-motor-with-encoder-and-cable-pair.html (This page sells an N20 gear motor with encoder and a 6-pin JST-SH cable (SparkFu)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1773 (This page sells a 5.15 V DC, 2.5 A wall power adapter (AC-to-DC switching supply)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/5410 (The page sells a Pololu ACS37800 power monitor carrier board (an I2C current/vol)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Raspberry-Pi-Official-Power-Supply-15-3W-USB-C-with-1-5M-Cable-US-Plug-5-1V-3A-Black-p-4168.html (The page sells a Raspberry Pi Official USB-C power supply (5.1V 3A, 15.3W, US pl)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Raspberry-Pi-Official-Power-Supply-15-3W-USB-C-with-1-5M-Cable-UK-Plug-5-1V-3A-White-p-4169.html (The page sells a Raspberry Pi 15.3W USB-C power supply (5.1V 3A) with a fixed 1.)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 89.7
+    },
+    {
+     "part": "Google Nest Hub Max (Thread Border Router)",
+     "type": "hub-google-nest-hub-max",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/google-coral.html (The page is Seeed Studio's \"Google Coral\" listing, which sells Coral AI accelera)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Khadas-VIM2-Max-Open-Source-SBC-TV-Box-3GB-64GB-Wi-Fi-Gigabit-LAN-with-WOL-Multi-System-Compatibility-4K-p-3190.html (The page sells the Khadas VIM2 Max, a single-board computer/TV box. It does not )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 104.9
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 59.8,
+   "input_tokens": 15485,
+   "cache_read_tokens": 5507,
+   "output_tokens": 10326,
+   "cost_usd": 0.1443,
+   "check_seconds": 0.0,
+   "issues": 6,
+   "issue_rules": {
+    "V3": 3,
+    "V2": 1,
+    "E1": 1,
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.2,
+   "input_tokens": 27724,
+   "cache_read_tokens": 15483,
+   "output_tokens": 8914,
+   "cost_usd": 0.1412,
+   "check_seconds": 0.0,
+   "issues": 14,
+   "issue_rules": {
+    "V4": 10,
+    "V3": 3,
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 14,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "score_initial": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "lightbulb-ac",
+   "family": "lightbulb-ac",
+   "checked": false
+  },
+  {
+   "type": "cable-ac",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "hub-google-nest-hub-max",
+   "family": "hub-google-nest-hub-max",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 23.7
+}

@@ -1,0 +1,74 @@
+{
+ "case": "docs-opta-10-opta-modbus-tcp-plc-ide",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 25.2,
+  "input_tokens": 28324,
+  "output_tokens": 3530,
+  "cost_usd": 0.128,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "The Ethernet switch is optional in the manual; the two Optas can be connected directly with one RJ-45 cable. The recommended switched topology is modelled.",
+  "The manual's hardware list has 2 RJ-45 cables, so the 'Modbus TCP Compatible Device' box from the overview diagram (an optional extra field device) is not modelled.",
+  "Both USB-C cables go to the single computer; the laptop catalogue entry has one USB port, so both cables attach to it (a hub or two ports is implied).",
+  "Power supply (12-24 V DC) is not shown connected in the manual, so no power edges are included.",
+  "Static IPs: Server 192.168.1.2, Client 192.168.1.1, subnet 255.255.255.0. Software config (Modbus node, cnt variable at 25000, PLC code) is not part of the physical graph.",
+  "usb-cable has no ports in the catalogue, so its edges use null ports."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.2,
+   "input_tokens": 28324,
+   "cache_read_tokens": 5414,
+   "output_tokens": 3530,
+   "cost_usd": 0.128,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "finder-opta",
+   "family": "finder-opta",
+   "checked": false
+  },
+  {
+   "type": "rj45-cable",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "ethernet-switch",
+   "family": "button",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  }
+ ],
+ "postprocess_ms": 19.0
+}

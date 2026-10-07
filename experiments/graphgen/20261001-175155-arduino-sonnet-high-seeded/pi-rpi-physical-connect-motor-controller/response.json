@@ -1,0 +1,406 @@
+{
+ "graph": {
+  "title": "Raspberry Pi motor controller board with two DC motors and battery pack",
+  "source_id": "CamJam EduKit 3 - Robotics: motor controller connection (connect1/connect2)",
+  "new_part_types": [
+   {
+    "type": "battery-pack-4aa",
+    "name": "4xAA battery pack with on/off switch and leads",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "wire-end"
+     },
+     {
+      "name": "NEG",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "POS",
+      "NEG"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "motor-controller-board",
+    "name": "CamJam EduKit motor controller board (Pi GPIO header, 3 screw terminal blocks)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "MA.1",
+      "kind": "lug"
+     },
+     {
+      "name": "MA.2",
+      "kind": "lug"
+     },
+     {
+      "name": "MB.1",
+      "kind": "lug"
+     },
+     {
+      "name": "MB.2",
+      "kind": "lug"
+     },
+     {
+      "name": "VIN",
+      "kind": "lug"
+     },
+     {
+      "name": "GND",
+      "kind": "lug"
+     },
+     {
+      "name": "H.GPIO7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.GPIO8",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.GPIO9",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.GPIO10",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.GND",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND",
+      "H.GND"
+     ]
+    ],
+    "through": [
+     [
+      "H.GPIO10",
+      "MA.1"
+     ],
+     [
+      "H.GPIO9",
+      "MA.2"
+     ],
+     [
+      "H.GPIO8",
+      "MB.1"
+     ],
+     [
+      "H.GPIO7",
+      "MB.2"
+     ],
+     [
+      "VIN",
+      "MA.1"
+     ],
+     [
+      "VIN",
+      "MA.2"
+     ],
+     [
+      "VIN",
+      "MB.1"
+     ],
+     [
+      "VIN",
+      "MB.2"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "ctrl1",
+    "type": "motor-controller-board",
+    "label": "Motor controller board",
+    "props": []
+   },
+   {
+    "id": "bat1",
+    "type": "battery-pack-4aa",
+    "label": "Battery pack",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "Motor A",
+    "props": []
+   },
+   {
+    "id": "motor2",
+    "type": "dc-motor",
+    "label": "Motor B",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "ctrl1",
+    "v_port": "VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "ctrl1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "ctrl1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "ctrl1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "ctrl1",
+    "v_port": "MA.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "ctrl1",
+    "v_port": "MA.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "ctrl1",
+    "v_port": "MA.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "ctrl1",
+    "v_port": "MA.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "ctrl1",
+    "v_port": "MB.1",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "1",
+    "v": "ctrl1",
+    "v_port": "MB.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "ctrl1",
+    "v_port": "MB.2",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor2",
+    "u_port": "2",
+    "v": "ctrl1",
+    "v_port": "MB.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ctrl1",
+    "u_port": "H.GPIO7",
+    "v": "pi1",
+    "v_port": "GPIO7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ctrl1",
+    "u_port": "H.GPIO7",
+    "v": "pi1",
+    "v_port": "GPIO7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ctrl1",
+    "u_port": "H.GPIO8",
+    "v": "pi1",
+    "v_port": "GPIO8",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ctrl1",
+    "u_port": "H.GPIO8",
+    "v": "pi1",
+    "v_port": "GPIO8",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ctrl1",
+    "u_port": "H.GPIO9",
+    "v": "pi1",
+    "v_port": "GPIO9",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ctrl1",
+    "u_port": "H.GPIO9",
+    "v": "pi1",
+    "v_port": "GPIO9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ctrl1",
+    "u_port": "H.GPIO10",
+    "v": "pi1",
+    "v_port": "GPIO10",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ctrl1",
+    "u_port": "H.GPIO10",
+    "v": "pi1",
+    "v_port": "GPIO10",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ctrl1",
+    "u_port": "H.GND",
+    "v": "pi1",
+    "v_port": "GND.5",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ctrl1",
+    "u_port": "H.GND",
+    "v": "pi1",
+    "v_port": "GND.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The battery pack and motors have fixed attached leads (red/black), so no separate jumper wires are used; leads are clamped directly in the screw terminals.",
+   "Battery red -> VIN, black -> GND, as required by the manual. Motors may go either way round; the assignment of motor wires to terminal lugs is arbitrary.",
+   "Battery pack is a 4-cell AA holder with an ON/OFF switch (not in catalogue); a new type was created. Switch must be OFF while wiring.",
+   "Motor controller board is a new type; the board plugs onto the Pi GPIO header and uses GPIO 7, 8, 9, 10. The exact mapping of each GPIO to motor terminals (through pairs) is an assumption; the board is modelled with the header pins it uses plus one ground pin (GND.5, pin 25, assumed).",
+   "Powering the Pi itself (USB supply) is mentioned only as 'power up' and is not modelled."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 29.1,
+  "api_seconds": 25.7,
+  "first_token_seconds": 12.7,
+  "input_tokens": 24134,
+  "cache_read_tokens": 14806,
+  "output_tokens": 4136,
+  "cost_usd": 0.0816,
+  "turns": 2
+ }
+}

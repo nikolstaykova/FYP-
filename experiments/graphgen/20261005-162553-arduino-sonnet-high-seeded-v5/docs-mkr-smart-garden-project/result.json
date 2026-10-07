@@ -1,0 +1,117 @@
+{
+ "case": "docs-mkr-smart-garden-project",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 146.5,
+  "input_tokens": 82039,
+  "output_tokens": 9519,
+  "cost_usd": 0.2053,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 5,
+ "new_types_added": 5,
+ "problems": [],
+ "notes": [
+  "Parts are the same as step 1; none added or dropped.",
+  "The MKR IoT Carrier sits on the MKR WiFi 1010's header. The board's pins pass through to the carrier, so the join has no specific board port.",
+  "The moisture sensor connects to the carrier's A6 Grove connector by the Grove cable. The cable card from lookup_part is a Qwiic-to-Grove adapter (qwiic.* on one end, grove.* on the other). I put the grove.* end on the sensor and the qwiic.* end on the carrier's A6 socket. Grove pin 1 (yellow, SIG) maps to SCL and pin 2 (NC) maps to SDA. The sensor's NC pin and the carrier's A6.NC pin get only joined edges.",
+  "Pump polarity: the pump card marks port 1 as the positive (power) pin and port 2 as negative. The pump's + wire goes to relay 1 COM. The USB cable's + wire goes to relay 1 NO. The USB cable's - wire is joined to the pump's - wire, which the tutorial suggests doing in a connector strip. I modelled it as a direct twisted join.",
+  "The open-ended USB cable plugs into the adapter's second port. It supplies 5 V to the pump circuit through the relay. The micro-USB cable goes from the first adapter port to the MKR WiFi 1010's USB port and powers the board and carrier.",
+  "The text says relay 1 (NO/COM) but the sketch calls opla.Relay2. I followed the text and the circuit description, relay 1.",
+  "The plant, the soil and the far end of the watering pipe are not parts in the tutorial's list, so they have no nodes or edges. The pump rests in the water container, and the pipe is pushed onto the pump outlet.",
+  "The Arduino Cloud, the phone app and the Wi-Fi are software or services, so they are not in the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 114.4,
+   "input_tokens": 51639,
+   "cache_read_tokens": 28133,
+   "output_tokens": 3823,
+   "cost_usd": 0.1344,
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-mkr-iot-carrier",
+    "grove-cable",
+    "pump-5v",
+    "usb-cable-open-end",
+    "usb-power-adapter",
+    "water-container",
+    "water-pipe"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.1,
+   "input_tokens": 30400,
+   "cache_read_tokens": 26970,
+   "output_tokens": 5696,
+   "cost_usd": 0.0709,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-iot-carrier",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "usb-power-adapter",
+   "family": "usb-power-adapter",
+   "checked": false
+  },
+  {
+   "type": "usb-cable-open-end",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "water-pipe",
+   "family": "water-pipe",
+   "checked": false
+  },
+  {
+   "type": "water-container",
+   "family": "water-container",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.0
+}

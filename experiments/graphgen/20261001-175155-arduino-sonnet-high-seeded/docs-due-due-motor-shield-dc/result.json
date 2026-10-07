@@ -1,0 +1,60 @@
+{
+ "case": "docs-due-due-motor-shield-dc",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 27.5,
+  "api_seconds": 22.7,
+  "first_token_seconds": 8.4,
+  "input_tokens": 14199,
+  "cache_read_tokens": 5414,
+  "output_tokens": 4081,
+  "cost_usd": 0.077,
+  "turns": 2
+ },
+ "parts": 6,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V3",
+   "e23: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e25: lead \u2194 lug is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "Arduino Due is not in the catalogue; a new part type with only the header pins used by the shield (plus DC jack and USB) is defined.",
+  "The Motor Shield is stacked on the Due; only the shield pins listed in the catalogue entry are joined to the matching Due headers.",
+  "The DC motor's own red/black leads go straight into the channel A screw terminals (red to A+, black to A-); no separate jumper wires are used. Motor lead polarity is arbitrary since the motor is symmetric.",
+  "Wall wart supplies about 12V to the Due DC jack, as in the manual's example fan.",
+  "The photo shows a second black cable plugged into the Due's micro-USB port; it is modelled as a USB cable to the computer running the Arduino IDE. The usb-cable catalogue entry has no ports, so ports are null.",
+  "The code uses pins 3 (PWM_A), 12 (DIR_A), 9 (BRAKE_A) and A0 (SNS_A), which come through the shield stacking headers; no extra wires are needed."
+ ],
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-due",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "wall-wart-supply",
+   "family": "wall-wart-supply",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 17.9
+}

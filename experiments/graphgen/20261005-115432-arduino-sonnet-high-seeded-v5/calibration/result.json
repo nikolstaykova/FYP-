@@ -1,0 +1,297 @@
+{
+ "case": "calibration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 78.9,
+  "input_tokens": 70576,
+  "output_tokens": 14918,
+  "cost_usd": 0.2306,
+  "repair_rounds_used": 2
+ },
+ "parts": 13,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The resistor count of 3 is a false positive. The graph has exactly two fixed resistors, r1 (10k) and r2 (220 ohm), matching the parts list. The third counted item is the photoresistor ldr1 (type 'photoresistor'), which is the manual's required analog sensor and appears in the circuit image, the schematic and the text. It is kept deliberately, because removing it would break the circuit.",
+  "Breadboard coordinates follow the circuit image's row labels: the upper half of the image is rows f-j, which the catalogue calls bank 'b'. The lower half (rows a-e) is bank 't' and is unused.",
+  "Rail hole numbers (tp.2, tn.4, tp.6, tn.13, tn.26) are approximate. They are read from the image, and any hole on the same rail is electrically equivalent.",
+  "In the image the LED is wired as pin 9 -> LED anode (col 22), LED cathode (col 23) -> 220 ohm resistor -> GND rail. The schematic puts the resistor before the LED. Both are a series connection, and the image was used as the authority.",
+  "The LED leg that bends (longer leg) is taken as the anode and is the one connected to the blue pin 9 wire.",
+  "The Uno has several GND pins. The black wire goes to the lower GND pin in the power header, which is GND.2 here.",
+  "The manual's circuit text mentions 'Analog input 2' but the image and schematic use A0. A0 is used.",
+  "The 10k resistor is the resistor between the photoresistor/A0 node and the GND rail, and forms a voltage divider with the photoresistor from 5V."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.7,
+   "input_tokens": 17836,
+   "cache_read_tokens": 11032,
+   "output_tokens": 5641,
+   "cost_usd": 0.0858,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E6": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.1,
+   "input_tokens": 23970,
+   "cache_read_tokens": 17834,
+   "output_tokens": 4604,
+   "cost_usd": 0.0741,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E6": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.1,
+   "input_tokens": 28770,
+   "cache_read_tokens": 23968,
+   "output_tokens": 4673,
+   "cost_usd": 0.0707,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E6": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 13.6
+}

@@ -1,0 +1,116 @@
+{
+ "case": "docs-mkr-mkr-1000-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 67.9,
+  "input_tokens": 48840,
+  "output_tokens": 4705,
+  "cost_usd": 0.1705,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The catalogue provided lists no Arduino MKR 1000 WiFi entry, so it is added as a new part type with header-pin ports named after its labels (DAC0/A0 is named A0).",
+  "The parts list gives an 82 ohm resistor, but the diagram and schematic label it 220 ohm. I used the parts list value (82).",
+  "In the diagram the top half of the breadboard is labelled rows f-j. I mapped it to catalogue bank 'b' (rows f-j), and the columns follow the diagram's numbering.",
+  "The resistor spans column 3 to column 6 in row h. The green wire from pin 2 goes to column 3 (row g). The LED's bent, longer leg (anode) is in column 6 and its straight leg (cathode) is in column 8. The black wire from GND goes to column 8.",
+  "The circuit matches the schematic: pin 2 to resistor to LED anode, then LED cathode to GND.",
+  "The sketch uses A1 only for an analogRead of a floating pin. No external part is wired to it."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 40.8,
+   "input_tokens": 31640,
+   "output_tokens": 1297,
+   "cost_usd": 0.0945,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": [
+    {
+     "part": "Arduino MKR 1000 WiFi",
+     "type": "arduino-mkr-1000-wifi",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-micromod-wifi-function-board-da16200.html (This page sells the SparkFun MicroMod WiFi Function Board (DA16200, WRL-18594). )"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/alfa-network-wifi-halow-hat.html (The page sells the ALFA Network WiFi HaLow HAT (WRL-19956), a Raspberry Pi HAT. )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-WiFi-1010-p-3165.html (The page sells the Arduino MKR WiFi 1010, not the MKR 1000 WiFi. The page calls )"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The page sells the Arduino MKR CAN Shield, which is a different product from the)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 35.7
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.1,
+   "input_tokens": 17200,
+   "cache_read_tokens": 7071,
+   "output_tokens": 3408,
+   "cost_usd": 0.076,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-1000-wifi",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.2
+}

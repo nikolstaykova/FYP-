@@ -1,0 +1,102 @@
+{
+ "case": "keyboard-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 79.6,
+  "input_tokens": 22638,
+  "output_tokens": 12608,
+  "cost_usd": 0.1749,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 108,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Resistors are listed as 10k via the value prop, as the manual specifies 10k ohm (the catalogue entry is named 100\u03a9 but the part is generic).",
+  "Breadboard hole names follow the catalogue: top half of the image is bank 't' (rows a-e), bottom half is bank 'b' (rows f-j). Exact rows and rail hole numbers are approximated from the picture; only the strip (column and bank) and the rail matter electrically.",
+  "Each pushbutton straddles the centre gap. Its top-half legs (columns L and L+2) are side 1 and carry 5V via a red wire. Its bottom-half legs are side 2 and carry the Arduino input pin and the pull-down resistor. Button 1 uses columns 6/8, button 2 uses 11/13, button 3 uses 16/18, button 4 uses 21/23, and button 5 uses 26/28.",
+  "Signal mapping from the image and schematic: pin 6 goes to button 1, pin 5 to button 2, pin 4 to button 3, pin 3 to button 4, pin 2 to button 5. Each pull-down resistor goes from its signal strip to the bottom negative rail (bn), which is connected to Arduino GND.",
+  "The Arduino 5V wire goes to the top positive rail (tp), and the five red wires run from that rail to the top halves of the buttons. The Arduino GND wire goes to the bottom negative rail (bn)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.1,
+   "input_tokens": 7634,
+   "output_tokens": 339,
+   "cost_usd": 0.0131,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 73.5,
+   "input_tokens": 15004,
+   "cache_read_tokens": 5507,
+   "output_tokens": 12269,
+   "cost_usd": 0.1618,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.9
+}

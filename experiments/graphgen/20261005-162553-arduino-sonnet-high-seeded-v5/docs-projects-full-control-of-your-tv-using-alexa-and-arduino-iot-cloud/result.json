@@ -1,0 +1,118 @@
+{
+ "case": "docs-projects-full-control-of-your-tv-using-alexa-and-arduino-iot-cloud",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 158.1,
+  "input_tokens": 151982,
+  "output_tokens": 25408,
+  "cost_usd": 0.4732,
+  "repair_rounds_used": 2
+ },
+ "parts": 12,
+ "edges": 50,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Kept on purpose: the warning that the Nano needs 4.5 V but its 3V3 pin is at 3.3 V is not a real problem for this manual. The 3V3 pin is a regulated output of the Nano, not a power input. The red wire only feeds 3.3 V from it to the + rail for the IR receiver, which works from 2.7 to 5.5 V. The Nano gets its own power over micro-USB, which the Arduino Cloud set-up needs anyway. The manual's parts list has no USB cable or separate supply, so I added none.",
+  "The ir-led ports were corrected earlier to 'anode' and 'cathode'. The LED's anode goes through the 330 ohm resistor and the blue wire to D9, and its cathode goes to the ground rail.",
+  "The image shows a crop of a long breadboard (columns about 30-63) but the catalogue breadboard has only 30 columns, so I compressed the layout: receiver legs in columns 1, 2 and 4, IR LED in 11 and 12, Nano pins in columns 16-30. The connections are the same as in the image.",
+  "Rows a-e of the lower half of the image are bank 't'. The Nano's bottom header is in row e and its top header is in bank 'b' row i. Only the Nano pins that carry a wire or part are listed as edges.",
+  "The black wire from the Nano is drawn on the third pin from the left of the bottom header, which may be RST. I took it as the GND pin next to it, because it goes to the ground rail.",
+  "The receiver's DAT leg goes to D11 and the IR LED's resistor goes to D9. Both pins are read from the image, since the manual gives no pin table.",
+  "The rail numbers (bp.1, bp.30, bn.3, bn.11, bn.19) are arbitrary, since each rail is one strip. The bottom rail's upper row is taken as - and its lower row as +."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.4,
+   "input_tokens": 28395,
+   "cache_read_tokens": 0,
+   "output_tokens": 1362,
+   "cost_usd": 0.1272,
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 94.5,
+   "input_tokens": 29952,
+   "cache_read_tokens": 28393,
+   "output_tokens": 13436,
+   "cost_usd": 0.1463,
+   "check_seconds": 0.01,
+   "issues": 7,
+   "issue_rules": {
+    "V4": 4,
+    "E4": 2,
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.3,
+   "input_tokens": 43995,
+   "cache_read_tokens": 29950,
+   "output_tokens": 5459,
+   "cost_usd": 0.1168,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.9,
+   "input_tokens": 49640,
+   "cache_read_tokens": 43993,
+   "output_tokens": 5151,
+   "cost_usd": 0.0829,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 7,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 23.9
+}

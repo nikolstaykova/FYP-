@@ -1,0 +1,139 @@
+{
+ "case": "40182-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 546.5,
+  "input_tokens": 310419,
+  "output_tokens": 98319,
+  "cost_usd": 1.5448,
+  "repair_rounds_used": 2
+ },
+ "parts": 175,
+ "edges": 197,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V3",
+   "e195: pin \u2194 anti-stud is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "L3 (three separate groups) is not a real problem for this set, so I kept the graph as it was. The booklet builds THREE independent models: the fire station (b1-b139, with the roof sub-model b140-b150 placed on it in step 28), the fire truck (b151-b165, pages 22-23) and the helicopter (b166-b175, pages 24-25). Each is built from its own pieces and none of them has a connecting step. On page 26 and the cover the truck and helicopter only stand or float next to the station. The helicopter hangs in mid-air and the truck sits on the ground, with no stud, pin or clip joining them. Adding edges between them would invent connections that do not exist.",
+  "The roof sub-model (b140-b150) is built separately on pages 19-21 and only rests on the four white cones in step 28. The cones have no stud on top, so those links are `contact` edges, not `joined`.",
+  "All 175 parts from the parts list are present as b1-b175, numbered in build order: main building b1-b139, roof sub-model b140-b150, fire truck b151-b165, helicopter b166-b175.",
+  "The 3x and 4x stacks (steps 11, 14 and 22) are written out explicitly, not as repeats, so every piece keeps its b-id. Each stack is two Trans-Clear plates with a White plate on top.",
+  "The booklet pictures are small, so which exact studs a piece sits on is partly inferred. Ports are mostly null, and the plate and brick joins are best guesses. Which colour goes in which step is also partly inferred from the picture: step 6 uses the black round plate and step 25 the light bluish gray one, and the steps 15 and 16 white and clear 1x1 plates are one of each.",
+  "Fire truck wheels: the four round plates are modelled as clipped to the two clip-plate wheel holders (4081b), two per holder, with revolute freedom. The page does not show the exact mounting.",
+  "Truck ladder: the white handle plate's bar is clipped into the red clip tile (revolute). It also rests on the white round tile.",
+  "Helicopter: the blue pin goes into the white 4-sided brick after the model is rotated (step 4). The 1x1 tile from step 1 is shown on the top stud, so I modelled the pin entering via the bottom tube.",
+  "Hydrant: the red 1x1 brick with side studs (47905) carries two round plates on its side studs and one on top, and stands on the black round plate on the green 1x3 plate."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "check_seconds": 0.0,
+   "method": "rebrickable dump",
+   "cards_made": 0,
+   "pieces": 175
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 350.9,
+   "input_tokens": 59241,
+   "cache_read_tokens": 5507,
+   "output_tokens": 53276,
+   "cost_usd": 0.7488,
+   "check_seconds": 0.02,
+   "issues": 3,
+   "issue_rules": {
+    "V3": 1,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 98.5,
+   "input_tokens": 114218,
+   "cache_read_tokens": 59239,
+   "output_tokens": 22567,
+   "cost_usd": 0.4574,
+   "check_seconds": 0.02,
+   "issues": 3,
+   "issue_rules": {
+    "V3": 1,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 97.0,
+   "input_tokens": 136960,
+   "cache_read_tokens": 114216,
+   "output_tokens": 22476,
+   "cost_usd": 0.3386,
+   "check_seconds": 0.04,
+   "issues": 3,
+   "issue_rules": {
+    "V3": 1,
+    "L1": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 3,
+ "score": {
+  "pieces_expected": 175,
+  "pieces_built": 175,
+  "pieces_unmapped": 0,
+  "inventory_matched": 175,
+  "exact_matched": 0,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 0.0,
+  "joined_edges": 192,
+  "contacts_expected": 69,
+  "contacts_predicted": 102,
+  "contacts_correct": 61,
+  "contact_precision": 0.598,
+  "contact_recall": 0.884
+ },
+ "score_initial": {
+  "pieces_expected": 175,
+  "pieces_built": 175,
+  "pieces_unmapped": 0,
+  "inventory_matched": 175,
+  "exact_matched": 0,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 0.0,
+  "joined_edges": 192,
+  "contacts_expected": 69,
+  "contacts_predicted": 102,
+  "contacts_correct": 61,
+  "contact_precision": 0.598,
+  "contact_recall": 0.884
+ },
+ "postprocess_ms": 37.1
+}

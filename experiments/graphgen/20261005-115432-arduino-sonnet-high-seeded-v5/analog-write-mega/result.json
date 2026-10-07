@@ -1,0 +1,72 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 88.4,
+  "input_tokens": 18289,
+  "output_tokens": 16699,
+  "cost_usd": 0.1982,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "All part types (arduino-mega, led, resistor, breadboard, jumper-wire) exist in the catalogue, so no lookup was needed.",
+  "The expanded part and edge lists are used instead of a repeat. Each LED unit sits in different breadboard columns, and a repeat would need an attach override for every breadboard port in every copy.",
+  "The exact breadboard holes are my own tidy layout, not a copy of the picture. LED k uses columns 2k-1 (anode strip) and 2k (cathode strip). Each 220 ohm resistor spans the centre gap in the anode column. Pin wires land in the lower bank of the same column.",
+  "LED k is driven by Mega pin k+1, so pins 2 to 13 each drive one LED through its own 220 ohm resistor.",
+  "Each cathode column is wired to the top negative rail (tn.<column>) with a black jumper. One black jumper takes GND.1 of the Mega to the same rail. The picture shows the GND pin next to AREF, and the catalogue name GND.1 is my assumption for it.",
+  "The hook-up wires are all modelled as jumper-wire. Every inserted lead or wire end gets both a joined and an electrical edge."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 88.4,
+   "input_tokens": 18289,
+   "cache_read_tokens": 11032,
+   "output_tokens": 16699,
+   "cost_usd": 0.1982,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 28.3
+}

@@ -1,0 +1,141 @@
+{
+ "case": "9470-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 815.4,
+  "input_tokens": 639902,
+  "output_tokens": 129588,
+  "cost_usd": 2.1105,
+  "repair_rounds_used": 2
+ },
+ "parts": 228,
+ "edges": 235,
+ "repeats": [
+  {
+   "group": "leg",
+   "times": 8,
+   "overrides": 7
+  },
+  {
+   "group": "sidepod",
+   "times": 2,
+   "overrides": 2
+  },
+  {
+   "group": "brk",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 50,
+ "new_types_added": 50,
+ "problems": [],
+ "notes": [
+  "The booklet builds separate things: the Gollum ruin (pp.4-9), Shelob the spider (pp.11-36), and the Frodo and Sam minifigures (p.3). They are not physically fastened to each other. I added only contact edges, taken from the cover and p.38 display arrangement, so the graph is one component:\n- Gollum rests on the ruin.\n- The hook at the end of the spider's web string touches Frodo, who is wrapped in the web on the cover.\n- Sam stands beside the ruin.\nNone of these are structural joins.",
+  "Ids b1-b28 are the ruin. b29-b72 are the spider's cephalothorax. b73-b115 are the abdomen. b116-b133 are the minifigures. b134-b135 are the pieces added to match the parts-page counts: one 281726 and the second 4211247. b69 is unused: the two side-pod assemblies of steps 16 and 17 are the 'sidepod' repeat.",
+  "The booklet's parts page prints the eight spider body hinge plates (the black, wavy 1x4 hinge plates used in steps 2, 4 and 5 of the body) as '74011'. That is not a valid element number, so I modelled them with the catalogue type lego-74230 (Hinge plate 1x4), coloured black. The element ID is therefore uncertain, and the parts-page count for '74011' will not match the graph.",
+  "281726 (black plate 2x2 with axle hole, x1 on the parts page) is not clearly identifiable in any step picture. I placed it on top of the pivot brick b54 as a bearing cap (b134), which is a guess. The second 4211247 (dark red plate, parts page x2) is likewise not located in any step. I placed it (b135) on the tan 2x8 plate b81. Both placements are guesses.",
+  "Each leg (8x) has 3 of the 4521427 hinge plates (matching the parts page count of 24), but only two are clearly visible in the steps. I added the third (d3) stacked on the 1x2 plate p2, which is a guess.",
+  "Stud and anti-stud joins use null ports. The catalogue gives each brick one stud port and one anti-stud port, standing for the whole surface, and many bricks carry several parts. Naming the port would reuse a single-use port. Named ports are used only for pins, holes, clips, bars, hinges, balls and axles.",
+  "Port-kind fixes from the first pass:\n- The hook has a bar port.\n- The pivot piece 4213374 has a ball port in the socket of b54, plus an axle-hole for the abdomen axle.\n- The small cogs 4211506 are pin-hole parts on the pins of b70.\n- Frodo's hair uses anti-stud.1.\n- Minifig head, cape and torso are a stud/anti-stud stack.\n- The torso hip is an anti-stud over the catalogue legs hip.\n- Sam's torso hand.2 is a socket for the clear sack.",
+  "The two side pods (steps 16-17) are mirror copies. Their pin plates (4211881) plug into the side pin-holes of the two dark grey brackets b50 and b51, one each. This is inferred from small pictures.",
+  "Element IDs come from the inventory pages. Where the catalogue had no entry, or its port list was clearly wrong for the piece as used, I made new types. Stud placements (which piece sits on which) are best guesses from small step pictures. Ruin step 5 shows a small black cylinder in the 4210660 sub-assembly that I could not identify, so it is not modelled.",
+  "The string/hook, the two pulleys, the tan gear and the 24-tooth gear sit on the ribbed axle 4560177. The axle end.2 plugs into the pivot piece 4213374 on the head so the abdomen rotates (p.37).",
+  "Minifig assembly (p.3) is included: Frodo has hair, head, cape, torso, legs, sword and bowl. Sam has hair, head, cape, torso, legs, sword and the clear sack. Gollum has a body, two arms and the fish."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 448.6,
+   "input_tokens": 157363,
+   "cache_read_tokens": 77409,
+   "output_tokens": 64101,
+   "cost_usd": 0.9763,
+   "check_seconds": 0.02,
+   "issues": 62,
+   "issue_rules": {
+    "V3": 13,
+    "V4": 39,
+    "L1": 1,
+    "L2": 8,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 180.6,
+   "input_tokens": 224443,
+   "cache_read_tokens": 157361,
+   "output_tokens": 33191,
+   "cost_usd": 0.6317,
+   "check_seconds": 0.03,
+   "issues": 10,
+   "issue_rules": {
+    "L1": 1,
+    "L2": 8,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 186.1,
+   "input_tokens": 258096,
+   "cache_read_tokens": 224441,
+   "output_tokens": 32296,
+   "cost_usd": 0.5025,
+   "check_seconds": 0.03,
+   "issues": 9,
+   "issue_rules": {
+    "L2": 8,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 62,
+ "issues_final": 9,
+ "score": {
+  "pieces_expected": 214,
+  "pieces_built": 228,
+  "pieces_unmapped": 8,
+  "inventory_matched": 199,
+  "exact_matched": 199,
+  "inventory_precision": 0.873,
+  "inventory_recall": 0.93,
+  "exact_recall": 0.93,
+  "joined_edges": 231,
+  "contacts_expected": 8,
+  "contacts_predicted": 9,
+  "contacts_correct": 7,
+  "contact_precision": 0.778,
+  "contact_recall": 0.875
+ },
+ "score_initial": {
+  "pieces_expected": 214,
+  "pieces_built": 218,
+  "pieces_unmapped": 8,
+  "inventory_matched": 190,
+  "exact_matched": 190,
+  "inventory_precision": 0.872,
+  "inventory_recall": 0.888,
+  "exact_recall": 0.888,
+  "joined_edges": 221,
+  "contacts_expected": 8,
+  "contacts_predicted": 9,
+  "contacts_correct": 7,
+  "contact_precision": 0.778,
+  "contact_recall": 0.875
+ },
+ "postprocess_ms": 37.6
+}

@@ -1,0 +1,53 @@
+{
+ "case": "pi-rpi-gpio-wiring-a-button",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 34.4,
+  "input_tokens": 19568,
+  "output_tokens": 5185,
+  "cost_usd": 0.0665,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The manual shows three diagrams; only the last two images were supplied. I modelled the breadboard version with two four-leg buttons on a common ground rail (the '2x4-pin-button' diagram), which also covers the single four-leg button wiring (GPIO17 input).",
+  "The two-leg flying-wire variant (button wired directly to GPIO17 and GND with two wires) is not modelled separately. No two-leg button exists in the catalogue.",
+  "The text says GPIO17 is the input pin. The multi-button diagram uses GP5 for the second button.",
+  "Each button straddles the centre gap of the breadboard. Row 5 (button 1) and row 10 (button 2) connect to the ground rail. Row 7 connects to GPIO17 and row 12 to GPIO5. Pressing a button joins the ground side to the GPIO side. No external resistor is drawn, so the Pi's internal pull-up must be used.",
+  "The breadboard's rows 1-19 are mapped to catalogue columns (e.g. row 5 columns a-e = '5t.a'..'5t.e', columns f-j = '5b.f'..'5b.j'). The left-hand blue (-) rail is 'tn'. The exact rail hole numbers (tn.1, tn.5, tn.10) are approximate and any hole on the rail is equivalent.",
+  "The black wire goes to the GND pin next to GP3 (physical pin 6). The catalogue does not say which of GND.1-GND.8 that is, so I used GND.1; all GND pins are symmetric."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.4,
+   "input_tokens": 19568,
+   "cache_read_tokens": 16735,
+   "output_tokens": 5185,
+   "cost_usd": 0.0665,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 5.1
+}

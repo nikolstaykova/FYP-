@@ -1,0 +1,193 @@
+{
+ "case": "docs-projects-gnome-forecaster",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 147.7,
+  "input_tokens": 82357,
+  "output_tokens": 9565,
+  "cost_usd": 0.2929,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "The two images show colour-changing glitter statuettes (dolphins, elephant). They are the inspiration for the project, not part of the circuit, so they are not in the graph.",
+  "The 3D-printed gnome enclosure (STL files) is not modelled. The manual gives no detail of how the electronics are fixed inside it.",
+  "No breadboard is used. All connections are wires soldered to board pads or headers, so each wire end gets a joined edge (method solder) plus an electrical edge.",
+  "The wires are modelled as jumper-wire parts. The manual says only 'wires'.",
+  "The DS3231 module has a four-pin pass-through on the other side. It is modelled as a new part with duplicate ports (.1 side to the Nano, .2 side to the BME280), each pair conducting.",
+  "The Nano Every is powered over USB. The USB cable and power source are not modelled because the manual does not list them as parts.",
+  "The manual says the strip uses VDC, DIN and GND. The GND wire was not described explicitly. I assumed it goes to a Nano GND pin (GND.2).",
+  "The Nano Every is not in the catalogue, so a new type is created. Its pin names follow the Nano convention, including '3.3V'.",
+  "The LED strip DOUT is left unconnected.",
+  "The strip is a new type 'ws2812-strip-8' with 8 LEDs, per the sketch NumLEDs=8."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 107.5,
+   "check_seconds": 0.0,
+   "input_tokens": 49049,
+   "output_tokens": 2992,
+   "cost_usd": 0.1149,
+   "listed": 4,
+   "matched": 1,
+   "looked_up": 3,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Nano Every",
+     "card": "arduino-nano-every",
+     "skipped": false
+    },
+    {
+     "item": "SparkFun Atmospheric Sensor Breakout - BME280",
+     "card": "temp-humidity-pressure-bme280",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-atmospheric-sensor-breakout-bme280.html"
+      ]
+     ],
+     "seconds": 10.5
+    },
+    {
+     "item": "Maxim Integrated DS3231MPMB1 Peripheral Module",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/esp32-wroom-mcu-module-8mb-dual-antenna.html (The page describes the SparkFun ESP32-WROOM-DA MCU module (WRL-19899, 8MB flash,)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Sipeed-MAIX-I-module-w-o-WiFi-1st-RISC-V-64-AI-Module-K210-inside-p-3210.html (The content is a Seeed Studio page for the Sipeed MAIX-I module (Kendryte K210 R)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 16.6
+    },
+    {
+     "item": "Digilent WS2812 Addressable LED Strip",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/led-rgb-strip-addressable-1m-apa102.html (The content describes the SparkFun LED RGB Strip (APA102, COM-14015), not the Di)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2528 (The content describes a Pololu SK6812-based addressable RGB LED strip (item 2528)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-WS2813-RGB-LED-Strip-Waterproof-60-LED-m-1m.html (The content is the Seeed Grove WS2813 RGB LED Strip (waterproof, 60 LED/m, 1m). )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 32.2
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 40.2,
+   "input_tokens": 33308,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6573,
+   "cost_usd": 0.178,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.5
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-every",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "ds3231-module",
+   "family": "ds3231-module",
+   "checked": false
+  },
+  {
+   "type": "ws2812-strip-8",
+   "family": "ws2812-strip-8",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 6.4
+}

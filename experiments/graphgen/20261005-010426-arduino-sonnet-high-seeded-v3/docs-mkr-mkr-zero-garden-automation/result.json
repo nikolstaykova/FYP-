@@ -1,0 +1,337 @@
+{
+ "case": "docs-mkr-mkr-zero-garden-automation",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 379.9,
+  "input_tokens": 175282,
+  "output_tokens": 24363,
+  "cost_usd": 0.5886,
+  "repair_rounds_used": 1
+ },
+ "parts": 14,
+ "edges": 70,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [
+  [
+   "V3",
+   "e2: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e4: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e6: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e8: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e10: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e12: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e14: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e16: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e19: lug \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e21: lug \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e23: lug \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e25: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e27: header-pin \u2194 header-pin is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e29: header-pin \u2194 header-pin is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The catalogue has no arduino-mkr-zero entry, so a new part type was created, with ports named to match the Connector Carrier's ports.",
+  "Grove cables are not in the parts list, so Grove modules are connected directly to the carrier/hub ports (cable implied) rather than through jumper wires. The only wires are the two solid wires for the water sensor hack.",
+  "Moisture sensor on A0, water sensor on D0, relay on D1, as the tutorial states. Barometric sensor and OLED connect to the carrier's TWI (I2C) port through the Grove I2C Hub (hub P1 to carrier, sensors on P2 and P3).",
+  "Fix for the reported error: the relay module has no ports in the catalogue, so a port-less electrical edge on it would wrongly short the D1 control signal to the 12 V VIN/pump+ net. The relay's 12 V side (PSU+ and pump+) is now a joined edge only, with no electrical edge. The relay's only electrical edge is to the D1 control pin. The relay really is an open switch between the 12 V supply and the pump, and its contacts are not modelled. So the D1 to VIN finding is not a real short.",
+  "The 12 V power wiring (PSU to carrier VIN/GND, relay switching the pump +, pump - to PSU -) is inferred from the 'Next step' text, because that schematic image was not visible.",
+  "Water sensor hack: two solid wires of different length are soldered to two non-adjacent tinned bars. The catalogue has no ports for the bars, so those edges are not port-specific. The wires' b ends are left free, to go into the tank.",
+  "The USB cable powers and programs the MKR Zero. Its edge is not port-specific."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 298.9,
+   "input_tokens": 135977,
+   "output_tokens": 8948,
+   "cost_usd": 0.356,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 13,
+   "ingested": 6,
+   "ingest": [
+    {
+     "part": "Arduino MKR Zero",
+     "type": "arduino-mkr-zero",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The page sells the Arduino MKR CAN Shield (SKU 113990595), which is a CAN bus ad)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-485-SHIELD-p-3179.html (The page sells the Arduino MKR 485 Shield, an RS-485 expansion shield. It does n)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 16.7
+    },
+    {
+     "part": "Arduino MKR Connector Carrier (Grove compatible)",
+     "type": "shield-arduino-mkr-connector-carrier",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/jst-right-angle-connector-through-hole-3-pin.html (The page sells a SparkFun JST PH 3-pin right-angle through-hole connector (PRT-0)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1317 (The page sells the Pololu CP2102N USB-to-Serial Adapter Carrier (item #1317). Th)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2135 (The page sells the Pololu DRV8835 Dual Motor Driver Carrier, a 14-pin DIP-format)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-CONNECTOR-CARRIER-GROVE-COMPATIBLE.html"
+      ]
+     ],
+     "seconds": 39.5
+    },
+    {
+     "part": "Seeed Grove Moisture Sensor",
+     "type": "moisture-grove",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-soil-moisture-sensor-with-screw-terminals.html"
+      ]
+     ],
+     "seconds": 85.3
+    },
+    {
+     "part": "Seeed Grove Water Sensor",
+     "type": "water-sensor-grove",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sst-liquid-level-sensor.html (The page sells the SST Liquid Level Sensor (SEN-13835). It is an optical, single)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/ambient-light-sensor-3mm.html (This page sells the SparkFun Ambient Light Sensor 3mm (SEN-22923, a TEPT4400 pho)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-Water-Sensor.html"
+      ]
+     ],
+     "seconds": 40.2
+    },
+    {
+     "part": "Grove High Precision Barometric Pressure Sensor (DPS310)",
+     "type": "pressure-dps310",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/barometric-pressure-sensor-mpl115a1.html (This page sells the SparkFun MPL115A1 (SPI barometer IC, 5x3 mm), not the Grove )"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-altitude-pressure-sensor-breakout-mpl3115a2.html (The page sells the SparkFun MPL3115A2 altitude/pressure breakout (SEN-11084). Th)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1646 (This page sells the SparkFun BMP085 breakout (Pololu #1646, discontinued). It do)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-High-Precision-Barometer-Sensor-DPS310-p-4397.html"
+      ]
+     ],
+     "seconds": 31.6
+    },
+    {
+     "part": "Grove I2C Hub",
+     "type": "hub-grove-i2c",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/qwiic-cable-grove-adapter-100mm.html (The page sells a Qwiic-to-Grove adapter cable (PRT-15109), not a Grove I2C Hub. )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-I2C-Hub.html"
+      ]
+     ],
+     "seconds": 40.1
+    },
+    {
+     "part": "Water pump or electronic valve",
+     "type": "pump-water",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/liquid-pump-350gph-12v.html"
+      ]
+     ],
+     "seconds": 36.7
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 45.9,
+   "input_tokens": 15217,
+   "cache_read_tokens": 5507,
+   "output_tokens": 8075,
+   "cost_usd": 0.1207,
+   "check_seconds": 0.0,
+   "issues": 15,
+   "issue_rules": {
+    "V3": 14,
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.1,
+   "input_tokens": 24088,
+   "cache_read_tokens": 15215,
+   "output_tokens": 7340,
+   "cost_usd": 0.1119,
+   "check_seconds": 0.01,
+   "issues": 14,
+   "issue_rules": {
+    "V3": 14
+   }
+  }
+ ],
+ "issues_first": 15,
+ "issues_final": 14,
+ "score": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-zero",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 7.4
+}

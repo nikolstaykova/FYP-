@@ -1,0 +1,634 @@
+{
+ "tutorial": "arduino-isp",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/MemoryMap.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/ISP_Programmers.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/ICSPHeader.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/Uno_Connect.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/ArduinoUNOtoUNO_ISP2.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/Arduino_ISP_wires.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/MegaToUNO.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/MKR1000_ISP_UNO_2.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/LoadSketch.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/Arduino_ISP_LEDSOK.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/10.arduino-isp/ArduinoISP/assets/Burn.jpg"
+ ],
+ "legs_and_ends": 37,
+ "with_position": 36,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "uno1",
+     "type": "arduino-uno",
+     "label": "Programmer (Arduino UNO running ArduinoISP)"
+    },
+    {
+     "id": "uno2",
+     "type": "arduino-uno",
+     "label": "Target (Arduino UNO)"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "cap1",
+     "type": "capacitor-10uf",
+     "label": "10 uF electrolytic capacitor (RESET to GND on programmer)",
+     "props": {
+      "value": "10uF"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "NEG",
+       "part": "bb1",
+       "port": "2t.a",
+       "mm": [
+        2.54,
+        0.0
+       ]
+      },
+      {
+       "leg": "POS",
+       "part": "bb1",
+       "port": "1t.a",
+       "mm": [
+        0.0,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "LED resistor (heartbeat)",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "5t.c",
+       "mm": [
+        10.16,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "2t.c",
+       "mm": [
+        2.54,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "LED resistor (error)",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "8t.c",
+       "mm": [
+        17.78,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "2t.d",
+       "mm": [
+        2.54,
+        7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r3",
+     "type": "resistor",
+     "label": "LED resistor (programming)",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "11t.c",
+       "mm": [
+        25.4,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "2t.e",
+       "mm": [
+        2.54,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "Heartbeat LED",
+     "props": {
+      "colour": "green"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "4t.b",
+       "mm": [
+        7.62,
+        2.54
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "5t.b",
+       "mm": [
+        10.16,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "led2",
+     "type": "led",
+     "label": "Error LED",
+     "props": {
+      "colour": "red"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "7t.b",
+       "mm": [
+        15.24,
+        2.54
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "8t.b",
+       "mm": [
+        17.78,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "add": [
+    {
+     "id": "led3",
+     "type": "led",
+     "label": "Programming LED",
+     "props": {
+      "colour": "yellow"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "10t.b",
+       "mm": [
+        22.86,
+        2.54
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "11t.b",
+       "mm": [
+        25.4,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "add": [
+    {
+     "id": "usb1",
+     "type": "usb-cable",
+     "label": "USB cable to computer (programmer)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "uno1",
+       "port": null,
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": false,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "white",
+     "label": "Programmer RESET to capacitor +",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "RESET",
+       "mm": [
+        30.48,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "1t.b",
+       "mm": [
+        0.0,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": false,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "Programmer D9 to heartbeat LED",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "9",
+       "mm": [
+        41.66,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "4t.a",
+       "mm": [
+        7.62,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "power": false,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Programmer D8 to error LED",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "8",
+       "mm": [
+        44.2,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "7t.a",
+       "mm": [
+        15.24,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": false,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "Programmer D7 to programming LED",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "7",
+       "mm": [
+        48.26,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "MOSI: programmer D11 to target D11",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      },
+      {
+       "part": "uno2",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "MISO: programmer D12 to target D12",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "12",
+       "mm": [
+        34.04,
+        50.8
+       ]
+      },
+      {
+       "part": "uno2",
+       "port": "12",
+       "mm": [
+        34.04,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": "SCK: programmer D13 to target D13",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "13",
+       "mm": [
+        31.5,
+        50.8
+       ]
+      },
+      {
+       "part": "uno2",
+       "port": "13",
+       "mm": [
+        31.5,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "Programmer D10 to target RESET",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "10",
+       "mm": [
+        39.12,
+        50.8
+       ]
+      },
+      {
+       "part": "uno2",
+       "port": "RESET",
+       "mm": [
+        30.48,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 18,
+   "power": true,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Programmer GND to breadboard ground strip",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "GND.2",
+       "mm": [
+        40.64,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "2t.b",
+       "mm": [
+        2.54,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 19,
+   "power": true,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "5V to 5V",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "uno2",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 20,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to GND",
+     "ends": [
+      {
+       "part": "uno1",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      },
+      {
+       "part": "uno2",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

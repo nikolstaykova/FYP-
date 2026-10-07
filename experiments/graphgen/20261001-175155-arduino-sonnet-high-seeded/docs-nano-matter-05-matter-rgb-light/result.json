@@ -1,0 +1,66 @@
+{
+ "case": "docs-nano-matter-05-matter-rgb-light",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 37.5,
+  "api_seconds": 34.2,
+  "first_token_seconds": 17.0,
+  "input_tokens": 19947,
+  "cache_read_tokens": 10222,
+  "output_tokens": 5884,
+  "cost_usd": 0.0998,
+  "turns": 2
+ },
+ "parts": 10,
+ "edges": 41,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [
+  [
+   "V4",
+   "e28: port 'A5' not on arduino-nano-matter"
+  ],
+  [
+   "V4",
+   "e29: port 'A5' not on arduino-nano-matter"
+  ],
+  [
+   "V4",
+   "e32: port 'A4' not on arduino-nano-matter"
+  ],
+  [
+   "V4",
+   "e33: port 'A4' not on arduino-nano-matter"
+  ]
+ ],
+ "notes": [
+  "The wiring diagram image was not available, only the thumbnail photo and the text: the matrix is powered from the Nano Matter 3.3V pin and controlled over I2C. Connection details come from that and from the photo.",
+  "The photo shows the Nano Matter on the breadboard and the matrix joined through a Grove cable to a small Grove breakout board on the breadboard. The catalogue entry for the Nano Matter has no per-pin breadboard ports, so the board is not placed in breadboard holes. Four jumper wires run from the breadboard to the board's header pins instead.",
+  "The catalogue ports for arduino-nano-matter are only D4, 3V3, GND and USB-C. I2C SDA and SCL are assumed to be on A4 and A5, the standard Nano form-factor I2C pins. A4 and A5 are not listed in the catalogue entry.",
+  "Grove I2C colour convention: yellow (SIG) is SCL, white (NC) is SDA, red is VCC and black is GND. The breadboard hole choices (columns 10-13) are arbitrary, since the manual gives no positions.",
+  "The Eero Thread border router, the Amazon Alexa app and the smart speaker are not circuit parts, so they are not in the graph. The onboard RGB LED and button of the Nano Matter are used by the sketch but need no external wiring.",
+  "The USB-C cable is a catalogue usb-cable with no ports, so its edge to the board has a null u_port."
+ ],
+ "score": {
+  "families_listed": [
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "grove-rgb-led-matrix",
+   "family": "led",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  }
+ ],
+ "postprocess_ms": 7.7
+}

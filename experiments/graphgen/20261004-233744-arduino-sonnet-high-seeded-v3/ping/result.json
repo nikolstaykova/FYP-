@@ -1,0 +1,165 @@
+{
+ "case": "ping",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 56.7,
+  "input_tokens": 52369,
+  "output_tokens": 4906,
+  "cost_usd": 0.1474,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The sensor's 3-pin header (GND, 5V, SIG) is mapped to catalogue ports GND, V+, and PW; SIG is the single-pin trigger/echo signal and PW was chosen as the closest catalogue port.",
+  "In the image the breadboard's upper half is labelled rows j-f, which is taken as bank 'b'. The sensor pins are placed in columns 9, 10 and 11 at row i, and each wire shares that column at row g.",
+  "Arduino GND is taken as GND.1, the GND pin on the digital header next to AREF, as drawn in the image.",
+  "The orange 5V wire runs from the Arduino 5V power-header pin. The blue wire runs from digital pin 7 to the SIG column."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 37.0,
+   "input_tokens": 40775,
+   "output_tokens": 2084,
+   "cost_usd": 0.085,
+   "check_seconds": 0.0,
+   "matched": 2,
+   "listed": 3,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Ultrasonic Range Finder (SEN136B5B)",
+     "type": "ultrasonic-sen136b5b",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-tof-range-finder-sensor-vl6180.html (The page sells the SparkFun ToF Range Finder (VL6180, SEN-12785). It is an optic)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-tof-range-finder-breakout-vl6180.html (The page sells the SparkFun ToF Range Finder Breakout (VL6180, SEN-12784). It is)"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/1653"
+      ]
+     ],
+     "seconds": 30.9
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.7,
+   "input_tokens": 11594,
+   "cache_read_tokens": 3203,
+   "output_tokens": 2822,
+   "cost_usd": 0.0624,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "ping": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "ultrasonic-sen136b5b": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "ping",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "ping",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "ping",
+     "SIG"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "ultrasonic-sen136b5b",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "ultrasonic-sen136b5b",
+     "V+"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "ultrasonic-sen136b5b",
+     "PW"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 8.7
+}

@@ -1,0 +1,75 @@
+{
+ "case": "docs-nano-33-ble-sense-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 51.3,
+  "input_tokens": 62682,
+  "output_tokens": 7136,
+  "cost_usd": 0.132,
+  "repair_rounds_used": 0
+ },
+ "parts": 13,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Changed from step 1: the second mini breadboard (bb2) is dropped. The image shows no breadboard, and one mini breadboard is enough to join the SCL line, the SDA line and the 3V3 line at the pull-up resistors. A second one would have no connections.",
+  "The parts list names 10 jumper wires, but the image needs only 6: GND, A4 and A5 for each board, and 3V3. The other 4 are not modelled.",
+  "Catalogue entry arduino-nano-33-ble-sense has no A4/A5 pins, so both boards use arduino-nano-33-ble, which has A4, A5, 3V3 and GND1. The reader is physically a Nano 33 BLE Sense.",
+  "I2C wiring follows the image. Reader A5 and writer A5 (SCL) join on bb1 strip 10t, and a 4.7 k\u03a9 resistor (r1) pulls that strip up to 3V3. Reader A4 and writer A4 (SDA) join on bb1 strip 14t, and a 4.7 k\u03a9 resistor (r2) pulls that strip up to 3V3. The 3V3 rail is fed from the reader's 3V3 pin. The image shows both pull-ups tied to the red 3V line.",
+  "GND of the two boards is joined directly by one wire (wire1), as in the image.",
+  "Both boards are powered by USB cables from the computer. The USB cable ports are unnamed in the catalogue, so those edges have no port on the cable side and no electrical edge.",
+  "The boards' GND uses the GND1 port name from the catalogue."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.7,
+   "input_tokens": 29996,
+   "cache_read_tokens": 20023,
+   "output_tokens": 2480,
+   "cost_usd": 0.0687,
+   "check_seconds": 0.0,
+   "parts_listed": 14,
+   "changed_in_build": 1,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.6,
+   "input_tokens": 32686,
+   "cache_read_tokens": 29994,
+   "output_tokens": 4656,
+   "cost_usd": 0.0633,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 20.9
+}

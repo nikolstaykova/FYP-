@@ -1,0 +1,129 @@
+{
+ "case": "40391-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 509.6,
+  "input_tokens": 706286,
+  "output_tokens": 90389,
+  "cost_usd": 2.0397,
+  "repair_rounds_used": 2
+ },
+ "parts": 151,
+ "edges": 160,
+ "repeats": [
+  {
+   "group": "foot",
+   "times": 4,
+   "overrides": 2
+  },
+  {
+   "group": "hand",
+   "times": 2,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 15,
+ "new_types_added": 15,
+ "problems": [],
+ "notes": [
+  "The manual is picture-only. Stacking order and which lower piece each part sits on were read from the isometric drawings and are approximate where several lower pieces are covered (for example, which of the four 4x8 base plates a given piece sits on).",
+  "Stud and anti-stud ports on plates and bricks stand for the whole stud field, so brick-to-brick joins leave the port null. Named ports are kept only for specific one-off joins (axles, clips and bars, and the hand-to-hinge-plate attachment).",
+  "The four base plates 4x8 (b1, b10, b12, b24) are joined only through the black tiles that bridge them (b9, b11, b23) and through the frame bricks. The manual shows no direct plate-to-plate connection.",
+  "Element IDs come from the inventory page. Several IDs are not in the catalogue and were added as new types: 6023804, 6058329, 6102776, 366601, 383201, 6015347, 4160857, 4161326, 6132203, 6132204, 4180533, 4533742, 6189130, 6257063, 4227684. Shapes and sizes of these are inferred from the pictures. 4533742 is assumed to be a 1x3 red tile.",
+  "L1 (4142865 'not on the page'): I judge this a false positive and have kept the piece. The element 4142865 is printed on the booklet's parts page as '1x 4142865'. It is the small red axle extender at bottom right, next to '1x 447721'. The ID is also printed a second time as a stray token beside '2x 6271540' in the text layer. It is used once, in step 31 (the 'axle extender' box), as b88, and it is the single piece joining the two curved elbows of the stand. Removing it would leave the stand incomplete. I rechecked every other element count against the parts page and each matches the graph exactly (the first part of the L1 message listing count differences was empty).",
+  "Both 4558170 and 663626 are 1x6 black tiles. 4558170 is placed in step 25 and 663626 in step 44.",
+  "The 2 'hand' sub-assemblies (steps 40-41) are attached to the white hinge plates b72/b73 added in step 24. Copy 2 is mirrored.",
+  "The 4 'foot' sub-assemblies (steps 33-34) are a grey round brick 1x1 topped by a white round plate 2x2. They sit on the frame bricks b95/b96 at the four corners. Which corner each copy takes is approximate. The attach override uses the unported endpoint 'b95'.",
+  "The stand (step 31) has two curved elbows joined by the red axle extender, two 11-long axles, and two axle-end connectors. The connectors clip onto the bar handles of b85/b86, so the stand is a hinged easel leg (revolute).",
+  "Steps 27 and 35 flip the model over. The back-side parts (b80-b97) are modelled as joined to the base plates without regard to the flip."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 302.5,
+   "input_tokens": 194868,
+   "cache_read_tokens": 5507,
+   "output_tokens": 46350,
+   "cost_usd": 1.222,
+   "check_seconds": 0.04,
+   "issues": 38,
+   "issue_rules": {
+    "V4": 37,
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 110.0,
+   "input_tokens": 244179,
+   "cache_read_tokens": 194866,
+   "output_tokens": 22884,
+   "cost_usd": 0.4651,
+   "check_seconds": 0.04,
+   "issues": 1,
+   "issue_rules": {
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 96.9,
+   "input_tokens": 267239,
+   "cache_read_tokens": 244177,
+   "output_tokens": 21155,
+   "cost_usd": 0.3526,
+   "check_seconds": 0.09,
+   "issues": 1,
+   "issue_rules": {
+    "L1": 1
+   }
+  }
+ ],
+ "issues_first": 38,
+ "issues_final": 1,
+ "score": {
+  "pieces_expected": 151,
+  "pieces_built": 151,
+  "pieces_unmapped": 0,
+  "inventory_matched": 151,
+  "exact_matched": 151,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 160,
+  "contacts_expected": 0,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": null
+ },
+ "score_initial": {
+  "pieces_expected": 151,
+  "pieces_built": 151,
+  "pieces_unmapped": 0,
+  "inventory_matched": 151,
+  "exact_matched": 151,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 160,
+  "contacts_expected": 0,
+  "contacts_predicted": 0,
+  "contacts_correct": 0,
+  "contact_precision": null,
+  "contact_recall": null
+ },
+ "postprocess_ms": 18.9
+}

@@ -1,0 +1,141 @@
+{
+ "case": "docs-mkr-vidor-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 84.6,
+  "input_tokens": 32810,
+  "output_tokens": 3831,
+  "cost_usd": 0.1286,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Circuit: Vidor pin D2 -> green wire -> breadboard column 3 -> 82 ohm resistor -> column 6 -> LED anode (bent/longer leg) ; LED cathode in column 8 -> black wire -> Vidor GND.",
+  "Breadboard bank naming follows the catalogue (top half rows a-e = 't', bottom half rows f-j = 'b'); the image draws rows f-j in the upper half, so those holes are named with bank 'b'.",
+  "Exact rows read from the image: green wire at 3b.g, resistor 3b.h to 6b.h, LED legs in row i of columns 6 and 8, black wire at 8b.h.",
+  "The MKR Vidor 4000 is not mounted on the breadboard; it connects only through the two jumper wires. USB power/programming cable and the laptop/WiFi network are not drawn and are omitted.",
+  "The sketch also reads analogRead(A1), but nothing is wired to A1 in the circuit, so it is left floating.",
+  "Library installation steps (WiFiNINA, VidorPeripherals) are software only and add no parts."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 65.5,
+   "check_seconds": 0.0,
+   "input_tokens": 9490,
+   "output_tokens": 1177,
+   "cost_usd": 0.0297,
+   "listed": 8,
+   "matched": 4,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline).",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "WiFiNINA library.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "VidorPeripherals library.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "MKR Vidor 4000 (link to store).",
+     "card": "arduino-mkr-vidor-4000",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-VIDOR-4000-p-3163.html"
+      ]
+     ],
+     "seconds": 11.7
+    },
+    {
+     "item": "Generic LED",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "82 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.1,
+   "input_tokens": 23320,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2654,
+   "cost_usd": 0.0989,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.4
+}

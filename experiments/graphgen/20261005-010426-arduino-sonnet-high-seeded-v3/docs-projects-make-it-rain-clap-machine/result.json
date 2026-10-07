@@ -1,0 +1,313 @@
+{
+ "case": "docs-projects-make-it-rain-clap-machine",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 372.9,
+  "input_tokens": 144736,
+  "output_tokens": 21890,
+  "cost_usd": 0.5001,
+  "repair_rounds_used": 0
+ },
+ "parts": 31,
+ "edges": 119,
+ "repeats": [],
+ "new_types_declared": 6,
+ "new_types_added": 5,
+ "problems": [
+  [
+   "V4",
+   "e71: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e72: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e73: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e74: port '2' not on dc-motor"
+  ],
+  [
+   "V3",
+   "e115: edge \u2194 groove is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The manual's circuit diagram and schematic were not readable in the supplied images, so the wiring is reconstructed from the text: I2S mic SD->A6, SCK->D2, FS/WS->D3; DC motor driven by an N-MOSFET with a flyback diode, a 2.2k pull-down on the gate, and a 0.1uF and a 100uF capacitor across the motor; servo signal level-shifted to 5V with an N-MOSFET and a 2.2k pull-up.",
+  "The MKR Zero pins for the DC-motor gate (D6) and servo signal (D7) are assumed. The manual does not name them.",
+  "The microphone is placed on the breadboard in columns 1-6 with VDD on 3.3V (VCC), GND and LR to ground. The ICS43432 breakout pin order is assumed.",
+  "The MKR Zero, microphone, rubber band and the MDF pieces are not in the supplied catalogue, so they are new part types. The MDF wheel, lifting arm and box are simplified single parts.",
+  "The servo's 3-pin connector is modelled as direct leads into the breadboard. Its V+ and GND go into the 5V and GND rails.",
+  "The breadboard hole and rail positions are chosen for a plausible layout. Rail positions are arbitrary.",
+  "Jumper wires to the MKR Zero are modelled as plain jumper-wire attached to header-pin ports. Colours are guesses.",
+  "Both capacitors use the catalogue 'capacitor' type, with the value prop distinguishing 0.1uF from 100uF. The electrolytic's polarity is not modelled.",
+  "The 100uF capacitor's polarity is not captured. A second 3.3V gate tie for the servo MOSFET is wired to the 3V3 rail (tp.4)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 276.8,
+   "input_tokens": 125647,
+   "output_tokens": 6504,
+   "cost_usd": 0.2908,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 12,
+   "ingested": 5,
+   "ingest": [
+    {
+     "part": "Arduino MKR Zero",
+     "type": "arduino-mkr-zero",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield (a CAN bus shield), not the Ard)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-485-SHIELD-p-3179.html (The content describes the Arduino MKR 485 Shield (an RS-485 expansion shield), n)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 21.5
+    },
+    {
+     "part": "Diode",
+     "type": "diode",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/diode-rectifier-1a-50v-1n4001.html"
+      ]
+     ],
+     "seconds": 19.8
+    },
+    {
+     "part": "Mosfet N-Channel",
+     "type": "mosfet-n-channel",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/n-channel-mosfet-55v-30a.html"
+      ]
+     ],
+     "seconds": 9.0
+    },
+    {
+     "part": "ICS43432 I2S digital microphone",
+     "type": "microphone-ics43432",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-analog-mems-microphone-breakout-sph8878lr5h-1.html (The content describes the SparkFun Analog MEMS Microphone Breakout (SPH8878LR5H-)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-i2s-audio-breakout-max98357a.html (The content describes the SparkFun I2S Audio Breakout with the MAX98357A, an I2S)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/1621 (The page describes a discontinued SparkFun ADMP401 analog MEMS microphone breako)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/1618 (The page describes the SparkFun ADMP401 analog MEMS microphone breakout (67x gai)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Hamamatsu-C12880MA-MEMS-u-Spectrometer-and-Breakout-Board-p-2916.html (The content is for the Hamamatsu C12880MA MEMS micro-spectrometer breakout board)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Flick-Large-Standalone-3D-Tracking-and-Gesture-Breakout-p-2952.html (The page is for the Flick Large 3D tracking and gesture breakout, not the ICS434)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 36.3
+    },
+    {
+     "part": "DC motor",
+     "type": "dc-motor",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/hobby-motor-gear.html"
+      ]
+     ],
+     "seconds": 20.6
+    },
+    {
+     "part": "0.1 uF ceramic capacitor",
+     "type": "capacitor",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/753"
+      ]
+     ],
+     "seconds": 57.4
+    },
+    {
+     "part": "100 uF electrolytic capacitor",
+     "type": "capacitor",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "capacitor"
+      ]
+     ],
+     "seconds": 0.0
+    },
+    {
+     "part": "Rubber band",
+     "type": "rubber-band",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-rtk-replacement-parts-facet-rubber-sock.html (The content is a black silicone protective sock (SPX-24707) for the SparkFun RTK)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Rubber-Duck-UHF-400-900MHz-SMA-Articulated-Antenna-p-2738.html (The content describes a Rubber Duck UHF 400-900MHz SMA articulated antenna, not )"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Rubber-Duck-5-8Ghz-SMA-Articulated-Antenna-p-2667.html (The content is a Seeed Studio page for a Rubber Duck 5.8GHz SMA articulated ante)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 77.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 96.1,
+   "input_tokens": 19089,
+   "cache_read_tokens": 5507,
+   "output_tokens": 15386,
+   "cost_usd": 0.2093,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "V3": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "diode",
+   "motor",
+   "resistor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "microphone-ics43432",
+   "family": "microphone-ics43432",
+   "checked": false
+  },
+  {
+   "type": "rubber-band",
+   "family": "rubber-band",
+   "checked": false
+  },
+  {
+   "type": "mdf-wheel",
+   "family": "mdf-wheel",
+   "checked": false
+  },
+  {
+   "type": "mdf-lifting-arm",
+   "family": "mdf-lifting-arm",
+   "checked": false
+  },
+  {
+   "type": "mdf-box",
+   "family": "mdf-box",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 25.4
+}

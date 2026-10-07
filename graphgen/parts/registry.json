@@ -1,0 +1,116 @@
+{
+ "_doc": "Route map for part ingestion (RESEARCH.md R22). One row per source, in the order tried when a part is looked up by name. `adapter` names a class in sources.py (fetch code only); everything else is data: where to look, how to extract, what the prompt engine is told for this site. `needs`: environment variables without which the source is skipped (and reported).",
+ "electronics": [
+  {
+   "name": "adafruit",
+   "adapter": "Adafruit",
+   "url_pattern": "adafruit.com/product/*",
+   "extraction_method": "json_ld_then_llm",
+   "target_layer_0_type": "breakout_board",
+   "best_for": "breakouts, sensors, displays, STEMMA QT",
+   "prompt_instructions": "Focus on Adafruit pinout headers, STEMMA QT ports and supply voltages. Pin names as printed on the board."
+  },
+  {
+   "name": "sparkfun",
+   "adapter": "SparkFun",
+   "url_pattern": "sparkfun.com/*.html",
+   "extraction_method": "json_ld_then_llm",
+   "target_layer_0_type": "breakout_board",
+   "best_for": "Qwiic sensors, GPS, robotics boards",
+   "prompt_instructions": "Focus on the pin labels of the breakout and its Qwiic connectors; take voltages from the specifications."
+  },
+  {
+   "name": "pololu",
+   "adapter": "Pololu",
+   "url_pattern": "pololu.com/product/*",
+   "extraction_method": "html_text_then_llm",
+   "target_layer_0_type": "module",
+   "best_for": "motors, motor drivers, regulators",
+   "prompt_instructions": "Focus on the pinout table and the connector of the motor or driver; servos: signal, power, ground."
+  },
+  {
+   "name": "seeed",
+   "adapter": "Seeed",
+   "url_pattern": "seeedstudio.com/*.html",
+   "extraction_method": "sitemap_match_then_llm",
+   "target_layer_0_type": "module",
+   "best_for": "Grove modules, XIAO boards",
+   "prompt_instructions": "Grove modules have a 4-pin Grove connector (GND, VCC, and two signals); name the signals as on the board."
+  },
+  {
+   "name": "mouser",
+   "adapter": "Mouser",
+   "url_pattern": "mouser.com/ProductDetail/*",
+   "extraction_method": "official_api",
+   "needs": [
+    "MOUSER_API_KEY"
+   ],
+   "target_layer_0_type": "component",
+   "best_for": "raw components, ICs, datasheets",
+   "prompt_instructions": "The record is Mouser's API data: use the manufacturer part number and attributes; pins from the package."
+  },
+  {
+   "name": "digikey",
+   "adapter": "DigiKey",
+   "url_pattern": "digikey.com/en/products/detail/*",
+   "extraction_method": "official_api",
+   "needs": [
+    "DIGIKEY_CLIENT_ID",
+    "DIGIKEY_CLIENT_SECRET"
+   ],
+   "target_layer_0_type": "component",
+   "best_for": "raw components, ICs, datasheets",
+   "prompt_instructions": "The record is DigiKey's API data: use the manufacturer part number and parameters; pins from the package."
+  }
+ ],
+ "lego": [
+  {
+   "name": "rebrickable",
+   "adapter": "Rebrickable",
+   "url_pattern": "rebrickable.com/parts/*",
+   "extraction_method": "dump_then_api_then_llm",
+   "target_layer_0_type": "lego_part",
+   "best_for": "every official part: number, name, category, colours, element IDs",
+   "prompt_instructions": "LEGO part from Rebrickable data. part_type_id is 'lego-<part number>'. Studs on top and stud receptacles underneath as grids (1 stud = 8 mm, 1 plate = 3.2 mm high); every other connection point as a port (pin, pin-hole, axle, axle-hole, clip, bar, ball, socket, hinge). Rotation symmetry 180 for a 2x4 brick, 90 for a 2x2."
+  }
+ ],
+ "lego_sets": [
+  {
+   "name": "rebrickable",
+   "adapter": "RebrickableSets",
+   "extraction_method": "dump",
+   "best_for": "set inventories (parts first)"
+  },
+  {
+   "name": "booklet",
+   "adapter": "Booklet",
+   "extraction_method": "parts_page_code_then_vision",
+   "best_for": "sets Rebrickable does not have yet"
+  }
+ ],
+ "lego_models": [
+  {
+   "name": "ldraw-omr",
+   "adapter": "LDrawOMR",
+   "url_pattern": "library.ldraw.org/library/omr/*.mpd",
+   "extraction_method": "parse",
+   "best_for": "fan-made 3D models of official sets: exact build graph by code (Path A)"
+  }
+ ],
+ "lego_text_guides": [
+  {
+   "name": "lego-audio-braille",
+   "adapter": "LegoAudioBraille",
+   "url_pattern": "legoaudioinstructions.com/lego-*-readscr/",
+   "extraction_method": "html_text",
+   "best_for": "LEGO's official text instructions for screen readers (about 115 recent sets)"
+  },
+  {
+   "name": "bricks-for-the-blind",
+   "adapter": "BricksForTheBlind",
+   "url_pattern": "bricksfortheblind.org/wp-content/uploads/*/<set>-*.docx",
+   "extraction_method": "docx_text",
+   "best_for": "volunteer text instructions for blind builders (about 700 sets)"
+  }
+ ]
+}

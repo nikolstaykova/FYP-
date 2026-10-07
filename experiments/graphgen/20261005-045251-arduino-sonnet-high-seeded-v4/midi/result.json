@@ -1,0 +1,266 @@
+{
+ "case": "midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 88.9,
+  "input_tokens": 49932,
+  "output_tokens": 8316,
+  "cost_usd": 0.1678,
+  "repair_rounds_used": 1
+ },
+ "parts": 8,
+ "edges": 26,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Circuit: MIDI jack pin 5 -> 220 ohm -> Uno digital pin 1 (TX); pin 2 -> GND; pin 4 -> 220 ohm -> +5V.",
+  "The validator rejected the connector-type MIDI jack (pin ports) when it was plugged into breadboard holes. I switched to the catalogue's `midi-jack` (MIDI Socket, 5-pin DIN). Its pins are leads that can go into breadboard holes. It is the same physical female DIN jack.",
+  "In the picture the jack has short leads (yellow and red) at columns 7 and 9. I modelled jack pins 5 and 4 as inserted into holes 7b.g and 9b.g.",
+  "The picture shows the black wire running to the jack's center pin (2). A wire end cannot join a bare jack pin, so I put pin 2 into breadboard hole 8b.j. The black jumper goes from hole 8b.i, on the same strip, to Uno GND.1 (the GND next to AREF). The electrical result is the same.",
+  "The picture's breadboard is drawn with rows j-f at the top and e-a at the bottom. The catalogue names the bank 't' for rows a-e and 'b' for rows f-j. The resistors therefore bridge the centre gap between bank 'b' (rows f-j) and bank 't' (rows a-e) at columns 7 and 9.",
+  "Each resistor is symmetric, so its leg assignment is arbitrary.",
+  "On Leonardo or Due boards the sketch should use Serial1. The Uno wiring is shown here."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 37.6,
+   "check_seconds": 0.0,
+   "input_tokens": 12641,
+   "output_tokens": 874,
+   "cost_usd": 0.0281,
+   "listed": 5,
+   "matched": 3,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "Female MIDI jack",
+     "card": "midi-connector-din5-female",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/936 (Content describes a panel mount USB cable (B female to Mini-B male), not a femal)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/midi-connector-female-right-angle.html"
+      ]
+     ],
+     "seconds": 37.5
+    },
+    {
+     "item": "2 220 ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "MIDI enabled device *(optional, for testing)*",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.3,
+   "input_tokens": 16552,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3717,
+   "cost_usd": 0.0824,
+   "check_seconds": 0.0,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 3,
+    "E4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.0,
+   "input_tokens": 20739,
+   "cache_read_tokens": 16550,
+   "output_tokens": 3725,
+   "cost_usd": 0.0573,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 1,
+  "net_precision": 0.2,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-connector-din5-female": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "midi-jack",
+     "2"
+    ]
+   ],
+   [
+    [
+     "midi-jack",
+     "4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-connector-din5-female",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "midi-connector-din5-female",
+     "4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "midi-connector-din5-female",
+     "2"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.7
+}

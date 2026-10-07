@@ -1,0 +1,276 @@
+{
+ "case": "pi-balloon-pi-tay-popper",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 314.6,
+  "input_tokens": 93496,
+  "output_tokens": 17816,
+  "cost_usd": 0.3593,
+  "repair_rounds_used": 0
+ },
+ "parts": 25,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e5: port 'GPIO14' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e6: port 'GPIO14' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e9: port 'GPIO2' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e10: port 'GPIO2' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e13: port 'GPIO3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e14: port 'GPIO3' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "Breadboard is drawn with rows 1-30 running down the page, so each image row N is catalogue column N; holes a-e are bank 't', f-j are bank 'b'. The left rails are named tp (red +) and tn (black -); rail index is counted from the top in groups of 5 (image 1: ground wire at tn.2, button ground at tn.1, supply red wire at tp.6, emitter wire at tn.10, battery at tp.25/tn.25).",
+  "Pi header pins are given as ports GPIO2, GPIO3, GPIO14 and GND (physical pin 6, the GND next to GP14 in the image). The 'GPIO_HEADER' port in the catalogue is not used.",
+  "The pushbutton straddles the centre gap: side 1 (1.l/1.r) in row 1 (1t.e and 1b.f), side 2 in row 3. Ground is on row 1 (1t.a) and GPIO14 on row 3 (3t.a).",
+  "Transistor 1 sits in column e rows 10/11/12 = emitter/collector/base. The 330\u03a9 resistor runs 12c to 16c and GPIO2 is wired to 16a. The images show no explicit part at rows 6 and 11 for the balloon heater; the speaker cable cores from the balloon's 12\u03a9 resistor are assumed to plug into row 6 (supply, via red jumper to + rail) and row 11 (collector strip).",
+  "The second balloon has no image. Its layout (transistor 2 at rows 20-22, 330\u03a9 22c-26c, GPIO3 at 26a, emitter jumper at 20a, supply jumper at 18a, cable ends at 18b and 21b) is my assumption by repeating the first balloon's wiring.",
+  "The parts list gives 8 pin-to-pin and 6 pin-to-socket jumpers, but only the 5 and 4 that the wiring requires are modelled.",
+  "Only one roll of electrical tape exists in the parts list; it is used for both balloons. Cable ends are twisted to the 12\u03a9 resistor legs (either core to either leg). The 12\u03a9 resistor is off-board on the balloon."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 227.7,
+   "input_tokens": 77339,
+   "output_tokens": 3979,
+   "cost_usd": 0.1772,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 13,
+   "ingested": 3,
+   "ingest": [
+    {
+     "part": "9V battery",
+     "type": "battery-9v",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/9v-alkaline-battery.html"
+      ]
+     ],
+     "seconds": 30.2
+    },
+    {
+     "part": "Battery snap",
+     "type": "battery-snap-9v",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1781 (Content describes a 3.7V 2200mAh lithium-ion cylindrical battery with a JST-PH c)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/9v-snap-connector.html"
+      ]
+     ],
+     "seconds": 61.0
+    },
+    {
+     "part": "2m strip of 2-core speaker cable",
+     "type": "speaker-cable-2core",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Raspberry-Pi-2-Model-B-w-ARMv7-Quad-Core-1GB-RAM-p-2289.html (The content describes a Raspberry Pi 2 Model B single board computer, not a 2m s)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/DSJTAG-2-in-1-USB-JTAG-cable-for-FPGA-CPLD-p-1040.html (The page is for the DSJTAG 2-in-1 USB JTAG cable for FPGA/CPLD. It is not a 2 m )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 33.6
+    },
+    {
+     "part": "BC635 transistor",
+     "type": "transistor-bc635",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/transistor-npn-50v-800ma-bc337.html (The page describes the BC337 (NPN, 50V, 800mA), not the BC635. They are differen)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/transistor-npn-60v-4a-2n5192g.html (The page describes the SparkFun 2N5192G (NPN, 60V, 4A, COM-13951), not the BC635)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "no search result"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 58.9
+    },
+    {
+     "part": "Balloon",
+     "type": "balloon",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "no search result"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 22.9
+    },
+    {
+     "part": "Electrical tape",
+     "type": "electrical-tape",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/silicone-electrical-tape-roll.html"
+      ]
+     ],
+     "seconds": 13.2
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 86.9,
+   "input_tokens": 16157,
+   "cache_read_tokens": 5507,
+   "output_tokens": 13837,
+   "cost_usd": 0.1821,
+   "check_seconds": 0.01,
+   "issues": 8,
+   "issue_rules": {
+    "V4": 8
+   }
+  }
+ ],
+ "issues_first": 8,
+ "issues_final": 8,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "resistor",
+   "transistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "transistor-bc635",
+   "family": "transistor-bc635",
+   "checked": false
+  },
+  {
+   "type": "speaker-cable-2core",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "balloon",
+   "family": "balloon",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 12.8
+}

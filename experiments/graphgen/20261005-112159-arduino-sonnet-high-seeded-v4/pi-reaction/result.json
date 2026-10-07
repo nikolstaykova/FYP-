@@ -1,0 +1,97 @@
+{
+ "case": "pi-reaction",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 19.9,
+  "input_tokens": 41553,
+  "output_tokens": 2525,
+  "cost_usd": 0.056,
+  "repair_rounds_used": 1
+ },
+ "parts": 3,
+ "edges": 4,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "This is a software project. The micro:bit's onboard buttons A and B and its 5x5 LED matrix are used, so there is no external wiring, breadboard or LEDs.",
+  "The micro:bit was left unconnected in the previous graph. It is now joined to a computer by a USB cable, which is how the MakeCode program (.hex file) gets onto it. The manual doesn't name the cable or computer, so this is an assumption.",
+  "The micro:bit is not in the catalogue, so a new 'microbit' part type was added. Its ports are the onboard buttons, LED matrix, USB and battery connector.",
+  "The manual doesn't mention a battery, so none is included. The micro:bit is assumed to run on USB power.",
+  "Program logic from the manual and block images: forever { pause 1000; pause random(4000); show image; pause 1000; clear screen }, then while (not button A pressed) and (not button B pressed) { pause 20 }, then if A pressed show an arrow pointing to player A, and if B pressed show an arrow pointing to player B.",
+  "The first block image shows an empty 'while not A pressed and [empty]'. The second shows the finished nested form 'not A pressed and not B pressed'. The text confirms the final form is not A AND not B.",
+  "The optional 'Keep score' challenge uses variables playerA and playerB, set to 0 on start and incremented for the winner. It needs no extra hardware."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.2,
+   "input_tokens": 20133,
+   "cache_read_tokens": 15496,
+   "output_tokens": 1108,
+   "cost_usd": 0.0327,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 9.7,
+   "input_tokens": 21420,
+   "cache_read_tokens": 20131,
+   "output_tokens": 1417,
+   "cost_usd": 0.0233,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "score_initial": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "microbit",
+   "family": "microbit",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 20.4
+}

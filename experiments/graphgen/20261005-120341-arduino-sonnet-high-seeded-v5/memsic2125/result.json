@@ -1,0 +1,86 @@
+{
+ "case": "memsic2125",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 46.1,
+  "input_tokens": 38787,
+  "output_tokens": 6627,
+  "cost_usd": 0.1087,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as in step 1: nothing added or dropped.",
+  "Connections follow the circuit image and schematic. Pin 2 goes to X out (yellow), pin 3 goes to Y out (blue), 5V goes to +5V (orange), and ground goes through the breadboard ground rail (black). The Temp pin is left unconnected.",
+  "In the image the Memsic's wires attach directly to its header pins, so I joined them to the sensor pins and did not place the sensor in breadboard holes. The tutorial text says to orient it 'on your breadboard' using the triangle, but the image does not show which holes it uses.",
+  "The breadboard is used only for its bottom negative rail (bn) as the shared ground. The three black wires end at bn.5, bn.10 and bn.13, counting the rail holes from the left (5 per group). The hole numbers are my estimate from the image.",
+  "The Arduino's ground wire goes to the first GND pin on the power header, which I took to be GND.1. The two sensor GND pins are mapped to GND.1 and GND.2 with no distinction between them, since the schematic joins them.",
+  "The sensor's X out, Y out and GND positions were read from the sensor's pin layout in the image. The Memsic's supply pin is VDD, wired to 5V."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.5,
+   "input_tokens": 18519,
+   "cache_read_tokens": 11144,
+   "output_tokens": 1568,
+   "cost_usd": 0.0474,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.6,
+   "input_tokens": 20268,
+   "cache_read_tokens": 18517,
+   "output_tokens": 5059,
+   "cost_usd": 0.0613,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 4,
+  "nets_matched": 4,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "memsic2125": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "memsic2125": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 12.2
+}

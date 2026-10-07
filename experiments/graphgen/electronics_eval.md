@@ -1,0 +1,58 @@
+**116 tutorials finished by every version**; 47 have an answer key (CircuitQuest), 55 are scored on the tutorial's own parts list.
+
+### Speed, cost and cleanliness
+
+| Measure | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| Mean time per tutorial | 41 s | 44 s | 100 s | 79 s | 70 s | 67 s |
+| Mean cost per tutorial | $0.104 | $0.122 | $0.187 | $0.154 | $0.160 | $0.182 |
+| Phase parts: runs, mean time | – | – | 116, 54 s | 116, 34 s | 116, 24 s | 116, 18 s |
+| Phase build: runs, mean time | – | 116, 39 s | 116, 40 s | 116, 39 s | 116, 36 s | 116, 37 s |
+| Phase repair1: runs, mean time | – | 22, 26 s | 12, 34 s | 21, 25 s | 25, 28 s | 33, 30 s |
+| Tutorials repaired | 0 | 22 | 12 | 21 | 26 | 33 |
+| Check issues left at the end | 0 | 2 (E5 ×1; E2 ×1) | 251 (V4 ×166; V3 ×61; E2 ×14) | 12 (V3 ×11; E5 ×1) | 24 (V4 ×12; E8 ×4; V3 ×2) | 19 (E8 ×8; E2 ×3; V2 ×2) |
+| Rule problems left (spec rules) | 210 | 0 | 267 | 5 | 26 | 6 |
+| Wrong tutorials, by cause | answer key differs (reviewed) ×19; parts right, wiring wrong ×5 | answer key differs (reviewed) ×19; parts right, wiring wrong ×1 | answer key differs (reviewed) ×19; parts right, wiring wrong ×2 | answer key differs (reviewed) ×19; parts right, wiring wrong ×3 | answer key differs (reviewed) ×19; parts right, wiring wrong ×1 | answer key differs (reviewed) ×19 |
+
+**Wrong in every version (19):** adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, serial-call-response, serial-call-response-ascii, state-change-detection, tone-multiple, virtual-color-mixer, while-loop  
+**Right in some versions, wrong in others (6):** button, digital-read-serial, keyboard-message, read-ascii-string, row-column-scanning, tone-melody
+
+### Parts: does it find every part exactly?
+
+| Measure | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| Tutorials with every part exactly right | 29 / 47 (62%) | 29 / 47 (62%) | 30 / 47 (64%) | 29 / 47 (62%) | 29 / 47 (62%) | 29 / 47 (62%) |
+| Part precision (pooled) | 0.86 | 0.85 | 0.91 | 0.87 | 0.87 | 0.87 |
+| Part recall (pooled) | 0.85 | 0.84 | 0.87 | 0.86 | 0.86 | 0.86 |
+| Other tutorials: listed part families present | 0.97 | 0.96 | 0.98 | 0.96 | 0.97 | 0.97 |
+| Most often MISSING | resistor ×10; led ×8; pot ×7; capacitor-ceramic ×4 | resistor ×11; led ×9; pot ×7; capacitor-ceramic ×4 | resistor ×10; led ×8; capacitor-ceramic ×4; buzzer ×4 | resistor ×10; led ×8; pot ×7; buzzer ×4 | resistor ×10; led ×8; pot ×7; buzzer ×4 | resistor ×10; led ×8; pot ×7; buzzer ×4 |
+| Most often EXTRA | resistor ×12; led ×9; fsr ×7; speaker ×3 | resistor ×12; led ×9; fsr ×7; speaker ×4 | resistor ×13; speaker-8ohm ×4; capacitor-22pf ×2; board ×1 | resistor ×12; led ×9; fsr ×7; speaker ×4 | resistor ×12; led ×9; fsr ×7; speaker-8ohm ×4 | resistor ×12; led ×9; fsr ×7; speaker-8ohm ×4 |
+
+### Graph: are the connections exactly right?
+
+| Measure | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| Tutorials with every connection exactly right | 23 / 47 (49%) | 27 / 47 (57%) | 26 / 47 (55%) | 25 / 47 (53%) | 27 / 47 (57%) | 28 / 47 (60%) |
+| Net precision (pooled) | 0.64 | 0.67 | 0.67 | 0.69 | 0.70 | 0.71 |
+| Net recall (pooled) | 0.61 | 0.64 | 0.65 | 0.67 | 0.67 | 0.68 |
+| …of tutorials with the parts right: every connection right | 23 / 29 | 27 / 29 | 26 / 30 | 25 / 29 | 27 / 29 | 28 / 29 |
+| Every connection right, reviewed answer key (28 tutorials) | 23 / 28 | 27 / 28 | 26 / 28 | 25 / 28 | 27 / 28 | 28 / 28 |
+| Every connection right, electrically equivalent accepted | 24 / 47 | 27 / 47 | 27 / 47 | 26 / 47 | 27 / 47 | 28 / 47 |
+| …equivalent AND reviewed answer key | 24 / 28 | 27 / 28 | 27 / 28 | 26 / 28 | 27 / 28 | 28 / 28 |
+| **CircuitQuest says correct** (pass, harmless swap or substitute pin) | **23 / 47 (49%)** | **27 / 47 (57%)** | **26 / 47 (55%)** | **25 / 47 (53%)** | **27 / 47 (57%)** | **28 / 47 (60%)** |
+| **…CircuitQuest correct, reviewed answer key** | **23 / 28 (82%)** | **27 / 28 (96%)** | **26 / 28 (93%)** | **25 / 28 (89%)** | **27 / 28 (96%)** | **28 / 28 (100%)** |
+| …of which: exact pass / harmless swap / substitute pin | 16/7/0 | 22/5/0 | 19/7/0 | 16/9/0 | 18/9/0 | 22/6/0 |
+| Correct with substitute pins + laws hold | 24 / 47 (51%) | 27 / 47 (57%) | 27 / 47 (57%) | 26 / 47 (55%) | 27 / 47 (57%) | 28 / 47 (60%) |
+| **…substitute pins + laws hold, reviewed answer key** | **24 / 28 (86%)** | **27 / 28 (96%)** | **27 / 28 (96%)** | **26 / 28 (93%)** | **27 / 28 (96%)** | **28 / 28 (100%)** |
+| Most often MISSED connections | led:A + resistor ×9; board:13 + resistor ×7; board:2 + button + resistor ×6 | led:A + resistor ×10; board:13 + resistor ×7; board:A0 + pot:wiper ×3 | led:A + resistor ×9; board:13 + resistor ×7; board:A0 + pot:wiper ×3 | led:A + resistor ×8; board:13 + resistor ×7; board:A0 + pot:wiper ×3 | led:A + resistor ×8; board:13 + resistor ×7; board:A0 + pot:wiper ×3 | led:A + resistor ×9; board:13 + resistor ×7; board:A0 + pot:wiper ×3 |
+| Most often INVENTED connections | board:2 + button ×3; board:7 + resistor ×3; board:GND + resistor + resistor + resistor ×3 | board:7 + resistor ×3; board:GND + resistor + resistor + resistor ×3; board:9 + led:A ×2 | board:7 + resistor ×3; board:GND + resistor + resistor + resistor ×3; board:A1 + pot:wiper + resistor ×3 | board:7 + resistor ×3; board:GND + resistor + resistor + resistor ×3; board:GND + resistor ×2 | board:7 + resistor ×3; board:GND + resistor + resistor + resistor ×3; board:GND + resistor ×2 | board:GND + resistor + resistor + resistor ×3; board:9 + led:A ×2; led:C + resistor ×2 |
+
+Connections are compared after wires and breadboard are folded away (`board:13 + resistor` = pin 13 joined to a resistor leg). Strict rows count an electrically equivalent circuit as different; the *equivalent* rows accept resistors and LEDs in any series order (LED direction still checked) and a buzzer or speaker either way round. *Substitute pins* (CircuitQuest's rule, core/engine.py _try_pin_substitution) also accept a part on another board pin of the same pool (digital for digital, analog for analog, PWM where the code uses analogWrite/tone; never bus, serial or power pins, nor any pin of a sketch that loops over pin numbers), provided no circuit-law error is left. The *reviewed answer key* rows leave out the tutorials where CircuitQuest's circuit differs from the official tutorial (research/data/answer_key_review.json: adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, serial-call-response, serial-call-response-ascii, state-change-detection, tone-keyboard, tone-multiple, virtual-color-mixer, while-loop).
+
+Where the connection mistakes are, per version:
+- **v1** tutorials with a wrong connection: adxl3xx, arduino-isp, arduino-to-breadboard, button, calibration, debounce, digital-read-serial, if-statement, input-pullup-serial, joystick-mouse-control, keyboard-message, knock, led-bar-graph, midi, ping, pitch-follower, row-column-scanning, serial-call-response, serial-call-response-ascii, state-change-detection, tone-melody, tone-multiple, virtual-color-mixer, while-loop
+- **v2** tutorials with a wrong connection: adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, row-column-scanning, serial-call-response, serial-call-response-ascii, state-change-detection, tone-multiple, virtual-color-mixer, while-loop
+- **v3** tutorials with a wrong connection: adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, row-column-scanning, serial-call-response, serial-call-response-ascii, state-change-detection, tone-melody, tone-multiple, virtual-color-mixer, while-loop
+- **v4** tutorials with a wrong connection: adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, read-ascii-string, row-column-scanning, serial-call-response, serial-call-response-ascii, state-change-detection, tone-melody, tone-multiple, virtual-color-mixer, while-loop
+- **v5** tutorials with a wrong connection: adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, row-column-scanning, serial-call-response, serial-call-response-ascii, state-change-detection, tone-multiple, virtual-color-mixer, while-loop
+- **v6** tutorials with a wrong connection: adxl3xx, arduino-isp, arduino-to-breadboard, calibration, debounce, if-statement, input-pullup-serial, joystick-mouse-control, knock, led-bar-graph, midi, ping, pitch-follower, serial-call-response, serial-call-response-ascii, state-change-detection, tone-multiple, virtual-color-mixer, while-loop

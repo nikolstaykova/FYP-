@@ -1,0 +1,554 @@
+{
+ "graph": {
+  "title": "Matter RGB Light with Arduino Nano Matter",
+  "source_id": "https://docs.arduino.cc/tutorials/nano-matter/matter-rgb-light/",
+  "new_part_types": [
+   {
+    "type": "grove-rgb-led-matrix",
+    "name": "Grove - 8x8 RGB LED Matrix (I2C)",
+    "category": "display",
+    "ports": [
+     {
+      "name": "SCL",
+      "kind": "header-socket"
+     },
+     {
+      "name": "SDA",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-matter",
+    "label": "Arduino Nano Matter",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "matrix1",
+    "type": "grove-rgb-led-matrix",
+    "label": "Grove - 8x8 RGB LED Matrix",
+    "props": []
+   },
+   {
+    "id": "groveb1",
+    "type": "grove-breakout",
+    "label": "Grove breakout adapter",
+    "props": []
+   },
+   {
+    "id": "grove1",
+    "type": "grove-cable",
+    "label": "Grove 4-pin cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "SCL jumper",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "SDA jumper",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "3.3V jumper",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "GND jumper",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "groveb1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "groveb1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "10t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "groveb1",
+    "u_port": "NC",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "groveb1",
+    "u_port": "NC",
+    "v": "bb1",
+    "v_port": "11t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "groveb1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "groveb1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "12t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "groveb1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "groveb1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.SIG",
+    "v": "groveb1",
+    "v_port": "G.SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.SIG",
+    "v": "groveb1",
+    "v_port": "G.SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.NC",
+    "v": "groveb1",
+    "v_port": "G.NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.NC",
+    "v": "groveb1",
+    "v_port": "G.NC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.VCC",
+    "v": "groveb1",
+    "v_port": "G.VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.VCC",
+    "v": "groveb1",
+    "v_port": "G.VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.GND",
+    "v": "groveb1",
+    "v_port": "G.GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.GND",
+    "v": "groveb1",
+    "v_port": "G.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.SIG",
+    "v": "matrix1",
+    "v_port": "SCL",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.SIG",
+    "v": "matrix1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.NC",
+    "v": "matrix1",
+    "v_port": "SDA",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.NC",
+    "v": "matrix1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.VCC",
+    "v": "matrix1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.VCC",
+    "v": "matrix1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.GND",
+    "v": "matrix1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.GND",
+    "v": "matrix1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "A5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "11t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "A4",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "12t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "3V3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "13t.b",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "13t.b",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "nano1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The wiring diagram image was not available, only the thumbnail photo and the text: the matrix is powered from the Nano Matter 3.3V pin and controlled over I2C. Connection details come from that and from the photo.",
+   "The photo shows the Nano Matter on the breadboard and the matrix joined through a Grove cable to a small Grove breakout board on the breadboard. The catalogue entry for the Nano Matter has no per-pin breadboard ports, so the board is not placed in breadboard holes. Four jumper wires run from the breadboard to the board's header pins instead.",
+   "The catalogue ports for arduino-nano-matter are only D4, 3V3, GND and USB-C. I2C SDA and SCL are assumed to be on A4 and A5, the standard Nano form-factor I2C pins. A4 and A5 are not listed in the catalogue entry.",
+   "Grove I2C colour convention: yellow (SIG) is SCL, white (NC) is SDA, red is VCC and black is GND. The breadboard hole choices (columns 10-13) are arbitrary, since the manual gives no positions.",
+   "The Eero Thread border router, the Amazon Alexa app and the smart speaker are not circuit parts, so they are not in the graph. The onboard RGB LED and button of the Nano Matter are used by the sketch but need no external wiring.",
+   "The USB-C cable is a catalogue usb-cable with no ports, so its edge to the board has a null u_port."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 37.5,
+  "api_seconds": 34.2,
+  "first_token_seconds": 17.0,
+  "input_tokens": 19947,
+  "cache_read_tokens": 10222,
+  "output_tokens": 5884,
+  "cost_usd": 0.0998,
+  "turns": 2
+ }
+}

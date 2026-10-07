@@ -1,0 +1,666 @@
+{
+ "graph": {
+  "title": "MKR IoT Carrier Smart Garden Setup",
+  "source_id": "https://docs.arduino.cc/tutorials/mkr-iot-carrier/smart-garden-setup",
+  "new_part_types": [
+   {
+    "type": "mkr-iot-carrier",
+    "name": "Arduino MKR IoT Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "H.A6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.SIG",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.NC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A6.GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "RELAY1.COM",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY1.NO",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY1.NC",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY2.COM",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY2.NO",
+      "kind": "lug"
+     },
+     {
+      "name": "RELAY2.NC",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [
+     [
+      "H.A6",
+      "A6.SIG"
+     ],
+     [
+      "H.5V",
+      "A6.VCC"
+     ],
+     [
+      "H.GND",
+      "A6.GND"
+     ]
+    ],
+    "through": [
+     [
+      "RELAY1.COM",
+      "RELAY1.NO"
+     ],
+     [
+      "RELAY2.COM",
+      "RELAY2.NO"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "water-pump-5v",
+    "name": "5V submersible water pump",
+    "category": "motor",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "wire-end"
+     },
+     {
+      "name": "NEG",
+      "kind": "wire-end"
+     },
+     {
+      "name": "OUTLET",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "open-ended-usb-cable",
+    "name": "Open-ended USB cable",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "PLUG",
+      "kind": "header-pin"
+     },
+     {
+      "name": "POS",
+      "kind": "wire-end"
+     },
+     {
+      "name": "NEG",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "PLUG",
+      "POS"
+     ],
+     [
+      "PLUG",
+      "NEG"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "usb-adapter-2port",
+    "name": "USB power adapter (2 ports)",
+    "category": "power",
+    "ports": [
+     {
+      "name": "USB.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "USB.2",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "USB.1",
+      "USB.2"
+     ]
+    ],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "watering-pipe",
+    "name": "Watering pipe (1 m)",
+    "category": "plumbing",
+    "ports": [
+     {
+      "name": "A",
+      "kind": "socket"
+     },
+     {
+      "name": "B",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [
+     [
+      "A",
+      "B"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   },
+   {
+    "type": "water-container",
+    "name": "Water container",
+    "category": "container",
+    "ports": [],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "any"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wifi-1010",
+    "label": "MKR WiFi 1010",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "mkr-iot-carrier",
+    "label": "MKR IoT Carrier",
+    "props": []
+   },
+   {
+    "id": "moist1",
+    "type": "grove-moisture-sensor",
+    "label": "Soil moisture sensor",
+    "props": []
+   },
+   {
+    "id": "grove1",
+    "type": "grove-cable",
+    "label": "Grove cable",
+    "props": []
+   },
+   {
+    "id": "pump1",
+    "type": "water-pump-5v",
+    "label": "5V submersible pump",
+    "props": []
+   },
+   {
+    "id": "usbcable1",
+    "type": "open-ended-usb-cable",
+    "label": "Open ended USB cable",
+    "props": []
+   },
+   {
+    "id": "usbmicro1",
+    "type": "usb-cable",
+    "label": "Micro-USB cable",
+    "props": []
+   },
+   {
+    "id": "adapter1",
+    "type": "usb-adapter-2port",
+    "label": "USB adapter with 2 ports",
+    "props": []
+   },
+   {
+    "id": "pipe1",
+    "type": "watering-pipe",
+    "label": "Watering pipe",
+    "props": []
+   },
+   {
+    "id": "container1",
+    "type": "water-container",
+    "label": "Water container",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "A6",
+    "v": "carrier1",
+    "v_port": "H.A6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "A6",
+    "v": "carrier1",
+    "v_port": "H.A6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "H.5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "H.5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "H.GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "H.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "H.VIN",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "H.VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.SIG",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.SIG",
+    "v": "moist1",
+    "v_port": "SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.NC",
+    "v": "moist1",
+    "v_port": "NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.VCC",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.VCC",
+    "v": "moist1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "a.GND",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "a.GND",
+    "v": "moist1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.SIG",
+    "v": "carrier1",
+    "v_port": "A6.SIG",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.SIG",
+    "v": "carrier1",
+    "v_port": "A6.SIG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.NC",
+    "v": "carrier1",
+    "v_port": "A6.NC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.VCC",
+    "v": "carrier1",
+    "v_port": "A6.VCC",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.VCC",
+    "v": "carrier1",
+    "v_port": "A6.VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "grove1",
+    "u_port": "b.GND",
+    "v": "carrier1",
+    "v_port": "A6.GND",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "grove1",
+    "u_port": "b.GND",
+    "v": "carrier1",
+    "v_port": "A6.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "RELAY1.NO",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "RELAY1.NO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pump1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "RELAY1.COM",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "pump1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "RELAY1.COM",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": "NEG",
+    "v": "pump1",
+    "v_port": "NEG",
+    "method": "twist",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": "NEG",
+    "v": "pump1",
+    "v_port": "NEG",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbcable1",
+    "u_port": "PLUG",
+    "v": "adapter1",
+    "v_port": "USB.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usbcable1",
+    "u_port": "PLUG",
+    "v": "adapter1",
+    "v_port": "USB.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usbmicro1",
+    "u_port": null,
+    "v": "adapter1",
+    "v_port": "USB.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "usbmicro1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "adapter1",
+    "u_port": "USB.1",
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pipe1",
+    "u_port": "A",
+    "v": "pump1",
+    "v_port": "OUTLET",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "contact",
+    "u": "pump1",
+    "u_port": null,
+    "v": "container1",
+    "v_port": null,
+    "method": "rest",
+    "freedom": null,
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The circuit.png and relay-connection.png images were not available as readable content; the wiring follows the text: open-ended USB (+) to relay 1 NO, USB (-) joined with pump (-), pump (+) to relay 1 COM.",
+   "The MKR IoT Carrier is not in the catalogue, so I created it. Its header ports are named H.<pin>, and the Grove A6 connector and relay terminals have their own ports.",
+   "The sketch calls Relay2, while the text says relay 1. I followed the text (relay 1) and the labelled NO/COM pins.",
+   "The optional connector strip from the tip is not modelled. The wires are joined directly, as the main text describes.",
+   "The USB cable and the pump's negative wire are shown joined directly (twisted). A connector strip or wire nut could be used instead.",
+   "The plant, soil, phone and Arduino Cloud are not physical build parts and are left out. The moisture sensor sits in the soil, but that is not modelled. The wall power outlet is also left out.",
+   "Only the pipe's pump end is connected. The other end goes into the plant pot, which is not modelled.",
+   "The micro-USB cable goes from adapter port 1 to the MKR WiFi 1010 USB port. The open-ended USB cable goes to adapter port 2. Which adapter port each cable uses is an assumption."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 42.4,
+  "api_seconds": 39.0,
+  "first_token_seconds": 18.8,
+  "input_tokens": 22047,
+  "cache_read_tokens": 5414,
+  "output_tokens": 6581,
+  "cost_usd": 0.1334,
+  "turns": 2
+ }
+}

@@ -1,0 +1,117 @@
+{
+ "case": "button-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 55.1,
+  "api_seconds": 52.0,
+  "first_token_seconds": 31.7,
+  "input_tokens": 17872,
+  "cache_read_tokens": 9602,
+  "output_tokens": 8045,
+  "cost_usd": 0.1154,
+  "turns": 2
+ },
+ "parts": 25,
+ "edges": 109,
+ "repeats": [
+  {
+   "group": "btn",
+   "times": 5,
+   "overrides": 40
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e2: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e3: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e6: port 'GND.1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e7: port 'GND.1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e26: port '6' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e27: port '6' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e46: port '5' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e47: port '5' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e66: port '4' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e67: port '4' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e86: port '3' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e87: port '3' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e106: port '2' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e107: port '2' not on arduino-leonardo"
+  ]
+ ],
+ "notes": [
+  "The catalogue entry for arduino-leonardo lists no ports; I used the pin labels printed on the board (2-6, 5V, GND.1), following the arduino-uno naming.",
+  "Bank mapping: the circuit image labels the top half of the breadboard rows j-f and the bottom half rows e-a. I therefore used bank 'b' (rows f-j) for the top half and bank 't' (rows a-e) for the bottom half. The rails are the top rail 'tp' (+, 5V) and the bottom rail 'bn' (GND).",
+  "Column positions were estimated from the image. Each button straddles the centre gap on columns 6/8, 11/13, 16/18, 21/23 and 26/28. Its right-hand column takes 5V from a red jumper from the top + rail. Its left-hand column in the lower half carries the signal wire and the pulldown resistor to the GND rail. Rail hole numbers are approximate.",
+  "Button to pin mapping, taken from the image and schematic: buttons 1-5 go to pins 6, 5, 4, 3 and 2. Per the sketch, pin 2 is up, 3 is down, 4 is left, 5 is right and 6 is the mouse click.",
+  "The pulldown resistors are 10k ohm. The pushbutton's pin 1 is taken as the upper (rows f-j) side and pin 2 as the lower side. The two right-hand legs are on the same side as the 5V jumper.",
+  "The micro-USB cable to the computer is included as a part with unspecified ports."
+ ],
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 21.7
+}

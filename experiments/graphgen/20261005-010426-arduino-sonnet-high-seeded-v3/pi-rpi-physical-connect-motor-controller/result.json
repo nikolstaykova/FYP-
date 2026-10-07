@@ -1,0 +1,132 @@
+{
+ "case": "pi-rpi-physical-connect-motor-controller",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 99.6,
+  "input_tokens": 55467,
+  "output_tokens": 4827,
+  "cost_usd": 0.1607,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 14,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GPIO_HEADER' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GPIO_HEADER' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e7: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e8: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e9: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e10: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e11: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e12: port '1' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e13: port '2' not on dc-motor"
+  ],
+  [
+   "V4",
+   "e14: port '2' not on dc-motor"
+  ]
+ ],
+ "notes": [
+  "The battery pack and motors have their own attached red/black leads, so no separate jumper wires are used; the lead ends are clamped directly in the board's screw terminal blocks.",
+  "Battery red wire goes to VIN and black to GND, as the manual requires.",
+  "The manual says the motors can be connected either way round, so which motor lead goes to A or B is arbitrary. Motor 1 is assumed to be on M1 and motor 2 on M2.",
+  "The photos show a generic Pi (probably a 3B-style board), but the catalogue match is rpi-4b, which was used as given.",
+  "The board sits on the Pi's GPIO header and uses GPIO 7, 8, 9 and 10 for motor control. This is modelled as the single gpio-header to GPIO_HEADER join.",
+  "The battery pack's ON/OFF switch must be off while wiring. It is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 85.3,
+   "input_tokens": 38547,
+   "output_tokens": 2980,
+   "cost_usd": 0.0955,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 4,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Motor controller board (sits on Raspberry Pi GPIO header, GPIO 7-10)",
+     "type": "motor-driver-pi-hat",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-motor-driver-dual-tb6612fng-with-headers.html (The content describes the SparkFun TB6612FNG dual motor driver breakout (ROB-144)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-motor-driver-dual-tb6612fng-1a.html (The page describes the SparkFun TB6612FNG dual motor driver breakout (ROB-14451))"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/2756"
+      ]
+     ],
+     "seconds": 79.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 14.3,
+   "input_tokens": 16920,
+   "cache_read_tokens": 5507,
+   "output_tokens": 1847,
+   "cost_usd": 0.0652,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 10.9
+}

@@ -1,0 +1,139 @@
+{
+ "case": "21302-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 1004.3,
+  "input_tokens": 555091,
+  "output_tokens": 175285,
+  "cost_usd": 3.1446,
+  "repair_rounds_used": 1
+ },
+ "parts": 470,
+ "edges": 490,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e202: port 'bar.1' not on lego-75c08"
+  ],
+  [
+   "V4",
+   "e203: port 'bar.1' not on lego-75c08"
+  ],
+  [
+   "V4",
+   "e247: port 'bar.1' not on lego-75c08"
+  ],
+  [
+   "V4",
+   "e248: port 'bar.1' not on lego-75c08"
+  ],
+  [
+   "V3",
+   "e250: bar \u2194 axle-hole is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The 470-piece inventory is covered one node per piece (b1-b470). Minifigure bodies, heads and hair are not in the parts list, so they are not modelled.",
+  "The booklet shows each step only as a picture. Piece identities in steps and exact attachment partners are best-effort readings. Where the image was ambiguous I matched pictured pieces to the official inventory counts so that every type/colour total is exact.",
+  "Several `joined` edges are plausible 'sits on / is built onto' links rather than exactly verified stud pairs. This applies mostly to the tan wall, chimney and archway courses, and to the rug tiles, which are all linked to the 16x16 base plate (b3).",
+  "Model order: b1-b348 is the main room (base plates, walls, Sheldon's shelf, desk, archway, DNA model, rug, Bernadette's shelf, sconces). b349-b354 is the floor lamp, b355-b371 the sofa, b372-b388 the armchair, b389-b392 the ottoman, and b393-b400 the round table. b401-b426 are the shelf-top display items and the telescope. b427-b437 is the whiteboard, b438-b451 the shopping cart, and b452-b470 the loose accessories.",
+  "Connectivity fix: the booklet builds ONE set (one 'THE BIG BANG THEORY' diorama), not separate models, so the whiteboard sub-assembly (b427-b437) and the cart sub-assembly (b438-b451) are no longer left floating. In the finished-model pictures both stand on their own feet immediately beside the baseplate, so each is linked to the baseplate (b3) with a `contact` edge (touching, not fastened).",
+  "Likewise the dog (b452) is placed on the baseplate in the final picture, and the brick separator (b453) is a tool that comes in the box. The 17 bright-light-orange kitchen-kit pieces (b454-b470) are minifigure accessories that are not built into the model. Two of the forks (b454, b455) are shown resting on the table, so they are `contact`-linked to the table top plate (b400). The other loose accessories and the separator are `contact`-linked to the baseplate (b3) as placed alongside. None of these has a fastened `joined` connection, because the booklet does not attach them to anything.",
+  "The sticker sheet (b109) is one node, linked to the door. Other sticker positions (whiteboard, pillar, sticker on door) are not duplicated.",
+  "Pin 1/2 pieces are modelled as inserted into the pin-hole of the Technic bricks. Small 1x1 plates and tiles are modelled as stud-attached beside the pin.",
+  "The pedestal at the table (b393, 19798 stand) is separate from the 87580 black jumper plate (b405), which supports the grey ball on Bernadette's shelf. The cart base is the black 3022 plate (b438). These identifications were uncertain between steps."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "check_seconds": 0.0,
+   "method": "rebrickable dump",
+   "cards_made": 0,
+   "pieces": 470
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 747.1,
+   "input_tokens": 214858,
+   "cache_read_tokens": 3203,
+   "output_tokens": 117964,
+   "cost_usd": 2.0269,
+   "check_seconds": 0.02,
+   "issues": 26,
+   "issue_rules": {
+    "V4": 4,
+    "V3": 1,
+    "V2": 19,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 257.2,
+   "input_tokens": 340233,
+   "cache_read_tokens": 214856,
+   "output_tokens": 57321,
+   "cost_usd": 1.1177,
+   "check_seconds": 0.03,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 4,
+    "V3": 1,
+    "L1": 1
+   }
+  }
+ ],
+ "issues_first": 26,
+ "issues_final": 6,
+ "score": {
+  "pieces_expected": 470,
+  "pieces_built": 470,
+  "pieces_unmapped": 0,
+  "inventory_matched": 470,
+  "exact_matched": 0,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 0.0,
+  "joined_edges": 463,
+  "contacts_expected": 82,
+  "contacts_predicted": 133,
+  "contacts_correct": 52,
+  "contact_precision": 0.391,
+  "contact_recall": 0.634
+ },
+ "score_initial": {
+  "pieces_expected": 470,
+  "pieces_built": 470,
+  "pieces_unmapped": 0,
+  "inventory_matched": 470,
+  "exact_matched": 0,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 0.0,
+  "joined_edges": 463,
+  "contacts_expected": 82,
+  "contacts_predicted": 133,
+  "contacts_correct": 52,
+  "contact_precision": 0.391,
+  "contact_recall": 0.634
+ },
+ "postprocess_ms": 29.4
+}

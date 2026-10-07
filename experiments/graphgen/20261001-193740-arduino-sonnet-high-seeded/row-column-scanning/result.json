@@ -1,0 +1,265 @@
+{
+ "case": "row-column-scanning",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 61.2,
+  "input_tokens": 19077,
+  "output_tokens": 9707,
+  "cost_usd": 0.1316,
+  "repair_rounds_used": 0
+ },
+ "parts": 45,
+ "edges": 140,
+ "repeats": [
+  {
+   "group": "rc",
+   "times": 8,
+   "overrides": 14
+  },
+  {
+   "group": "gw",
+   "times": 8,
+   "overrides": 14
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Matrix pins are mapped to the catalogue's R1-R8 / C1-C8 ports using the manual's pin table (row/column numbers), not the physical pin numbers.",
+  "Wire colours follow the circuit image: green wires go straight from the Uno to the matrix, yellow wires pass through 1k resistors.",
+  "The 8 resistor chains are modelled as Arduino pin -> wire -> resistor -> wire -> matrix pin, since the image shows resistors inline in the yellow wires.",
+  "Breadboard hole names and rail hole numbers are approximate readings of the image. The top-half rails (tp/tn) stand in for the right-hand power rails. The two pots sit across the centre gap, with the wiper on the left (bank t) and the outer legs on the right (bank b). Short jumpers carry the outer legs to the + and - rails.",
+  "Pot1 (upper) wiper goes to A1 and pot2 (lower) wiper goes to A0, as in the image. The manual says only that pots are on A0 and A1.",
+  "The 5V and GND wires from the Uno feed the breadboard rails, which supply the pots. The matrix is driven from Arduino pins only.",
+  "Resistor value 1k is entered as value=1000 (ohms) to match the catalogue's resistor value convention."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 61.2,
+   "input_tokens": 19077,
+   "cache_read_tokens": 10995,
+   "output_tokens": 9707,
+   "cost_usd": 0.1316,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 28,
+  "nets_built": 28,
+  "nets_matched": 19,
+  "net_precision": 0.679,
+  "net_recall": 0.679,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 8,
+   "pot": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "pot": 2,
+   "resistor": 8
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "led",
+     "R1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "R2"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "led",
+     "R4"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R4"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "R2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "led",
+     "C2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "led",
+     "C3"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A3"
+    ],
+    [
+     "led",
+     "C5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 31.9
+}

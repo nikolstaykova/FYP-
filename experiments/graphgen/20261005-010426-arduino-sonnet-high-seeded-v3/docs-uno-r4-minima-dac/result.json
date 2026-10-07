@@ -1,0 +1,94 @@
+{
+ "case": "docs-uno-r4-minima-dac",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 77.8,
+  "input_tokens": 29070,
+  "output_tokens": 6869,
+  "cost_usd": 0.1375,
+  "repair_rounds_used": 0
+ },
+ "parts": 11,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Hole and rail positions are read from the circuit image. The rail index numbers (bp.2, bn.1, bp.11, bn.12, bn.25) are estimates, and every hole in a rail is one strip, so the exact index doesn't change the connectivity.",
+  "The image shows the potentiometer's wiper leg in the upper half of the breadboard (14b.f), where the A5 wire ends at 14b.j. Its two outer legs are in the lower half (13t.e and 15t.e). I followed the image.",
+  "Pot outer leg 13 connects to 5V (VCC) and leg 15 to GND. The two outer legs are interchangeable.",
+  "The buzzer's polarity isn't marked in the image. Pin 1 is assumed to be the left leg (column 26, signal from A0) and pin 2 the right leg (column 30, GND).",
+  "The 5V wire is on the rail marked + (bp) and the GND wire is on the rail marked \u2212 (bn). GND uses the GND_P1 pin on the Arduino.",
+  "The sketch drives the DAC output on A0, which goes to the buzzer. The potentiometer is read on A5."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 39.4,
+   "input_tokens": 15830,
+   "output_tokens": 1350,
+   "cost_usd": 0.0503,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 4,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino UNO R4 Minima",
+     "type": "arduino-uno-r4-minima",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-uno-r4-minima.html"
+      ]
+     ],
+     "seconds": 33.4
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.4,
+   "input_tokens": 13240,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5519,
+   "cost_usd": 0.0872,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.4
+}

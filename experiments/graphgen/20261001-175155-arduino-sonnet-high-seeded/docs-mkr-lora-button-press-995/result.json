@@ -1,0 +1,49 @@
+{
+ "case": "docs-mkr-lora-button-press-995",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 39.8,
+  "api_seconds": 36.6,
+  "first_token_seconds": 19.1,
+  "input_tokens": 23450,
+  "cache_read_tokens": 5414,
+  "output_tokens": 6117,
+  "cost_usd": 0.1344,
+  "turns": 2
+ },
+ "parts": 13,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The manual builds two separate circuits (sender and receiver); both are in one graph: mkr1/bb1/btn1 = sender, mkr2/bb2/led1/r1 = receiver.",
+  "The MKR WAN 1310 is not in the catalogue (only 1300), so a new type was created. Antenna is the catalogue lora-antenna, joined to the board's ANT (u.FL) connector.",
+  "The breadboard in the images shows rows f-j in the upper half and a-e in the lower half. Holes are named by row letter, so the upper half is bank 'b' (e.g. 5b.f).",
+  "Pushbutton: legs are at columns 5 and 7, row g. Which of its four pins are used is not visible, so 1.l and 2.r were assumed.",
+  "Sender: black wire from GND to column 5 row f. Yellow wire from pin 2 to column 7 row f. The firmware uses INPUT_PULLUP, so no resistor is needed.",
+  "Receiver: black wire from GND to column 6 row g. LED cathode is in column 6 and anode in column 8 (the bent leg). The resistor spans columns 8 to 11 on row g. The green wire goes from pin 2 to column 11 row f. The resistor value is not stated, so no value prop is set.",
+  "The two micro USB cables are not modelled because the catalogue usb-cable has no ports.",
+  "The black wire's board end is on the GND pin of the right-hand header, next to VCC."
+ ],
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-wan-1310",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 18.5
+}

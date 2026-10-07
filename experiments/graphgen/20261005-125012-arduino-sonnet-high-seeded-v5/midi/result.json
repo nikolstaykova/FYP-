@@ -1,0 +1,121 @@
+{
+ "case": "midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 42.1,
+  "input_tokens": 39807,
+  "output_tokens": 5350,
+  "cost_usd": 0.0915,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "Circuit follows the manual: MIDI pin 5 to digital pin 1 (TX) through a 220 ohm resistor, MIDI pin 4 to +5V through a 220 ohm resistor, MIDI pin 2 to GND.",
+  "Breadboard holes are read from the image. The image's top half (rows j-f) is the catalogue's 'b' bank and its bottom half (rows e-a) is the 't' bank. The jack's pin 5 leg is in column 7 and its pin 4 leg is in column 9, each in row g. Each resistor bridges the centre gap from row f to row e of the same column.",
+  "The yellow wire (from Arduino pin 1) and the red wire (from 5V) end in row d of columns 7 and 9. Those holes share a strip with the resistor ends.",
+  "The black GND wire ends on the jack's centre pin (pin 2) in the image, not in a breadboard hole. I wired it directly to midi1 pin 2.",
+  "The Arduino's GND header pin is the digital-side GND next to AREF. I used GND.1 because the image doesn't say which GND index it is.",
+  "The image shows pins 5 and 4 on the jack's left and right sides, but the manual's text and the schematic decide the assignment. I put pin 5 on the TX side and pin 4 on the 5V side."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.2,
+   "input_tokens": 19282,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1068,
+   "cost_usd": 0.0417,
+   "check_seconds": 0.0,
+   "parts_listed": 8,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 29.9,
+   "input_tokens": 20525,
+   "cache_read_tokens": 19280,
+   "output_tokens": 4282,
+   "cost_usd": 0.0498,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 17.6
+}

@@ -1,0 +1,252 @@
+{
+ "case": "joystick-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 38.1,
+  "api_seconds": 34.6,
+  "first_token_seconds": 16.8,
+  "input_tokens": 17166,
+  "cache_read_tokens": 9602,
+  "output_tokens": 5974,
+  "cost_usd": 0.0919,
+  "turns": 2
+ },
+ "parts": 12,
+ "edges": 46,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e11: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e12: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e15: port 'A0' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e16: port 'A0' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e19: port 'A1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e20: port 'A1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e23: port '6' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e24: port '6' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e27: port 'GND.1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e28: port 'GND.1' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e31: port '5' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e32: port '5' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e45: port 'GND.2' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e46: port 'GND.2' not on arduino-leonardo"
+  ]
+ ],
+ "notes": [
+  "The catalogue entry for arduino-leonardo lists no ports; port names used (5V, GND.1, GND.2, A0, A1, 5, 6) follow the Uno naming and the labels in the circuit image.",
+  "Joystick module sits in breadboard column 12 (rows j..f, VCC/VERT/HORZ/SEL/GND). Jumper wires land in column 11, same rows. The image's top half is rows f-j, so it is bank 'b' in the catalogue naming.",
+  "Wire colours/mapping from the image: red 5V->VCC, yellow A0->VERT, green A1->HORZ, blue D6->SEL, black GND->GND. This matches the schematic.",
+  "The optional status LED on pin 5 (with 220 ohm series resistor) is included. Its placement on the breadboard (columns 20-24, bank 't') is my assumption, since the manual only refers to the Blink circuit. The LED ground wire goes to the Leonardo's second GND pin.",
+  "The optional second pushbutton on D3 with a 10k pulldown is not built because the manual says it is only 'if needed' and gives no layout. The joystick's SEL button is wired to pin 6 with no external pulldown.",
+  "The USB cable to the computer is mentioned in the text but not drawn, so it is not included."
+ ],
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 4,
+  "nets_matched": 2,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "analog-joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "analog-joystick": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "analog-joystick",
+     "VCC"
+    ],
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "VERT"
+    ],
+    [
+     "board",
+     "A1"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "HORZ"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "analog-joystick",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "analog-joystick",
+     "GND"
+    ],
+    [
+     "analog-joystick",
+     "HORZ"
+    ],
+    [
+     "analog-joystick",
+     "SEL"
+    ],
+    [
+     "analog-joystick",
+     "VCC"
+    ],
+    [
+     "analog-joystick",
+     "VERT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "6"
+    ],
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 18.6
+}

@@ -1,0 +1,174 @@
+{
+ "tutorial": "pi-push-button-stop-motion",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/showcase.gif",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/thonny_menu.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/picamera-gpio-setup.png"
+ ],
+ "legs_and_ends": 10,
+ "with_position": 8,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi",
+     "type": "raspberry-pi-4-gpio",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "cam1",
+     "type": "pi-camera-module",
+     "label": "Raspberry Pi camera module"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Full size breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "btn1",
+     "type": "pushbutton",
+     "label": "Tactile button",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "3t.e",
+       "mm": [
+        5.08,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "3b.f",
+       "mm": [
+        5.08,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "5t.e",
+       "mm": [
+        10.16,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "5b.f",
+       "mm": [
+        10.16,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "ribbon1",
+     "type": "csi-ribbon-cable",
+     "label": "Camera ribbon cable",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "cam1",
+       "port": null,
+       "mm": null
+      },
+      {
+       "leg": "end2",
+       "part": "pi",
+       "port": null,
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire-mf",
+     "colour": "black",
+     "label": "Pin-socket jumper lead (GND)",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "6",
+       "mm": [
+        50.8,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "3t.a",
+       "mm": [
+        5.08,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire-mf",
+     "colour": "orange",
+     "label": "Pin-socket jumper lead (GP17)",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "5t.a",
+       "mm": [
+        10.16,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

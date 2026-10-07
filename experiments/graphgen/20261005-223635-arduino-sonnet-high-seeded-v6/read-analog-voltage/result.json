@@ -1,0 +1,86 @@
+{
+ "case": "read-analog-voltage",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 34.2,
+  "input_tokens": 55926,
+  "output_tokens": 4079,
+  "cost_usd": 0.0837,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct; no parts added or dropped.",
+  "Following the circuit image, the potentiometer straddles the centre gap: its two outer pins (GND, VCC) are in columns 10 and 12 of one half, and the wiper (SIG) pin is in column 11 of the other half. This differs from the catalogue's 'neighbouring holes of one row' fit.",
+  "The image labels the lower half rows a-e and the upper half rows f-j. I used the catalogue's naming, where bank 't' holds rows a-e and bank 'b' holds rows f-j. The lower half in the image is therefore 't' and the upper half is 'b'.",
+  "Black wire: pot outer pin (column 10) to Arduino GND. Red wire: other outer pin (column 12) to 5V. Yellow wire: wiper (column 11) to A0.",
+  "The image shows the black wire on the second GND pin of the power header. I used the port name GND.1 because the catalogue does not say which header pin is which. All Uno GND pins are the same node.",
+  "Each wire end in a breadboard hole or Arduino header gets a joined edge and an electrical edge. The potentiometer's legs in the breadboard get the same pair."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 8.3,
+   "input_tokens": 27558,
+   "cache_read_tokens": 20023,
+   "output_tokens": 644,
+   "cost_usd": 0.0406,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.9,
+   "input_tokens": 28368,
+   "cache_read_tokens": 27556,
+   "output_tokens": 3435,
+   "cost_usd": 0.0431,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 14.8
+}

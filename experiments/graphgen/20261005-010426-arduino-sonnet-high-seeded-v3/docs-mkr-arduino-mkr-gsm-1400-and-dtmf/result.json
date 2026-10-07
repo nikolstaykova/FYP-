@@ -1,0 +1,279 @@
+{
+ "case": "docs-mkr-arduino-mkr-gsm-1400-and-dtmf",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 344.5,
+  "input_tokens": 137977,
+  "output_tokens": 13605,
+  "cost_usd": 0.4196,
+  "repair_rounds_used": 0
+ },
+ "parts": 16,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V4",
+   "e21: port 'DIN' not on led-ring"
+  ],
+  [
+   "V4",
+   "e22: port 'DIN' not on led-ring"
+  ],
+  [
+   "V4",
+   "e29: port 'PWR' not on led-ring"
+  ],
+  [
+   "V4",
+   "e30: port 'PWR' not on led-ring"
+  ],
+  [
+   "V4",
+   "e37: port 'GND' not on led-ring"
+  ],
+  [
+   "V4",
+   "e38: port 'GND' not on led-ring"
+  ]
+ ],
+ "notes": [
+  "The schematic image was not available; wiring follows the standard Arduino MKR GSM 1400 NeoPixel level-shifter circuit described in the text: 2N7000 source to the Arduino data pin, gate to 3.3V (VCC), drain to NeoPixel DIN with a 10k pull-up to 5V.",
+  "The data pin is assumed to be D6; the text does not name it.",
+  "The catalogue led-ring entry has no ports, so DIN, PWR and GND are used as informal port names on ring1 for the wire connections.",
+  "The 2N7000 pin order (S, G, D) is assumed as TO-92 pins 1, 2, 3. It sits in columns 10, 11 and 12 of the top half of the breadboard.",
+  "The resistor is a catalogue 'resistor' with value=10k, even though the catalogue label says 100 ohm.",
+  "The tutorial uses a single NeoPixel in the layout; the ring is used here as listed in the parts.",
+  "Connections between the board and the antenna, SIM card, battery and USB cable have no named ports because the catalogue board entry has no ports for them. The battery is connected through its JST connector.",
+  "The Arduino 5V pin supplies the NeoPixel and the pull-up resistor.",
+  "The rail holes tp.1, tp.2 and tp.12 are the + rail. tn.1 and tn.2 are the - rail."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 307.9,
+   "input_tokens": 127836,
+   "output_tokens": 7856,
+   "cost_usd": 0.3425,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 10,
+   "ingested": 3,
+   "ingest": [
+    {
+     "part": "Arduino MKR GSM 1400",
+     "type": "arduino-mkr-gsm-1400",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/ARDUINO-MKR-GSM-1400-p-3162.html"
+      ]
+     ],
+     "seconds": 20.7
+    },
+    {
+     "part": "3.7 V LiPo Battery",
+     "type": "battery-lipo-3v7",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-lipo-charger-basic-micro-usb.html (This page sells the SparkFun LiPo Charger Basic (PRT-10217), a charger board bui)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/lithium-ion-battery-850mah.html"
+      ]
+     ],
+     "seconds": 38.1
+    },
+    {
+     "part": "ON Semiconductor 2N7000 MOSFET",
+     "type": "transistor-2n7000",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/mosfet-n-ch-60v-0-3a-2n7002pw.html (The page sells a 2N7002PW (also listed as 2N7002KW), a surface-mount SOT-323 N-c)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/mosfet-n-p-ch-30v-2-7-2-0a-irf7509.html (The page sells an IRF7509, a dual N/P-channel surface-mount MOSFET. The part wan)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/2484 (This page sells a Pololu 2-channel relay carrier board (item 2484). It does not )"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/5667 (This page sells a Pololu 2-channel relay carrier board (item 5667). It uses BSS1)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/LG01-N-Single-Channel-LoRa-IoT-Gateway-p-2921.html (The page is for the Seeed Studio LG01-N LoRa IoT gateway (868MHz), which is a co)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/LG01-N-Single-Channel-LoRa-IoT-Gateway-p-2935.html (This page sells the Seeed LG01-N LoRa IoT gateway, not a 2N7000 MOSFET. The page)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 52.0
+    },
+    {
+     "part": "GSM antenna",
+     "type": "antenna-gsm",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/molex-flexible-gnss-antenna-u-fl-adhesive.html (The page sells a Molex flexible GNSS antenna (GPS, Galileo, BeiDou, GLONASS; 156)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/rp-sma-to-u-fl-cable-150mm.html (This page sells an RP-SMA to U.FL pigtail cable (WRL-18569), not a GSM antenna. )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-GSM-1400-p-3162.html (This page sells the Arduino MKR GSM 1400 board (SAMD21 + SARA-U201 module), not )"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Embedded-Antenna-U-FL-for-GPS-p-564.html (The page is for an \"Embedded Antenna U.FL for GPS\" (Seeed Studio). That is a GPS)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 74.7
+    },
+    {
+     "part": "Micro SIM card",
+     "type": "sim-card-micro",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/microsd-card-adapter-usb-a.html (The page sells a MicroSD card USB-A reader (SparkFun COM-26322). That is a diffe)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/microsd-card-1gb-class-4.html (The page sells a microSD memory card (SparkFun COM-15107, 1GB Class 4 SDHC), not)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Micro-SIM-card-converter-p-2296.html (The page is for a \"Micro SIM card converter\" from Seeed Studio. That is a passiv)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/3in1-Micro-Nano-Standard-SIM-card-converter-p-2294.html"
+      ]
+     ],
+     "seconds": 115.4
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.6,
+   "input_tokens": 10141,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5749,
+   "cost_usd": 0.0771,
+   "check_seconds": 0.0,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 6,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "transistor-2n7000",
+   "family": "transistor-2n7000",
+   "checked": false
+  },
+  {
+   "type": "antenna-gsm",
+   "family": "antenna-gsm",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.7
+}

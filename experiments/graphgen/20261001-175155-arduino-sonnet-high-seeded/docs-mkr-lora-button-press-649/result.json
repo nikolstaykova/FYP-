@@ -1,0 +1,54 @@
+{
+ "case": "docs-mkr-lora-button-press-649",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 42.7,
+  "api_seconds": 39.7,
+  "first_token_seconds": 20.6,
+  "input_tokens": 22824,
+  "cache_read_tokens": 11757,
+  "output_tokens": 6542,
+  "cost_usd": 0.112,
+  "turns": 2
+ },
+ "parts": 15,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Both circuits (sender and receiver) are combined in one graph; they are physically separate and share no electrical connection.",
+  "The MKR WAN 1300 is not in the catalogue, so a new type was created (ports read from the diagram pin labels; DAC0/A0 is named A0). USB and ANT (u.FL antenna connector) are modelled as header-socket ports.",
+  "The antenna is a new type 'lora-antenna'; it connects to the board's u.FL connector via its cable.",
+  "Breadboard hole names follow the catalogue convention: rows f-j (top half of the picture) are bank 'b', so e.g. column 5 row g is '5b.g'. Columns were estimated from the image: sender button legs in columns 5 and 7 (row g), wires in 5f and 7f; receiver LED cathode column 6 and anode (bent leg) column 8 on row h, resistor from 8g to 11g, GND wire at 6g, pin 2 wire at 11f.",
+  "Pushbutton: only two legs are shown on the breadboard, on opposite sides; they are mapped to ports 1.l and 2.r. The exact pin pairing is an assumption.",
+  "The resistor value is not stated in the manual; 220 ohm assumed (typical for an LED).",
+  "The LED's straight leg is taken as cathode (to GND) and its bent leg as anode (via the resistor to pin 2), consistent with the sketch driving pin 2 HIGH.",
+  "Sender button uses INPUT_PULLUP on pin 2, so no external resistor or power connection is needed. Laptops for the USB cables are not shown in the manual and are omitted."
+ ],
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-wan-1300",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "lora-antenna",
+   "family": "lora-antenna",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 18.2
+}

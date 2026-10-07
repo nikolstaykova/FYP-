@@ -1,0 +1,218 @@
+{
+ "case": "arduino-to-breadboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 109.7,
+  "input_tokens": 48929,
+  "output_tokens": 18338,
+  "cost_usd": 0.2156,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 136,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Built the first diagram (burning the bootloader with an Arduino as ISP, external 16 MHz clock). The second diagram (upload via RX/TX with the microcontroller removed from the Arduino) and the minimal 8 MHz no-crystal circuit are alternative set-ups and are not built.",
+  "ISP wiring: Arduino pin 10 to ATmega reset (pin 1), pin 11 to MOSI (pin 17), pin 12 to MISO (pin 18), pin 13 to SCK (pin 19). Reset has a 10k pull-up to 5V. 5V goes to VCC (pin 7) and AVCC (pin 20), GND to pins 8 and 22.",
+  "The 16 MHz crystal is wired to ATmega pins 9 and 10 with two blue jumpers. Each crystal leg has a 22 pF capacitor to GND.",
+  "Chip placement: the 28-pin ATmega straddles the centre gap, pin 1 at column 5 on the bottom half (rows f-j) and pin 28 facing it on the top half. Pin n is in column n+4 for pins 1-14 and column 33-n for pins 15-28.",
+  "Step 1 correction: I added wire15 and wire16 (GND jumpers to the bottom rail). Each capacitor has to have one leg in a GND strip, and a capacitor's legs sit in neighbouring columns, so each needs a GND column beside it. Step 1 had 14 wires; there are now 16.",
+  "Exact breadboard hole numbers and rail positions are my own layout. The diagrams only fix the connectivity.",
+  "The Arduino is assumed to be powered over USB, which the manual does not draw, so no USB cable is added. The ATmega's AGND (pin 21) is not wired, as in the diagram."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.9,
+   "input_tokens": 22994,
+   "cache_read_tokens": 20023,
+   "output_tokens": 2700,
+   "cost_usd": 0.0429,
+   "check_seconds": 0.0,
+   "parts_listed": 21,
+   "changed_in_build": 2,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 89.8,
+   "input_tokens": 25935,
+   "cache_read_tokens": 22992,
+   "output_tokens": 15638,
+   "cost_usd": 0.1727,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 8,
+  "nets_matched": 3,
+  "net_precision": 0.375,
+  "net_recall": 0.429,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 2,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "resistor": 1,
+   "capacitor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 15.6
+}

@@ -1,0 +1,124 @@
+{
+ "case": "keyboard-message",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 44.4,
+  "api_seconds": 41.0,
+  "first_token_seconds": 28.3,
+  "input_tokens": 16904,
+  "cache_read_tokens": 9602,
+  "output_tokens": 5662,
+  "cost_usd": 0.0877,
+  "turns": 2
+ },
+ "parts": 8,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e2: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e5: port 'GND' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e6: port 'GND' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e9: port '4' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e10: port '4' not on arduino-leonardo"
+  ]
+ ],
+ "notes": [
+  "The Leonardo catalogue entry lists no ports; I used the names 5V, GND and 4 for the header pins the wires go to.",
+  "The breadboard is drawn flipped compared with the catalogue naming. Rows a-e (bank 't') are the lower half in the image, and the rails next to them are tp/tn. Bank 'b' is rows f-j.",
+  "The text says to attach the button to 5V, but the circuit image shows a red wire from the button's right column to the + rail, which the long red wire feeds from 5V. I followed the image.",
+  "The button straddles the centre gap in columns 6 and 8. Only its lower legs are visible, so I assumed the upper legs sit in the matching columns in row f. I assigned the pushbutton ports 1.l, 1.r, 2.l and 2.r to those four holes by assumption.",
+  "The blue wire from pin 4 ends at column 6, row c. The 10k pull-down resistor runs from column 6, row a, to the ground (-) rail, so pin 4 is pulled to ground.",
+  "Rail hole numbers (tn.1, tp.2, tn.5, tp.6) are estimated from the picture.",
+  "The schematic labels the signal pin as 2, but the text and the circuit image use pin 4. I used pin 4."
+ ],
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.333,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "4"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "4"
+    ],
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 18.0
+}

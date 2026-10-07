@@ -1,0 +1,236 @@
+{
+ "case": "7893-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 890.4,
+  "input_tokens": 665393,
+  "output_tokens": 159766,
+  "cost_usd": 2.7639,
+  "repair_rounds_used": 2
+ },
+ "parts": 393,
+ "edges": 415,
+ "repeats": [
+  {
+   "group": "seata",
+   "times": 6,
+   "overrides": 0
+  },
+  {
+   "group": "seatb",
+   "times": 5,
+   "overrides": 3
+  },
+  {
+   "group": "cab",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "ytile",
+   "times": 8,
+   "overrides": 6
+  },
+  {
+   "group": "cst",
+   "times": 4,
+   "overrides": 0
+  },
+  {
+   "group": "cw",
+   "times": 4,
+   "overrides": 3
+  },
+  {
+   "group": "lpin",
+   "times": 10,
+   "overrides": 16
+  },
+  {
+   "group": "rpin",
+   "times": 8,
+   "overrides": 12
+  },
+  {
+   "group": "win",
+   "times": 18,
+   "overrides": 14
+  },
+  {
+   "group": "cwin",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "wp",
+   "times": 4,
+   "overrides": 0
+  },
+  {
+   "group": "bs",
+   "times": 8,
+   "overrides": 0
+  },
+  {
+   "group": "bo",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "bpl",
+   "times": 8,
+   "overrides": 0
+  },
+  {
+   "group": "bt6",
+   "times": 4,
+   "overrides": 0
+  },
+  {
+   "group": "bt8",
+   "times": 5,
+   "overrides": 0
+  },
+  {
+   "group": "dg",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "dg4",
+   "times": 5,
+   "overrides": 0
+  },
+  {
+   "group": "door",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "tip",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "mg",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "nw",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "eng",
+   "times": 4,
+   "overrides": 0
+  }
+ ],
+ "new_types_declared": 64,
+ "new_types_added": 58,
+ "problems": [],
+ "notes": [
+  "Built from the 7893-1 booklet (pages 2-35 build steps, pages 36-37 inventory). The booklet is image-only; element IDs were read from the inventory page and some may be mis-read. Part types marked as new have guessed names and ports.",
+  "Four sub-models in bag 1 are built: 6-seat block (b1), 5-seat block (b2 + 3 black plates), galley (b6..b29), cockpit (b30..b48), plus a baggage/stair cart (b49..b62), and 4 minifigures. Bag 2 is the fuselage, wing, roof and doors; bag 3 is landing gear, engines, wing tips and tail.",
+  "Connectivity: the baggage cart and the waving worker minifigure are separate free-standing accessories in the booklet (page 35 and cover), not fastened to the plane. To keep the graph connected they are linked with `contact` edges only: cart stairs resting against the front door, and the worker standing next to the nose wheel. The worker position is an assumption from the cover picture.",
+  "Validator fixes: edges that put several parts on one shared stud/pin-hole port (many strips on one fuselage section, seats on a plate, pins in a section) leave the port null, since a brick or plate has many studs and the picture does not show which. Minifig joints (neck, hip, hand, seat) use null ports because the minifig port kinds were not compatible pairs. Wand cones join the wand pin through pin-hole/pin.",
+  "Minifig legs: inventory ids 9341 (blue, x2) and 9339 (black) are not accepted as real element numbers. Blue legs use catalogue type lego-4162916 and the black pilot legs use lego-6005225 (black minifig legs); the booklet's printed id is kept in the inventory_id prop.",
+  "Repeats attach many identical blue strips/tiles/plates (bs, bo, bpl, bt6, bt8, dg, dg4), white panels (wp) and window frames to a single representative fuselage section (b102, or the section named in overrides) because exact stud positions are not distinguishable from the pictures.",
+  "Fuselage joint pins: 10 pins join the nose and 5 lower sections in pairs; 8 pins join the 5 roof sections; the 2 remaining 4121715 pins are the minifig light wands. The tail section is attached with studs only.",
+  "Wheels: 14 tyres 313926 = 8 on main gears (4 each), 2 nose wheels, 4 on the cart. Main-gear wheel counts are a best reading of the pictures.",
+  "Placement ambiguities: yellow plate 302224 (3rd one) put on the main axle plate; grille tiles 241201 x6 - only 4 placed (2 galley, 2 cockpit); 2 of the 4 yellow panels 486524 and the 2 remaining small cogs 4211506 / 4 bushes 4211622 are spares or unplaced; rods 4211628 are shown pushed into floors at p23 and are attached approximately.",
+  "Minifig worker (red cap) holds two light wands (pin 4121715 + cone 618849); the red-jacket man stands on the cart platform; the pilot sits in the cockpit seat b36; the grey-haired passenger sits in galley seat b18.",
+  "Tail-fin top silver round plate and wing-tip lights (green left, red right) were placed per steps 25-26. The wing-tip flap sub-assembly (page 32) is approximated as hinge plate + clip plate + plate with a hinged wedge tip."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 527.8,
+   "input_tokens": 151384,
+   "cache_read_tokens": 5507,
+   "output_tokens": 81639,
+   "cost_usd": 1.401,
+   "check_seconds": 0.03,
+   "issues": 41,
+   "issue_rules": {
+    "V3": 16,
+    "V4": 21,
+    "L2": 3,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 195.3,
+   "input_tokens": 236627,
+   "cache_read_tokens": 151382,
+   "output_tokens": 40552,
+   "cost_usd": 0.7768,
+   "check_seconds": 0.03,
+   "issues": 2,
+   "issue_rules": {
+    "L2": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 167.2,
+   "input_tokens": 277382,
+   "cache_read_tokens": 236625,
+   "output_tokens": 37575,
+   "cost_usd": 0.5861,
+   "check_seconds": 0.03,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 41,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 387,
+  "pieces_built": 393,
+  "pieces_unmapped": 0,
+  "inventory_matched": 351,
+  "exact_matched": 351,
+  "inventory_precision": 0.893,
+  "inventory_recall": 0.907,
+  "exact_recall": 0.907,
+  "joined_edges": 413,
+  "contacts_expected": 17,
+  "contacts_predicted": 14,
+  "contacts_correct": 11,
+  "contact_precision": 0.786,
+  "contact_recall": 0.647
+ },
+ "score_initial": {
+  "pieces_expected": 387,
+  "pieces_built": 393,
+  "pieces_unmapped": 3,
+  "inventory_matched": 351,
+  "exact_matched": 351,
+  "inventory_precision": 0.893,
+  "inventory_recall": 0.907,
+  "exact_recall": 0.907,
+  "joined_edges": 413,
+  "contacts_expected": 17,
+  "contacts_predicted": 14,
+  "contacts_correct": 11,
+  "contact_precision": 0.786,
+  "contact_recall": 0.647
+ },
+ "postprocess_ms": 17.9
+}

@@ -1,0 +1,110 @@
+{
+ "case": "arrays",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 61.3,
+  "input_tokens": 16233,
+  "output_tokens": 10628,
+  "cost_usd": 0.1377,
+  "repair_rounds_used": 0
+ },
+ "parts": 27,
+ "edges": 100,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the catalogue convention (top half = bank 't' rows a-e, bottom half = bank 'b' rows f-j). The picture labels its rows the other way round (top half j-f, bottom half e-a), so only column and strip membership are taken from the image.",
+  "Each LED anode sits in the column fed by its resistor and the blue wire; the cathode is in the next column. The cathode column is linked by a short black jumper to the top ground rail (tn). The rail position numbers (tn.7, 10, 12, 15, 17, 20) are estimated from the picture. tn.1 is where the Arduino GND wire lands.",
+  "LED columns: 7/8, 10/11, 13/14, 16/17, 19/20, 22/23, driven from pins 7, 6, 5, 4, 3, 2 respectively, as in the circuit image.",
+  "Resistors are 220 ohm, from the schematic. Each one bridges the centre gap of the breadboard in its column. The Arduino GND wire goes to the GND pin next to AREF, which is taken as GND.1.",
+  "Not repeated: each of the six LED branches uses different breadboard holes and Arduino pins, so all parts and edges are written out explicitly."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 5,
+   "matched": 5,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "6 LEDs",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "6 220 ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 61.3,
+   "input_tokens": 16233,
+   "cache_read_tokens": 8816,
+   "output_tokens": 10628,
+   "cost_usd": 0.1377,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 13,
+  "nets_built": 13,
+  "nets_matched": 13,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 6,
+   "led": 6
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 6,
+   "resistor": 6
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 14.1
+}

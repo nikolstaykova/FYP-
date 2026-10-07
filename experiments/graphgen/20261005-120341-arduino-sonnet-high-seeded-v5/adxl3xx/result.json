@@ -1,0 +1,138 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 36.3,
+  "input_tokens": 40698,
+  "output_tokens": 5678,
+  "cost_usd": 0.1314,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct and are unchanged.",
+  "The ADXL3xx breakout (catalogue type adxl335) is plugged into the breadboard with its six pins ST, Z, Y, X, GND, VDD in columns 4-9 of the top half as drawn. The image labels that half f-j, so it is bank 'b' in the catalogue naming, with the module in row j.",
+  "The exact breadboard holes for the wire ends are not fully visible in the image. Each wire's breadboard end is placed in row h of the same column as its breakout pin, so it shares a strip with that pin.",
+  "Wires: A0 to ST (blue), A1 to Z (yellow), A2 to Y (green), A3 to X (gray), A4 to GND (black), A5 to VDD (orange). This matches the tutorial's pin table and the schematic.",
+  "A4 is driven LOW as ground and A5 HIGH as 5 V in software, so the sensor is powered from the analog pins. The ADXL3xx pin VDD is the catalogue port VCC.",
+  "The tutorial notes that some ADXL3xx boards are 3.3 V only and 5 V could damage them. The circuit shown supplies about 5 V, following the tutorial's SparkFun breakout."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 8.7,
+   "input_tokens": 19717,
+   "cache_read_tokens": 3468,
+   "output_tokens": 1084,
+   "cost_usd": 0.0765,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.6,
+   "input_tokens": 20981,
+   "cache_read_tokens": 19715,
+   "output_tokens": 4594,
+   "cost_usd": 0.0549,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 21.4
+}

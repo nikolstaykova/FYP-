@@ -1,0 +1,167 @@
+{
+ "case": "midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 38.2,
+  "input_tokens": 23339,
+  "output_tokens": 4130,
+  "cost_usd": 0.0929,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 26,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Circuit per the manual: MIDI jack pin 5 -> 220 ohm -> Arduino digital pin 1 (TX); pin 2 -> GND; pin 4 -> 220 ohm -> +5V.",
+  "The breadboard image shows the MIDI jack mounted on the top half with three legs in columns 7, 8 and 9 (left yellow = pin 5, middle black = pin 2, right red = pin 4). I put the jack legs in the catalogue's 'b' bank (rows f-j) and the resistors across the centre gap into the 't' bank. The exact row letters are approximate.",
+  "The image shows the 'manual' parts list as 1 hook-up wire, but the circuit uses three jumper wires (yellow TX, red 5V, black GND).",
+  "The black wire goes to the GND header next to AREF on the digital side. I assumed this is GND.3, since the catalogue doesn't say which GND header pin that is.",
+  "The manual's resistors are 220 ohm; the catalogue resistor is named 100 ohm, so each resistor has value=220.",
+  "The jack's pins 1 and 3 are not connected."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 9.3,
+   "input_tokens": 8048,
+   "output_tokens": 327,
+   "cost_usd": 0.0146,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 5,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.9,
+   "input_tokens": 15291,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3803,
+   "cost_usd": 0.0783,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.5
+}

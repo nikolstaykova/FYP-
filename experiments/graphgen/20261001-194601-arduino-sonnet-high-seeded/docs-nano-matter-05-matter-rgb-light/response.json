@@ -1,0 +1,1019 @@
+{
+ "graph": {
+  "title": "Matter RGB Light (Arduino Nano Matter + Grove 8x8 RGB LED Matrix)",
+  "source_id": "Arduino Tutorial: Matter RGB Light (Nano Matter)",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-matter",
+    "name": "Arduino Nano Matter",
+    "category": "board",
+    "ports": [
+     {
+      "name": "D2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB-C",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-rgb-led-matrix-8x8",
+    "name": "Grove - 8x8 RGB LED Matrix (I2C)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "SCL",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SDA",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-matter",
+    "label": "Arduino Nano Matter",
+    "props": []
+   },
+   {
+    "id": "matrix1",
+    "type": "grove-rgb-led-matrix-8x8",
+    "label": "Grove - 8x8 RGB LED Matrix",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3V3 to matrix VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to matrix GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "2t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "2t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SDA",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The wiring diagram image (diagram-v2.png) was not provided; connections are inferred from the text (matrix powered from 3.3V, controlled over I2C) and the cover photo (Nano Matter on a breadboard, a 4-wire Grove cable going to the matrix).",
+   "I2C pins are assumed to be A4 (SDA) and A5 (SCL), the Nano-form-factor Wire pins. The Grove cable is modelled as four jumper wires between breadboard rows and the matrix's Grove pins.",
+   "Breadboard hole positions are illustrative. Only the four pins in use (3V3, A4, A5, GND) are modelled as inserted. The Nano is assumed to straddle the centre gap, so the left-side pins sit on bank t and the right-side GND on bank b.",
+   "The onboard RGB LED and button of the Nano Matter are used by the sketch but need no external wiring.",
+   "The Eero 6+ Thread border router, the Alexa app and the smart speaker are network and software items and are not part of the physical build graph.",
+   "The existing catalogue type 'led-matrix-8x8' is the 1088AS matrix, not the Grove I2C module, so a new part type was created."
+  ]
+ },
+ "graph_initial": {
+  "title": "Matter RGB Light (Arduino Nano Matter + Grove 8x8 RGB LED Matrix)",
+  "source_id": "Arduino Tutorial: Matter RGB Light (Nano Matter)",
+  "new_part_types": [
+   {
+    "type": "arduino-nano-matter",
+    "name": "Arduino Nano Matter",
+    "category": "board",
+    "ports": [
+     {
+      "name": "D2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "D13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "USB-C",
+      "kind": "socket"
+     }
+    ],
+    "conducts": [
+     [
+      "GND.1",
+      "GND.2"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "grove-rgb-led-matrix-8x8",
+    "name": "Grove - 8x8 RGB LED Matrix (I2C)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "SCL",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SDA",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "nano1",
+    "type": "arduino-nano-matter",
+    "label": "Arduino Nano Matter",
+    "props": []
+   },
+   {
+    "id": "matrix1",
+    "type": "grove-rgb-led-matrix-8x8",
+    "label": "Grove - 8x8 RGB LED Matrix",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Breadboard",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "3V3 to matrix VCC",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to matrix GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "SDA",
+    "props": [
+     {
+      "key": "colour",
+      "value": "white"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "SCL",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "2t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "3V3",
+    "v": "bb1",
+    "v_port": "2t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "A4",
+    "v": "bb1",
+    "v_port": "8t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "A5",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "nano1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "nano1",
+    "u_port": "GND.1",
+    "v": "bb1",
+    "v_port": "4b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "nano1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "2t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "4b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SDA",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SDA",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SCL",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "matrix1",
+    "v_port": "SCL",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The wiring diagram image (diagram-v2.png) was not provided; connections are inferred from the text (matrix powered from 3.3V, controlled over I2C) and the cover photo (Nano Matter on a breadboard, a 4-wire Grove cable going to the matrix).",
+   "I2C pins are assumed to be A4 (SDA) and A5 (SCL), the Nano-form-factor Wire pins. The Grove cable is modelled as four jumper wires between breadboard rows and the matrix's Grove pins.",
+   "Breadboard hole positions are illustrative. Only the four pins in use (3V3, A4, A5, GND) are modelled as inserted. The Nano is assumed to straddle the centre gap, so the left-side pins sit on bank t and the right-side GND on bank b.",
+   "The onboard RGB LED and button of the Nano Matter are used by the sketch but need no external wiring.",
+   "The Eero 6+ Thread border router, the Alexa app and the smart speaker are network and software items and are not part of the physical build graph.",
+   "The existing catalogue type 'led-matrix-8x8' is the 1088AS matrix, not the Grove I2C module, so a new part type was created."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 35.9,
+  "input_tokens": 20932,
+  "output_tokens": 5171,
+  "cost_usd": 0.1149,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.9,
+   "input_tokens": 20932,
+   "cache_read_tokens": 5414,
+   "output_tokens": 5171,
+   "cost_usd": 0.1149,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

@@ -1,0 +1,52 @@
+{
+ "case": "docs-uno-msr3-controlling-dc-motor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 40.8,
+  "api_seconds": 33.2,
+  "first_token_seconds": 13.7,
+  "input_tokens": 19791,
+  "cache_read_tokens": 5414,
+  "output_tokens": 5872,
+  "cost_usd": 0.1173,
+  "turns": 2
+ },
+ "parts": 10,
+ "edges": 42,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The Motor Shield Rev3 and the 2x 18650 battery pack are not in the catalogue, so they are new part types. The shield only lists the header pins relevant to this tutorial (D3, D8, D9, D11, D12, D13, A0, A1, 5V, GND, VIN) plus the six screw terminals A+, A-, B+, B-, VIN, GND.",
+  "The shield is stacked on the UNO; all of its header pins plug into the UNO sockets. Only the pins used by the tutorial are modelled as edges.",
+  "The image shows the motor and battery leads as fixed wires going into the screw terminals. They are modelled as jumper-wire parts joined to the motor/battery leads (method assumed solder/permanent) and screwed into the terminals.",
+  "Motor orange wire goes to A+ and black wire to A-, as in the image. Battery orange (+) goes to terminal VIN and black (-) to GND.",
+  "Pin roles for channel A: D12 direction, D3 PWM, D9 brake, A0 current sense. Channel B: D13, D11, D8, A1. The motor is on channel A.",
+  "The USB cable has no named ports in the catalogue, so its edges use null ports. The UNO's USB connector is not a named catalogue port.",
+  "Battery cells are modelled as a single 2-cell holder with POS/NEG ends, not two separate cells."
+ ],
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "motor-shield-rev3",
+   "family": "motor-shield-rev3",
+   "checked": false
+  },
+  {
+   "type": "battery-holder-2x18650",
+   "family": "battery-holder-2x18650",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 32.1
+}

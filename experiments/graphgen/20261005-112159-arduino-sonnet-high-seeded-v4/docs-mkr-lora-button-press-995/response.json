@@ -1,0 +1,1275 @@
+{
+ "graph": {
+  "title": "LoRa remote LED control with two Arduino MKR WAN 1310 boards (sender and receiver circuits)",
+  "source_id": "WAN1310_T3 (Arduino MKR WAN 1310 LoRa sender/receiver tutorial)",
+  "new_part_types": [
+   {
+    "type": "arduino-mkr-wan-1310",
+    "name": "Arduino MKR WAN 1310",
+    "category": "board",
+    "ports": [
+     {
+      "name": "AREF",
+      "kind": "header-pin"
+     },
+     {
+      "name": "DAC0/A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "ANT",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wan-1310",
+    "label": "Sender MKR WAN 1310",
+    "props": []
+   },
+   {
+    "id": "ant1",
+    "type": "antenna-gps-active-sma",
+    "label": "Sender antenna",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Sender breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Black jumper (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Yellow jumper (pin 2)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "mkr2",
+    "type": "arduino-mkr-wan-1310",
+    "label": "Receiver MKR WAN 1310",
+    "props": []
+   },
+   {
+    "id": "ant2",
+    "type": "antenna-gps-active-sma",
+    "label": "Receiver antenna",
+    "props": []
+   },
+   {
+    "id": "bb2",
+    "type": "breadboard",
+    "label": "Receiver breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "LED series resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Black jumper (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Green jumper (pin 2)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ant1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "ANT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ant2",
+    "u_port": null,
+    "v": "mkr2",
+    "v_port": "ANT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Two separate circuits are built: the sender (mkr1, bb1, btn1) and the receiver (mkr2, bb2, led1, r1). Each board has its own antenna.",
+   "The antenna type antenna-gps-active-sma comes from the parts list. I could not check its ports, so the antenna edges leave the antenna port null and use the board's ANT port, the u.FL connector. The ANT port belongs to the new MKR WAN 1310 type.",
+   "The breadboard catalogue calls bank 't' rows a-e, but the images label the top half f-j. I mapped image rows j,i,h,g,f to catalogue rows a,b,c,d,e on bank 't'. The part legs are in image row g (catalogue d), and the jumper ends are in image row f (catalogue e).",
+   "Image columns were read from pixel positions. The pushbutton legs are in columns 5 and 7 and the black and yellow wires share those columns. The pushbutton's two sides are assumed to be 1.l and 2.r, because the image shows only two legs, one on each side.",
+   "The pushbutton has no external resistor. The sketch uses INPUT_PULLUP, so the button pulls pin 2 to GND when pressed.",
+   "In the receiver, the LED cathode (shorter lead) is in column 6 with the GND wire. The anode (bent, longer lead) is in column 8 with the resistor. The resistor runs from column 8 to column 11, where the green wire from pin 2 ends.",
+   "The resistor value is not given in the manual, so I assumed 220 ohms, a typical LED series resistor.",
+   "The USB cables and the laptop are not modelled, because the diagrams do not show them."
+  ]
+ },
+ "graph_initial": {
+  "title": "LoRa remote LED control with two Arduino MKR WAN 1310 boards (sender and receiver circuits)",
+  "source_id": "WAN1310_T3 (Arduino MKR WAN 1310 LoRa sender/receiver tutorial)",
+  "new_part_types": [
+   {
+    "type": "arduino-mkr-wan-1310",
+    "name": "Arduino MKR WAN 1310",
+    "category": "board",
+    "ports": [
+     {
+      "name": "AREF",
+      "kind": "header-pin"
+     },
+     {
+      "name": "DAC0/A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "A6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VIN",
+      "kind": "header-pin"
+     },
+     {
+      "name": "VCC",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "RESET",
+      "kind": "header-pin"
+     },
+     {
+      "name": "ANT",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-wan-1310",
+    "label": "Sender MKR WAN 1310",
+    "props": []
+   },
+   {
+    "id": "ant1",
+    "type": "antenna-gps-active-sma",
+    "label": "Sender antenna",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Sender breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Pushbutton",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Black jumper (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Yellow jumper (pin 2)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "yellow"
+     }
+    ]
+   },
+   {
+    "id": "mkr2",
+    "type": "arduino-mkr-wan-1310",
+    "label": "Receiver MKR WAN 1310",
+    "props": []
+   },
+   {
+    "id": "ant2",
+    "type": "antenna-gps-active-sma",
+    "label": "Receiver antenna",
+    "props": []
+   },
+   {
+    "id": "bb2",
+    "type": "breadboard",
+    "label": "Receiver breadboard",
+    "props": []
+   },
+   {
+    "id": "led1",
+    "type": "led",
+    "label": "Generic LED",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   },
+   {
+    "id": "r1",
+    "type": "resistor",
+    "label": "LED series resistor",
+    "props": [
+     {
+      "key": "value",
+      "value": "220"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Black jumper (GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Green jumper (pin 2)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "green"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ant1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "ANT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "mkr1",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "7t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "5t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "7t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ant2",
+    "u_port": null,
+    "v": "mkr2",
+    "v_port": "ANT",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "6t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "mkr2",
+    "v_port": "2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "bb2",
+    "v_port": "11t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "C",
+    "v": "bb2",
+    "v_port": "6t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "led1",
+    "u_port": "A",
+    "v": "bb2",
+    "v_port": "8t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "1",
+    "v": "bb2",
+    "v_port": "8t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11t.d",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "r1",
+    "u_port": "2",
+    "v": "bb2",
+    "v_port": "11t.d",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Two separate circuits are built: the sender (mkr1, bb1, btn1) and the receiver (mkr2, bb2, led1, r1). Each board has its own antenna.",
+   "The antenna type antenna-gps-active-sma comes from the parts list. I could not check its ports, so the antenna edges leave the antenna port null and use the board's ANT port, the u.FL connector. The ANT port belongs to the new MKR WAN 1310 type.",
+   "The breadboard catalogue calls bank 't' rows a-e, but the images label the top half f-j. I mapped image rows j,i,h,g,f to catalogue rows a,b,c,d,e on bank 't'. The part legs are in image row g (catalogue d), and the jumper ends are in image row f (catalogue e).",
+   "Image columns were read from pixel positions. The pushbutton legs are in columns 5 and 7 and the black and yellow wires share those columns. The pushbutton's two sides are assumed to be 1.l and 2.r, because the image shows only two legs, one on each side.",
+   "The pushbutton has no external resistor. The sketch uses INPUT_PULLUP, so the button pulls pin 2 to GND when pressed.",
+   "In the receiver, the LED cathode (shorter lead) is in column 6 with the GND wire. The anode (bent, longer lead) is in column 8 with the resistor. The resistor runs from column 8 to column 11, where the green wire from pin 2 ends.",
+   "The resistor value is not given in the manual, so I assumed 220 ohms, a typical LED series resistor.",
+   "The USB cables and the laptop are not modelled, because the diagrams do not show them."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 71.6,
+  "input_tokens": 34119,
+  "output_tokens": 7691,
+  "cost_usd": 0.1725,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 20.6,
+   "check_seconds": 0.0,
+   "input_tokens": 9522,
+   "output_tokens": 517,
+   "cost_usd": 0.0233,
+   "listed": 9,
+   "matched": 5,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino IDE (online or offline)",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "LoRa library installed, see the github repository",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "2x Arduino MKR WAN 1310  (link to store)",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html (The page describes the Arduino MKR WAN 1300, which is a different board from the)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 7.9
+    },
+    {
+     "item": "2x antenna (link to store)",
+     "card": "antenna-gps-active-sma",
+     "skipped": false
+    },
+    {
+     "item": "1x Pushbutton",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "1x Generic LED",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "Jumper wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Breadboard(s)",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "2x Micro USB cable",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 51.0,
+   "input_tokens": 24597,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7174,
+   "cost_usd": 0.1492,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 15.7,
+  "cost_usd": 0.0234,
+  "types": [
+   {
+    "type": "arduino-mkr-wan-1310",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "no search result"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/ARDUINO-MKR-WAN-1300-LORA-CONNECTIVITY-p-3164.html (The page describes the Arduino MKR WAN 1300, an earlier and different board from)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

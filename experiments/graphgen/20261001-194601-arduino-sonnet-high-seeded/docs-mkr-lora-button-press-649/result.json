@@ -1,0 +1,94 @@
+{
+ "case": "docs-mkr-lora-button-press-649",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 67.9,
+  "input_tokens": 56147,
+  "output_tokens": 11398,
+  "cost_usd": 0.2249,
+  "repair_rounds_used": 1
+ },
+ "parts": 15,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The tutorial has two separate circuits (sender and receiver), both included in one graph: mkr1/bb1/btn1 are the sender, mkr2/bb2/led1/r1 the receiver. Both are kept because the manual builds both.",
+  "The MKR WAN 1300 and the antenna are not in the catalogue, so they were added as new part types. To fix the lug-to-lug validation error, the antenna FEED port is now kind 'wire-end' and the board ANT port is kind 'header-socket'. This is a compatible pair. The board USB port stays a 'lug'.",
+  "Breadboard coordinates are read from the images. The picture's upper half (rows j-f) is bank 'b' and the lower half (rows e-a) is bank 't'.",
+  "Only two pushbutton legs are visible, at columns 5 and 7. They are modelled as 1.l and 2.l, so one leg is on each switch side. The side-to-leg mapping is a guess.",
+  "In the sender, GND (black) goes to the button's col-5 strip and pin 2 (yellow) to the col-7 strip. Pin 2 uses INPUT_PULLUP, so pressing the button pulls pin 2 to GND.",
+  "In the receiver, the LED cathode is in column 6 with the GND wire (black). The LED anode is in column 8 and the resistor runs from column 8 to column 11. The pin 2 wire (green) is in column 11.",
+  "The resistor value is not stated, so 220 ohm is assumed. The image shows red bands.",
+  "The manual lists a micro USB cable for each board, so they are included. They are joined only to the boards; the laptops are not modelled. The usb-cable catalogue entry has no ports, so the cable side port is null.",
+  "Nothing is shown connected to the breadboard power rails."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.5,
+   "input_tokens": 24509,
+   "cache_read_tokens": 5414,
+   "output_tokens": 6572,
+   "cost_usd": 0.1432,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.4,
+   "input_tokens": 31638,
+   "cache_read_tokens": 24507,
+   "output_tokens": 4826,
+   "cost_usd": 0.0817,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "led"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-wan-1300",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "antenna",
+   "family": "antenna",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 9.7
+}

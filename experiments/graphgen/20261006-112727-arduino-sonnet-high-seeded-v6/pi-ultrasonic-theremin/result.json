@@ -1,0 +1,82 @@
+{
+ "case": "pi-ultrasonic-theremin",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 77.3,
+  "input_tokens": 60999,
+  "output_tokens": 11599,
+  "cost_usd": 0.1616,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as step 1; only the labels of r1 and r2 were corrected to describe the voltage divider (r1 330 ohm from echo to the junction, r2 470 ohm from the junction to GND).",
+  "The circuit image is the authority for the sensor wiring: sensor in row j columns 1-4 (VCC, Trig, Echo, GND), red wire to Pi pin 2 (5V), green wire to pin 7 (GPIO 4), echo goes via a blue wire to column 4 of the lower half, then r1 to column 8, r2 from column 8 to column 12, GPIO 17 (pin 11) taken from column 8, column 12 to the negative rail, rail to Pi GND pin 39. This differs from the text, which says 3V3 for VCC, trigger on GPIO 27 and four direct jumper leads.",
+  "Breadboard hole names follow the catalogue: the image's rows f-j (top half) are bank 'b', rows a-e (lower half) are bank 't'. The negative rail holes are numbered by position along the rail and are approximate; any hole on the rail is the same strip.",
+  "The HC-SR04 echo output is 5 V, so the 330/470 ohm divider brings it down to about 3 V for the Pi's GPIO 17. The sensor is powered from 5V (image), within its 4.5-5.5 V range.",
+  "The buzzer has no image. Following the text, it is connected directly to the Pi by two jumper leads: pin 2 (+) to GPIO 21 (header pin 40) and pin 1 (-) to GND (header pin 34), respecting the card's polarity.",
+  "Raspberry Pi 4 GPIO ports are physical header pin numbers: pin 2 = 5V, 7 = GPIO4, 11 = GPIO17, 34 and 39 = GND, 40 = GPIO21.",
+  "Resistor values (330 and 470) are assumed from the image's colour bands; the manual gives none. The sensor's port names in the edges (TRIG, ECHO) follow the catalogue's HC-SR04 card."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.9,
+   "input_tokens": 29202,
+   "cache_read_tokens": 22995,
+   "output_tokens": 2400,
+   "cost_usd": 0.0534,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Ultrasonic theremin\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/ultrasonic-theremin\", \"new_p"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 15,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 58.4,
+   "input_tokens": 31797,
+   "cache_read_tokens": 29200,
+   "output_tokens": 9199,
+   "cost_usd": 0.1082,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Ultrasonic theremin\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/ultrasonic-theremin\", \"new_p"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 7.2
+}

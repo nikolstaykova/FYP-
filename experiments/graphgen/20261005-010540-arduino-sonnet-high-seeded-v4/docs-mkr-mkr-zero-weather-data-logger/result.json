@@ -1,0 +1,184 @@
+{
+ "case": "docs-mkr-mkr-zero-weather-data-logger",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 90.6,
+  "input_tokens": 45978,
+  "output_tokens": 7843,
+  "cost_usd": 0.1489,
+  "repair_rounds_used": 0
+ },
+ "parts": 14,
+ "edges": 40,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 3,
+ "problems": [],
+ "notes": [
+  "The MKR Zero is not in the catalogue, so it is a new part type. Its pins follow the board silkscreen (D0-D14, A0-A6, VCC (3.3V), 5V, VIN, GND, plus the battery JST and microSD slot).",
+  "The manual text says to plug the MKR Zero into the breadboard. The picture shows it beside the breadboard, connected only by jumper wires, and the picture is treated as the authority.",
+  "Breadboard columns are estimated from the picture. The DHT22 (RHT03) sits in row a of columns 27-30, in the order VCC, data, NC, GND.",
+  "The picture shows the 100 nF capacitor held by two blue wires, so it is modelled as two jumper wires whose far ends are joined to the capacitor leads. The 4.7k pull-up is modelled the same way with two yellow wires, from the VCC strip and the data strip.",
+  "The 4.75k resistor in the parts list is given as value 4700. The text says 4k7.",
+  "Pin 7 is the data pin per the text. The orange wire is drawn to the header near pin 7.",
+  "The microSD card and the LiPo battery are in the picture and the text, so they are included. The battery JST connection is modelled as two wire-end ports."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 50.7,
+   "check_seconds": 0.0,
+   "input_tokens": 30995,
+   "output_tokens": 1424,
+   "cost_usd": 0.067,
+   "listed": 7,
+   "matched": 4,
+   "looked_up": 2,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino MKR Zero",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield, a CAN bus shield. It is not th)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-485-SHIELD-p-3179.html (The content describes the Arduino MKR 485 Shield (RS-485 expansion shield), not )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 10.7
+    },
+    {
+     "item": "Jumper wires (generic)",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Capacitor 100 nF",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-ceramic-1-5pf-100v-0-25pf.html (Content describes a 1.5pF 100V ceramic capacitor (COM-30023), not a 100 nF capac)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/super-capacitor-10f-2-5v.html (The page describes a 10 F / 2.5 V supercapacitor (SparkFun COM-00746), not a 100)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "budget",
+       "stopped after 2 checks"
+      ]
+     ],
+     "seconds": 40.0
+    },
+    {
+     "item": "Resistor 4.75k ohm",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "microSD card",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Medium breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "DHT22 Temperature and Humidity sensor",
+     "card": "dht22",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.9,
+   "input_tokens": 14983,
+   "cache_read_tokens": 11120,
+   "output_tokens": 6419,
+   "cost_usd": 0.0819,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.667
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "capacitor-100nf",
+   "family": "capacitor-100nf",
+   "checked": false
+  },
+  {
+   "type": "lipo-battery",
+   "family": "lipo-battery",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.6
+}

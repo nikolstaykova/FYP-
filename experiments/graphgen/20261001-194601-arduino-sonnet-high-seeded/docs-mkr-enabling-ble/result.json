@@ -1,0 +1,64 @@
+{
+ "case": "docs-mkr-enabling-ble",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 24.3,
+  "input_tokens": 25722,
+  "output_tokens": 3687,
+  "cost_usd": 0.1192,
+  "repair_rounds_used": 0
+ },
+ "parts": 7,
+ "edges": 17,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The MKR WiFi 1010 is not in the catalogue, so a new part type was created from the pin labels in the diagram (AREF, A0-A6, 0-14, 5V, VIN, VCC, GND, RESET).",
+  "The image shows the board's top-left pin labelled DAC0/A0. I named it A0.",
+  "The breadboard image labels the upper half as rows j-f. The catalogue puts rows f-j in bank 'b', so I used '<col>b.<row>' names for those holes. Columns are read off the image.",
+  "Resistor: columns 3 and 6, row h. LED: columns 6 and 8, row i. Green wire: board pin 2 to 3b.g, which shares a strip with the resistor leg in column 3. Black wire: board GND to 8b.h, which shares a strip with the LED cathode.",
+  "LED polarity: the bent (longer) leg is the anode, in the resistor's column 6. The straight leg is the cathode, in column 8, which goes to GND. This matches the schematic: pin 2, then resistor, then LED, then GND.",
+  "The Micro USB cable is in the parts list but not drawn. I added it as a joined edge to the board with no port names, because the usb-cable catalogue entry has no ports.",
+  "The breadboard power rails are not used.",
+  "The analog pin A1 read in the code uses nothing external. The tutorial wires only the LED circuit."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.3,
+   "input_tokens": 25722,
+   "cache_read_tokens": 5414,
+   "output_tokens": 3687,
+   "cost_usd": 0.1192,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-wifi-1010",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 11.9
+}

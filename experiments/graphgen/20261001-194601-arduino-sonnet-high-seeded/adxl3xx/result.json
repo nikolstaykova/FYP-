@@ -1,0 +1,119 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 26.3,
+  "input_tokens": 20181,
+  "output_tokens": 4246,
+  "cost_usd": 0.0814,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The accelerometer breakout is mapped to the catalogue type adxl335 (ports ST, Z, Y, X, GND, VCC); the manual's VDD is the VCC port.",
+  "The breakout's 6-pin header is plugged into breadboard columns 4-9 in row j. In the image the upper half of the breadboard is labelled j..f, so it is the catalogue's 'b' bank, giving holes 4b.j to 9b.j. Each jumper wire ends in row i of the same column, i.e. the same strip.",
+  "Wiring (from the image and the table): A0 to ST, A1 to Z, A2 to Y, A3 to X, A4 to GND (driven LOW in code), A5 to VDD (driven HIGH in code).",
+  "The schematic drawing shows X and Z crossed over, but the circuit image and the pin table are taken as authoritative. The pin table says A1 is Z, A2 is Y and A3 is X.",
+  "No power comes from the Uno's 5V or GND pins. The analog pins A4 and A5 act as digital outputs for ground and power.",
+  "The Uno-side wire ends are modelled as 'a' and the breadboard-side ends as 'b'. The manual does not say which end is which."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.3,
+   "input_tokens": 20181,
+   "cache_read_tokens": 10995,
+   "output_tokens": 4246,
+   "cost_usd": 0.0814,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 13.9
+}

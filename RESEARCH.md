@@ -50,6 +50,7 @@
 | [R19](#r19-repeated-sub-assemblies) | Repeated sub-assemblies (the same piece built several times) | ✅ **Requirement set**; details open until build |
 | [R20](#r20-manual-survey-connections-across-sauder-lego-and-arduino) | Manual survey: connections across Sauder, LEGO and Arduino; do repeated copies differ? | ✅ Done → [`GRAPH_SPEC.md`](./GRAPH_SPEC.md) |
 | [R21](#r21-experiment-can-claude-build-the-graph) | Experiment: can Claude build the graph from 100 LEGO + 100 Arduino manuals? | 🟡 Set up; results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md) |
+| [R22](#r22-architecture-parts-first-one-pipeline-for-every-domain) | **Architecture:** parts first, one pipeline for every domain (v3, v4) | ✅ **Decided and built**; v4 under test |
 
 ---
 
@@ -1188,6 +1189,105 @@ edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel
 - LEGO connections are compared by **design pair** among plain bricks, plates and tiles only; slopes, Technic, minifigures etc. are not scored.
 - The Arduino answer key is CircuitQuest's circuit; where it differs from the tutorial (e.g. an extra LED in Button) those parts are excluded by hand only for known cases.
 - Arduino nets are compared strictly: a resistor placed on the other side of an LED (electrically equivalent) counts as different.
+
+---
+
+## R22. Architecture: parts first, one pipeline for every domain
+
+**Date:** 4–5 October 2026 · **Status:** ✅ Decided and built ([`graphgen/pipeline.py`](./graphgen/pipeline.py), [`graphgen/domains.py`](./graphgen/domains.py), [`graphgen/parts/`](./graphgen/parts/)); v4 under test, results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+
+**Why:** R21 showed Claude reads electronics tutorials well but LEGO booklets poorly: on 99 sets, v2 found 76% of the pieces by design and 44% of brick contacts, at 457 s and $1.48 a set, and its repair loop fixed form, not content. Vision on whole PDFs guesses which piece is which from small pictures. The architecture below was worked out in a design discussion with an AI assistant on 4 October 2026 and adopted as the plan.
+
+### The decisions
+
+| # | Decision | Reason |
+|---|---|---|
+| D1 | **Know the parts before building the graph.** A manual's parts come from a structured source first; Claude only connects them. | Structured inventories are exact; vision misses or invents small pieces. |
+| D2 | **LEGO parts: Rebrickable.** Use its free daily CSV dump as the local database, not scraping; the live API (`/api/v3/lego/sets/{set}/parts/`, `/lego/parts/{part}/`) only for what the dump lacks (a set released this week). | Complete for sets older than a few days; no rate limits; scraping would break its terms. BrickLink (OAuth, approval needed) and Brickset (set-level only) kept as alternatives. |
+| D3 | **LEGO graph, two paths.** **Path A:** if the set has an LDraw model (LDraw Official Model Repository), parse it by code: exact positions, steps (`0 STEP`), no AI. **Path B:** if not, split the official PDF step by step and give Claude one step at a time with the Rebrickable part names. | LDraw files cover popular sets (fan-made, not every set); a single step with the parts list is far less cluttered than a whole PDF. |
+| D4 | **One architecture for every domain.** The 6 layers (0 part catalogue, 1 instances, 2 connections, 3 derived groups, 4 dependencies, 5 laws) are shared; domains differ only by **data** (catalogue cards) and **Layer 5 validators**. No per-domain pipeline. | Separate architectures would duplicate logic and multiply maintenance. |
+| D5 | **Ingestion is decoupled from the graph.** Each source has a small **site adapter** (fetch code + its prompt rules); a **registry** (`registry.json`, data, not Markdown) maps domains to sources; one **central ingestion function** routes a URL or name to the right adapter; one **universal prompt engine** (Claude + a schema) turns any source's content into the standard card; a **schema gate** stores valid cards and quarantines the rest. | A site changing its layout means changing one adapter; a new domain means one adapter and one registry row. Markdown is kept for people (this file), JSON for the machine. |
+| D6 | **Scraper first, LLM second.** Fetch the page with code, read its JSON-LD product data, strip menus and scripts, check it is a real product page, and only then send the cleaned text to Claude. | ~80–90% fewer tokens than letting the model browse; shop pages blocked to bots are reached through official APIs instead. |
+| D7 | **Electronics sources:** Adafruit, SparkFun, Seeed, Pololu by page; DigiKey and Mouser through their official APIs. No global part numbering exists, so parts are found by name and given ids by naming rules. | Hobby shops publish pinouts and guides; distributors cover raw components and datasheets. |
+| D8 | **Layer 0 cards are reusable:** a card describes a part type (ports with kinds, what conducts inside, symmetric ports, polarity, rotation symmetry, mirror twin, geometry, source) and never a tutorial. Scrape once, use forever. | The tutorial-specific part (which hole, which step) lives in Layers 1–4. |
+| D9 | **Deterministic before LLM:** never ask a model what code can compute (plain LEGO brick cards from their names, contacts from LDraw geometry, nets by union-find). | Milliseconds and free, and exact. |
+| D10 | **Lookup order for any part:** local Layer 0 store → the source (Rebrickable / a shop) → fallback (Claude reading the PDF), each result stored for the next manual. | Cost and latency fall as the catalogue fills. |
+
+### How it is built
+
+```
+registry.json (data) ──► sources.py (one adapter per site: search, fetch_data, deterministic, prompt rules)
+                                   │
+                ingest.py: local store ► route ► fetch + existence check ► code card | prompt engine ► schema gate
+                                   │                                                         │
+                         cards.py: Layer 0 store (JSON) ◄──────── valid ─────────────────────┘── invalid ► quarantine
+                                   │
+pipeline.py (same code for every domain; domains.py gives each domain's recipe):
+   1 parts  ► 2 build (builders in recipe order: ldraw | pages | one-shot) ► 3 check (logical view + laws)
+            ► 4 repair (recipe's policy) ► 5 upkeep (card any part type the model had to draft)
+```
+
+| Recipe field | Electronics | LEGO |
+|---|---|---|
+| Parts list first | **by code, no Claude call:** the tutorial's hardware section is read and each item found in the card store by free-text search (MongoDB `$text` style: weighted fields, stop words, stemming, "phrases", -exclusions, ranked by text score; other names in `aliases.json`); only unmatched parts go to the shops (top result per shop, at most 3 checks) | Rebrickable set inventory (local dump); booklet parts page by code, then Claude, as fallback |
+| Part cards from | registry `electronics`: Adafruit → SparkFun → Pololu → Seeed → Mouser → DigiKey | registry `lego`: Rebrickable (code for plain bricks/plates/tiles, prompt engine for the rest) |
+| Builders, in order | one-shot (tutorial + images) | `ldraw` (Path A) → `pages` (Path B) |
+| Prompt | full verified catalogue | only this set's cards + its parts list; "an edge to every piece it rests on" |
+| Laws (Layer 5) | circuit checks E1–E5 + spec rules | LEGO checks L1–L4 + spec rules |
+| Repair | every issue, up to 2 rounds (as v2) | real errors only (E1–E5, L3 separate groups, L4 pieces differ from the list) |
+
+### Where the build differs from the discussion, and why
+
+- **Step splitting is by page, not by step.** Newer booklets print step numbers as text (they could be cropped by code), but older ones are 2 scanned pages with no text. A page holds one to four steps; cropping single steps reliably needs layout detection, which is left for later. Each page is one turn, in one conversation, so pieces from earlier pages stay known.
+- **Naming keeps the verified catalogue's ids** (`resistor` with `value=220`, not `resistor-220`): the 82 verified CircuitQuest cards and the answer keys use them (decided in R21). New types follow the discussion's rules (`temp-dht11`, `arduino-nano-33-ble`, `rpi-pico-w`).
+- **Electronics parts are matched by code, not by a Claude call.** v3's Claude matching step plus shop lookups cost 56 s a tutorial and did not change accuracy. v4 reads the parts list and searches the card store by code (milliseconds); only parts the store lacks go to the shops, with a budget per part.
+- **DigiKey and Mouser adapters are written but idle** until their free API keys are in `.env` (`DIGIKEY_CLIENT_ID`/`DIGIKEY_CLIENT_SECRET`, `MOUSER_API_KEY`); their pages refuse plain requests (HTTP 403 / "access denied"), and the discussion's Jina Reader also returned 403.
+
+### What testing found so far
+
+- **The schema gate earned its place at once:** 4 of the 82 *verified* electronics cards failed it (repeated pin names on three boards, a DIP switch whose behaviour named pins it did not list); fixed at the source.
+- **Building every LEGO card:** 1,018 distinct pieces in the 100 sets: 46 by code, 972 by the prompt engine in 25 batches; 2 minutes, $1.16, once.
+- **Path A is fast but an LDraw model is not always the set as sold:** 3 s a set by code, but only 23 of 100 models have exactly the official piece count, 71 are within 20%, and 15 differ by more than half (extra minifigures, alternate or several models in one file). Path A should be used only when the model's piece list agrees with Rebrickable's; otherwise fall back to Path B.
+- **On our test set Path A cannot be scored for accuracy:** the LDraw models are also the answer key for contacts, so it scores 100% by construction. It is measured for speed and coverage only; Path B is the one evaluated for accuracy.
+
+### v5: one targeted fix per domain (5 October 2026)
+
+The evaluation (`graphgen/evaluate.py`: parts and graph scored separately, with the most frequent mistakes) showed where each domain fails, so v5 changes **one thing per domain** to measure its effect:
+
+| | Change | Evidence that motivated it |
+|---|---|---|
+| Electronics | **E6 parts-count law:** quantities stated in the tutorial's list must match the graph | When the parts are right, v2's circuit is right 27 times in 29; the wrong parts are mostly counts |
+| Electronics | **Pin notes as data** (`graphgen/parts/card_notes.json`) | The LED matrix and MIDI tutorials fail in every version |
+| LEGO | **`rests_on` output:** each piece names every piece it sits on; code makes the joins | Claude wrote about one join per piece (a chain); a brick usually rests on 2–3 |
+| Any domain | **Agreement of two independent builds** (`graphgen/consensus.py`): both graphs are compared on the logical view (nets, direct joins), components are aligned by type and neighbourhood, only agreed relations are kept. Built and tested, **switched off** | Raises precision at double the cost; cannot catch a mistake both builds share |
+
+Scoring was made fairer for every version alike: a reviewed answer-key list (`research/data/answer_key_review.json`), series-order equivalence for resistors/LEDs, and LEGO contacts over slopes and round/special pieces too. Results: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+
+**Free-text part search.** Electronics parts are matched to cards by a MongoDB `$text`-style index (`graphgen/parts/search.py`): weighted fields (id, aliases, name, category), stop words, stemming, quoted phrases, -exclusions, text score; component values (220 ohm, 100 nF) are left out of the query, sizes are normalised ("8 x 8" → 8x8), and a hit must contain two thirds of the query's terms and every model number. Other names live in `aliases.json` (data).
+
+**LEGO v5 result (all 100 sets, 7 October 2026).** `rests_on` with the booklet read page by page finds the most real contacts of any version (recall 0.70; v3 0.64, v2 0.55) because Claude names more supports per piece (1.36 joins per piece; v3 1.15). Page by page costs exactness, though: only 65% of sets have exactly the right pieces (v3 100%), since pages repeat pieces already built and an additive repair cannot remove them. Joins are less often real (precision 0.36; v3 0.46), as pieces get joined to parts from earlier pages they do not touch. It is also slower and dearer than v3 (432 s and $1.71 per set; v3 362 s and $0.95). Conclusion: keep `rests_on`, but read the whole booklet in one turn, which is what v6 does.
+
+### v6: geometry laws and reading links (6 October 2026)
+
+| | Change | Evidence that motivated it |
+|---|---|---|
+| Electronics | **Breadboard placement laws** (B1/B2, as CircuitQuest checks): a part's legs in nearby holes and in order; a pushbutton straddles the gap. Same rule in the prompt | Claude had no sense of the board's geometry |
+| Electronics | **Pin-table law** (E11) and **LED-matrix resistor law** (E12: resistors on rows only or on columns only) | row-column-scanning was wrong in v1–v5 |
+| LEGO | **Path A at stud level** (`ldraw_studs.py`: studs, receptacles, physical laws G1–G4, cross-check with the box model); **Path B reads the whole booklet** in one turn | Page-by-page (v5) lost exact pieces; whole-booklet v3 had them all |
+| Any domain | **`open_page` tool** (`graphgen/browser.py`, served by the same MCP server as `lookup_part`): headless Chrome runs the page's JavaScript and returns its text and circuit images; only the recipe's sites can be opened | docs.arduino.cc builds pages in JavaScript, so a plain fetch (WebFetch) returned no text. The app should take a tutorial's link, not a saved copy |
+
+Result: electronics v6 has no real model errors (28/28 reviewed), and reading the 48 built-in examples from their links is as accurate as reading the saved text, at the same speed. Details: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+
+### v7: LEGO contacts (7 October 2026)
+
+| | Change | Evidence that motivated it |
+|---|---|---|
+| Scoring | **Answer key from stud geometry** (`stud_key.py`): clutch and pin joins from the parts library's primitives, for every kind of piece. Validated by hand-built models with known answers, physical laws G1–G4 per model, cross-check with the box method. Ambiguous joins (a stud two pieces seem to hold) are not scored; 38 "trusted" sets | The old key saw only plain bricks, plates and tiles, assumed models stand upright (40457-1 is tilted 45°), and expanded custom parts embedded in 26 model files into primitives (7893-1: 803 "pieces", really 419) |
+| LEGO | **One id per physical piece** from the parts list | Most missed contacts are between identical pieces (Plate 1×6 on Plate 1×6) |
+| LEGO | **Positions on the stud grid**; code computes joins from them (scored separately) | Claude picks the wrong one of several look-alike plates |
+| LEGO | **Laws L6–L10** for Path B: ids once, step order, nothing on smooth tiles, stud capacity, positions agree with `rests_on` and never overlap | Half the joins Claude wrote were not real (old key) |
+
+Re-scored with the stud key, every version's joins are more often real than the old key said (v3: 0.53, not 0.46), and the ranking of v1–v5 holds. Pieces are compared under one name per physical piece (Rebrickable part relationships, letter variants, an alias list: `stud_key.canon`), since the parts list and the 3D models name mould variants differently; this raised the scorable share of pieces from 90% to 97%. Details: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
 
 ---
 

@@ -1,0 +1,136 @@
+{
+ "case": "21032-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 857.6,
+  "input_tokens": 728845,
+  "output_tokens": 136830,
+  "cost_usd": 3.0687,
+  "repair_rounds_used": 1
+ },
+ "parts": 361,
+ "edges": 383,
+ "repeats": [
+  {
+   "group": "water",
+   "times": 31,
+   "overrides": 0
+  },
+  {
+   "group": "pave",
+   "times": 11,
+   "overrides": 0
+  },
+  {
+   "group": "deck",
+   "times": 10,
+   "overrides": 0
+  },
+  {
+   "group": "pylon",
+   "times": 4,
+   "overrides": 2
+  },
+  {
+   "group": "shellA",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "shellB",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "shellC",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 21,
+ "new_types_added": 21,
+ "problems": [],
+ "notes": [
+  "Single model: LEGO Architecture 21032 Sydney (Sydney Tower, Deutsche Bank Place, Harbour Bridge, Opera House). Part types come from the Element IDs on the inventory page (p.135); 21 IDs were not in the catalogue and were added as new types, with names/ports inferred from the pictures.",
+  "Ids are b1..b253 in build order. Pieces built as repeated groups (31 water plates, 11 pavement jumper plates, 10 bridge-deck jumper plates, 4 pylon units, 3 pairs of Opera shells) are in repeats.",
+  "Port fixes after validation: rod-on-stud, rod-in-clip and bush-on-pin joins now use null ports because the catalogue port kinds do not pair; shared single-use ports (tile anti-studs, tan brick studs, shell plate studs) were spread over distinct ports or left null.",
+  "Base plate stacking (steps 1-26) is shown as a chain of overlapping plates; the exact stud-to-stud overlaps cannot be read from the line drawings, so each plate is joined to the previous one.",
+  "Water plates, pavement jumper plates and bridge-deck jumper plates each belong to several different base plates; because repeat copies can only point at one external part, they are joined to one representative plate (b34, b18, b77). Opera House base b227 is joined to b27 for the same reason.",
+  "Pylon units (step 55): each has two side-stud bricks, two 1x1 plates and two 1x4 tiles. How the two tiles sit on the side studs is unclear, so both tiles are joined to both bricks (side-stud.1 and side-stud.2 of the new type). Copies 1-2 are attached to the left tan 1x3 brick (b59) and copies 3-4 to the right one (b46); this is approximate.",
+  "Bridge: the hinge-finger plates b84/b85 clip onto clip plates b81/b82; the arch chain of four tile segments is hinged end to end and clipped to the end clip plates b80/b83 (steps 52-53). Which segment end (finger vs clip) meets which is read from the pictures and may be swapped. The leaning braces' top ends are not shown clearly and have no extra edge.",
+  "Deutsche Bank Place: 7 floors of two dark-blue 2x4 plates plus a white top plate and clip plates, then the stepped top. White rod assignments in steps 69-74 (which rods go into which clips) are approximate; there are 10 plain white rods (8x 6116602 + 2x 6093526) and 5 rods with a ring end (6081986; 4 on the tower, 1 antenna). The diagonal rods (b161/b162) swing on 6052824 hinge pieces after step 68.",
+  "Sydney Tower: tubes b194/b195 with the red axle extender between, blue pins, bushes, yellow axles, two black cones and the dish stack follow steps 86-95; the stated orientation of the cones/nozzle is approximate.",
+  "Opera House: each of the six white shells sits on a 4612342 plate whose pin goes into a tan bracket (6174919) pin hole. Slope pieces over the brackets are placed approximately."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 645.0,
+   "input_tokens": 314215,
+   "cache_read_tokens": 5507,
+   "output_tokens": 97169,
+   "cost_usd": 2.2076,
+   "check_seconds": 0.03,
+   "issues": 19,
+   "issue_rules": {
+    "V3": 10,
+    "V4": 9
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 212.6,
+   "input_tokens": 414630,
+   "cache_read_tokens": 314213,
+   "output_tokens": 39661,
+   "cost_usd": 0.8611,
+   "check_seconds": 0.02,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 19,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 361,
+  "pieces_built": 361,
+  "pieces_unmapped": 0,
+  "inventory_matched": 361,
+  "exact_matched": 361,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 383,
+  "contacts_expected": 82,
+  "contacts_predicted": 102,
+  "contacts_correct": 59,
+  "contact_precision": 0.578,
+  "contact_recall": 0.72
+ },
+ "score_initial": {
+  "pieces_expected": 361,
+  "pieces_built": 361,
+  "pieces_unmapped": 0,
+  "inventory_matched": 361,
+  "exact_matched": 361,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 383,
+  "contacts_expected": 82,
+  "contacts_predicted": 102,
+  "contacts_correct": 59,
+  "contact_precision": 0.578,
+  "contact_recall": 0.72
+ },
+ "postprocess_ms": 25.7
+}

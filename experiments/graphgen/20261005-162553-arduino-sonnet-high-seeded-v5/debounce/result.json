@@ -1,0 +1,204 @@
+{
+ "case": "debounce",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 50.5,
+  "input_tokens": 38577,
+  "output_tokens": 7537,
+  "cost_usd": 0.1108,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct; no parts added or dropped.",
+  "Breadboard coordinates follow the catalogue convention: bank 't' = rows a-e, bank 'b' = rows f-j. In the image the a-e half is drawn at the bottom, so rail 'tn' is the black/negative rail and 'tp' the red/positive rail next to it.",
+  "Rail hole numbers (tp.1, tp.3, tn.1, tn.7) are estimated from the image and only approximate. What matters is that the rails are the 5V and GND rails.",
+  "The pushbutton straddles the centre gap in columns 4 and 6. Side 1 (column 4) is on the 5V rail via the orange wire; side 2 (column 6) goes to Arduino pin 2 via the teal wire and to the 10k pull-down resistor.",
+  "The 10k resistor runs from column 6 (row c) to column 9 (row c). A short black wire takes column 9 (row b) to the GND rail.",
+  "Matches the schematic: 5V -> switch -> node on pin 2, and that node -> 10k resistor -> GND.",
+  "The Arduino GND wire goes to the second GND pin on the power header, mapped to GND.2."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 8.3,
+   "input_tokens": 18696,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1005,
+   "cost_usd": 0.0388,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 42.2,
+   "input_tokens": 19881,
+   "cache_read_tokens": 18694,
+   "output_tokens": 6532,
+   "cost_usd": 0.072,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 4.8
+}

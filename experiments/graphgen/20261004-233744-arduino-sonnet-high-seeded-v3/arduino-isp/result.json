@@ -1,0 +1,385 @@
+{
+ "case": "arduino-isp",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 49.9,
+  "input_tokens": 25140,
+  "output_tokens": 7861,
+  "cost_usd": 0.1374,
+  "repair_rounds_used": 0
+ },
+ "parts": 21,
+ "edges": 69,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Used the 'old style' wiring (D11/D12/D13 to target D11/D12/D13, D10 to target RESET, 5V-5V, GND-GND), as in the UNO-to-UNO picture.",
+  "The USB cable connects the programmer UNO to the computer (not a graph part); the usb-cable has no ports, so the edge has null ports. The target is powered from the programmer via 5V/GND.",
+  "The 10uF capacitor is placed with its legs directly in the programmer's RESET (positive) and GND headers, as the manual says it goes after the ISP sketch is uploaded. It is shown for completeness (the manual requires it for boards with USB interface chips).",
+  "Optional status LEDs follow the ArduinoISP sketch pins: D9 heartbeat, D8 error, D7 programming. Each is wired pin -> LED anode, LED cathode -> resistor -> ground rail. Resistor value assumed 220 ohm. Breadboard columns chosen by me; the manual gives no layout.",
+  "The parts list gives 6 jumper wires, but the optional LED circuit needs 4 more (3 signal wires and 1 ground wire), so 10 are used.",
+  "Programmer GND.1 is used by the capacitor, GND.3 goes to the target, and GND.2 goes to the LED ground rail; the choice among GND pins is arbitrary since they are the same net."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.3,
+   "input_tokens": 11185,
+   "output_tokens": 506,
+   "cost_usd": 0.029,
+   "check_seconds": 0.0,
+   "matched": 8,
+   "listed": 8,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 43.6,
+   "input_tokens": 13955,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7355,
+   "cost_usd": 0.1084,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 15,
+  "nets_built": 13,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor-ceramic": 2,
+   "capacitor-electrolytic": 1,
+   "resistor": 3,
+   "led": 3
+  },
+  "inventory_built": {
+   "board": 2,
+   "capacitor-10uf": 1,
+   "led": 3,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "20"
+    ],
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor-ceramic",
+     "1"
+    ],
+    [
+     "capacitor-ceramic",
+     "2"
+    ],
+    [
+     "capacitor-electrolytic",
+     "NEG"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor-ceramic",
+     "2"
+    ],
+    [
+     "crystal",
+     "1"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor-ceramic",
+     "1"
+    ],
+    [
+     "crystal",
+     "2"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "RESET"
+    ],
+    [
+     "capacitor-electrolytic",
+     "POS"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "board",
+     "12"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "board",
+     "RESET"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor-10uf",
+     "NEG"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "RESET"
+    ],
+    [
+     "capacitor-10uf",
+     "POS"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 15.6
+}

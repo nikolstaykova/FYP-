@@ -1,0 +1,753 @@
+{
+ "graph": {
+  "title": "Modbus TCP between two Opta devices with Arduino PLC IDE",
+  "source_id": "https://docs.arduino.cc/tutorials/opta/modbus-tcp-plc-ide",
+  "new_part_types": [
+   {
+    "type": "ethernet-switch",
+    "name": "Ethernet Switch",
+    "category": "network",
+    "ports": [
+     {
+      "name": "P1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P4",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "computer",
+    "name": "Computer (running Arduino PLC IDE)",
+    "category": "computer",
+    "ports": [
+     {
+      "name": "USB-C",
+      "kind": "header-socket"
+     },
+     {
+      "name": "USB-A",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "opta1",
+    "type": "arduino-opta",
+    "label": "Opta Slave (Server)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Server"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.2"
+     }
+    ]
+   },
+   {
+    "id": "opta2",
+    "type": "arduino-opta",
+    "label": "Opta Master (Client)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Client"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.1"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "eth1",
+    "type": "ethernet-cable",
+    "label": "RJ-45 LAN cable",
+    "props": []
+   },
+   {
+    "id": "eth2",
+    "type": "ethernet-cable",
+    "label": "RJ-45 LAN cable",
+    "props": []
+   },
+   {
+    "id": "switch1",
+    "type": "ethernet-switch",
+    "label": "Ethernet Switch (Optional)",
+    "props": []
+   },
+   {
+    "id": "pc1",
+    "type": "computer",
+    "label": "Computer - PLC IDE",
+    "props": [
+     {
+      "key": "software",
+      "value": "Arduino PLC IDE 1.0.7"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB-C",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-C",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB-C",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-A",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-A",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "A",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "A",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth2",
+    "u_port": "A",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth2",
+    "u_port": "A",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth2",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth2",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "Each Opta's ETH RJ45 port goes by RJ-45 cable to the Ethernet switch, as in the diagram. The tutorial says the switch is optional and the two Optas can be cabled directly, but its parts list recommends one and the diagram shows it, so it is built.",
+   "Each Opta's USB-C port goes by USB-C cable to the computer running the PLC IDE. The diagram draws one computer line branching to both Optas. I modelled it as two cables, one per Opta, using the computer's USB-C and USB-A ports as an assumption.",
+   "The usb-cable catalogue type has no ports, so its edges carry no port name.",
+   "The optional Modbus TCP compatible device and its field-line link in the diagram are not part of the parts list, so they are omitted.",
+   "The status LEDs and relays used in the example are on-board the Opta, so no external LEDs, resistors or wires are used."
+  ]
+ },
+ "graph_initial": {
+  "title": "Modbus TCP between two Opta devices with Arduino PLC IDE",
+  "source_id": "https://docs.arduino.cc/tutorials/opta/modbus-tcp-plc-ide",
+  "new_part_types": [
+   {
+    "type": "ethernet-switch",
+    "name": "Ethernet Switch",
+    "category": "network",
+    "ports": [
+     {
+      "name": "P1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P2",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P3",
+      "kind": "header-socket"
+     },
+     {
+      "name": "P4",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [
+     [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "computer",
+    "name": "Computer (running Arduino PLC IDE)",
+    "category": "computer",
+    "ports": [
+     {
+      "name": "USB-C",
+      "kind": "header-socket"
+     },
+     {
+      "name": "USB-A",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": false,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "opta1",
+    "type": "arduino-opta",
+    "label": "Opta Slave (Server)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Server"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.2"
+     }
+    ]
+   },
+   {
+    "id": "opta2",
+    "type": "arduino-opta",
+    "label": "Opta Master (Client)",
+    "props": [
+     {
+      "key": "role",
+      "value": "Modbus TCP Client"
+     },
+     {
+      "key": "ip",
+      "value": "192.168.1.1"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "usb2",
+    "type": "usb-cable",
+    "label": "USB-C cable",
+    "props": []
+   },
+   {
+    "id": "eth1",
+    "type": "ethernet-cable",
+    "label": "RJ-45 LAN cable",
+    "props": []
+   },
+   {
+    "id": "eth2",
+    "type": "ethernet-cable",
+    "label": "RJ-45 LAN cable",
+    "props": []
+   },
+   {
+    "id": "switch1",
+    "type": "ethernet-switch",
+    "label": "Ethernet Switch (Optional)",
+    "props": []
+   },
+   {
+    "id": "pc1",
+    "type": "computer",
+    "label": "Computer - PLC IDE",
+    "props": [
+     {
+      "key": "software",
+      "value": "Arduino PLC IDE 1.0.7"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "opta1",
+    "v_port": "USB-C",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-C",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB-C",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "opta2",
+    "v_port": "USB-C",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-A",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb2",
+    "u_port": null,
+    "v": "pc1",
+    "v_port": "USB-A",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "A",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "A",
+    "v": "opta1",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth2",
+    "u_port": "A",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth2",
+    "u_port": "A",
+    "v": "opta2",
+    "v_port": "ETH",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth2",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth2",
+    "u_port": "B",
+    "v": "switch1",
+    "v_port": "P2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "Parts are unchanged from step 1.",
+   "Each Opta's ETH RJ45 port goes by RJ-45 cable to the Ethernet switch, as in the diagram. The tutorial says the switch is optional and the two Optas can be cabled directly, but its parts list recommends one and the diagram shows it, so it is built.",
+   "Each Opta's USB-C port goes by USB-C cable to the computer running the PLC IDE. The diagram draws one computer line branching to both Optas. I modelled it as two cables, one per Opta, using the computer's USB-C and USB-A ports as an assumption.",
+   "The usb-cable catalogue type has no ports, so its edges carry no port name.",
+   "The optional Modbus TCP compatible device and its field-line link in the diagram are not part of the parts list, so they are omitted.",
+   "The status LEDs and relays used in the example are on-board the Opta, so no external LEDs, resistors or wires are used."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 91.8,
+  "input_tokens": 94260,
+  "output_tokens": 4809,
+  "cost_usd": 0.1744,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 75.1,
+   "input_tokens": 61248,
+   "cache_read_tokens": 33255,
+   "output_tokens": 1899,
+   "cost_usd": 0.1351,
+   "check_seconds": 0.0,
+   "parts_listed": 8,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-opta",
+    "computer",
+    "ethernet-cable",
+    "ethernet-switch"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.7,
+   "input_tokens": 33012,
+   "cache_read_tokens": 31457,
+   "output_tokens": 2910,
+   "cost_usd": 0.0393,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 35.2,
+  "cost_usd": 0.07,
+  "types": [
+   {
+    "type": "ethernet-switch",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/usb-c-extension-cable-with-power-switch-1m.html (The content describes a SparkFun USB-C extension cable with an inline power swit)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/accessories-for-cm4-ethernet-carrier-board.html (The content is a Seeed Studio category page for CM4 Ethernet Carrier Board acces)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   },
+   {
+    "type": "computer",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/qduino-mini-arduino-dev-board.html (The content describes the SparkFun Qduino Mini (ATmega32U4 Arduino-compatible de)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/arduino-day.html (The content is a Seeed Studio 'Arduino Day' landing page containing only site bo)"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

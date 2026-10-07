@@ -1,0 +1,121 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 28.2,
+  "input_tokens": 19396,
+  "output_tokens": 4358,
+  "cost_usd": 0.108,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The catalogue has no ADXL3xx entry; the closest catalogue type adxl335 (ports ST, Z, Y, X, GND, VCC) was used for the breakout board. The picture's VDD pin is mapped to VCC.",
+  "Wiring follows the breadboard image and the pin table, which are the authority. Z goes to A1, Y to A2, X to A3. The schematic draws the X/Y/Z lines crossed, which does not match them.",
+  "The breakout's six pins sit in breadboard columns 4-9. The exact columns and rows were read from the image. The module is placed in row e and each jumper in row d of the same column strip, so each wire shares a strip with its pin.",
+  "Power comes from A5 (set HIGH, acting as D19) and ground from A4 (set LOW, acting as D18), as in the sketch. The ADXL335 is a 3.3 V part and may be damaged by 5 V, as the tutorial warns. The tutorial says the self-test pin can be left unconnected when the module is powered from 5V and GND. The original circuit connects it to A0, so that wire is kept.",
+  "The tutorial does not give wire colours as part properties. The colours are taken from the image."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.2,
+   "input_tokens": 19396,
+   "cache_read_tokens": 3468,
+   "output_tokens": 4358,
+   "cost_usd": 0.108,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 19.2
+}

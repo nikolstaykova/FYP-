@@ -1,0 +1,291 @@
+{
+ "case": "docs-mkr-smart-garden-project",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 141.4,
+  "input_tokens": 98326,
+  "output_tokens": 11100,
+  "cost_usd": 0.2944,
+  "repair_rounds_used": 1
+ },
+ "parts": 10,
+ "edges": 19,
+ "repeats": [],
+ "new_types_declared": 7,
+ "new_types_added": 6,
+ "problems": [
+  [
+   "V3",
+   "e4: ball \u2194 header-socket is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The soil moisture sensor type 'moisture-grove-soil' was taken from the parts matching; its ports are not listed, so edges to it use no port.",
+  "The MKR WiFi 1010 plugs into the MKR IoT Carrier header; the exact pin mapping is not given, so it is a single joined edge with no port on the MKR side.",
+  "The MKR IoT Carrier is a new part type. Relay 1 NO and COM are modelled as screw-terminal lugs, with COM-NO as a switched 'through' path. The Grove A6 connector is modelled as a header-socket so the Grove cable's wire-end fits it.",
+  "The pump outlet is a 'bar' and the pipe ends are 'clip' ports. This is the nearest compatible port pair for a hose pushed onto a nozzle.",
+  "The tutorial text says relay 1, but the sketch uses Relay2. I followed the text.",
+  "The tip about a connector strip is optional. I wired the open-ended USB + wire straight to NO, the pump + wire to COM, and the two negative wires together.",
+  "The USB adapter's wall plug, the plant, the soil and the pipe's far end in the pot are not modelled.",
+  "The Micro-USB cable is the catalogue usb-cable, which has no ports, so its edges use no ports.",
+  "The open-ended USB cable's USB plug end is a new port 'USB' on that cable type."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 86.2,
+   "check_seconds": 0.0,
+   "input_tokens": 47512,
+   "output_tokens": 2366,
+   "cost_usd": 0.1113,
+   "listed": 9,
+   "matched": 1,
+   "looked_up": 4,
+   "found": 0,
+   "items": [
+    {
+     "item": "MKR WiFi 1010",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "MKR IoT Carrier",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-micromod-atp-carrier-board.html (The content describes the SparkFun MicroMod ATP Carrier Board (DEV-16885), not t)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-IoT-BUNDLE-p-3177.html (The content describes the Arduino MKR IoT Bundle, a kit with an MKR1000, breadbo)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 15.3
+    },
+    {
+     "item": "5V submersible pump.",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/liquid-pump-500gph-12v.html (The page describes a SEAFLO 12V, 500GPH bilge pump (ROB-19222, 1.5A motor, 4.0A )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-Coulomb-Counter-3-3V-to-5V-LTC2941.html (The content describes the Grove Coulomb Counter (LTC2941), not a 5V submersible )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 18.6
+    },
+    {
+     "item": "1 meter watering pipe.",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/WS2813B-Digital-RGB-LED-Flexi-Strip-60-LED-1-Meter-p-2817.html (The content is a Seeed Studio page for a WS2813B Digital RGB LED Flexi-Strip (60)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 27.6
+    },
+    {
+     "item": "Water container.",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Water-Pressure-Sensor-G1-4-1-2MPa-p-2887.html (The page is a Seeed Water Pressure Sensor (G1/4, 1.2MPa), not a water container.)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 18.4
+    },
+    {
+     "item": "USB adapter with at least 2 USB ports.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Micro-USB cable.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Open ended USB Cable.",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Soil moisture sensor.",
+     "card": "moisture-grove-soil",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.4,
+   "input_tokens": 22777,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4842,
+   "cost_usd": 0.1186,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.8,
+   "input_tokens": 28037,
+   "cache_read_tokens": 22775,
+   "output_tokens": 3892,
+   "cost_usd": 0.0645,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-iot-carrier",
+   "family": "mkr-iot-carrier",
+   "checked": false
+  },
+  {
+   "type": "water-pump",
+   "family": "water-pump",
+   "checked": false
+  },
+  {
+   "type": "watering-pipe",
+   "family": "watering-pipe",
+   "checked": false
+  },
+  {
+   "type": "water-container",
+   "family": "water-container",
+   "checked": false
+  },
+  {
+   "type": "usb-cable-open-end",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "usb-adapter-2port",
+   "family": "usb-adapter-2port",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.9
+}

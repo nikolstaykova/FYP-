@@ -1,0 +1,216 @@
+{
+ "case": "tone-keyboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 71.7,
+  "input_tokens": 28771,
+  "output_tokens": 9537,
+  "cost_usd": 0.1482,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 76,
+ "repeats": [
+  {
+   "group": "sensor",
+   "times": 3,
+   "overrides": 12
+  }
+ ],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The speaker is not in the catalogue, so it is a new part type 'speaker' with ports POS/NEG.",
+  "The catalogue puts rows a-e in the top half, but the photo labels the top half f-j and the bottom half a-e. I used the photo's row letters, so the top half is bank 'b' and the bottom half is bank 't'. Rail names (tp/tn top, bp/bn bottom) follow the physical top and bottom of the image.",
+  "Rail hole numbers are approximate. Each rail is a single strip, so the exact hole does not change the circuit.",
+  "The photo shows the speaker's two legs plugged directly into the breadboard: the black leg into the top negative rail, the red leg into column 12 (row i). The 100 ohm resistor runs from column 9 (shared with the pin 8 wire) to column 12.",
+  "From the photo's wire routing, the left FSR (column 6) goes to A2, the middle FSR (column 16) to A1 and the right FSR (column 24) to A0. This is the reverse of the schematic's order.",
+  "Each FSR has a red wire from the bottom + rail and a blue wire to the breadboard. A 10k resistor runs from that column to the bottom - rail, and a yellow wire from the column goes to the analog pin. The FSR legs are joined to the wire ends by a twist (assumed), because the photo shows the wires touching the leg ends.",
+  "The yellow wire rows in the repeat are all in the bottom half. The wires land in rows e, d and c. Each lands in the same 5-hole strip as its sense column, so rows within a strip don't change connectivity.",
+  "The 'wire4' and 'wire5' jumpers join the top and bottom power rails: black is - and red is +.",
+  "The Claude.ai Gmail, Google Calendar and Google Drive connectors need authorization before use. They are not needed for this task. Authorize them in the claude.ai connector settings."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 7.6,
+   "check_seconds": 0.0,
+   "input_tokens": 8798,
+   "output_tokens": 409,
+   "cost_usd": 0.0193,
+   "listed": 7,
+   "matched": 6,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "8 ohm speaker",
+     "card": "speaker",
+     "skipped": false
+    },
+    {
+     "item": "3 force sensing resistors",
+     "card": "fsr",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/1075"
+      ]
+     ],
+     "seconds": 7.6
+    },
+    {
+     "item": "3 10k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "100 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 64.1,
+   "input_tokens": 19973,
+   "cache_read_tokens": 11120,
+   "output_tokens": 9128,
+   "cost_usd": 0.1289,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 6,
+  "nets_built": 7,
+  "nets_matched": 4,
+  "net_precision": 0.571,
+  "net_recall": 0.667,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "fsr": 3,
+   "resistor": 3,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker": 1,
+   "resistor": 4,
+   "fsr": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "POS"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 20.4
+}

@@ -1,0 +1,69 @@
+{
+ "case": "docs-mkr-analog-to-midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 134.3,
+  "input_tokens": 20294,
+  "output_tokens": 19734,
+  "cost_usd": 0.2579,
+  "repair_rounds_used": 0
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Breadboard row letters follow the image: rows a-e (lower half) = bank 't', rows f-j (upper half) = bank 'b'. Top rail row nearer the red line = tp, nearer the blue line = tn; bottom rail row near the blue line = bn. Rail holes numbered 1-25 left to right in groups of 5.",
+  "LMV358 is a dual op-amp (LM358 pinout): 1 OUT A, 2 IN-A, 3 IN+A, 4 GND, 5 IN+B, 6 IN-B, 7 OUT B, 8 VCC. It straddles the centre gap with pins 1-4 in columns 14-17 (bank t, row e) and pins 8-5 above (bank b, row f). The notch/pin-1 orientation was inferred from the image.",
+  "The brown wire from MKR1000 A0 lands on column 14 (op-amp pin 1 = output of amplifier A); the unused second op-amp is left unconnected. The schematic draws A0 on the second op-amp's output, but the breadboard image is taken as authoritative.",
+  "Schematic mapping: R8 (100k) VCC to the signal node (pin 3), R9 (100k) signal node to GND, C1 jack signal to pin 3 node, R10 (47k) pin 2 node to GND, R11 (47k) pin 2 node to trimmer end, trimmer wiper to output (pin 1).",
+  "The trimmer's exact breadboard pins are hard to read in the image. I placed it in bank t row e, columns 1-3, with wiper in column 2, one end in column 3 (to R11) and the other end (column 1) unconnected. The purple wiper-to-output wire is drawn in the image at column 2 bank b row g; I put it on column 2 bank t (2t.d) so it shares the wiper strip, as the schematic requires.",
+  "The 3.5 mm jack is a breakout board with two blue wires. I assumed the left pad is SLEEVE (to GND rail) and the right pad is RIGHT (audio signal to C1 via column 18). The LEFT channel is unused.",
+  "Resistor positions are inferred from body positions: R10 and R11 are 47k (yellow-violet-orange); R8 and R9 are 100k (brown-black-yellow). The cap and resistor leg spacing is estimated from the image.",
+  "Software (AudioFrequencyMeter, MIDIUSB) is not part of the physical graph. The MKR1000 is powered and programmed over its micro-USB port; no cable is drawn in the image."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 134.3,
+   "input_tokens": 20294,
+   "cache_read_tokens": 5414,
+   "output_tokens": 19734,
+   "cost_usd": 0.2579,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr1000",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "audio-jack-3.5mm",
+   "family": "audio-jack-3.5mm",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.6
+}

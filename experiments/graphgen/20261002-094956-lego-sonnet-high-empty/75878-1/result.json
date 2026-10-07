@@ -1,0 +1,137 @@
+{
+ "case": "75878-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 611.8,
+  "input_tokens": 646388,
+  "output_tokens": 111599,
+  "cost_usd": 2.2032,
+  "repair_rounds_used": 2
+ },
+ "parts": 183,
+ "edges": 197,
+ "repeats": [
+  {
+   "group": "side",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "wheel",
+   "times": 4,
+   "overrides": 3
+  },
+  {
+   "group": "cone",
+   "times": 3,
+   "overrides": 0
+  }
+ ],
+ "new_types_declared": 38,
+ "new_types_added": 37,
+ "problems": [],
+ "notes": [
+  "Instruction pages are pictures only; many connection details (exactly which stud a piece sits on) are inferred from the images and part inventory, so some join targets are approximate.",
+  "Element IDs are taken from the inventory page (page 47). Where the inventory ID already exists in the catalogue under a different description (e.g. 614124 listed as 'Flower', 614126 listed as 'Wheel'), the catalogue type was used and the colour/shape in the manual was recorded in the label/props instead.",
+  "Wheel axle holes: the front bracket b2 and rear bracket b5 each have two side pin holes (pin-hole.1 / pin-hole.2, one per side). Copy 1 -> b2:pin-hole.1, copy 2 -> b2:pin-hole.2, copy 3 -> b5:pin-hole.1, copy 4 -> b5:pin-hole.2, so no hole is used twice.",
+  "KEPT ON PURPOSE (L1, element 6134897): the parts page prints '1x' for this element, but the picture beside it shows a cluster of several grey spoked discs, and step 49 explicitly shows '4x' hub caps (one per wheel, next to 4x pins 4666579, 4x rims 6104403 and 4x tyres 6102596). Four wheels physically need four hub caps, so the graph keeps 4; the '1x' looks like a mislabelled count for that grouped picture and is not a real discrepancy in what the manual builds.",
+  "KEPT ON PURPOSE (L3, separate groups): the booklet genuinely builds separate models. Page 3 builds three loose orange traffic cones ('3x'), which are never attached to the car or to each other, so they remain 3 separate groups (repeat 'cone', times=3). The car is one connected build and the racing-driver minifigure is connected to it (legs studded onto the tan seat plate b73, page 43), giving 4 groups in total: car+minifig and 3 cones.",
+  "Stickers (1-9) were not modelled as parts.",
+  "The two side modules (steps 4 and 5) are one repeat with the second copy mirrored.",
+  "The rear sub-assembly (steps 7-18) is built separately and attached to the chassis at step 19; it is represented by b7 joined to the chassis plate b4.",
+  "The red inset on page 43 shows the wrench being used to remove a wheel; the wrench is modelled as held in the minifigure's hand.",
+  "Pieces in the front bumper sub-assembly (steps 52-61) attach to the car at step 62; modelled as the middle bumper plate b131 joined to b3 and b72 (the front side pegs)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 349.0,
+   "input_tokens": 165395,
+   "cache_read_tokens": 3203,
+   "output_tokens": 54430,
+   "cost_usd": 1.1937,
+   "check_seconds": 0.03,
+   "issues": 4,
+   "issue_rules": {
+    "V4": 2,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 138.3,
+   "input_tokens": 225687,
+   "cache_read_tokens": 165393,
+   "output_tokens": 29406,
+   "cost_usd": 0.5683,
+   "check_seconds": 0.03,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 124.4,
+   "input_tokens": 255306,
+   "cache_read_tokens": 225685,
+   "output_tokens": 27763,
+   "cost_usd": 0.4412,
+   "check_seconds": 0.03,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 4,
+ "issues_final": 2,
+ "score": {
+  "pieces_expected": 183,
+  "pieces_built": 183,
+  "pieces_unmapped": 0,
+  "inventory_matched": 174,
+  "exact_matched": 174,
+  "inventory_precision": 0.951,
+  "inventory_recall": 0.951,
+  "exact_recall": 0.951,
+  "joined_edges": 197,
+  "contacts_expected": 10,
+  "contacts_predicted": 25,
+  "contacts_correct": 7,
+  "contact_precision": 0.28,
+  "contact_recall": 0.7
+ },
+ "score_initial": {
+  "pieces_expected": 183,
+  "pieces_built": 183,
+  "pieces_unmapped": 0,
+  "inventory_matched": 174,
+  "exact_matched": 174,
+  "inventory_precision": 0.951,
+  "inventory_recall": 0.951,
+  "exact_recall": 0.951,
+  "joined_edges": 196,
+  "contacts_expected": 10,
+  "contacts_predicted": 25,
+  "contacts_correct": 7,
+  "contact_precision": 0.28,
+  "contact_recall": 0.7
+ },
+ "postprocess_ms": 29.6
+}

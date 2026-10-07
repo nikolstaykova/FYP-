@@ -1,0 +1,158 @@
+{
+ "case": "docs-projects-gnome-forecaster",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 103.5,
+  "input_tokens": 75233,
+  "output_tokens": 8473,
+  "cost_usd": 0.2966,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 46,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e37: port 'VDC' not on led-strip"
+  ],
+  [
+   "V4",
+   "e38: port 'VDC' not on led-strip"
+  ],
+  [
+   "V4",
+   "e41: port 'DIN' not on led-strip"
+  ],
+  [
+   "V4",
+   "e42: port 'DIN' not on led-strip"
+  ],
+  [
+   "V4",
+   "e45: port 'GND' not on led-strip"
+  ],
+  [
+   "V4",
+   "e46: port 'GND' not on led-strip"
+  ]
+ ],
+ "notes": [
+  "The parts list says 7 jumper wires, but the wiring text needs 11: 4 from Nano to RTC, 4 from RTC to BME280, and 3 to the LED strip. I modelled all 11 and treated each wire as a soldered connection.",
+  "The DS3231 module has pass-through pads for VCC/GND/SDA/SCL on both sides. The catalogue lists one port of each name, so both the Nano wires and the BME280 wires attach to the same RTC ports. Electrically they are the same net.",
+  "The RTC is powered from Nano 3V3 and the BME280 from the RTC's 3V3 pass-through. I2C is A4=SDA and A5=SCL.",
+  "The catalogue led-strip entry has no ports. I used the labels VDC, DIN and GND from the manual as port names. The strip is powered from 5V, data is on D7, and GND uses the Nano's second GND pin (GND2). The first GND pin (GND1) goes to the RTC.",
+  "The USB cable powers the Nano. The catalogue has no USB port on the Nano, so that edge has no port names.",
+  "The solder part is linked to the RTC only, as a representative joint. The catalogue has no ports for it.",
+  "The photos of the colour-changing dolphin and elephant statues are inspiration only and are not part of the circuit. The 3D-printed gnome enclosure is not in the parts list, so it is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 69.1,
+   "input_tokens": 48762,
+   "output_tokens": 2971,
+   "cost_usd": 0.1566,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 7,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "SparkFun Atmospheric Sensor Breakout - BME280",
+     "type": "bme280",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-atmospheric-sensor-breakout-bme280.html"
+      ]
+     ],
+     "seconds": 12.4
+    },
+    {
+     "part": "Maxim DS3231MPMB1 RTC peripheral module",
+     "type": "rtc-ds3231",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/real-time-clock-module-rv-1805-c3.html (The page sells the SparkFun RV-1805-C3 (Abracon/Micro Crystal), an ultra-low-pow)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-deadon-rtc-breakout-ds3234.html (The page sells the SparkFun DeadOn RTC Breakout based on the DS3234 (SPI RTC). T)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Raspberry-Pi-RTC-Expansion-Module-v1-1.html (The page is Seeed's Raspberry Pi RTC Expansion Module v1.1, a Raspberry Pi add-o)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Raspberry-Pi-RTC-Expansion-Module-p-2532.html"
+      ]
+     ],
+     "seconds": 50.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.4,
+   "input_tokens": 26471,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5502,
+   "cost_usd": 0.14,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 6,
+ "score": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.5
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [],
+ "postprocess_ms": 7.4
+}

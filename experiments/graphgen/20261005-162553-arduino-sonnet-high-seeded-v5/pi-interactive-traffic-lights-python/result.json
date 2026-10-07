@@ -1,0 +1,83 @@
+{
+ "case": "pi-interactive-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 72.8,
+  "input_tokens": 51564,
+  "output_tokens": 11387,
+  "cost_usd": 0.2128,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are the same as in step 1; nothing added or dropped.",
+  "The manual's table gives Amber as GPIO 28 and Green as 27. The Pi has no such GPIOs. The diagram's green wire goes to GP8 (amber LED) and the pink wire to GP7 (green LED), so I followed the diagram.",
+  "Wire colours match the diagram: orange to GPIO25 (red LED), green to GPIO8 (amber LED), pink to GPIO7 (green LED), purple to GPIO21 (button), blue to GPIO15 (buzzer), and black wires to ground.",
+  "The Pi is the raspberry-pi-3b type. The wires connect to the outer (even-numbered) header column: GND is pin 6 (GND.1), GPIO15 is pin 10, GPIO25 is pin 22, GPIO8 is pin 24, GPIO7 is pin 26 and GPIO21 is pin 40.",
+  "Breadboard coordinates are read from the picture. Holes are named <line number><t for rows a-e, b for rows f-j>.<row letter>.",
+  "The right-hand power rail is drawn as one strip. I named it 'tn' and used the row number as the hole index. It is wired to Pi GND and used as ground, even though the picture marks that column '+'.",
+  "The picture hides the rail holes under the LEDs and buzzer. I placed each LED cathode on the rail at its own row, and the buzzer's pin 1 (-) on the rail at row 5.",
+  "Each LED's anode (the bent leg) is in column j of its row. The LED cathodes go straight to the ground rail.",
+  "Each resistor bridges the centre gap, from column e to column h in the same row. The GPIO wire ends in column d.",
+  "The buzzer's pin 2 (+) is in 4b.j, on the same strip as the blue GPIO15 wire at 4b.g.",
+  "The button straddles the centre gap. Side 1 is row 28 (legs 28t.e and 28b.f, with the black ground wire at 28t.d). Side 2 is row 30 (legs 30t.e and 30b.f, with the purple GPIO21 wire at 30t.d). The GPIO pin is read as pulled up in software, so there is no external resistor.",
+  "The manual doesn't give a resistor value. I assumed 220 ohm."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.9,
+   "input_tokens": 24774,
+   "cache_read_tokens": 3468,
+   "output_tokens": 1796,
+   "cost_usd": 0.1039,
+   "check_seconds": 0.0,
+   "parts_listed": 17,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 58.9,
+   "input_tokens": 26790,
+   "cache_read_tokens": 24772,
+   "output_tokens": 9591,
+   "cost_usd": 0.1089,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.6
+}

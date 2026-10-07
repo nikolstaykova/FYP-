@@ -1,0 +1,277 @@
+{
+ "case": "calibration",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 58.1,
+  "input_tokens": 43867,
+  "output_tokens": 10274,
+  "cost_usd": 0.2012,
+  "repair_rounds_used": 1
+ },
+ "parts": 13,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the catalogue convention (rows f-j = bank 'b'); the image's upper half (rows f-j) is therefore bank 'b'. Rail hole numbers are approximate positions read from the image.",
+  "Photoresistor (5V side) and 10k resistor (GND side) form a voltage divider whose junction (column 10) goes to A0 by the yellow wire.",
+  "LED anode (bent leg, column 22) is fed from pin 9 via the blue wire; cathode (column 23) goes through the 220 ohm resistor to the GND rail, matching the schematic (series resistor).",
+  "The text mentions 'Analog input 2' in the circuit caption, but the text and images use A0, so A0 is used.",
+  "Top breadboard rail nearest the edge (black line) is treated as ground 'tn'; the red-line rail is 5V 'tp'.",
+  "Fix for the V4 port-reuse error: the black ground jumpers (wire5, wire7) shared a hole with a resistor leg. Each now sits in its own hole in the same column strip (13b.i and 26b.i), so they are still electrically connected to the resistor leg in 13b.h / 26b.g's strip. The image shows these wires in the same columns as the resistor ends, so this does not change the circuit."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.0,
+   "input_tokens": 17057,
+   "cache_read_tokens": 3203,
+   "output_tokens": 5815,
+   "cost_usd": 0.1142,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.1,
+   "input_tokens": 26810,
+   "cache_read_tokens": 17055,
+   "output_tokens": 4459,
+   "cost_usd": 0.087,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 7,
+  "nets_built": 5,
+  "nets_matched": 2,
+  "net_precision": 0.4,
+  "net_recall": 0.286,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 4,
+   "led": 2
+  },
+  "inventory_built": {
+   "board": 1,
+   "resistor": 3,
+   "led": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ],
+   [
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 27.9
+}

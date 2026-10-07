@@ -1,0 +1,852 @@
+{
+ "tutorial": "row-column-scanning",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/07.display/RowColumnScanning/assets/8x8-LED-Matrix.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/07.display/RowColumnScanning/assets/circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/built-in-examples/07.display/RowColumnScanning/assets/schematic.png"
+ ],
+ "legs_and_ends": 38,
+ "with_position": 38,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "uno",
+     "type": "arduino-uno",
+     "label": "Arduino Uno"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "pot1",
+     "type": "potentiometer-10k",
+     "label": "10k potentiometer (A1)",
+     "props": {
+      "value": "10k"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "8t.c",
+       "mm": [
+        17.78,
+        5.08
+       ]
+      },
+      {
+       "leg": "SIG",
+       "part": "bb1",
+       "port": "9t.c",
+       "mm": [
+        20.32,
+        5.08
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "10t.c",
+       "mm": [
+        22.86,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "pot2",
+     "type": "potentiometer-10k",
+     "label": "10k potentiometer (A0)",
+     "props": {
+      "value": "10k"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "14t.c",
+       "mm": [
+        33.02,
+        5.08
+       ]
+      },
+      {
+       "leg": "SIG",
+       "part": "bb1",
+       "port": "15t.c",
+       "mm": [
+        35.56,
+        5.08
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "16t.c",
+       "mm": [
+        38.1,
+        5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "matrix1",
+     "type": "led-matrix-8x8",
+     "label": "8x8 LED Matrix",
+     "props": {},
+     "polarised": true,
+     "legs": []
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "1k resistor (column 1)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "6",
+       "mm": [
+        50.8,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "1k resistor (column 2)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "r3",
+     "type": "resistor",
+     "label": "1k resistor (column 3)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "10",
+       "mm": [
+        39.12,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "add": [
+    {
+     "id": "r4",
+     "type": "resistor",
+     "label": "1k resistor (column 4)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "3",
+       "mm": [
+        58.42,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "add": [
+    {
+     "id": "r5",
+     "type": "resistor",
+     "label": "1k resistor (column 5)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "A3",
+       "mm": [
+        55.88,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "add": [
+    {
+     "id": "r6",
+     "type": "resistor",
+     "label": "1k resistor (column 6)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "4",
+       "mm": [
+        55.88,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "add": [
+    {
+     "id": "r7",
+     "type": "resistor",
+     "label": "1k resistor (column 7)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "8",
+       "mm": [
+        44.2,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "add": [
+    {
+     "id": "r8",
+     "type": "resistor",
+     "label": "1k resistor (column 8)",
+     "props": {
+      "value": "1000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "uno",
+       "port": "9",
+       "mm": [
+        41.66,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": false,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "pot1 wiper to A1",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "9t.a",
+       "mm": [
+        20.32,
+        0.0
+       ]
+      },
+      {
+       "part": "uno",
+       "port": "A1",
+       "mm": [
+        50.8,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": false,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "pot2 wiper to A0",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "15t.a",
+       "mm": [
+        35.56,
+        0.0
+       ]
+      },
+      {
+       "part": "uno",
+       "port": "A0",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": false,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "pin 12 to matrix row 7",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "12",
+       "mm": [
+        34.04,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": false,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "A2 to matrix row 8",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A2",
+       "mm": [
+        53.34,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": false,
+   "add": [
+    {
+     "id": "wire12",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "A4 to matrix row 6",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A4",
+       "mm": [
+        58.42,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 18,
+   "power": false,
+   "add": [
+    {
+     "id": "wire13",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "A5 to matrix row 3",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "A5",
+       "mm": [
+        60.96,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 19,
+   "power": false,
+   "add": [
+    {
+     "id": "wire14",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "pin 2 to matrix row 1",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "2",
+       "mm": [
+        60.96,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 20,
+   "power": false,
+   "add": [
+    {
+     "id": "wire15",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "pin 7 to matrix row 2",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "7",
+       "mm": [
+        48.26,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 21,
+   "power": false,
+   "add": [
+    {
+     "id": "wire16",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "pin 5 to matrix row 4",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "5",
+       "mm": [
+        53.34,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 22,
+   "power": false,
+   "add": [
+    {
+     "id": "wire17",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 1",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 23,
+   "power": false,
+   "add": [
+    {
+     "id": "wire18",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 2",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 24,
+   "power": false,
+   "add": [
+    {
+     "id": "wire19",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 3",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 25,
+   "power": false,
+   "add": [
+    {
+     "id": "wire20",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 4",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 26,
+   "power": false,
+   "add": [
+    {
+     "id": "wire21",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 5",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 27,
+   "power": false,
+   "add": [
+    {
+     "id": "wire22",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 6",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 28,
+   "power": false,
+   "add": [
+    {
+     "id": "wire23",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 7",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 29,
+   "power": false,
+   "add": [
+    {
+     "id": "wire24",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "resistor to matrix column 8",
+     "ends": []
+    }
+   ]
+  },
+  {
+   "step": 30,
+   "power": false,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "pin 13 to matrix row 5",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "13",
+       "mm": [
+        31.5,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 31,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "5V to rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.2",
+       "mm": [
+        2.54,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 32,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "GND to rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.2",
+       "mm": [
+        2.54,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 33,
+   "power": true,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "pot1 to rail -",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "8t.a",
+       "mm": [
+        17.78,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.9",
+       "mm": [
+        20.32,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 34,
+   "power": true,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "pot1 to rail +",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.9",
+       "mm": [
+        20.32,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 35,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "pot2 to rail -",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "14t.a",
+       "mm": [
+        33.02,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.15",
+       "mm": [
+        35.56,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 36,
+   "power": true,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "pot2 to rail +",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "16t.a",
+       "mm": [
+        38.1,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.15",
+       "mm": [
+        35.56,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

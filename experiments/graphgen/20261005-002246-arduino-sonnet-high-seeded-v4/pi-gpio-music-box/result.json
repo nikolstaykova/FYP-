@@ -1,0 +1,68 @@
+{
+ "case": "pi-gpio-music-box",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 47.0,
+  "input_tokens": 16707,
+  "output_tokens": 7971,
+  "cost_usd": 0.1256,
+  "repair_rounds_used": 0
+ },
+ "parts": 15,
+ "edges": 68,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The manual only says to wire each button to a different GPIO pin and refers to a video and a generic wiring snippet. I used the GPIO numbers from the full code listing (4, 17, 27, 10), with each button's other side going to GND.",
+  "Parts count follows the manual: 5 pin-to-socket jumpers (4 GPIO + 1 GND) and 4 pin-to-pin jumpers (one ground link per button).",
+  "The exact breadboard columns and rows are assumed. Each button straddles the centre gap, with side 1 (1.l/1.r) in the top half and side 2 (2.l/2.r) in the bottom half. The GPIO lead goes into the top strip of side 1, and the pin-to-pin lead goes from the bottom strip of side 2 to the bottom negative rail.",
+  "For the pin-to-socket jumpers, port a is the male pin end (breadboard) and port b is the female socket end (Pi header pin).",
+  "The Raspberry Pi is a new part type that lists only the header pins this circuit uses. All GND pins are treated as one node.",
+  "The speakers or headphones plug into the Pi's audio jack, not the GPIO header. They are not modelled because the manual gives no wiring for them and the audio jack is not a catalogue port.",
+  "The pygame and gpiozero code, the sound samples and Thonny are software and are not part of the graph."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.0,
+   "input_tokens": 16707,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7971,
+   "cost_usd": 0.1256,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer"
+  ],
+  "families_missing": [
+   "buzzer"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [
+  {
+   "type": "raspberry-pi",
+   "family": "raspberry-pi",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.7
+}

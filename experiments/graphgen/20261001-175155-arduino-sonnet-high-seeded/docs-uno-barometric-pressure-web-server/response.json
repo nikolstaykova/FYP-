@@ -1,0 +1,690 @@
+{
+ "graph": {
+  "title": "Barometric Pressure Sensor Web Server (SCP1000 + Ethernet Shield)",
+  "source_id": "https://arduino.cc/en/Tutorial/LibraryExamples/BarometricPressureSensorWebServer",
+  "new_part_types": [
+   {
+    "type": "ethernet-shield",
+    "name": "Arduino Ethernet Shield",
+    "category": "board",
+    "ports": [
+     {
+      "name": "6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "7",
+      "kind": "header-socket"
+     },
+     {
+      "name": "11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "13",
+      "kind": "header-socket"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-socket"
+     },
+     {
+      "name": "6.pin",
+      "kind": "header-pin"
+     },
+     {
+      "name": "7.pin",
+      "kind": "header-pin"
+     },
+     {
+      "name": "11.pin",
+      "kind": "header-pin"
+     },
+     {
+      "name": "12.pin",
+      "kind": "header-pin"
+     },
+     {
+      "name": "13.pin",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3.3V.pin",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1.pin",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [
+     [
+      "6",
+      "6.pin"
+     ],
+     [
+      "7",
+      "7.pin"
+     ],
+     [
+      "11",
+      "11.pin"
+     ],
+     [
+      "12",
+      "12.pin"
+     ],
+     [
+      "13",
+      "13.pin"
+     ],
+     [
+      "3.3V",
+      "3.3V.pin"
+     ],
+     [
+      "GND.1",
+      "GND.1.pin"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "scp1000",
+    "name": "SCP1000 Barometric Pressure Sensor Breakout",
+    "category": "sensor",
+    "ports": [
+     {
+      "name": "GND",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3.3V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "SCK",
+      "kind": "header-pin"
+     },
+     {
+      "name": "MOSI",
+      "kind": "header-pin"
+     },
+     {
+      "name": "MISO",
+      "kind": "header-pin"
+     },
+     {
+      "name": "CSB",
+      "kind": "header-pin"
+     },
+     {
+      "name": "DRDY",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "uno1",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "eth1",
+    "type": "ethernet-shield",
+    "label": "Arduino Ethernet Shield",
+    "props": []
+   },
+   {
+    "id": "scp1",
+    "type": "scp1000",
+    "label": "SCP1000 Pressure Sensor Breakout Board",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "SCK wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "MOSI wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "MISO wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "CSB wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "DRDY wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "3.3V wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "GND wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "6.pin",
+    "v": "uno1",
+    "v_port": "6",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "6.pin",
+    "v": "uno1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "7.pin",
+    "v": "uno1",
+    "v_port": "7",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "7.pin",
+    "v": "uno1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "11.pin",
+    "v": "uno1",
+    "v_port": "11",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "11.pin",
+    "v": "uno1",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "12.pin",
+    "v": "uno1",
+    "v_port": "12",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "12.pin",
+    "v": "uno1",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "13.pin",
+    "v": "uno1",
+    "v_port": "13",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "13.pin",
+    "v": "uno1",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "3.3V.pin",
+    "v": "uno1",
+    "v_port": "3.3V",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "3.3V.pin",
+    "v": "uno1",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "eth1",
+    "u_port": "GND.1.pin",
+    "v": "uno1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "eth1",
+    "u_port": "GND.1.pin",
+    "v": "uno1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "SCK",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "SCK",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MOSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MOSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MISO",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "MISO",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "7",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "7",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "CSB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "CSB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "DRDY",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "DRDY",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "3.3V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "3.3V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "3.3V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "eth1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "scp1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Ethernet shield is stacked on top of the Arduino Uno (per the manual's note); the shield's pass-through header pins are modelled as joined+electrical to the matching Uno ports, and jumper wires plug into the shield's top sockets.",
+   "SPI wiring follows the circuit image and schematic: D13=SCK, D12=MOSI, D11=MISO (the code comment lists MOSI 11 / MISO 12, which conflicts; images are the authority).",
+   "DRDY goes to D6 and CSB to D7, as in the text and schematic (the schematic's crossed lines).",
+   "Sensor powered from the shield's 3.3V; common ground via the shield's Gnd pin (red and black wires).",
+   "The Ethernet cable to the network and the USB cable to the computer are not modelled as they are not drawn in the circuit; no breadboard is used.",
+   "The SCP1000 breakout's header pins are treated as header-pin ports that the jumper wire ends join onto."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 33.9,
+  "api_seconds": 29.5,
+  "first_token_seconds": 11.6,
+  "input_tokens": 17056,
+  "cache_read_tokens": 10590,
+  "output_tokens": 5471,
+  "cost_usd": 0.0827,
+  "turns": 2
+ }
+}

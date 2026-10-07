@@ -1,0 +1,153 @@
+{
+ "case": "4200-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 486.1,
+  "input_tokens": 488664,
+  "output_tokens": 81441,
+  "cost_usd": 1.6267,
+  "repair_rounds_used": 2
+ },
+ "parts": 101,
+ "edges": 104,
+ "repeats": [
+  {
+   "group": "stripe",
+   "times": 2,
+   "overrides": 0
+  },
+  {
+   "group": "wheel",
+   "times": 4,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 19,
+ "new_types_added": 19,
+ "problems": [
+  [
+   "V3",
+   "e97: ball \u2194 pin-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e99: ball \u2194 pin-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e101: ball \u2194 pin-hole is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e103: ball \u2194 pin-hole is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The booklet has no per-step parts boxes with Element IDs, so the part-to-step mapping is inferred from the step pictures and the inventory page; several assignments are best guesses.",
+  "Inventory IDs not in the catalogue were added as new types; their port lists are simplified.",
+  "Piece counts: 4222960 x2 (the two orange rear lights), 4542673 x2 (roll-bar beacons), 4211185 x1 (one crate, which holds the plunger, dynamite and pickaxe and sits in the truck bed). Black A-pillar caps and black door slopes are placed as 4211525 and 4504382.",
+  "The remaining count check (4211413 page 2, 4211525 page 12) is not a real discrepancy. The extracted text of the parts page prints '1x 4211413 / 6x 4211525' twice, from a layered duplicate. The printed parts page shows each entry once: 4211413 x1 and 4211525 x6. The graph therefore keeps 1 and 6 (4 grey round plates in the rock, 2 black pillar caps).",
+  "Port reuse: catalogue parts with a single stud.1 / anti-stud.1 port carry several joins. Only the first join names the port; the others use a null port.",
+  "Wheels: the catalogue's wheel-holder pins are 'ball' kind, which does not pair with the rim's pin-hole kind, even with null ports. The wheel-to-holder link is therefore a revolute contact edge (rim spinning on the holder pin, retained by friction) rather than a joined edge. The wheel copies attach to b32 (front axle, copies 1-2) and b33 (rear axle, copies 3-4) via overrides.",
+  "Dynamite clip join and sign pole-to-base join use a null port on one side because the catalogue port kinds (clip/clip, stud/stud) are not pairable.",
+  "'9566' is a booklet label, not a real element ID. The catalogue entry lego-seat-stand-blue (booklet label 9566) is used for the blue seat with steering wheel.",
+  "4261117 (unclear in the pictures) is treated as a jackhammer/drill held by the minifig; 4289538 is the sign pole clipped to the warning triangle.",
+  "The two 3003941 pink plates: one under the roof (step 22), the other on the bed back wall (steps 18-19) by guess.",
+  "Cab details (4113206 brackets, 4171666 panels, 4537985 / 4190511 door pieces, 4597902 hood) are placed from small pictures; exact stud mapping is approximate.",
+  "The booklet builds several small models (minifig, warning sign, plunger, clock and dynamite, rock with crystals) alongside the truck. They are linked into one graph by contact edges: minifig seated in the cab, items resting in the crate, the crate in the truck bed, the rock standing beside the truck."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 270.3,
+   "input_tokens": 126257,
+   "cache_read_tokens": 5507,
+   "output_tokens": 40494,
+   "cost_usd": 0.889,
+   "check_seconds": 0.03,
+   "issues": 30,
+   "issue_rules": {
+    "V3": 11,
+    "V4": 16,
+    "L1": 1,
+    "L2": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 139.5,
+   "input_tokens": 168850,
+   "cache_read_tokens": 126255,
+   "output_tokens": 24401,
+   "cost_usd": 0.4396,
+   "check_seconds": 0.03,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 4,
+    "L1": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 76.2,
+   "input_tokens": 193557,
+   "cache_read_tokens": 168848,
+   "output_tokens": 16546,
+   "cost_usd": 0.2981,
+   "check_seconds": 0.03,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 4,
+    "L1": 1
+   }
+  }
+ ],
+ "issues_first": 30,
+ "issues_final": 5,
+ "score": {
+  "pieces_expected": 97,
+  "pieces_built": 101,
+  "pieces_unmapped": 1,
+  "inventory_matched": 83,
+  "exact_matched": 83,
+  "inventory_precision": 0.822,
+  "inventory_recall": 0.856,
+  "exact_recall": 0.856,
+  "joined_edges": 86,
+  "contacts_expected": 5,
+  "contacts_predicted": 5,
+  "contacts_correct": 1,
+  "contact_precision": 0.2,
+  "contact_recall": 0.2
+ },
+ "score_initial": {
+  "pieces_expected": 97,
+  "pieces_built": 104,
+  "pieces_unmapped": 1,
+  "inventory_matched": 83,
+  "exact_matched": 83,
+  "inventory_precision": 0.798,
+  "inventory_recall": 0.856,
+  "exact_recall": 0.856,
+  "joined_edges": 90,
+  "contacts_expected": 5,
+  "contacts_predicted": 5,
+  "contacts_correct": 1,
+  "contact_precision": 0.2,
+  "contact_recall": 0.2
+ },
+ "postprocess_ms": 14.0
+}

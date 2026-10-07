@@ -1,0 +1,190 @@
+{
+ "case": "pi-gpio-music-box",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 140.6,
+  "input_tokens": 64689,
+  "output_tokens": 12255,
+  "cost_usd": 0.2642,
+  "repair_rounds_used": 0
+ },
+ "parts": 16,
+ "edges": 70,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The manual doesn't give a wiring diagram for the buttons. It says to use any GPIO pins, so I used the pins from the code listing: GPIO4, GPIO17, GPIO27 and GPIO10.",
+  "gpiozero Button pins are pulled up internally. Each button therefore connects its GPIO pin to ground, with no external resistor.",
+  "Each tactile switch straddles the breadboard centre gap. Side 1 (1.l, 1.r) is in the top half and side 2 (2.l, 2.r) is in the bottom half. The GPIO lead goes into the top half of the button's column. A pin-to-pin lead runs from the bottom half to the bottom negative rail, 'bn'. The rail is a single strip, so the hole numbers are arbitrary.",
+  "The five pin-to-socket leads are jumper-wire-mf. Port a is the socket end on the Pi header and port b is the pin end in the breadboard. Four carry GPIO signals and one carries GND to the rail.",
+  "The four pin-to-pin leads were matched to the Grove cable in the parts list, which is wrong. I used the catalogue jumper-wire instead.",
+  "The tactile switches were listed as not in the catalogue, but the catalogue's pushbutton fits, so I used it.",
+  "The Raspberry Pi isn't in the catalogue, so I created a raspberry-pi type with only the header pins used here, plus an AUDIO jack port.",
+  "The speakers or headphones plug into the Pi's 3.5mm audio jack. The catalogue match was speakers-usb-powered, so I connected only its AUDIO_IN. USB_5V is left unconnected because the manual says nothing about powering the speakers.",
+  "The software steps (pygame sounds, gpiozero code, dictionary refactor) don't add physical parts."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 93.1,
+   "check_seconds": 0.0,
+   "input_tokens": 44132,
+   "output_tokens": 4061,
+   "cost_usd": 0.121,
+   "listed": 6,
+   "matched": 1,
+   "looked_up": 4,
+   "found": 2,
+   "items": [
+    {
+     "item": "A Raspberry Pi computer",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "A breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "Four (4) tactile switches (to make buttons)",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "no search result"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 0.0
+    },
+    {
+     "item": "Five (5) pin-to-socket jumper leads",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/jumper-wire-0-1-5-pin-12.html (The page is a 5-wire jumper cable (PRT-10375, 12 in) with the same 5-pin JST RE )"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2722 (Content is a 2.5 mm JST XH-style shrouded 5-pin right-angle male connector (head)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-4-pin-Male-Jumper-to-Grove-4-pin-Conversion-Cable-5-PCs-per-Pack.html (The page is a Seeed Grove 4-pin to male jumper conversion cable (5 per pack). It)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 25.7
+    },
+    {
+     "item": "Four (4) pin-to-pin jumper leads",
+     "card": "cable-grove-4pin-male-jumper",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/mega-pro-mini-cable-8-8-wire.html (The page is an 8-wire JST-SH assembly (PRT-10853) with an 8-pin JST-SH connector)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2719 (Content describes a 2-pin JST XH-style shrouded male right-angle extended connec)"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/Grove-4-pin-Male-Jumper-to-Grove-4-pin-Conversion-Cable-5-PCs-per-Pack.html"
+      ]
+     ],
+     "seconds": 26.9
+    },
+    {
+     "item": "Speakers or headphones",
+     "card": "speakers-usb-powered",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/1363"
+      ]
+     ],
+     "seconds": 19.4
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.5,
+   "input_tokens": 20557,
+   "cache_read_tokens": 5507,
+   "output_tokens": 8194,
+   "cost_usd": 0.1432,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 17.4
+}

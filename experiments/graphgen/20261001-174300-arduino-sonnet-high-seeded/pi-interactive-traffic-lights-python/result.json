@@ -1,0 +1,52 @@
+{
+ "case": "pi-interactive-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 69.3,
+  "api_seconds": 66.2,
+  "first_token_seconds": 36.0,
+  "input_tokens": 15268,
+  "cache_read_tokens": 9366,
+  "output_tokens": 10658,
+  "cost_usd": 0.1321,
+  "turns": 2
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The text lists GPIO 25 (red), 28 (amber), 27 (green), but the Pi header in the diagram highlights GP25, GP8 and GP7 for the three LED wires. I followed the image (28 and 27 look like typos for 8 and 7).",
+  "The breadboard is drawn rotated: numbered lines 1-30 are the strips and letters a-e / f-j are the two halves. I mapped them to catalogue names as '<number>t.<a-e>' and '<number>b.<f-j>'.",
+  "The right-hand power rail strip next to the LEDs is used as the ground rail: LED cathodes, the buzzer's negative leg, the button's ground wire and the Pi GND wire all go to it. It is drawn under the '+' label, but it acts as ground. I called it 'bp' in the catalogue.",
+  "Buzzer polarity: the + marked leg goes in strip 4 (right half, j), where the blue GPIO15 wire ends in g. Buzzer port 1 is taken as +. The negative leg is under the buzzer body on the ground rail; I placed it at bp.5.",
+  "The Pi GND wire goes to the right-column pin in the GP3 row, which is physical pin 6. I named it GND.1.",
+  "Resistor values are not given, so I left them unset. The diagram shows the usual 3-band resistors.",
+  "Each resistor runs from column e of the left half to column h of the right half, bridging the centre gap. The LED anodes are in column j. The red, yellow (amber) and green LEDs are on lines 9, 15 and 21.",
+  "The button straddles the centre gap on lines 28 and 30. The ground wire is in 28d and the GPIO21 wire is in 30d. Port assignment (1.l/1.r on line 28, 2.l/2.r on line 30) is assumed.",
+  "The three LED branches differ in rows, wires and colours, so I listed them individually instead of using a repeat."
+ ],
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "raspberry-pi",
+   "family": "raspberry-pi",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 3.3
+}

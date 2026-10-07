@@ -1,0 +1,82 @@
+{
+ "case": "docs-mkr-hosting-a-webserver",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 29.2,
+  "input_tokens": 34155,
+  "output_tokens": 2890,
+  "cost_usd": 0.1325,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The diagram's upper breadboard half (rows j-f, columns 3, 6, 8) is mapped to the catalogue's 't' bank (rows a-e). Image row i is 'b', row h is 'c' and row g is 'd'. Only the column strip matters electrically.",
+  "The green wire goes from board pin 2 to column 3. The resistor spans columns 3 to 6. The LED's bent (longer) leg is in column 6 and is the anode. The other leg is in column 8 and is the cathode. The black wire joins column 8 to GND.",
+  "The manual lists a 220 ohm resistor, but the catalogue part is a generic resistor. I set value=220.",
+  "The schematic shows D2 -> resistor -> LED anode, then LED cathode -> GND. This matches the breadboard image.",
+  "The board is not placed on the breadboard. It connects only through the two jumper wires.",
+  "The sketch reads A1, but nothing is connected to it."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 8.5,
+   "input_tokens": 14057,
+   "output_tokens": 354,
+   "cost_usd": 0.0477,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 5,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino MKR WiFi 1010",
+     "type": "arduino-mkr-wifi-1010",
+     "found": true,
+     "trail": [
+      [
+       "cache",
+       "arduino-mkr-wifi-1010"
+      ]
+     ],
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 20.7,
+   "input_tokens": 20098,
+   "cache_read_tokens": 5507,
+   "output_tokens": 2536,
+   "cost_usd": 0.0848,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 24.4
+}

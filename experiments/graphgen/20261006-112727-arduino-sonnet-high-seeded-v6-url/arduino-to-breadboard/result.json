@@ -1,0 +1,225 @@
+{
+ "case": "arduino-to-breadboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 93.8,
+  "input_tokens": 74537,
+  "output_tokens": 14765,
+  "cost_usd": 0.1877,
+  "repair_rounds_used": 0
+ },
+ "parts": 19,
+ "edges": 120,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1. I built the external-clock 'burn bootloader' circuit: 16 MHz crystal, 10k reset pull-up, two 22 pF caps. The minimal 8 MHz internal-clock circuit and the USB-serial upload circuit (RX/TX wires) are alternative set-ups and are not built.",
+  "ATmega328P pins are used as follows: 1 RESET, 7 VCC, 8 GND, 9 XTAL1, 10 XTAL2, 17 MOSI, 18 MISO, 19 SCK, 20 AVCC, 22 GND. Arduino pin 10 goes to RESET (pin 1), 11 to MOSI (17), 12 to MISO (18) and 13 to SCK (19). This is the standard ArduinoISP wiring. The first circuit image did not render, so I took it from the text and the standard wiring.",
+  "Chip placement: pins 1-14 are in columns 1-14 of the top half (row e). Pins 15-28 are in the bottom half (row f), facing them: pin 28 is in column 1 and pin 15 in column 14.",
+  "The wire positions on the breadboard, and the 12-wire count, are inferred from the images. Both power rails are linked top to bottom by wire11 and wire12. The Arduino 5V and GND feed the bottom rails (wire5 and wire6).",
+  "The crystal is across pins 9 and 10. C1 runs from pin 9 to ground at pin 8's column. C2 runs from pin 10 to the top ground rail (tn.10). Its legs are not in neighbouring holes of one row, because pin 10's neighbours are not ground. This matches the image, where the leads reach the rail.",
+  "R1 (10k) is a pull-up from RESET (pin 1) to the top + rail, which is 5V.",
+  "AREF (pin 21) is left unconnected. No USB cable is added, because the tutorial does not list one."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.6,
+   "input_tokens": 46893,
+   "cache_read_tokens": 42765,
+   "output_tokens": 2357,
+   "cost_usd": 0.0486,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoToBreadboard/\"}",
+    "StructuredOutput {\"title\": \"From Arduino to a Microcontroller on a Breadboard\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/a"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 19,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 66.2,
+   "input_tokens": 27644,
+   "cache_read_tokens": 25145,
+   "output_tokens": 12408,
+   "cost_usd": 0.1391,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"From Arduino to a Microcontroller on a Breadboard\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/a"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 8,
+  "nets_matched": 3,
+  "net_precision": 0.375,
+  "net_recall": 0.429,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 2,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "resistor": 1,
+   "capacitor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 10.0
+}

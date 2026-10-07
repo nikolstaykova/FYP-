@@ -1,0 +1,178 @@
+{
+ "case": "docs-uno-barometric-pressure-web-server",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 195.3,
+  "input_tokens": 97225,
+  "output_tokens": 14825,
+  "cost_usd": 0.326,
+  "repair_rounds_used": 1
+ },
+ "parts": 10,
+ "edges": 42,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The Uno is stacked beneath the Ethernet shield, as the manual states. The shield has two port sets per signal. The top sockets (e.g. '13') take jumper wires. The bottom stacking pins (e.g. '13.pin') plug into the Uno's sockets. The shield's conducts list ties each socket to its stacking pin, so this fixes the earlier socket-to-socket joins and the reuse of one port. Only the pins used by the circuit have stacking edges.",
+  "Pin mapping follows the schematic and the Fritzing image: D13 to SCK, D12 to MOSI, D11 to MISO, D6 to DRDY, D7 to CSB. The sketch comments list MOSI/MISO as 11/12, which is the reverse. The images are treated as the authority.",
+  "The schematic shows the DRDY/CSB lines crossing. This matches the text: DRDY goes to D6 and CSB goes to D7.",
+  "The breakout's 3.3V pin is powered from the shield's 3.3V header via a red wire. GND goes to the shield's Gnd header via a black wire. GND.1 is assumed for the Gnd pin.",
+  "The Ethernet cable to a network, the USB cable and the code are not modelled. The cable is mentioned in the text but is not part of the listed hardware.",
+  "The Ethernet shield and the SCP1000 breakout are new part types. The SCP1000 pins are modelled as header-socket ports so that jumper wire ends can join them."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 120.1,
+   "check_seconds": 0.0,
+   "input_tokens": 53453,
+   "output_tokens": 2325,
+   "cost_usd": 0.1171,
+   "listed": 3,
+   "matched": 1,
+   "looked_up": 2,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "SCP1000 Pressure Sensor Breakout Board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/sparkfun-pressure-sensor-breakout-ms5803-14ba.html (The page describes the SparkFun MS5803-14BA Pressure Sensor Breakout (SEN-12909))"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2189 (Page is for the MPL3115A2 Altitude/Pressure Sensor Breakout Board (Pololu #2189,)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/TPH-Board-the-Temperature-Pressure-Humidity-Sensor-Board-p-1895.html (The content is the Seeed TPH Board (Temperature Pressure Humidity Sensor Board),)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 59.6
+    },
+    {
+     "item": "Arduino Ethernet Shield",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/rj45-ethernet-magjack-compatible.html (The content describes a SparkFun RJ45 Ethernet MagJack-Compatible connector (PRT)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2472 (The content describes the Arduino Y\u00fan (a Linux and ATmega32U4 board), not the Ar)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield (CAN bus connectivity for MKR b)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 20.8
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.6,
+   "input_tokens": 18499,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5930,
+   "cost_usd": 0.1124,
+   "check_seconds": 0.0,
+   "issues": 14,
+   "issue_rules": {
+    "V3": 7,
+    "V4": 7
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.6,
+   "input_tokens": 25273,
+   "cache_read_tokens": 18497,
+   "output_tokens": 6570,
+   "cost_usd": 0.0965,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 14,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ethernet-shield",
+   "family": "ethernet-shield",
+   "checked": false
+  },
+  {
+   "type": "scp1000-breakout",
+   "family": "scp1000-breakout",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.2
+}

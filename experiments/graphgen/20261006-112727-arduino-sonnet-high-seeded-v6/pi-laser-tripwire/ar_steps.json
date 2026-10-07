@@ -1,0 +1,284 @@
+{
+ "tutorial": "pi-laser-tripwire",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/ldr-straw1.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/ldr-straw2.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/RC-circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/buzzer-circuit.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/assembly1.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/assembly2.jpg"
+ ],
+ "legs_and_ends": 16,
+ "with_position": 16,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi",
+     "type": "raspberry-pi-4-gpio",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "ldr1",
+     "type": "photoresistor",
+     "label": "light-dependent resistor (LDR)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "1b.j",
+       "mm": [
+        0.0,
+        27.94
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "3b.j",
+       "mm": [
+        5.08,
+        27.94
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "c1",
+     "type": "capacitor-10uf",
+     "label": "1\u00b5F capacitor",
+     "props": {
+      "value": "1uF"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "NEG",
+       "part": "bb1",
+       "port": "5b.i",
+       "mm": [
+        10.16,
+        25.4
+       ]
+      },
+      {
+       "leg": "POS",
+       "part": "bb1",
+       "port": "3b.i",
+       "mm": [
+        5.08,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "buzzer1",
+     "type": "buzzer",
+     "label": "piezo buzzer",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "28b.j",
+       "mm": [
+        68.58,
+        27.94
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "30b.j",
+       "mm": [
+        73.66,
+        27.94
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "jumper to 3V3",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "1",
+       "mm": [
+        63.5,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "1b.f",
+       "mm": [
+        0.0,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "jumper to GPIO 4",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "7",
+       "mm": [
+        48.26,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "3b.f",
+       "mm": [
+        5.08,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "jumper to GND",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "6",
+       "mm": [
+        50.8,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "5b.f",
+       "mm": [
+        10.16,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "buzzer GND jumper",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "9",
+       "mm": [
+        41.66,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "28b.f",
+       "mm": [
+        68.58,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "buzzer GPIO 17 jumper",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "30b.f",
+       "mm": [
+        73.66,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

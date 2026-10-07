@@ -1,0 +1,124 @@
+{
+ "case": "keyboard-logout",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 69.2,
+  "input_tokens": 43327,
+  "output_tokens": 3948,
+  "cost_usd": 0.0875,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts list marked the board as not in the catalogue, but the circuit is an Arduino Leonardo and the catalogue has arduino-leonardo, so I used that type.",
+  "The pushbutton straddles the breadboard centre gap. Its legs are in columns 4 and 6. The image's top half (rows j to f) is the catalogue's 'b' bank, and its bottom half (rows e to a) is the 't' bank.",
+  "I took the pushbutton's two joined sides to be its left (column 4) and right (column 6) leg pairs. So 1.l and 1.r are the column-4 legs (4b.f and 4t.e), and 2.l and 2.r are the column-6 legs (6b.f and 6t.e). Pressing the button joins column 4 to column 6.",
+  "The blue wire runs from pin 2 to column 6 (hole 6b.i), which is the button's pin-2 side.",
+  "The black wire runs from a GND header pin to hole 4t.c in column 4, which is the button's ground side. I assumed the GND.1 port for the header pin shown next to 5V.",
+  "There is no external pull-up resistor. The sketch uses INPUT_PULLUP, so the internal pull-up is used."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 45.8,
+   "check_seconds": 0.0,
+   "input_tokens": 23815,
+   "output_tokens": 1047,
+   "cost_usd": 0.0227,
+   "listed": 4,
+   "matched": 3,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Leonardo, Micro, or Due board",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1947 (The content describes the Adafruit 2.8\" TFT Touch Shield with Capacitive Touch ()"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-uno-r4-minima.html (The page describes the Arduino UNO R4 Minima (DEV-22633), not the Arduino Leonar)"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2521 (The content describes the Pololu Zumo Shield for Arduino v1.3 (item #2521), a mo)"
+      ],
+      [
+       "budget",
+       "stopped after 3 checks"
+      ]
+     ],
+     "seconds": 17.7
+    },
+    {
+     "item": "pushbutton",
+     "card": "pushbutton",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 23.4,
+   "input_tokens": 19512,
+   "cache_read_tokens": 11120,
+   "output_tokens": 2901,
+   "cost_usd": 0.0648,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 2,
+  "nets_built": 2,
+  "nets_matched": 2,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 13.8
+}

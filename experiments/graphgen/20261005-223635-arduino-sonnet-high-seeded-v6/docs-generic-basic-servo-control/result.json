@@ -1,0 +1,74 @@
+{
+ "case": "docs-generic-basic-servo-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 23.5,
+  "input_tokens": 61676,
+  "output_tokens": 2793,
+  "cost_usd": 0.1463,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts are unchanged: Arduino UNO, servo, and three jumper wires (no breadboard, as the circuit image shows the servo wired straight to the UNO).",
+  "Connections follow the circuit image and text: servo PWR (red) to 5V, servo GND (black) to GND, servo signal to digital pin 9, which matches myservo.attach(9).",
+  "The image shows the black wire going to a GND pin in the power header, next to 5V. The catalogue has GND.1, GND.2 and GND.3 and does not say which is which, so I used GND.2. All the GND pins are the same node on the UNO.",
+  "The servo is powered from the UNO's 5V pin, within its 4.8-6 V range. Its signal is 5 V logic from pin 9.",
+  "The servo's 3-pin connector is modelled as the servo's PWM, V+ and GND ports, each joined to one jumper wire end."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.3,
+   "input_tokens": 30309,
+   "cache_read_tokens": 3468,
+   "output_tokens": 895,
+   "cost_usd": 0.117,
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.2,
+   "input_tokens": 31367,
+   "cache_read_tokens": 30307,
+   "output_tokens": 1898,
+   "cost_usd": 0.0293,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor",
+   "servo"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 12.3
+}

@@ -1,0 +1,47 @@
+{
+ "case": "docs-nano-33-iot-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 35.0,
+  "api_seconds": 31.7,
+  "first_token_seconds": 16.0,
+  "input_tokens": 20205,
+  "cache_read_tokens": 5414,
+  "output_tokens": 5132,
+  "cost_usd": 0.1116,
+  "turns": 2
+ },
+ "parts": 13,
+ "edges": 34,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The Nano 33 IoT is not in the catalogue, so I added it as a new part type. I gave it only the ports this circuit uses: A4 (SDA), A5 (SCL), GND, 3V3 and USB. The diagram labels the 3.3 V pin '3V'.",
+  "The diagram draws the two 4.7 k\u03a9 pull-up resistors and the wire junctions without a breadboard. The hardware list names mini breadboards. I put the shared nodes on one breadboard (bb1): column 5t is SCL, column 10t is SDA, and the top positive rail is 3V3. This is an assumption about the layout, but the electrical nets match the diagram.",
+  "The nets are: SCL joins reader A5, writer A5 and one resistor end. SDA joins reader A4, writer A4 and the other resistor end. The other ends of both resistors go to the reader's 3V3 pin. The two GND pins are joined directly by a wire.",
+  "The 3V3 rail is fed only from the reader board. The writer's 3V3 is unused.",
+  "Both boards are powered and programmed over USB from a computer. The computer is not modelled.",
+  "The list says 10 jumper wires, but the circuit needs only 6. I modelled the 6 that the diagram shows.",
+  "Breadboard hole positions are arbitrary, but the nets they form are correct."
+ ],
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-nano-33-iot",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 10.5
+}

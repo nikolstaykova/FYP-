@@ -1,0 +1,63 @@
+{
+ "case": "docs-communication-digitalpotcontrol",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 101.7,
+  "input_tokens": 18937,
+  "output_tokens": 19559,
+  "cost_usd": 0.2508,
+  "repair_rounds_used": 0
+ },
+ "parts": 43,
+ "edges": 208,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The AD5206 is not in the catalogue, so it is a new part type 'ad5206' whose ports are the datasheet pin names (A1..A6, W1..W6, B1..B6, GND, CS, VDD, SDI, CLK, VSS). Each channel is modelled as through A-W and W-B.",
+  "The circuit image was not available, so breadboard hole positions are my own layout: the chip straddles the centre gap, pins 1-12 in row e of columns 10-21 (top bank), pins 13-24 in row f of columns 21-10 (bottom bank).",
+  "Per the code comments: all A pins and VDD go to +5V; all B pins, GND and VSS go to ground (VSS is 0 V for single-supply operation); CS to Uno pin 10, SDI to pin 11 (MOSI), CLK to pin 13 (SCK).",
+  "Each W pin goes through a 220 ohm resistor and then an LED (anode to resistor, cathode to ground). A short jumper carries each wiper to a free breadboard column that holds the resistor.",
+  "The top and bottom power rails are separate strips on the breadboard, so they are bridged with jumpers (wire3, wire4). The Uno 5V and GND.1 pins feed the top rails.",
+  "The LED on channel n is led n (W n); the code addresses channels 0-5, with addresses 000 for W1 through 101 for W6 per the datasheet."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 101.7,
+   "input_tokens": 18937,
+   "cache_read_tokens": 5414,
+   "output_tokens": 19559,
+   "cost_usd": 0.2508,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "ad5206",
+   "family": "ad5206",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 29.0
+}

@@ -1,0 +1,68 @@
+{
+ "case": "pi-build-a-buggy",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 26.1,
+  "api_seconds": 22.9,
+  "first_token_seconds": 10.0,
+  "input_tokens": 22936,
+  "cache_read_tokens": 14806,
+  "output_tokens": 3741,
+  "cost_usd": 0.0729,
+  "turns": 2
+ },
+ "parts": 5,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V3",
+   "e9: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e11: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e13: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e15: lead \u2194 lug is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "No breadboard is used in the basic buggy, so none is in the graph. The optional breadboard, distance sensor and line sensors are not built in this tutorial and are left out.",
+  "The motors and the battery holder come with their own wires, so I did not add separate jumper wire nodes. Each wire end goes straight into a screw terminal on the controller board. The images show wires soldered to the motors, and the red and black battery leads.",
+  "The board sits on the first 26 GPIO pins. I only modelled the four pins the Robot code uses: GPIO7, 8, 9 and 10. The board's other pass-through pins (power, ground and so on) are not modelled. The board's logic power is not described, so I did not add edges for it.",
+  "Robot(left=(7,8), right=(9,10)): motor A (left, motor1) is driven by GPIO7 and GPIO8. Motor B (right, motor2) is driven by GPIO9 and GPIO10. The manual says to swap these pin numbers if the motors turn the wrong way.",
+  "Motor leads are interchangeable, so I mapped them to A.1/A.2 and B.1/B.2 arbitrarily. The battery polarity matters: red goes to + and black goes to -.",
+  "The cardboard box chassis, wheels, ball caster, adhesives and USB power bank for the Pi are mechanical or supply items. They are not modelled as nodes because there are no catalogue parts for them and the manual gives no exact connection points."
+ ],
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "motor-controller-board",
+   "family": "motor-controller-board",
+   "checked": false
+  },
+  {
+   "type": "battery-holder-4aa",
+   "family": "battery-holder-4aa",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 18.1
+}

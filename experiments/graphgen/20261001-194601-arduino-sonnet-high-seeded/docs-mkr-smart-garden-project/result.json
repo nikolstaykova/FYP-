@@ -1,0 +1,110 @@
+{
+ "case": "docs-mkr-smart-garden-project",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 79.6,
+  "input_tokens": 53163,
+  "output_tokens": 11464,
+  "cost_usd": 0.1591,
+  "repair_rounds_used": 1
+ },
+ "parts": 10,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 8,
+ "new_types_added": 6,
+ "problems": [],
+ "notes": [
+  "The USB adapter's mains side and the plant/pot are omitted; the pipe's far end goes into the plant pot and the moisture sensor goes into the soil (not modelled).",
+  "The text says relay 1 and the circuit images were not available; the sketch uses opla.Relay2, so the relay number may really be 2. Modelled as relay 1 per the text.",
+  "The open-ended USB cable's red (+) wire goes to relay NO and its black (-) wire is joined to the pump's negative wire; the pump's positive wire goes to relay COM. The relay NC terminal is unused.",
+  "The MKR WiFi 1010 is powered by the micro-USB cable from the adapter's first port; the open-ended USB cable uses the second port for the pump's power. The open-ended cable has one USB plug port (PLUG) feeding both its POS and NEG wires (modelled as 'through' paths), so the adapter's USB.2 is used only once.",
+  "The carrier's pass-through of A6/5V/GND from the MKR header to the Grove A6 connector is modelled with custom ports, as the carrier is a new part type.",
+  "The relay terminals are screw terminals; their port kind is given as 'lead' so the pump's lead and the cable's wire-end wires are a compatible join."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.2,
+   "input_tokens": 23395,
+   "cache_read_tokens": 14503,
+   "output_tokens": 5854,
+   "cost_usd": 0.097,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 1,
+    "V4": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 43.4,
+   "input_tokens": 29768,
+   "cache_read_tokens": 29766,
+   "output_tokens": 5610,
+   "cost_usd": 0.0621,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-iot-carrier",
+   "family": "mkr-iot-carrier",
+   "checked": false
+  },
+  {
+   "type": "water-pump-5v",
+   "family": "water-pump-5v",
+   "checked": false
+  },
+  {
+   "type": "usb-adapter-2port",
+   "family": "usb-adapter-2port",
+   "checked": false
+  },
+  {
+   "type": "usb-cable-open-ended",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "watering-pipe",
+   "family": "watering-pipe",
+   "checked": false
+  },
+  {
+   "type": "water-container",
+   "family": "water-container",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 17.4
+}

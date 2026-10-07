@@ -1,0 +1,688 @@
+{
+ "graph": {
+  "title": "Controlling a DC Motor with the Arduino Motor Shield Rev3",
+  "source_id": "MotorShieldRev3_T1 (Arduino Motor Shield Rev3 tutorial: control a DC motor)",
+  "new_part_types": [
+   {
+    "type": "motor-shield-rev3",
+    "name": "Arduino Motor Shield Rev3 (L298P)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "A+",
+      "kind": "lug"
+     },
+     {
+      "name": "A-",
+      "kind": "lug"
+     },
+     {
+      "name": "B+",
+      "kind": "lug"
+     },
+     {
+      "name": "B-",
+      "kind": "lug"
+     },
+     {
+      "name": "VIN",
+      "kind": "lug"
+     },
+     {
+      "name": "GND",
+      "kind": "lug"
+     },
+     {
+      "name": "pin.3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.12",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.13",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.A0",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.A1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.5V",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "pin.VIN",
+      "kind": "header-pin"
+     }
+    ],
+    "conducts": [
+     [
+      "VIN",
+      "pin.VIN"
+     ],
+     [
+      "GND",
+      "pin.GND.1"
+     ]
+    ],
+    "through": [
+     [
+      "pin.12",
+      "A+"
+     ],
+     [
+      "pin.3",
+      "A+"
+     ],
+     [
+      "pin.9",
+      "A+"
+     ],
+     [
+      "pin.13",
+      "B+"
+     ],
+     [
+      "pin.11",
+      "B+"
+     ],
+     [
+      "pin.8",
+      "B+"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "battery-holder-2x18650",
+    "name": "2x 3.7V Li-ion 18650 battery holder (pack)",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "wire-end"
+     },
+     {
+      "name": "NEG",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "NEG",
+      "POS"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino UNO",
+    "props": []
+   },
+   {
+    "id": "shield1",
+    "type": "motor-shield-rev3",
+    "label": "Motor Shield Rev3",
+    "props": []
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "DC motor (6-12V)",
+    "props": [
+     {
+      "key": "voltage",
+      "value": "6-12V"
+     }
+    ]
+   },
+   {
+    "id": "bat1",
+    "type": "battery-holder-2x18650",
+    "label": "2x 3.7V Li-ion battery",
+    "props": [
+     {
+      "key": "cells",
+      "value": "2x 3.7V Li-ion 18650"
+     }
+    ]
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "Motor orange wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "Motor black wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "Battery + wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "Battery - wire",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "USB cable",
+    "props": []
+   },
+   {
+    "id": "laptop1",
+    "type": "laptop",
+    "label": "Computer",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.3",
+    "v": "uno",
+    "v_port": "3",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.3",
+    "v": "uno",
+    "v_port": "3",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.8",
+    "v": "uno",
+    "v_port": "8",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.8",
+    "v": "uno",
+    "v_port": "8",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.9",
+    "v": "uno",
+    "v_port": "9",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.9",
+    "v": "uno",
+    "v_port": "9",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.11",
+    "v": "uno",
+    "v_port": "11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.11",
+    "v": "uno",
+    "v_port": "11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.12",
+    "v": "uno",
+    "v_port": "12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.12",
+    "v": "uno",
+    "v_port": "12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.13",
+    "v": "uno",
+    "v_port": "13",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.13",
+    "v": "uno",
+    "v_port": "13",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.A0",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.A0",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.A1",
+    "v": "uno",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.A1",
+    "v": "uno",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.5V",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.5V",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.GND.1",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.GND.1",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "shield1",
+    "u_port": "pin.VIN",
+    "v": "uno",
+    "v_port": "VIN",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "shield1",
+    "u_port": "pin.VIN",
+    "v": "uno",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "wire1",
+    "v_port": "a",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "permanent"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "wire1",
+    "v_port": "a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "A+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "A+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "wire2",
+    "v_port": "a",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "permanent"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "wire2",
+    "v_port": "a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "A-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "A-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "wire3",
+    "v_port": "a",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "permanent"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "POS",
+    "v": "wire3",
+    "v_port": "a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "wire4",
+    "v_port": "a",
+    "method": "solder",
+    "freedom": "rigid",
+    "reversible": "permanent"
+   },
+   {
+    "type": "electrical",
+    "u": "bat1",
+    "u_port": "NEG",
+    "v": "wire4",
+    "v_port": "a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "shield1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "uno",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "uno",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "usb1",
+    "u_port": null,
+    "v": "laptop1",
+    "v_port": "USB",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Motor Shield Rev3 and the 2x 18650 battery pack are not in the catalogue, so they are new part types. The shield only lists the header pins relevant to this tutorial (D3, D8, D9, D11, D12, D13, A0, A1, 5V, GND, VIN) plus the six screw terminals A+, A-, B+, B-, VIN, GND.",
+   "The shield is stacked on the UNO; all of its header pins plug into the UNO sockets. Only the pins used by the tutorial are modelled as edges.",
+   "The image shows the motor and battery leads as fixed wires going into the screw terminals. They are modelled as jumper-wire parts joined to the motor/battery leads (method assumed solder/permanent) and screwed into the terminals.",
+   "Motor orange wire goes to A+ and black wire to A-, as in the image. Battery orange (+) goes to terminal VIN and black (-) to GND.",
+   "Pin roles for channel A: D12 direction, D3 PWM, D9 brake, A0 current sense. Channel B: D13, D11, D8, A1. The motor is on channel A.",
+   "The USB cable has no named ports in the catalogue, so its edges use null ports. The UNO's USB connector is not a named catalogue port.",
+   "Battery cells are modelled as a single 2-cell holder with POS/NEG ends, not two separate cells."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 40.8,
+  "api_seconds": 33.2,
+  "first_token_seconds": 13.7,
+  "input_tokens": 19791,
+  "cache_read_tokens": 5414,
+  "output_tokens": 5872,
+  "cost_usd": 0.1173,
+  "turns": 2
+ }
+}

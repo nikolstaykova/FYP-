@@ -1,0 +1,62 @@
+{
+ "case": "docs-zero-simple-audio-frequency-meter",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 124.1,
+  "api_seconds": 119.4,
+  "first_token_seconds": 81.7,
+  "input_tokens": 19118,
+  "cache_read_tokens": 11242,
+  "output_tokens": 17912,
+  "cost_usd": 0.2129,
+  "turns": 2
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 4,
+ "problems": [],
+ "notes": [
+  "Arduino Zero, LMV358, 100 nF capacitor and 3.5mm jack are not in the catalogue, so they are new part types. The 10k trimmer uses the catalogue potentiometer-10k (GND/SIG/VCC = left/wiper/right pins).",
+  "Breadboard hole names follow the catalogue: bank 't' = rows a-e, bank 'b' = rows f-j. The LMV358 straddles the centre gap in columns 14-17 with pin 1 at 14t.e (notch left): pin 1 = OUT A, 2 = IN-, 3 = IN+, 4 = GND, 8 = VCC.",
+  "Rail indices (tp.8, tp.10, tp.12, bn.5, bn.17, bn.18, bn.25) are estimated from pixel positions, counting holes from the left in groups of five. Each rail is one strip, so only the rail matters. The red rail is VCC from IOREF, and the rail next to the blue line is GND.",
+  "Hole positions come from the Fritzing image. The teal jumper's right end looks like it stops short of the LMV358 pin-2 strip. I placed it at 15t.c to match the schematic, where the R11/R10 junction goes to the op-amp inverting input. The purple wire's left end is drawn at 2b.g, which is not on the trimmer's strip. I put it on 2t.c, the trimmer wiper strip, to match the schematic, where the wiper goes to the amplifier output.",
+  "Resistor mapping: r1 = R11 47k, r2 = R10 47k, r3 = R8 100k (VCC to IN+), r4 = R9 100k (IN+ to GND). C1 sits between the IN+ node (16t) and the jack signal wire (18t).",
+  "The unused second op-amp (pins 5, 6, 7) is left unconnected, as in the schematic. The jack's LEFT lug is unused. The jack signal goes to the RIGHT lug and the sleeve goes to ground."
+ ],
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "lmv358",
+   "family": "lmv358",
+   "checked": false
+  },
+  {
+   "type": "capacitor-100nf",
+   "family": "capacitor-100nf",
+   "checked": false
+  },
+  {
+   "type": "audio-jack-35mm",
+   "family": "audio-jack-35mm",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 22.8
+}

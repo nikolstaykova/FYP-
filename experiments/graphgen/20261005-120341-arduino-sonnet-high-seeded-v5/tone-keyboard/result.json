@@ -1,0 +1,290 @@
+{
+ "case": "tone-keyboard",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 75.7,
+  "input_tokens": 60076,
+  "output_tokens": 12042,
+  "cost_usd": 0.1724,
+  "repair_rounds_used": 0
+ },
+ "parts": 24,
+ "edges": 76,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The breadboard in the picture has rows j-f in its upper half and rows e-a in its lower half. Holes are named with the picture's row letters, so the upper half is written as bank 'b' (for example 9b.i) and the lower half as bank 't' (for example 6t.b).",
+  "Rails: the top + rail is tp, the top - rail is tn, the bottom + rail is bp, and the bottom - rail is bn. Rail hole numbers are approximate, because every rail is a single strip.",
+  "Each FSR is wired to a different analog pin: A0 to FSR3's sense node (column 24), A1 to FSR2's (column 16), A2 to FSR1's (column 6), as in the picture and schematic. Which FSR is called 1, 2 or 3 does not matter.",
+  "Each FSR runs from the +5 V rail, through its sense node, to a 10k resistor to ground, which is the pull-down. The red wire from each FSR goes to the bottom + rail, and the blue wire goes to the sense column.",
+  "The speaker is wired from pin 8 through the 100 ohm resistor (columns 9 to 12) to the speaker's first lead, and its second lead goes to the top ground rail. The manual's text says 100 ohm, but the schematic label says 10k; the text and parts list (100 ohm) are followed.",
+  "The two vertical wires on the right of the breadboard link the top and bottom rails: black for ground, red for 5 V.",
+  "The Uno's 5V and GND.1 pins feed the top rails. The long red and black wires run to the top-left of the breadboard."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.3,
+   "input_tokens": 38434,
+   "cache_read_tokens": 30194,
+   "output_tokens": 2189,
+   "cost_usd": 0.0609,
+   "check_seconds": 0.0,
+   "parts_listed": 24,
+   "changed_in_build": 0,
+   "looked_up": [
+    "speaker-8ohm"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 58.4,
+   "input_tokens": 21642,
+   "cache_read_tokens": 19380,
+   "output_tokens": 9853,
+   "cost_usd": 0.1115,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 6,
+  "nets_built": 7,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "fsr": 3,
+   "resistor": 3,
+   "buzzer": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker-8ohm": 1,
+   "fsr": 3,
+   "resistor": 4
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "fsr",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ],
+    [
+     "fsr",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker-8ohm",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A2"
+    ],
+    [
+     "fsr",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 15.1
+}

@@ -1,0 +1,111 @@
+{
+ "case": "keyboard-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 77.4,
+  "api_seconds": 74.2,
+  "first_token_seconds": 39.6,
+  "input_tokens": 16961,
+  "cache_read_tokens": 9602,
+  "output_tokens": 12321,
+  "cost_usd": 0.1546,
+  "turns": 2
+ },
+ "parts": 24,
+ "edges": 98,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e2: port '5V' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e5: port 'GND' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e6: port 'GND' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e79: port '6' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e80: port '6' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e83: port '5' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e84: port '5' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e87: port '4' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e88: port '4' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e91: port '3' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e92: port '3' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e95: port '2' not on arduino-leonardo"
+  ],
+  [
+   "V4",
+   "e96: port '2' not on arduino-leonardo"
+  ]
+ ],
+ "notes": [
+  "The Leonardo catalogue entry lists no ports; I used names matching the board silkscreen: 2-6, 5V, GND.",
+  "Breadboard bank naming follows the catalogue: 't' = rows a-e, 'b' = rows f-j. In the image rows f-j are the upper half (where the 5V wires land) and rows a-e are the lower half (where the signal wires and resistors sit). The pushbuttons straddle the centre gap.",
+  "Pushbutton pins: 1.l/1.r are taken as the upper side (rows f) and 2.l/2.r as the lower side (rows e). The +5V wire goes to the upper right leg and the signal and resistor are on the lower left leg, so the switch connects 5V to the signal column.",
+  "Column numbers are read from the image: button legs at columns 6/8, 11/13, 16/18, 21/23, 26/28. Pull-down resistors are in columns 6, 11, 16, 21, 26 of the lower half.",
+  "Power-rail hole numbers (tp.n, bn.n) are approximate, read from pixel positions. The red wire from 5V goes to the top + rail (tp). Five short red jumpers carry 5V from the rail to the upper leg of each button. The black wire from GND goes to the bottom - rail (bn), and the resistors' other legs go to that rail.",
+  "Resistors are 10k ohm (value=10000) pull-downs. Buttons connect pins 6, 5, 4, 3, 2 in order from left to right, as the image shows."
+ ],
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 7,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 5,
+   "resistor": 5
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 11.1
+}

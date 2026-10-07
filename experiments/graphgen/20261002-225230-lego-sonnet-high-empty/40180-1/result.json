@@ -1,0 +1,147 @@
+{
+ "case": "40180-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 564.8,
+  "input_tokens": 464568,
+  "output_tokens": 96632,
+  "cost_usd": 1.7778,
+  "repair_rounds_used": 2
+ },
+ "parts": 164,
+ "edges": 171,
+ "repeats": [
+  {
+   "group": "clearcol",
+   "times": 4,
+   "overrides": 3
+  },
+  {
+   "group": "tanbrick",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "tanstack",
+   "times": 3,
+   "overrides": 2
+  },
+  {
+   "group": "clearstack",
+   "times": 4,
+   "overrides": 3
+  },
+  {
+   "group": "spot",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 13,
+ "new_types_added": 12,
+ "problems": [],
+ "notes": [
+  "The L3 'separate groups' warning is not a real problem for this set. Set 40180 is three separate models. The theatre is built in steps 1-30, then the black car (pages 22-23, shown beside the theatre) and the blue pick-up (pages 24-25) are built from their own parts boxes. The final page (26) shows the cars standing apart, with no brick joining them to the theatre or to each other. So the graph keeps three connected components on purpose.",
+  "Steps are small pictures; the exact stud each piece lands on is partly inferred. Joins are given between plausibly adjacent pieces, with ports mostly left null.",
+  "Dark blue plates b50, b51 (1x4) and b52 (1x6) declare one stud per position (stud.1-4 and stud.1-6). Stacks and bricks on them use distinct studs, so no single stud is used twice.",
+  "The tile that goes on the tan 1x1 headlight brick (4118793) is shown pushed onto the side of the brick. The catalogue port is a 'side-hole' (not stud-compatible), so the tile is joined to the brick's stud.1 port as the closest compatible port. Physically it sits on the side stud.",
+  "Frame in steps 1-5: b2 (1x6 grey plate) and the three 1x4 grey plates b4-b6 surround the blue tile b3. The dark grey 1x4 plates b22-b24 of step 5 are assumed to cover the back and side grey plates.",
+  "Step 7: the parts box shows 2 technic bricks and 2 pins. The picture shows the right-hand brick (b29) carrying both pins and the left one (b30) bare, so that is how it is modelled.",
+  "Inventory 4205004 (x1) is the small dark blue tile of step 25. The dark blue tile in step 2 and the two big roof tiles in step 25 are taken as 4569836 (x3).",
+  "Inventory 3000840 (x13) is used as 4 plates in step 9, 8 in step 13 and 1 in step 24. The other step 24 plate is 302401, and the second 302401 is the white plate in car 2.",
+  "Elements 4632571 and 4632575 are the black and light grey 1x2 wheel-holder plates of the two cars. The catalogue port list for 4632571 does not describe a wheel holder, so car 1 wheel joins leave the wheel-plate port null. 614126 is the 1x1 round wheel plate (4 per car) plus 1 as the lamp post top in step 30.",
+  "Spotlights (459926) are modelled as standing on the awning plates b80 and b81, each with a lens (3005740) on its head.",
+  "Car sub-steps: the order of the top plates, slope and tile in each car is approximated from small pictures.",
+  "Repeats: clearcol (brick + plate on the corner plates), tanbrick (side-hole brick + tile), tanstack (2 stacked tan plates on the dark blue frame), clearstack (2 stacked clear plates on the dark blue frame) and spot (spotlight + lens)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 335.4,
+   "input_tokens": 111927,
+   "cache_read_tokens": 0,
+   "output_tokens": 50015,
+   "cost_usd": 0.9479,
+   "check_seconds": 0.02,
+   "issues": 6,
+   "issue_rules": {
+    "V3": 2,
+    "V4": 3,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 129.4,
+   "input_tokens": 163560,
+   "cache_read_tokens": 111925,
+   "output_tokens": 25346,
+   "cost_usd": 0.4824,
+   "check_seconds": 0.02,
+   "issues": 1,
+   "issue_rules": {
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 99.9,
+   "input_tokens": 189081,
+   "cache_read_tokens": 163558,
+   "output_tokens": 21271,
+   "cost_usd": 0.3475,
+   "check_seconds": 0.02,
+   "issues": 1,
+   "issue_rules": {
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 1,
+ "score": {
+  "pieces_expected": 164,
+  "pieces_built": 164,
+  "pieces_unmapped": 0,
+  "inventory_matched": 164,
+  "exact_matched": 164,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 171,
+  "contacts_expected": 33,
+  "contacts_predicted": 58,
+  "contacts_correct": 28,
+  "contact_precision": 0.483,
+  "contact_recall": 0.848
+ },
+ "score_initial": {
+  "pieces_expected": 164,
+  "pieces_built": 164,
+  "pieces_unmapped": 0,
+  "inventory_matched": 164,
+  "exact_matched": 164,
+  "inventory_precision": 1.0,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 171,
+  "contacts_expected": 33,
+  "contacts_predicted": 58,
+  "contacts_correct": 28,
+  "contact_precision": 0.483,
+  "contact_recall": 0.848
+ },
+ "postprocess_ms": 12.2
+}

@@ -1,0 +1,393 @@
+{
+ "graph": {
+  "title": "MKR Motor Carrier: Reading LiPo Battery Levels",
+  "source_id": "MKR Motor Carrier Tutorial 1 (MKRMOTORCARRIER_T1) - Battery Level Reading",
+  "new_part_types": [
+   {
+    "type": "mkr-motor-carrier",
+    "name": "Arduino MKR Motor Carrier",
+    "category": "board",
+    "ports": [
+     {
+      "name": "H.VIN",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.5V",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.VCC",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.GND",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.6",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.11",
+      "kind": "header-socket"
+     },
+     {
+      "name": "H.12",
+      "kind": "header-socket"
+     },
+     {
+      "name": "VIN",
+      "kind": "lug"
+     },
+     {
+      "name": "GND",
+      "kind": "lug"
+     },
+     {
+      "name": "M1+",
+      "kind": "lug"
+     },
+     {
+      "name": "M1-",
+      "kind": "lug"
+     }
+    ],
+    "conducts": [
+     [
+      "VIN",
+      "H.VIN"
+     ],
+     [
+      "GND",
+      "H.GND"
+     ]
+    ],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "lipo-battery-3s",
+    "name": "3S LiPo battery (11.1 V)",
+    "category": "battery",
+    "ports": [
+     {
+      "name": "POS",
+      "kind": "lead"
+     },
+     {
+      "name": "NEG",
+      "kind": "lead"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "NEG",
+      "POS"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "mkr1",
+    "type": "arduino-mkr-1000",
+    "label": "MKR family board",
+    "props": []
+   },
+   {
+    "id": "carrier1",
+    "type": "mkr-motor-carrier",
+    "label": "MKR Motor Carrier",
+    "props": []
+   },
+   {
+    "id": "batt1",
+    "type": "lipo-battery-3s",
+    "label": "LiPo Battery (3S, 11.1V)",
+    "props": [
+     {
+      "key": "voltage",
+      "value": "11.1"
+     }
+    ]
+   },
+   {
+    "id": "motor1",
+    "type": "dc-motor",
+    "label": "DC motor (optional)",
+    "props": []
+   },
+   {
+    "id": "usb1",
+    "type": "usb-cable",
+    "label": "micro USB cable",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "H.VIN",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VIN",
+    "v": "carrier1",
+    "v_port": "H.VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "H.5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "5V",
+    "v": "carrier1",
+    "v_port": "H.5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "VCC",
+    "v": "carrier1",
+    "v_port": "H.VCC",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "VCC",
+    "v": "carrier1",
+    "v_port": "H.VCC",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "H.GND",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "GND",
+    "v": "carrier1",
+    "v_port": "H.GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "6",
+    "v": "carrier1",
+    "v_port": "H.6",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "6",
+    "v": "carrier1",
+    "v_port": "H.6",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "11",
+    "v": "carrier1",
+    "v_port": "H.11",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "11",
+    "v": "carrier1",
+    "v_port": "H.11",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "mkr1",
+    "u_port": "12",
+    "v": "carrier1",
+    "v_port": "H.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "mkr1",
+    "u_port": "12",
+    "v": "carrier1",
+    "v_port": "H.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "VIN",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "POS",
+    "v": "carrier1",
+    "v_port": "VIN",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "batt1",
+    "u_port": "NEG",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "batt1",
+    "u_port": "NEG",
+    "v": "carrier1",
+    "v_port": "GND",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "M1+",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "1",
+    "v": "carrier1",
+    "v_port": "M1+",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "carrier1",
+    "v_port": "M1-",
+    "method": "screw",
+    "freedom": "rigid",
+    "reversible": "tool"
+   },
+   {
+    "type": "electrical",
+    "u": "motor1",
+    "u_port": "2",
+    "v": "carrier1",
+    "v_port": "M1-",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "usb1",
+    "u_port": null,
+    "v": "mkr1",
+    "v_port": "USB",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The manual says 'Arduino MKR family board' without naming a model; arduino-mkr-1000 was chosen (the sketch comments mention MKR1000). Any MKR board would work.",
+   "The MKR Motor Carrier and the 3S LiPo battery (11.1 V) are not in the catalogue, so they are new part types. The carrier lists only the header pins and terminals this tutorial uses.",
+   "The battery can go on the male pins or the blue terminal block (VIN/GND); the terminal block was chosen. The carrier's ON/OFF switch is not modelled.",
+   "The optional power supply is omitted (the LiPo battery is the supply). The DC motor is optional but included, since the circuit image shows it on M1+/M1-.",
+   "The usb-cable has no catalogue ports, so its edge to the board's USB port has no port on the cable side. The computer on the other end of the cable is not shown in the manual and is omitted.",
+   "Which motor lead goes to M1+ and which to M1- is arbitrary, as the motor is symmetric. The 6, 11 and 12 header connections carry the carrier's communication lines; the manual only says to mount the board."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 27.4,
+  "api_seconds": 23.6,
+  "first_token_seconds": 11.0,
+  "input_tokens": 23278,
+  "cache_read_tokens": 5414,
+  "output_tokens": 3869,
+  "cost_usd": 0.1112,
+  "turns": 2
+ }
+}

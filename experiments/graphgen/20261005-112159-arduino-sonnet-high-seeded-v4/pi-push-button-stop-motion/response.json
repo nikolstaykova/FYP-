@@ -1,0 +1,1099 @@
+{
+ "graph": {
+  "title": "Push button stop motion with Raspberry Pi camera",
+  "source_id": "rpi-push-button-stop-motion",
+  "new_part_types": [
+   {
+    "type": "raspberry-pi",
+    "name": "Raspberry Pi (40-pin GPIO, CSI camera connector)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "3V3.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO15",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO17",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO18",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO27",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO22",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO23",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO24",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO25",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "CSI",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "csi-ribbon-cable",
+    "name": "CSI camera ribbon cable (15-way flat)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "cam1",
+    "type": "camera-imx219",
+    "label": "Raspberry Pi camera module",
+    "props": []
+   },
+   {
+    "id": "ribbon1",
+    "type": "csi-ribbon-cable",
+    "label": "Camera ribbon cable",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Full size breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Tactile button",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (black, GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (orange, GP17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": null,
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": null,
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Raspberry Pi model is not named. A generic 40-pin Pi with a CSI camera connector is defined as a new part type 'raspberry-pi'.",
+   "The camera ribbon cable is not in the catalogue, so a 'csi-ribbon-cable' part type was added as a connector. Its two ends are one electrical node.",
+   "Fix for the reported error: the catalogue's camera-imx219 CSI port is of kind 'edge', and no ribbon end kind is compatible with it. A wire-end and an edge were both rejected. So the ribbon-to-camera joined and electrical edges now name the ribbon's port 'a' but leave the camera port unspecified. They still record that the ribbon is plugged into the camera and carries signals to it. The ribbon's other end (port b) goes into the Pi's CSI header-socket, which is a valid pairing.",
+   "The manual's 'Pin-socket jumper leads' are matched to the catalogue's jumper-wire-mf. Port a is the female socket end on the Pi header. Port b is the male end in the breadboard.",
+   "In the diagram the black wire goes to the GND pin in the right-hand header column, which is physical pin 6. That pin is named GND.1. The orange wire goes to GP17 (GPIO17).",
+   "The diagram numbers the breadboard rows 1-13 and the columns a-e. The catalogue names holes '<column><bank>.<row>', so diagram row 3 column a is '3t.a'. The black wire ends at 3t.a and the orange wire at 5t.a.",
+   "The button is shown across diagram rows 3 and 5 on the a-e side. Its four legs are placed at 3t.c, 3t.e, 5t.c and 5t.e, which is an assumption. Side 1 (3t, GND) and side 2 (5t, GPIO17) are the two sides of the button.",
+   "The button has no external pull resistor. The code uses gpiozero Button(17), which enables the Pi's internal pull-up, and the other side of the button goes to GND.",
+   "Software steps such as the Python code, rpicam-hello and ffmpeg are not hardware parts. The USB power cable and the monitor/keyboard are not modelled.",
+   "The breadboard and jumper leads were listed as 'None' in the parts match, but equivalent catalogue types (breadboard, jumper-wire-mf) were used."
+  ]
+ },
+ "graph_initial": {
+  "title": "Push button stop motion with Raspberry Pi camera",
+  "source_id": "rpi-push-button-stop-motion",
+  "new_part_types": [
+   {
+    "type": "raspberry-pi",
+    "name": "Raspberry Pi (40-pin GPIO, CSI camera connector)",
+    "category": "board",
+    "ports": [
+     {
+      "name": "3V3.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "3V3.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "5V.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO14",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO15",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO17",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO18",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO27",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO22",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO23",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO24",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO10",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO9",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO25",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO11",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GPIO7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.1",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.2",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.3",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.4",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.5",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.6",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.7",
+      "kind": "header-pin"
+     },
+     {
+      "name": "GND.8",
+      "kind": "header-pin"
+     },
+     {
+      "name": "CSI",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   },
+   {
+    "type": "csi-ribbon-cable",
+    "name": "CSI camera ribbon cable (15-way flat)",
+    "category": "connector",
+    "ports": [
+     {
+      "name": "a",
+      "kind": "wire-end"
+     },
+     {
+      "name": "b",
+      "kind": "wire-end"
+     }
+    ],
+    "conducts": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "through": [],
+    "symmetric": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "polarized": false,
+    "connector": true,
+    "mirror_of": null,
+    "rotation_symmetry": "180"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "props": []
+   },
+   {
+    "id": "cam1",
+    "type": "camera-imx219",
+    "label": "Raspberry Pi camera module",
+    "props": []
+   },
+   {
+    "id": "ribbon1",
+    "type": "csi-ribbon-cable",
+    "label": "Camera ribbon cable",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "Full size breadboard",
+    "props": []
+   },
+   {
+    "id": "btn1",
+    "type": "pushbutton",
+    "label": "Tactile button",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (black, GND)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire-mf",
+    "label": "Pin-socket jumper lead (orange, GP17)",
+    "props": [
+     {
+      "key": "colour",
+      "value": "orange"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "a",
+    "v": "cam1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "ribbon1",
+    "u_port": "b",
+    "v": "pi1",
+    "v_port": "CSI",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.l",
+    "v": "bb1",
+    "v_port": "3t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "1.r",
+    "v": "bb1",
+    "v_port": "3t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.l",
+    "v": "bb1",
+    "v_port": "5t.c",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "btn1",
+    "u_port": "2.r",
+    "v": "bb1",
+    "v_port": "5t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "3t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "5t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The Raspberry Pi model is not named; a generic 40-pin Pi with a CSI camera connector is defined as a new part type 'raspberry-pi'.",
+   "The camera ribbon cable is not in the catalogue, so a 'csi-ribbon-cable' part type was added. It is a connector whose two ends are one node.",
+   "The manual's 'Pin-socket jumper leads' are matched to the catalogue's jumper-wire-mf. Port a is the female socket end on the Pi header. Port b is the male end in the breadboard.",
+   "In the diagram the black wire goes to the GND pin in the right-hand header column, which is physical pin 6. That pin is named GND.1. The orange wire goes to GP17 (GPIO17).",
+   "The diagram numbers the breadboard rows 1-13 and the columns a-e. The catalogue names holes '<column><bank>.<row>', so diagram row 3 column a is '3t.a'. The black wire ends at 3t.a and the orange wire at 5t.a.",
+   "The button is shown across diagram rows 3 and 5 on the a-e side. Its four legs are placed at 3t.c, 3t.e, 5t.c and 5t.e, which is an assumption. Side 1 (3t, GND) and side 2 (5t, GPIO17) are the two sides of the button.",
+   "The button has no external pull resistor. The code uses gpiozero Button(17), which enables the Pi's internal pull-up, and the other side of the button goes to GND.",
+   "Software steps such as the Python code, rpicam-hello and ffmpeg are not hardware parts. The USB power cable and the monitor/keyboard are not modelled.",
+   "The breadboard and jumper leads were listed as 'None' in the parts match, but equivalent catalogue types (breadboard, jumper-wire-mf) were used."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 136.9,
+  "input_tokens": 125100,
+  "output_tokens": 17541,
+  "cost_usd": 0.4018,
+  "repair_rounds_used": 2
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 49.9,
+   "check_seconds": 0.0,
+   "input_tokens": 45474,
+   "output_tokens": 3085,
+   "cost_usd": 0.1416,
+   "listed": 4,
+   "matched": 1,
+   "looked_up": 3,
+   "found": 1,
+   "items": [
+    {
+     "item": "Raspberry Pi camera module",
+     "card": "camera-imx219",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/raspberry-pi-camera-module-v2.html"
+      ]
+     ],
+     "seconds": 7.8
+    },
+    {
+     "item": "1 x Full size breadboard",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "quarantined: https://www.sparkfun.com/breadboard-full-size-bare.html"
+      ],
+      [
+       "pololu",
+       "did not match: https://www.pololu.com/product/2767 (The content describes an Adafruit Perma-Proto full-sized PCB, a solderable perf-)"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/DUMANG-Mini-Mechanical-Keyboard-with-Magnet-Custom-Value-and-Macro-Full-Size-p-4092.html (The content is a DUMANG mini mechanical keyboard product page from Seeed Studio )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 26.6
+    },
+    {
+     "item": "2 x Pin-socket jumper leads",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/jumper-2-pin.html (The content describes a 2-pin shunt jumper (PRT-09044) that bridges two 2.54mm h)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/Grove-4-pin-Male-Jumper-to-Grove-4-pin-Conversion-Cable-5-PCs-per-Pack.html (The page is a Grove 4-pin to male jumper (pin) conversion cable, 5 per pack. The)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 15.4
+    },
+    {
+     "item": "1 x Tactile button",
+     "card": "pushbutton",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.1,
+   "input_tokens": 21017,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5476,
+   "cost_usd": 0.1179,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "V3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.1,
+   "input_tokens": 26866,
+   "cache_read_tokens": 21015,
+   "output_tokens": 4713,
+   "cost_usd": 0.0747,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "V3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.8,
+   "input_tokens": 31743,
+   "cache_read_tokens": 26864,
+   "output_tokens": 4267,
+   "cost_usd": 0.0676,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "final_issue_list": [],
+ "upkeep": {
+  "seconds": 42.1,
+  "cost_usd": 0.0592,
+  "types": [
+   {
+    "type": "raspberry-pi",
+    "found": true,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "card from https://www.sparkfun.com/raspberry-pi-3-a.html"
+     ]
+    ]
+   },
+   {
+    "type": "csi-ribbon-cable",
+    "found": false,
+    "trail": [
+     [
+      "adafruit",
+      "no search result"
+     ],
+     [
+      "sparkfun",
+      "did not match: https://www.sparkfun.com/raspberry-pi-5-camera-cable-500mm.html (The page is for a Raspberry Pi 5 camera adapter cable, 500mm. It has a 22-way 0.)"
+     ],
+     [
+      "pololu",
+      "no search result"
+     ],
+     [
+      "seeed",
+      "did not match: https://www.seeedstudio.com/Flat-HDMI-Male-to-Male-Cable-1M-Support-3D-For-HDTV-computer-tablets-cable-p-2142.html (The content is a Seeed Studio page for a Flat HDMI Male to Male Cable (1M), not )"
+     ],
+     [
+      "mouser",
+      "skipped: needs MOUSER_API_KEY"
+     ],
+     [
+      "digikey",
+      "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+     ]
+    ]
+   }
+  ]
+ }
+}

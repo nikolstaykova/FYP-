@@ -1,0 +1,246 @@
+{
+ "case": "pi-laser-tripwire",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 238.4,
+  "input_tokens": 101263,
+  "output_tokens": 11605,
+  "cost_usd": 0.3053,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 33,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V4",
+   "e3: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e4: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e7: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e8: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'GND.1' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'GND.1' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e27: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e28: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e31: port 'GND.2' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e32: port 'GND.2' not on rpi-4b"
+  ],
+  [
+   "V2",
+   "part laser1 (laser-pointer) has no connection"
+  ]
+ ],
+ "notes": [
+  "Circuit taken from the two Fritzing images: LDR leg 1 and the 3V3 lead share column 1; LDR leg 2, capacitor positive leg and the GPIO4 lead share column 3; capacitor negative leg and the GND lead share column 5. Breadboard bank 'b' (rows f-j) used as in the second image.",
+  "rpi-4b catalogue entry only lists GPIO_HEADER; I named header pins as ports on the board (3V3 = pin 1, GPIO4 = pin 7, GND.1 = pin 6, GND.2 = pin 9, GPIO17 = pin 11) as the task instructs.",
+  "Buzzer: positive leg (port 1) to GPIO17 via column 30, negative leg (port 2) to GND via column 29, per the second image. Wires use male-female leads (male end 'a' on breadboard, female end 'b' on Pi pin); the buzzer uses two extra leads beyond the 3 listed.",
+  "Capacitor-1uf and drinking-straw were not in the supplied catalogue text, so I defined them as new part types.",
+  "The laser pointer is placed with no electrical edges because it is battery-powered and only aimed down the straw. The LDR sits inside the straw (contact edge).",
+  "Not modelled: the 3 socket-socket jumper leads (final enclosure build, an alternative way to connect the LDR and capacitor without the breadboard) and the optional 3.5mm speakers (alternative to the buzzer, plugged into the Pi's audio jack, which is not a port on the catalogue entry)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 189.1,
+   "input_tokens": 85721,
+   "output_tokens": 4411,
+   "cost_usd": 0.1921,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 10,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "1\u00b5F capacitor",
+     "type": "capacitor-1uf",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-220uf-20-6-3v.html (The content describes a 220\u00b5F, 6.3V Panasonic FK SMT aluminum electrolytic capac)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-47-f-20-35v.html (The page describes a 47\u00b5F, 35V Panasonic FK SMT aluminum electrolytic capacitor )"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/RTC-Module-Super-Capacitor-p-2137.html (The content is a Seeed Studio page for an RTC module with a super capacitor. It )"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/0805-SMT-Capacitor-sample-book-4416-pcs-in-92-values-free-shippin-p-571.html (The content is a Seeed Studio page for a 0805 SMT capacitor sample book (4416 pc)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 51.2
+    },
+    {
+     "part": "Socket-socket jumper leads",
+     "type": "jumper-wire-ff",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/1919"
+      ]
+     ],
+     "seconds": 32.1
+    },
+    {
+     "part": "Laser pointer",
+     "type": "laser-pointer",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1054 (The page is for a Laser Diode module (5mW 650nm, integrated driver, red/black wi)"
+      ],
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1057 (The page describes a Line Laser Diode module (5mW 650nm, integrated driver, line)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/led-basic-red-3mm.html (The content describes a basic red 3mm LED (SparkFun COM-00533), not a laser poin)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/led-tactile-button-red.html (The content describes the SparkFun LED Tactile Button - Red (COM-10442), an LED-)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/5mW-Laser-Module-emitter-Red-Line-p-123.html"
+      ]
+     ],
+     "seconds": 58.5
+    },
+    {
+     "part": "Drinking straw",
+     "type": "drinking-straw",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "no search result"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 40.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.3,
+   "input_tokens": 15542,
+   "cache_read_tokens": 5507,
+   "output_tokens": 7194,
+   "cost_usd": 0.1132,
+   "check_seconds": 0.01,
+   "issues": 11,
+   "issue_rules": {
+    "V4": 10,
+    "V2": 1
+   }
+  }
+ ],
+ "issues_first": 11,
+ "issues_final": 11,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "photoresistor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "capacitor-1uf",
+   "family": "capacitor-1uf",
+   "checked": false
+  },
+  {
+   "type": "drinking-straw",
+   "family": "drinking-straw",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 23.6
+}

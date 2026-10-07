@@ -1,0 +1,137 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 32.0,
+  "input_tokens": 58389,
+  "output_tokens": 4941,
+  "cost_usd": 0.1743,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The accelerometer's six legs go in one row (row a of the top bank), columns 10-15, in the card's order ST, Z, Y, X, GND, VCC. The exact columns are my choice because the image does not show them clearly.",
+  "Each jumper wire goes into the same column as its sensor pin (row b) and runs to the Arduino analog pin the pin table gives. A0 goes to ST, A1 to Z, A2 to Y, A3 to X, A4 to GND and A5 to VCC.",
+  "A4 is driven LOW as ground and A5 HIGH as 5 V by the sketch. That powers the sensor from I/O pins, so there are no 5V/GND wires. The sensor draws only a few mA, well under the 40 mA pin limit.",
+  "The tutorial says the adxl335 card's 3.3-6 V supply range covers the 5 V used. It also warns that some ADXL3xx boards are 3.3 V only."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 9.4,
+   "input_tokens": 28596,
+   "cache_read_tokens": 0,
+   "output_tokens": 1016,
+   "cost_usd": 0.1245,
+   "check_seconds": 0.0,
+   "parts_listed": 9,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.6,
+   "input_tokens": 29793,
+   "cache_read_tokens": 28594,
+   "output_tokens": 3925,
+   "cost_usd": 0.0498,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 30.1
+}

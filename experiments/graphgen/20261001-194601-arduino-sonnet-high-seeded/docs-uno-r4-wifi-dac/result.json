@@ -1,0 +1,56 @@
+{
+ "case": "docs-uno-r4-wifi-dac",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 41.5,
+  "input_tokens": 17364,
+  "output_tokens": 5760,
+  "cost_usd": 0.1065,
+  "repair_rounds_used": 0
+ },
+ "parts": 11,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The UNO R4 WiFi is not in the catalogue; the catalogue's arduino-uno (R3) is used because it has the same header port names (A0, A5, 5V, GND.1). A0 is the DAC output on the R4.",
+  "The breadboard in the image is flipped vertically relative to the catalogue: the bottom half of the image (rows a-e) is bank 't', the top half (rows f-j) is bank 'b'. The rails at the bottom of the image are therefore tp/tn: the top rail line (black) is tn, the lower (red) is tp.",
+  "Rail hole indices (tp.2, tn.1, tp.11, tn.12, tn.25) and column numbers are estimated from the image pixel positions.",
+  "Potentiometer: outer legs at columns 13 (to +5V) and 15 (to GND); the wiper (middle) pin points to the other bank at column 14 and is joined by the yellow wire to A5. Which outer leg is VCC vs GND is symmetric.",
+  "Buzzer legs at columns 26 and 30; column 26 goes to A0 (DAC), column 30 goes to GND through a black jumper. Leg 1 is taken as the positive leg.",
+  "The pot wiper goes to A5 (analog input) and is read by the sketch to change the frequency; the code is not part of the graph."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.5,
+   "input_tokens": 17364,
+   "cache_read_tokens": 5414,
+   "output_tokens": 5760,
+   "cost_usd": 0.1065,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.6
+}

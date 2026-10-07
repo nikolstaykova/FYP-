@@ -1,0 +1,105 @@
+{
+ "case": "docs-mkr-arduino-mkr-gsm-1400-and-dtmf",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 45.9,
+  "api_seconds": 42.8,
+  "first_token_seconds": 19.2,
+  "input_tokens": 14122,
+  "cache_read_tokens": 5414,
+  "output_tokens": 7375,
+  "cost_usd": 0.1097,
+  "turns": 2
+ },
+ "parts": 18,
+ "edges": 53,
+ "repeats": [],
+ "new_types_declared": 5,
+ "new_types_added": 5,
+ "problems": [
+  [
+   "V3",
+   "e1: socket \u2194 socket is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e4: socket \u2194 socket is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e5: socket \u2194 socket is not a compatible pair"
+  ],
+  [
+   "V4",
+   "e40: port 'DIN' not on neopixel"
+  ],
+  [
+   "V4",
+   "e41: port 'DIN' not on neopixel"
+  ],
+  [
+   "V4",
+   "e42: port '5V' not on neopixel"
+  ],
+  [
+   "V4",
+   "e43: port '5V' not on neopixel"
+  ],
+  [
+   "V4",
+   "e44: port 'GND' not on neopixel"
+  ],
+  [
+   "V4",
+   "e45: port 'GND' not on neopixel"
+  ]
+ ],
+ "notes": [
+  "The schematic image was not available; connections are inferred from the text and the standard single-MOSFET 3.3V-to-5V translator: MKR pin 6 -> 2N7000 gate, source -> GND, drain -> NeoPixel DIN with the 10k resistor pulling the drain up to 5V. This inverts the signal; the exact topology and the data pin (6) are assumptions.",
+  "The manual says the layout uses a single NeoPixel in place of the ring, so a catalogue 'neopixel' is used. The catalogue lists no ports for it, so DIN, 5V and GND were chosen. The 24-LED ring would connect the same way.",
+  "5V for the NeoPixel and pull-up is taken from the MKR GSM 1400 5V pin (USB-powered). Breadboard positions are arbitrary but electrically consistent.",
+  "Antenna, SIM card, LiPo battery, USB cable and PC are included from the setup steps. The catalogue usb-cable and laptop entries have specific or no ports, so the cable edges use a null port on the cable side.",
+  "MKR GSM 1400 and 2N7000 are not in the catalogue; ports were limited to those used. Port S/G/D pin order of the 2N7000 (TO-92) is assumed."
+ ],
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [
+   "led"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-gsm-1400",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "lipo-battery-3v7",
+   "family": "lipo-battery-3v7",
+   "checked": false
+  },
+  {
+   "type": "gsm-antenna",
+   "family": "gsm-antenna",
+   "checked": false
+  },
+  {
+   "type": "micro-sim-card",
+   "family": "micro-sim-card",
+   "checked": false
+  },
+  {
+   "type": "mosfet-2n7000",
+   "family": "mosfet-2n7000",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 10.6
+}

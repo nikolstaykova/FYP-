@@ -1,0 +1,107 @@
+{
+ "case": "docs-projects-full-control-of-your-tv-using-alexa-and-arduino-iot-cloud",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 252.5,
+  "input_tokens": 75844,
+  "output_tokens": 35328,
+  "cost_usd": 0.5311,
+  "repair_rounds_used": 1
+ },
+ "parts": 12,
+ "edges": 102,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The Fritzing image shows a breadboard view with column labels 30-63, but the catalogue breadboard only has columns 1-30. I shifted columns to fit: the IR receiver (image columns 31/32/34) is at columns 1/2/4. The IR LED, resistor and Nano are shifted by about 36 (LED image columns 43/44 become 7/8; resistor right end 49 becomes 13). The relative layout is kept, with the gap between the receiver and the LED compressed.",
+  "Rail hole numbers (bp.1, bp.25, bn.4, bn.7, bn.16) are approximate. Each rail is a single strip, so the number doesn't change connectivity. bp is the bottom red (+) rail and bn is the bottom blue (-) rail.",
+  "Fix for the reported short: the earlier version put D12 and GND_2 on the strips joined by the blue wire. That cannot be what the figure intends. The figure's wiring needs the black wire (strip next to the resistor strip, to the - rail) to land on a Nano GND pin. It needs the blue wire's far end and the green wire to land on signal pins. The 3V3 pin is on the top row. The Nano is drawn at a slightly different scale from the breadboard, so its pins don't sit exactly on the hole columns, and the figure can't pin down the exact pin-to-column mapping. I therefore placed the Nano with its bottom row, left to right, as TX, RX, RST, GND_2, D2..D12, starting at column 13. The top row, left to right, is VIN, GND_1, REC, VUSB, A7..A0, AREF, 3V3, D13. The black ground wire is placed at column 16 on the GND_2 strip. The blue wire from the resistor strip (column 13) goes to column 24, the D9 strip, so D9 drives the IR LED through the 330 ohm resistor. The green wire from the receiver DAT goes to column 26, the D11 strip. The red wire goes from the 3V3 pin to the + rail. The exact signal pins (D9 and D11) are assumptions. The sketch code isn't shown in the manual.",
+  "The IR receiver legs are read as VCC (col 1, red wire to + rail), GND (col 2, black wire to - rail) and DAT (col 4, green wire to the Nano). The LED cathode (left leg, col 7) goes to the - rail through a black wire. The LED anode (col 8) goes through the 330 ohm resistor to column 13, which the blue wire carries to the Nano signal pin. The TX pin shares the resistor strip at column 13 but is unused.",
+  "The Arduino Cloud, Alexa and sketch steps are software only and add no parts or edges."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 16.3,
+   "input_tokens": 18526,
+   "output_tokens": 813,
+   "cost_usd": 0.0493,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 6,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "IR transmitter (generic)",
+     "type": "ir-led-transmitter",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/led-infrared-950nm.html"
+      ]
+     ],
+     "seconds": 10.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 133.6,
+   "input_tokens": 18866,
+   "cache_read_tokens": 5507,
+   "output_tokens": 18605,
+   "cost_usd": 0.2406,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 102.6,
+   "input_tokens": 38452,
+   "cache_read_tokens": 18864,
+   "output_tokens": 15910,
+   "cost_usd": 0.2412,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 16.7
+}

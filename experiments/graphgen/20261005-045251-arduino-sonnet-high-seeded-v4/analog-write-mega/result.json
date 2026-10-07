@@ -1,0 +1,138 @@
+{
+ "case": "analog-write-mega",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 53.3,
+  "input_tokens": 19423,
+  "output_tokens": 8720,
+  "cost_usd": 0.1226,
+  "repair_rounds_used": 0
+ },
+ "parts": 51,
+ "edges": 196,
+ "repeats": [
+  {
+   "group": "ledunit",
+   "times": 12,
+   "overrides": 88
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Each LED unit: resistor bridges the breadboard centre gap in column c (bank b row f to bank t row e); LED anode in column c bank b (row h), cathode in column c+1 bank b (row h); a black wire runs from column c+1 bank b (row i) to the top negative rail (tn); signal wire from column c bank t (row b) to a Mega digital pin.",
+  "Pin mapping follows the circuit image: pin 13 -> column 2, 12 -> 4, 11 -> 6, 10 -> 8, 9 -> 10, 8 -> 12, 7 -> 15, 6 -> 17, 5 -> 20, 4 -> 23, 3 -> 26, 2 -> 28.",
+  "The image's breadboard has rows f-j in the upper section and a-e in the lower; the catalogue naming (bank 't' = a-e, 'b' = f-j) is used, so the LED/ground side is bank b and the signal side is bank t.",
+  "Rail hole numbers (tn.<n>) are approximate; the whole tn rail is one strip so the exact hole does not change connectivity.",
+  "Mega GND next to AREF is mapped to GND.1; the black wire connects it to the top negative rail, which grounds all LED cathodes.",
+  "Resistor value 220 ohm per the manual; the type's default label is 100 ohm so the value prop is set per instance."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 5,
+   "matched": 5,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Mega Board",
+     "card": "arduino-mega",
+     "skipped": false
+    },
+    {
+     "item": "12 Red LEDs",
+     "card": "led",
+     "skipped": false
+    },
+    {
+     "item": "12 220 ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.3,
+   "input_tokens": 19423,
+   "cache_read_tokens": 11120,
+   "output_tokens": 8720,
+   "cost_usd": 0.1226,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 25,
+  "nets_built": 25,
+  "nets_matched": 25,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 12,
+   "led": 12
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 12,
+   "resistor": 12
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 7.4
+}

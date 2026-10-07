@@ -1,0 +1,762 @@
+{
+ "tutorial": "docs-projects-make-it-rain-clap-machine",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/make-it-rain-clap-machine/assets/kzqxXXQ4MuIZviDpgyxB.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/projects/make-it-rain-clap-machine/assets/uqnkWWYCHA1DLngNqUR4.jpg"
+ ],
+ "legs_and_ends": 51,
+ "with_position": 44,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "mkr1",
+     "type": "arduino-mkr-zero",
+     "label": "Arduino MKR Zero"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Medium breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "mic1",
+     "type": "mic-ics43432",
+     "label": "ICS43432 I2S digital microphone",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "2t.a",
+       "mm": [
+        2.54,
+        0.0
+       ]
+      },
+      {
+       "leg": "LR",
+       "part": "bb1",
+       "port": "6t.a",
+       "mm": [
+        12.7,
+        0.0
+       ]
+      },
+      {
+       "leg": "SCK",
+       "part": "bb1",
+       "port": "4t.a",
+       "mm": [
+        7.62,
+        0.0
+       ]
+      },
+      {
+       "leg": "SD",
+       "part": "bb1",
+       "port": "3t.a",
+       "mm": [
+        5.08,
+        0.0
+       ]
+      },
+      {
+       "leg": "VDD",
+       "part": "bb1",
+       "port": "1t.a",
+       "mm": [
+        0.0,
+        0.0
+       ]
+      },
+      {
+       "leg": "WS",
+       "part": "bb1",
+       "port": "5t.a",
+       "mm": [
+        10.16,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "motor1",
+     "type": "dc-motor",
+     "label": "DC motor",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "11t.c",
+       "mm": [
+        25.4,
+        5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tp.2",
+       "mm": [
+        2.54,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "d1",
+     "type": "diode",
+     "label": "Diode",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "11t.d",
+       "mm": [
+        25.4,
+        7.62
+       ]
+      },
+      {
+       "leg": "K",
+       "part": "bb1",
+       "port": "tp.3",
+       "mm": [
+        5.08,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "2.2k pull-down resistor",
+     "props": {
+      "value": "2200"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "10t.b",
+       "mm": [
+        22.86,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.4",
+       "mm": [
+        7.62,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "2.2k pull-up resistor",
+     "props": {
+      "value": "2200"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "17t.b",
+       "mm": [
+        40.64,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tp.4",
+       "mm": [
+        7.62,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "servo1",
+     "type": "servo",
+     "label": "Micro servo motor",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "tn.7",
+       "mm": [
+        15.24,
+        -7.62
+       ]
+      },
+      {
+       "leg": "PWM",
+       "part": "bb1",
+       "port": "17t.c",
+       "mm": [
+        40.64,
+        5.08
+       ]
+      },
+      {
+       "leg": "V+",
+       "part": "bb1",
+       "port": "tp.5",
+       "mm": [
+        10.16,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "add": [
+    {
+     "id": "c1",
+     "type": "capacitor-100nf",
+     "label": "0.1 uF ceramic capacitor",
+     "props": {
+      "value": "0.1uF"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "tp.6",
+       "mm": [
+        12.7,
+        -5.08
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.8",
+       "mm": [
+        17.78,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "add": [
+    {
+     "id": "c2",
+     "type": "capacitor-10uf",
+     "label": "100 uF electrolytic capacitor",
+     "props": {
+      "value": "100uF"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "NEG",
+       "part": "bb1",
+       "port": "tn.9",
+       "mm": [
+        20.32,
+        -7.62
+       ]
+      },
+      {
+       "leg": "POS",
+       "part": "bb1",
+       "port": "tp.7",
+       "mm": [
+        15.24,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "add": [
+    {
+     "id": "q1",
+     "type": "mosfet-n",
+     "label": "N-Channel MOSFET (DC motor)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "D",
+       "part": "bb1",
+       "port": "11t.a",
+       "mm": [
+        25.4,
+        0.0
+       ]
+      },
+      {
+       "leg": "G",
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      },
+      {
+       "leg": "S",
+       "part": "bb1",
+       "port": "12t.a",
+       "mm": [
+        27.94,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "add": [
+    {
+     "id": "q2",
+     "type": "mosfet-n",
+     "label": "N-Channel MOSFET (servo PWM)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "D",
+       "part": "bb1",
+       "port": "17t.a",
+       "mm": [
+        40.64,
+        0.0
+       ]
+      },
+      {
+       "leg": "G",
+       "part": "bb1",
+       "port": "16t.a",
+       "mm": [
+        38.1,
+        0.0
+       ]
+      },
+      {
+       "leg": "S",
+       "part": "bb1",
+       "port": "18t.a",
+       "mm": [
+        43.18,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "purple",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "VCC",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "1t.e",
+       "mm": [
+        0.0,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "A6",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "3t.e",
+       "mm": [
+        5.08,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D2",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "4t.e",
+       "mm": [
+        7.62,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "white",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D3",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "5t.e",
+       "mm": [
+        10.16,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": false,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D4",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "10t.e",
+       "mm": [
+        22.86,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": false,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D5",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "16t.e",
+       "mm": [
+        38.1,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 18,
+   "power": true,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.1",
+       "mm": [
+        0.0,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 19,
+   "power": true,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": null,
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 20,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "purple",
+     "label": null,
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "2t.e",
+       "mm": [
+        2.54,
+        10.16
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.2",
+       "mm": [
+        2.54,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 21,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": null,
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "6t.e",
+       "mm": [
+        12.7,
+        10.16
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.3",
+       "mm": [
+        5.08,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 22,
+   "power": true,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "orange",
+     "label": null,
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "12t.e",
+       "mm": [
+        27.94,
+        10.16
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.5",
+       "mm": [
+        10.16,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 23,
+   "power": true,
+   "add": [
+    {
+     "id": "wire12",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": null,
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "18t.e",
+       "mm": [
+        43.18,
+        10.16
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.6",
+       "mm": [
+        12.7,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

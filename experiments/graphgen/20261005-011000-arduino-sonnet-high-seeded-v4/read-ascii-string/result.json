@@ -1,0 +1,145 @@
+{
+ "case": "read-ascii-string",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 60.1,
+  "input_tokens": 38476,
+  "output_tokens": 5634,
+  "cost_usd": 0.1493,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard coordinates read from the circuit image: the LED legs sit in columns 9-12 of the catalogue's bottom bank (rows f-j), with the longest (common anode) leg in column 10. The image's row labels run opposite to the catalogue's, so I used the catalogue convention: rows f-j are bank 'b' and rows a-e are bank 't'.",
+  "LED leg order is R (col 9), A (col 10, longest, to 5V), G (col 11), B (col 12).",
+  "Each resistor spans the centre gap: one leg at row f in the bottom bank and the other at row e in the top bank, in the same column as its LED leg.",
+  "Jumper wires reach the resistors' top-bank strips: pin 3 (orange) to 9t.d for red, pin 5 (green) to 11t.c for green, pin 6 (blue) to 12t.b for blue. The red wire goes from 5V to 10b.f, the LED's common-anode strip.",
+  "The manual's code comment says 'Anode: GND', but the circuit image and schematic show the anode wired to 5V, so I followed the image. The text says 'longest pin second from top/left', which matches column 10 in the image.",
+  "The manual lists 'four wires', all drawn as jumper wires, so none of the catalogue's other connector types are used. The sketch only uses the serial link, and no USB cable is drawn, so none is added."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 29.7,
+   "check_seconds": 0.0,
+   "input_tokens": 16573,
+   "output_tokens": 1014,
+   "cost_usd": 0.0364,
+   "listed": 5,
+   "matched": 4,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "common anode RGB LED",
+     "card": "led-rgb-common-anode",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/2495 (Content describes the Adafruit weatherproof RGB LED flexi-strip (60 LED/m, 12V, )"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/led-rgb-clear-common-anode.html"
+      ]
+     ],
+     "seconds": 17.9
+    },
+    {
+     "item": "3 220 ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.4,
+   "input_tokens": 21903,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4620,
+   "cost_usd": 0.1129,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 7,
+  "nets_built": 7,
+  "nets_matched": 6,
+  "net_precision": 0.857,
+  "net_recall": 0.857,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "led": 1,
+   "resistor": 3
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 1,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "led",
+     "COM"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "led",
+     "A"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 24.9
+}

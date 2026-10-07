@@ -1,0 +1,136 @@
+{
+ "case": "8158-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 533.0,
+  "input_tokens": 491479,
+  "output_tokens": 90824,
+  "cost_usd": 1.7377,
+  "repair_rounds_used": 2
+ },
+ "parts": 157,
+ "edges": 170,
+ "repeats": [
+  {
+   "group": "wingtip",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "m5wheel",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "soilwheel",
+   "times": 2,
+   "overrides": 1
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The booklet really builds two separate models: bag 1 is Speed Racer's Mach 5 and bag 2 is the Snake Oiler. The two cars are not meant to be connected, so the graph has two disconnected groups on purpose. b1-b47, m1-m4 and the m5wheel/wingtip repeats are the Mach 5. b48-b113, n1-n4 and the soilwheel repeat are the Snake Oiler.",
+  "The inventory pages show only pictures and counts, with no Element IDs. Each piece was matched to the closest catalogue type by shape, and the real colour is in the `colour` prop. Several types therefore carry a colour that differs from the catalogue name (for example lego-346028 is a green 1x8 plate in the catalogue but is used here as white or black).",
+  "The step drawings are small, so the exact stud-to-stud contact between some pieces is a best guess. Most `joined` edges therefore have null ports. The edge direction (which piece is `u` and which is `v`) was set so that the upper piece's anti-stud meets the lower piece's stud. In the Snake Oiler spoiler, the orange tile b99 sits on top of the two wedge plates b97 and b98.",
+  "Minifig legs are modelled as lego-9341, with the colour in the prop (white for Speed Racer, dark red for the Snake Oiler driver). Their `waist` port joins the torso `waist` port. The exact legs element in the booklet is unknown.",
+  "Wheels: each tyre is joined to the axle end it sits on and has a `contact` edge to its rim. The catalogue tyre/rim port kinds do not form a compatible join. The 1:1 callouts show a black grooved axle with a stop, modelled as lego-6089119 joined to the Technic brick holes through axle.1. The grey bush at each end was modelled as lego-4211573. Mach 5 wheels get grey hub caps in step 23, joined to the axle ends. Snake Oiler wheels do not. The front axle is attached to Technic brick b29 (Mach 5) or b72 (Snake Oiler), and the rear axle to b4 (Mach 5) or b71 (Snake Oiler).",
+  "Mach 5: the curved-slope pieces are not fully itemised. Inventory counts 15 white curved slopes, but only the three nose pieces (stickers 16-18) are modelled. Some of the 15 white curved slopes and the other small white plates and tiles are left out.",
+  "Stickers (Mach 5: 14-18; Snake Oiler: 1-13, 19-32) are decals, not pieces, so they are not nodes.",
+  "The windscreens are 2x in the inventory (one per model); one is used per car and none is shown as spare."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 251.3,
+   "input_tokens": 127055,
+   "cache_read_tokens": 5507,
+   "output_tokens": 37515,
+   "cost_usd": 0.8624,
+   "check_seconds": 0.02,
+   "issues": 16,
+   "issue_rules": {
+    "V3": 14,
+    "L2": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 172.2,
+   "input_tokens": 166497,
+   "cache_read_tokens": 127053,
+   "output_tokens": 30975,
+   "cost_usd": 0.4929,
+   "check_seconds": 0.02,
+   "issues": 11,
+   "issue_rules": {
+    "V3": 8,
+    "L2": 2,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 109.4,
+   "input_tokens": 197927,
+   "cache_read_tokens": 166495,
+   "output_tokens": 22334,
+   "cost_usd": 0.3824,
+   "check_seconds": 0.02,
+   "issues": 3,
+   "issue_rules": {
+    "L2": 2,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 16,
+ "issues_final": 3,
+ "score": {
+  "pieces_expected": 234,
+  "pieces_built": 157,
+  "pieces_unmapped": 4,
+  "inventory_matched": 82,
+  "exact_matched": 39,
+  "inventory_precision": 0.522,
+  "inventory_recall": 0.35,
+  "exact_recall": 0.167,
+  "joined_edges": 160,
+  "contacts_expected": 57,
+  "contacts_predicted": 23,
+  "contacts_correct": 10,
+  "contact_precision": 0.435,
+  "contact_recall": 0.175
+ },
+ "score_initial": {
+  "pieces_expected": 234,
+  "pieces_built": 157,
+  "pieces_unmapped": 3,
+  "inventory_matched": 82,
+  "exact_matched": 39,
+  "inventory_precision": 0.522,
+  "inventory_recall": 0.35,
+  "exact_recall": 0.167,
+  "joined_edges": 160,
+  "contacts_expected": 57,
+  "contacts_predicted": 23,
+  "contacts_correct": 10,
+  "contact_precision": 0.435,
+  "contact_recall": 0.175
+ },
+ "postprocess_ms": 13.4
+}

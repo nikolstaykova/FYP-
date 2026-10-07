@@ -1,0 +1,121 @@
+{
+ "case": "midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 33.9,
+  "input_tokens": 55507,
+  "output_tokens": 4754,
+  "cost_usd": 0.0902,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 30,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct and are unchanged: Uno, breadboard, MIDI jack, two 220 ohm resistors, three jumper wires.",
+  "Circuit follows the tutorial: MIDI pin 5 goes through a 220 ohm resistor (r1) to digital pin 1 (TX). MIDI pin 2 goes to GND. MIDI pin 4 goes through a 220 ohm resistor (r2) to +5V.",
+  "The jack's five legs sit in neighbouring holes of row a in the top half, columns 6-10, in pin order 1-5. Pins 1 and 3 are unused but are physically in the board.",
+  "Each resistor spans the centre gap in its own column (r1 in column 10, r2 in column 9). The TX and 5V wires land in the bottom-half strip of the same column.",
+  "The ground wire goes to column 7, the strip holding jack pin 2.",
+  "The image shows the GND wire at the digital-header GND next to AREF. I mapped it to uno GND.3, assuming that is the digital-header GND.",
+  "The short coloured legs in the image between the jack and resistors are treated as jack legs, not separate wires."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 9.6,
+   "input_tokens": 27183,
+   "cache_read_tokens": 20023,
+   "output_tokens": 964,
+   "cost_usd": 0.0423,
+   "check_seconds": 0.0,
+   "parts_listed": 8,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.3,
+   "input_tokens": 28324,
+   "cache_read_tokens": 27181,
+   "output_tokens": 3790,
+   "cost_usd": 0.0479,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 11.7
+}

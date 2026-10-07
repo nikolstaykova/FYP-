@@ -1,0 +1,236 @@
+{
+ "case": "joystick-mouse-control",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 45.9,
+  "input_tokens": 40016,
+  "output_tokens": 7248,
+  "cost_usd": 0.1112,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 46,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts are unchanged from step 1; it was correct.",
+  "Wiring follows the circuit image and schematic: 5V to VCC, A0 to VERT, A1 to HORZ, pin 6 to SEL, GND to GND.",
+  "In the image the joystick's five pins appear to sit in one breadboard column, which would short them. I placed them in five separate columns (12t to 16t, row a). Each jumper wire goes into the same column, row b.",
+  "The breadboard column positions are my own choice. The joystick pins and wires only need to share a strip.",
+  "The optional status LED is on pin 5: wire6 to a 220 ohm resistor to the LED anode. The LED cathode goes by wire7 to GND.2. The resistor is on the anode side, and the LED's A and C pins follow its catalogue card.",
+  "The second pushbutton on D3 and its 10k pulldown are optional and are not built. The joystick's own SEL button is the toggle on pin 6, and the circuit image shows no pulldown, so none is added.",
+  "The Leonardo's 5V and GND pins on the image's left header map to the catalogue ports 5V and GND.1. I used GND.2 for the LED wire."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.0,
+   "input_tokens": 19073,
+   "cache_read_tokens": 12122,
+   "output_tokens": 1727,
+   "cost_usd": 0.0475,
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.9,
+   "input_tokens": 20943,
+   "cache_read_tokens": 19071,
+   "output_tokens": 5521,
+   "cost_usd": 0.0637,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 8,
+  "nets_built": 7,
+  "nets_matched": 2,
+  "net_precision": 0.286,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "joystick": 1,
+   "button": 2,
+   "resistor": 3,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "joystick": 1,
+   "led": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "joystick",
+     "VERT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "joystick",
+     "HORZ"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "2"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "3"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "joystick",
+     "VCC"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A0"
+    ],
+    [
+     "joystick",
+     "VERT"
+    ]
+   ],
+   [
+    [
+     "board",
+     "A1"
+    ],
+    [
+     "joystick",
+     "HORZ"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "joystick",
+     "SEL"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "joystick",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 17.1
+}

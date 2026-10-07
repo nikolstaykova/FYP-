@@ -1,0 +1,96 @@
+{
+ "case": "docs-mkr-powering-with-batteries",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 51.3,
+  "input_tokens": 80942,
+  "output_tokens": 8384,
+  "cost_usd": 0.2697,
+  "repair_rounds_used": 2
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "E5 (pin 8 connects only to a button contact) is intentionally kept and is not a real problem for this manual. The circuit image and schematic show D8 wired only to the pushbutton, with the other side of the button going to GND, and the manual says 'The pushbutton ... goes between D8 and GND' with no resistor. The wake-up sketch uses LowPower.attachInterruptWakeup(pin 8, ..., CHANGE), which relies on the SAMD21's internal pull-up on the pin, so no external pull-up or pull-down resistor is needed. Adding one would contradict the images, which are the authority.",
+  "The catalogue's MKR WiFi 1010 has no JST battery port, so the battery-to-board connection is a port-less joined+electrical edge (battery POS/NEG go to the JST connector on the board).",
+  "Breadboard hole names follow the catalogue convention (bank 't' = rows a-e, 'b' = rows f-j). In the image the half with rows f-j is drawn at the top, so the GND wire goes to 8b.g and the pin 8 wire goes to 8t.d.",
+  "The pushbutton straddles the centre gap. Its legs are placed at columns 8 and 10 (inferred from the image). Side 1 (rows f-j half) connects to GND and side 2 (rows a-e half) connects to D8, so pressing joins D8 to GND.",
+  "The micro-USB power source is described as the charging supply in the text but is not drawn in the circuit image, so it is not included.",
+  "Wire colours are taken from the image: black for GND and yellow for D8."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.9,
+   "input_tokens": 22419,
+   "cache_read_tokens": 3110,
+   "output_tokens": 3079,
+   "cost_usd": 0.1086,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.3,
+   "input_tokens": 27748,
+   "cache_read_tokens": 5414,
+   "output_tokens": 2823,
+   "cost_usd": 0.1186,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 13.1,
+   "input_tokens": 30775,
+   "cache_read_tokens": 27746,
+   "output_tokens": 2482,
+   "cost_usd": 0.0425,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E5": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 25.5
+}

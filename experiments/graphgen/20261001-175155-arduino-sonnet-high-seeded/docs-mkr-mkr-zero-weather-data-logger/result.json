@@ -1,0 +1,83 @@
+{
+ "case": "docs-mkr-mkr-zero-weather-data-logger",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 42.4,
+  "api_seconds": 37.9,
+  "first_token_seconds": 21.2,
+  "input_tokens": 16689,
+  "cache_read_tokens": 5414,
+  "output_tokens": 6046,
+  "cost_usd": 0.1066,
+  "turns": 2
+ },
+ "parts": 14,
+ "edges": 37,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'VCC' not on dht22"
+  ],
+  [
+   "V4",
+   "e2: port 'VCC' not on dht22"
+  ],
+  [
+   "V4",
+   "e3: port 'DATA' not on dht22"
+  ],
+  [
+   "V4",
+   "e4: port 'DATA' not on dht22"
+  ],
+  [
+   "V4",
+   "e5: port 'NC' not on dht22"
+  ],
+  [
+   "V4",
+   "e6: port 'GND' not on dht22"
+  ],
+  [
+   "V4",
+   "e7: port 'GND' not on dht22"
+  ],
+  [
+   "V4",
+   "e14: port '7' not on arduino-mkr-zero"
+  ],
+  [
+   "V4",
+   "e15: port '7' not on arduino-mkr-zero"
+  ]
+ ],
+ "notes": [
+  "The text says 'Plug the MKRZero to the breadboard', but the circuit image shows the MKR Zero beside the breadboard and linked only by three jumper wires (VCC, pin 7, GND). I followed the image.",
+  "The image shows the 100 nF capacitor and 4.7k resistor off the breadboard, joined to it by blue and yellow wires. I modelled those as jumper wires with their ends twisted to the component leads.",
+  "Breadboard holes are approximate. The DHT22 sits in row a, columns 26-29: VCC, DATA, NC, GND. The wires go into rows b-e of the same columns. Columns 26 (VCC) and 29 (GND) take the capacitor wires. Columns 26 (VCC) and 27 (DATA) take the pull-up resistor wires.",
+  "The catalogue entry for arduino-mkr-zero has no port '7', although the circuit uses digital pin 7. I used '7' anyway. It also has no battery (JST) or SD slot port, so the battery and microSD edges name no port on the board.",
+  "The dht22 catalogue entry lists no ports. I used VCC, DATA, NC and GND, in the order the image shows (the RHT03 is the same sensor as the DHT22).",
+  "The manual's 'SD card' is modelled as the catalogue microsd-card part, inserted in the MKR Zero's built-in slot.",
+  "The resistor is listed as 4.75k, but the manual text and image say 4.7k. I used value 4700.",
+  "The LiPo battery is joined through its JST connector to the MKR Zero's battery connector. The image shows it connected, and the manual says to plug one in."
+ ],
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.667
+ },
+ "drafts": [],
+ "postprocess_ms": 15.0
+}

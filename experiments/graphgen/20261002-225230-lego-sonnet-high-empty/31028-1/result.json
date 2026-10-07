@@ -1,0 +1,131 @@
+{
+ "case": "31028-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 715.5,
+  "input_tokens": 581987,
+  "output_tokens": 118235,
+  "cost_usd": 2.1945,
+  "repair_rounds_used": 2
+ },
+ "parts": 123,
+ "edges": 140,
+ "repeats": [
+  {
+   "group": "pfloat",
+   "times": 2,
+   "overrides": 1
+  },
+  {
+   "group": "cfloat",
+   "times": 2,
+   "overrides": 2
+  }
+ ],
+ "new_types_declared": 17,
+ "new_types_added": 17,
+ "problems": [],
+ "notes": [
+  "Booklet 31028 is a 3-in-1 set: it builds three ALTERNATIVE models one after another from the same pieces: (1) Sea Plane (pp.2-13, ids b1-b38 + pfloat copies), (2) Catamaran sailboat (pp.14-24, ids b40-b61 + cfloat copies), (3) Hovercraft-style boat (pp.25-35, ids b70-b112). The task says to build all separate models, so all three are in the graph.",
+  "Piece-count check (L1): the parts page lists the pieces for the whole set once. Each model was checked separately and every model uses no more of any element than the page lists (e.g. 366626: 3 in the seaplane, 2 in the catamaran, 2 in the hovercraft vs 3 on the page; 4599984: 1 per model vs 1 on the page). Only the sum over the three models exceeds the page, because the same physical pieces are reused when you rebuild. This is expected for a 3-in-1 booklet, so the per-element totals were intentionally left as is.",
+  "Disconnected groups (L3): the three models are never combined and never exist at the same time, so they are deliberately left as three separate connected groups. Linking them would invent a build the booklet does not show.",
+  "Port reuse: every named stud / anti-stud / hole port is used at most once. New part types were given enough stud and anti-stud ports for several attachments. Where a catalogue part has only one stud or anti-stud port (e.g. 366626, 4158355, 6000606, 4633691) and more pieces than that sit on it, the extra joins are still recorded as joined edges but with a null port on that part, because the catalogue port represents a whole stud grid.",
+  "Pin compatibility: the propeller type has a pin-hole.1 port so the engine-block pin plugs into a pin-hole. The float pins (seaplane) and sail pin (catamaran) are inserted into bracket 6000606 side-hole ports (bracket B side-hole.1/.2 for the two floats, bracket b52 side-hole.1 for the sail); this destination is inferred from low-resolution pictures. 4558953 grey bricks look like they have a side hole in the pictures but the catalogue lists a side-stud; it is only used for the orange plate in model 3.",
+  "Several Element IDs (4500469, 4179874/5, 4177932, 4159007, 4620693, 4121741, 4211046, 4282789/86, 6055069, 6037750, 4244368, 4599984, 6039869, 6015891, 6099483) are not in the catalogue so were added as new types; shapes were inferred from small inventory thumbnails, so identities such as 6015891 = black plate with upright pin and 6099483 = another black 1x6 plate are best guesses.",
+  "Exactly which stud each piece lands on was inferred from small pictures; joins show which pieces connect, not which individual stud. Seaplane has two bracket+round-plate units (A at the rear under the engine block, B on the grey bricks at the front); the floats' pins plug into bracket B. The seaplane cross plate b38 ties the two float assemblies together via their upright-pin plates.",
+  "Orange curved slopes in model 3 step 6 show black ends in the picture; treated as plain 6037750 slopes. The sail pin is a revolute join; hinge plates b48/b49 are hinged together (revolute); propellers turn on the engine-block pin (revolute)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 436.7,
+   "input_tokens": 137037,
+   "cache_read_tokens": 3203,
+   "output_tokens": 63092,
+   "cost_usd": 1.1669,
+   "check_seconds": 0.02,
+   "issues": 46,
+   "issue_rules": {
+    "V3": 5,
+    "V4": 39,
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 173.4,
+   "input_tokens": 206028,
+   "cache_read_tokens": 137035,
+   "output_tokens": 32449,
+   "cost_usd": 0.6279,
+   "check_seconds": 0.03,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 105.3,
+   "input_tokens": 238922,
+   "cache_read_tokens": 206026,
+   "output_tokens": 22694,
+   "cost_usd": 0.3997,
+   "check_seconds": 0.02,
+   "issues": 2,
+   "issue_rules": {
+    "L1": 1,
+    "L3": 1
+   }
+  }
+ ],
+ "issues_first": 46,
+ "issues_final": 2,
+ "score": {
+  "pieces_expected": 53,
+  "pieces_built": 123,
+  "pieces_unmapped": 0,
+  "inventory_matched": 53,
+  "exact_matched": 53,
+  "inventory_precision": 0.431,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 135,
+  "contacts_expected": 2,
+  "contacts_predicted": 23,
+  "contacts_correct": 2,
+  "contact_precision": 0.087,
+  "contact_recall": 1.0
+ },
+ "score_initial": {
+  "pieces_expected": 53,
+  "pieces_built": 123,
+  "pieces_unmapped": 0,
+  "inventory_matched": 53,
+  "exact_matched": 53,
+  "inventory_precision": 0.431,
+  "inventory_recall": 1.0,
+  "exact_recall": 1.0,
+  "joined_edges": 135,
+  "contacts_expected": 2,
+  "contacts_predicted": 23,
+  "contacts_correct": 2,
+  "contact_precision": 0.087,
+  "contact_recall": 1.0
+ },
+ "postprocess_ms": 14.4
+}

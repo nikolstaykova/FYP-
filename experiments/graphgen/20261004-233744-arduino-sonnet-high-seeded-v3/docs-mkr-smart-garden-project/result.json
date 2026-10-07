@@ -1,0 +1,299 @@
+{
+ "case": "docs-mkr-smart-garden-project",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 325.4,
+  "input_tokens": 155767,
+  "output_tokens": 11900,
+  "cost_usd": 0.4746,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 4,
+ "new_types_added": 4,
+ "problems": [],
+ "notes": [
+  "The catalogue usb-cable has no ports, so USB connections use null ports. The open-ended cable's + wire goes to relay 1 NO, and its - wire is joined to the pump's - wire. The edges cannot say which wire is which.",
+  "The tutorial text labels the relay on the carrier as relay 1 (NO/COM), but the sketch uses opla.Relay2. I modelled the wiring as relay 1 per the text and circuit images.",
+  "The Grove cable pin mapping (1=SIG, 2=NC, 3=VCC, 4=GND) is assumed from the Grove convention. A2/B2 is not connected to the sensor. The sensor's screw terminal has only VCC, GND and SIG.",
+  "The MKR board and carrier are joined as one assembly through a single 'MKR' header port on the carrier. Individual header pins are not modelled.",
+  "The micro-USB cable goes from the adapter to the MKR board, which powers the board and carrier. The open-ended USB cable goes from the adapter's second port to the pump and relay circuit.",
+  "The pump sits in the water container. The pipe's inlet is attached to the pump. The pipe's outlet goes to the plant pot, which is not a part.",
+  "The plant, plant pot and phone/cloud dashboard are not modelled as parts."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 290.7,
+   "input_tokens": 142268,
+   "output_tokens": 6649,
+   "cost_usd": 0.3803,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 10,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino MKR IoT Carrier",
+     "type": "shield-arduino-mkr-iot-carrier",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-IoT-BUNDLE-p-3177.html (This page sells the Arduino MKR IoT Bundle. That is a starter kit built around a)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-CONNECTOR-CARRIER-GROVE-COMPATIBLE.html (The page sells the Arduino MKR Connector Carrier (Grove compatible, SKU 10399036)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 24.8
+    },
+    {
+     "part": "5V submersible pump",
+     "type": "pump-5v-submersible",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-500gph-12v.html (This page sells the SEAFLO 500GPH bilge pump (ROB-19222), which runs on 12V at 1)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-350gph-12v.html (The page sells a SEAFLO 12V, 1.5A, 350 GPH submersible pump (ROB-10455), not a 5)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "card from https://www.seeedstudio.com/6V-Mini-Water-Pump-p-2732.html"
+      ]
+     ],
+     "seconds": 50.2
+    },
+    {
+     "part": "Watering pipe (1 m)",
+     "type": "tubing-watering",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-350gph-12v.html (This page sells a SEAFLO 12V 350GPH liquid pump (ROB-10455), not watering pipe o)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/liquid-pump-500gph-12v.html (The page sells a SEAFLO 12V 500GPH submersible liquid pump (ROB-19222), not wate)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/6V-Mini-Water-Pump-p-2732.html (The page sells a 6V Mini Water Pump (SKU 108990019), not watering tubing or pipe)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/12V-DC-Water-Pump-p-1946.html (The page sells a 12V DC water pump (Seeed Studio), not watering tubing or pipe. )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 38.1
+    },
+    {
+     "part": "Water container",
+     "type": "water-container",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Water-Pressure-Sensor-G1-4-1-2MPa-p-2887.html (The page sells a Seeed Studio Water Pressure Sensor G1/4 1.2MPa. That is a press)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Water-Flow-Sensor-YF-B7-p-2884.html (The page sells the Seeed YF-B7 water flow sensor, which measures flow through a )"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 45.1
+    },
+    {
+     "part": "USB adapter with 2 USB ports",
+     "type": "power-supply-usb-adapter",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/usb-wall-charger-5v-2a.html (The page sells a USB wall charger with a single standard USB-A output port. It d)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/sparkfun-usb-lipoly-charger-single-cell.html (This page sells the SparkFun USB LiPoly Charger (PRT-12711). It is a single-cell)"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1773 (This page sells a single-output wall power adapter. It has a 1.5 m cable ending )"
+      ],
+      [
+       "pololu",
+       "page did not match: https://www.pololu.com/product/1774 (The page sells a Pololu 12VDC 3A wall power adapter with a 5.5\u00d72.1mm barrel plug)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/American-Standard-USB-Wall-Power-Supply-5VDC-2-1A-FCC-UL.html (The page is the Seeed Studio \"American Standard USB Wall Power Supply 5VDC 2.1A\")"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Europe-Standard-USB-Wall-Power-Supply-5VDC-2-1A-CE-Intertek-GS.html (The page is Seeed Studio's Europe Standard USB Wall Power Supply (5VDC 2.1A). Th)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 75.0
+    },
+    {
+     "part": "Grove cable",
+     "type": "cable-grove",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/breadboard-to-jst-ghr-04v-cable-4-pin-x-1-25mm-pitch.html (The page sells a breadboard to JST-GHR-04V cable (4-pin, 1.25 mm pitch, SparkFun)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/breadboard-to-jst-zhr-cable-4-pin-x-1-5mm-pitch-single-connector.html (The page sells a 4-pin JST-ZHR cable with a 1.5mm pitch, ending in Dupont breadb)"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/5623"
+      ]
+     ],
+     "seconds": 49.6
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.7,
+   "input_tokens": 13499,
+   "cache_read_tokens": 3203,
+   "output_tokens": 5251,
+   "cost_usd": 0.0943,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "shield-arduino-mkr-iot-carrier",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "tubing-watering",
+   "family": "tubing-watering",
+   "checked": false
+  },
+  {
+   "type": "water-container",
+   "family": "water-container",
+   "checked": false
+  },
+  {
+   "type": "power-supply-usb-adapter",
+   "family": "power-supply-usb-adapter",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 15.6
+}

@@ -84,6 +84,8 @@ def process(case, saved, catalogue, out):
     draft before repair so the repair's effect can be measured)."""
     graph, stats = saved["graph"], saved["stats"]
     t0 = time.monotonic()
+    for t, card in (saved.get("cards") or {}).items():  # v3: the cards this manual was built with
+        catalogue.entries.setdefault(t, card)
     before = set(catalogue.entries)
     new_drafts = [d for d in graph["new_part_types"] if d["type"] not in before]
     added = catalogue.add_drafts(graph["new_part_types"])
@@ -107,6 +109,9 @@ def process(case, saved, catalogue, out):
     d = out / case["id"]
     d.mkdir(parents=True, exist_ok=True)
     (d / "graph.json").write_text(json.dumps(flat, indent=1))
+    for k in ("graph_positions", "graph_rests"):  # v7: joins from positions; v8: joins from rests_on alone
+        if saved.get(k):
+            (d / f"{k}.json").write_text(json.dumps(expand.expand(saved[k]), indent=1))
     (d / "result.json").write_text(json.dumps(r, indent=1))
     return r
 
@@ -132,17 +137,37 @@ def call(case, entries, cfg, out):
     else:
         pdf = (ROOT / "research" / "raw" / "lego_pdf" / f"{case['id']}.pdf").read_bytes()
         manual = f"LEGO set {case['id']}: {case['name']} (official instructions attached)."
+    if cfg.manual_url and case.get("url"):  # experiment: only the tutorial's link; Claude reads the page itself
+        manual, images = (f"The tutorial is the web page {case['url']}. Open it with the open_page tool and read "
+                          f"it, including its circuit section, parts list and circuit images, before answering."), []
+    if cfg.version in ("v4", "v5", "v6", "v7", "v8"):  # the generic pipeline (graphgen/pipeline.py), recipes in domains.py
+        from . import pipeline
+        saved = pipeline.run_case(case, entries, cfg, out, manual, images, pdf)
+        (d / "response.json").write_text(json.dumps(saved, indent=1))
+        return saved
     domain = case["domain"] if case["domain"] == "arduino" else "lego-pdf"
     text = cat.Catalogue(entries).prompt_text() if entries else ""
     Session = SubscriptionSession if cfg.route == "subscription" else ApiSession
     booklet = checks.booklet_inventory(pdf) if pdf else None
+    prep = None
+    if cfg.version == "v3":  # parts first: list and card every part before the graph is built
+        from . import v3
+        prep = v3.prepare_lego(case, pdf, cfg, out) if pdf else v3.prepare_electronics(case, manual, cfg, out)
+        text, domain = prep["catalogue_text"], ("lego" if pdf else "arduino") + "-v3"
+        entries = {**entries, **prep["cards"]}
 
     def check(graph):
         t0 = time.monotonic()
         tmp = cat.Catalogue(entries)
         tmp.add_drafts(graph["new_part_types"])
-        found = checks.run(expand.expand(graph), tmp, case["domain"], manual, case.get("part_nums", frozenset()), booklet)
+        flat = expand.expand(graph)
+        found = checks.run(flat, tmp, case["domain"], manual, case.get("part_nums", frozenset()), booklet)
+        if prep and pdf:
+            found += v3.parts_check(flat, prep["parts"])
         return found, round(time.monotonic() - t0, 2)
+
+    def to_repair(issues):  # v3 repairs real errors only; v2 repairs everything the checks find
+        return [i for i in issues if i[0] in v3.REAL_RULES] if prep else issues
 
     import subprocess
     for attempt in range(2):  # a stalled session is retried once from the start
@@ -150,17 +175,18 @@ def call(case, entries, cfg, out):
         # turn is then retried from the start instead of waiting.
         limit = min(2400, max(600, 4 * case.get("pieces", 0))) if pdf else 600
         kw = {"timeout": limit} if cfg.route == "subscription" else {}
-        session = Session(manual, text, domain, images=images, pdf=pdf, model=cfg.model, effort=cfg.effort, **kw)
+        session = Session(manual + (prep["manual_extra"] if prep else ""), text, domain, images=images, pdf=pdf,
+                          model=cfg.model, effort=cfg.effort, **kw)
         try:
             graph, st = session.first()
-            graph_initial, phases = graph, [{"phase": "build", **st}]
+            graph_initial, phases = graph, [*([prep["phase"]] if prep else []), {"phase": "build", **st}]
             issues, secs = check(graph)
             phases[-1].update(check_seconds=secs, issues=len(issues), issue_rules=dict(collections.Counter(i[0] for i in issues)))
             issues_first = len(issues)
             for n in range(cfg.repair_rounds):
-                if not issues:
+                if not to_repair(issues):
                     break
-                graph, st = session.repair(checks.repair_message(issues))
+                graph, st = session.repair(checks.repair_message(to_repair(issues)))
                 issues, secs = check(graph)
                 phases.append({"phase": f"repair{n + 1}", **st, "check_seconds": secs, "issues": len(issues),
                                "issue_rules": dict(collections.Counter(i[0] for i in issues))})
@@ -175,12 +201,16 @@ def call(case, entries, cfg, out):
                 raise
         finally:
             session.close()
-    total = {"model": phases[0]["model"], "effort": cfg.effort, "route": phases[0]["route"],
+    build = next(p for p in phases if p["phase"] == "build")
+    total = {"model": build["model"], "effort": cfg.effort, "route": build["route"], "version": cfg.version,
              "seconds": round(sum(p["seconds"] + p["check_seconds"] for p in phases), 1),
              "input_tokens": sum(p["input_tokens"] for p in phases), "output_tokens": sum(p["output_tokens"] for p in phases),
-             "cost_usd": round(sum(p["cost_usd"] for p in phases), 4), "repair_rounds_used": len(phases) - 1}
+             "cost_usd": round(sum(p["cost_usd"] for p in phases), 4),
+             "repair_rounds_used": sum(1 for p in phases if p["phase"].startswith("repair"))}
     saved = {"graph": graph, "graph_initial": graph_initial, "stats": total, "phases": phases,
              "issues_first": issues_first, "issues_final": len(issues), "final_issue_list": [list(i) for i in issues]}
+    if prep:
+        saved.update(cards=prep["cards"], parts_list=prep["parts"])
     (d / "response.json").write_text(json.dumps(saved, indent=1))
     return saved
 
@@ -221,6 +251,18 @@ def main():
     ap.add_argument("--arduino-only", action="store_true", help="Electronics: leave out the Raspberry Pi projects")
     ap.add_argument("--replay", type=pathlib.Path)
     ap.add_argument("--repair-rounds", type=int, default=1, help="Check-and-repair rounds after the first build (0 = off)")
+    ap.add_argument("--version", choices=["v2", "v3", "v4", "v5", "v6", "v7", "v8"], default="v2",
+                    help="v3: parts first (graphgen/v3.py), repair real errors only. v4/v5: the generic pipeline, recipes in domains.py; "
+                         "LEGO = LDraw file if there is one, else the booklet page by page (graphgen/pipeline.py)")
+    ap.add_argument("--cards", type=pathlib.Path, help="v3: card store to start from (default: LEGO prebuilt store; "
+                                                         "electronics a fresh store in the run folder)")
+    ap.add_argument("--hide-parts", nargs="*", default=[], help="v3 LEGO: act as if Rebrickable lacks these sets (fallback)")
+    ap.add_argument("--manual-url", action="store_true",
+                    help="experiment (electronics): give Claude only the tutorial's URL; it reads the page itself")
+    ap.add_argument("--whole-booklet", action="store_true",
+                    help="v8 LEGO: read the whole booklet in one turn even when it has step numbers as text (no step diff)")
+    ap.add_argument("--lego-path", choices=["auto", "ldraw", "pages"], default="auto",
+                    help="v4 LEGO build: auto = LDraw model if the set has one, else the booklet page by page")
     cfg = ap.parse_args()
     cfg.model = cfg.model or ("sonnet" if cfg.route == "subscription" else "claude-sonnet-5")
     cfg.catalogue = cfg.catalogue or ("seeded" if cfg.domain == "arduino" else "empty")
@@ -230,7 +272,8 @@ def main():
         cases = [c for c in cases if c["id"] in cfg.cases]
     cases = cases[: cfg.limit]
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    out = ROOT / "experiments" / "graphgen" / f"{stamp}-{cfg.domain}-{cfg.model}-{cfg.effort}-{cfg.catalogue}"
+    out = ROOT / "experiments" / "graphgen" / f"{stamp}-{cfg.domain}-{cfg.model}-{cfg.effort}-{cfg.catalogue}" \
+        f"{'-' + cfg.version if cfg.version != 'v2' else ''}{'-url' if cfg.manual_url else ''}"
     out.mkdir(parents=True, exist_ok=True)
     catalogue = cat.Catalogue(cat.arduino_seed() if cfg.domain == "arduino" and cfg.catalogue == "seeded" else {})
     results, failures, t_run = [], [], time.monotonic()
@@ -270,6 +313,10 @@ def main():
     from .report import write_report
     path = write_report(out, results, failures, {**vars(cfg), "replay": str(cfg.replay), "wall_seconds": round(time.monotonic() - t_run)})
     print("\nreport:", path)
+    if cfg.domain == "lego" and cfg.version == "v8":  # AR: steps with placements, anchor and booklet pictures
+        from . import ar
+        ar.main([str(out)])
+        print("AR report:", out / "AR_REPORT.md")
 
 
 if __name__ == "__main__":

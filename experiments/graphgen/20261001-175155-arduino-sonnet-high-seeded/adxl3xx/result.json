@@ -1,0 +1,103 @@
+{
+ "case": "adxl3xx",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 31.0,
+  "api_seconds": 28.5,
+  "first_token_seconds": 14.2,
+  "input_tokens": 15738,
+  "cache_read_tokens": 3110,
+  "output_tokens": 4417,
+  "cost_usd": 0.0953,
+  "turns": 2
+ },
+ "parts": 9,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The breakout's six header pins (ST, Z, Y, X, GND, VDD) are plugged into breadboard row j, columns 4-9. The image shows rows f-j in the top half, which the catalogue calls bank 'b'. I used that naming.",
+  "Column numbers and rows were read from the image, so they are approximate. Each jumper wire shares a column strip with its module pin, so the electrical result doesn't depend on the exact row.",
+  "Pin mapping follows the manual's table: A0=Self-Test, A1=Z, A2=Y, A3=X, A4=GND (driven LOW in code), A5=VDD (driven HIGH in code). The schematic shows X/Y/Z crossing, but the table and the circuit image agree with the mapping above.",
+  "The ADXL335 catalogue part's VCC port stands for the breakout's VDD pin.",
+  "Power and ground come from Arduino analog pins A5 and A4 used as digital outputs. The 5V and GND pins aren't used."
+ ],
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 6,
+  "nets_matched": 3,
+  "net_precision": 0.5,
+  "net_recall": 0.6,
+  "all_nets_correct": false,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "adxl335": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "3V3"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "adxl335",
+     "ST"
+    ],
+    [
+     "board",
+     "A0"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "GND"
+    ],
+    [
+     "board",
+     "A4"
+    ]
+   ],
+   [
+    [
+     "adxl335",
+     "VCC"
+    ],
+    [
+     "board",
+     "A5"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 33.3
+}

@@ -1,0 +1,147 @@
+{
+ "case": "ping",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 26.9,
+  "input_tokens": 36806,
+  "output_tokens": 3826,
+  "cost_usd": 0.0753,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The SEN136B5B has the same three pins (GND, 5V, SIG) as the catalogue's Ping))) sensor, so type ping-sensor is used.",
+  "In the image the breadboard half that holds the sensor is labelled rows j-f. The catalogue names that half bank 'b' (rows f-j). The sensor pins GND, 5V and SIG are in columns 9, 10 and 11 at row j. Each wire ends in the same column at row f, so it shares a strip with its sensor pin.",
+  "Arduino GND is wired to the GND header pin beside AREF, which is named GND.1. The tutorial text and schematic show only one GND connection.",
+  "The schematic and the text agree with the image: 5V to 5V, GND to GND, SIG to digital pin 7. No resistor is needed."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 8.2,
+   "input_tokens": 17850,
+   "cache_read_tokens": 11144,
+   "output_tokens": 941,
+   "cost_usd": 0.0385,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.7,
+   "input_tokens": 18956,
+   "cache_read_tokens": 17848,
+   "output_tokens": 2885,
+   "cost_usd": 0.0368,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "ping": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "ping-sensor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "ping",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "ping",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "ping",
+     "SIG"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "ping-sensor",
+     "GND"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "ping-sensor",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "ping-sensor",
+     "SIG"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 4.7
+}

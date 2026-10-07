@@ -1,0 +1,96 @@
+{
+ "case": "keyboard-message",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 36.1,
+  "input_tokens": 70199,
+  "output_tokens": 4283,
+  "cost_usd": 0.0714,
+  "repair_rounds_used": 0
+ },
+ "parts": 7,
+ "edges": 24,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The page text says pin 4, but the schematic image draws the button/resistor node on pin 2. I used pin 4 because the text is explicit and the sketch uses it.",
+  "The tutorial gives no breadboard layout. I placed the button across the centre gap: side 1 (1.l, 1.r) in the top half, columns 10 and 12, and side 2 (2.l, 2.r) in the bottom half, same columns.",
+  "5V goes to the button's side 1 (column 10 top). Pin 4 and the 10k resistor share side 2 (column 10 bottom). The resistor's other end is in column 14 bottom, and a wire takes that column to GND.",
+  "The 10k resistor is the pull-down: it joins pin 4 to GND. Pressing the button joins 5V to pin 4.",
+  "A USB cable is used only to power and program the board, and it is not in the hardware list, so it is not a node.",
+  "The breadboard and the three jumper wires are not in the tutorial's hardware list. I added them because the circuit needs a way to join the button, resistor and board pins."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.1,
+   "input_tokens": 45362,
+   "cache_read_tokens": 42758,
+   "output_tokens": 1126,
+   "cost_usd": 0.0302,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardMessage/\"}",
+    "StructuredOutput {\"title\": \"Keyboard Message\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardMessage/\", \"new_part_t"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 7,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.0,
+   "input_tokens": 24837,
+   "cache_read_tokens": 23621,
+   "output_tokens": 3157,
+   "cost_usd": 0.0412,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Keyboard Message\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/usb/KeyboardMessage/\", \"new_part_t"
+   ],
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.0
+}

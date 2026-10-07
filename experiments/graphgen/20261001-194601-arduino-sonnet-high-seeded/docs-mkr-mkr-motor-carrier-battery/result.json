@@ -1,0 +1,90 @@
+{
+ "case": "docs-mkr-mkr-motor-carrier-battery",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 60.4,
+  "input_tokens": 42050,
+  "output_tokens": 8443,
+  "cost_usd": 0.1703,
+  "repair_rounds_used": 1
+ },
+ "parts": 5,
+ "edges": 25,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The 'MKR family board' is generic; arduino-mkr-1000 was chosen because the sketch comments mention the MKR1000.",
+  "The MKR Motor Carrier is not in the catalogue, so it is a new part type. Only the header sockets relevant here (power, reset, interrupt pin 6, I2C pins 11/12) and the screw terminals are modelled; the other MKR header pins are omitted. In reality the board plugs into both header rows.",
+  "Fix for the validator: the carrier's screw-terminal ports are now kind 'lead', not 'lug'. A stripped battery or motor lead clamped in a screw terminal is a lead-to-lead join, which is a compatible pair.",
+  "The tutorial says the battery goes on the male pins or on the blue VIN/GND terminal block. The terminal block is modelled, since both are the same electrical net.",
+  "A 3S LiPo (11.1 V) was used. The catalogue only has a 3.7 V LiPo, so lipo-battery-3s is a new type.",
+  "The DC motor is optional and connects to M1+ and M1-. The motor polarity is arbitrary because the motor is symmetric.",
+  "The carrier's ON/OFF slide switch is internal to the carrier and has no edges. The USB cable joins the MKR board's micro USB port. The USB cable has no ports in the catalogue, so its edge has no port names, and the host end is not specified."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 38.6,
+   "input_tokens": 18549,
+   "cache_read_tokens": 3110,
+   "output_tokens": 4521,
+   "cost_usd": 0.1076,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.8,
+   "input_tokens": 23501,
+   "cache_read_tokens": 18547,
+   "output_tokens": 3922,
+   "cost_usd": 0.0627,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-motor-carrier",
+   "family": "mkr-motor-carrier",
+   "checked": false
+  },
+  {
+   "type": "lipo-battery-3s",
+   "family": "lipo-battery-3s",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 11.7
+}

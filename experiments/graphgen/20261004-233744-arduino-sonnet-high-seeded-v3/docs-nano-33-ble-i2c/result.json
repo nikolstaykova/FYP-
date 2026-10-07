@@ -1,0 +1,86 @@
+{
+ "case": "docs-nano-33-ble-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 66.4,
+  "input_tokens": 32148,
+  "output_tokens": 8029,
+  "cost_usd": 0.1611,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 40,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The circuit image shows no breadboards. I placed each Nano 33 BLE straddling the centre gap of one mini breadboard, because the manual lists 2 mini breadboards. The left-hand header pins are in the top bank (row e) and pin n is in column n. That gives 3V3=col 2, A4=col 8, A5=col 9, GND=col 14. This layout is my assumption.",
+  "I only made joined and electrical edges for the Nano pins the circuit uses. The other header pins also sit in breadboard holes but connect to nothing, so I left them out.",
+  "The image shows two 4.7k pull-up resistors, one on SCL (A5) and one on SDA (A4). Each goes from its signal line to the reader's 3V3. I put both on the reader's breadboard, with 3V3 fed to the top power rail through wire4. The rail holes tp.1, tp.2 and tp.3 are all one strip.",
+  "The manual lists 10 jumper wires, but this circuit needs only 4: GND, SCL, SDA and 3V3-to-rail. The other 6 are unused spares. I assumed A5 is SCL and A4 is SDA, as the manual says.",
+  "The resistor value is given as 4700 (ohms). The catalogue resistor is named 100 ohm, so the value prop overrides it.",
+  "The usb-cable has no ports in the catalogue, so its edges to each Nano are joined with no port named. The tutorial says both boards need USB power or serial connection to a computer.",
+  "The Nano catalogue port 3V3 stands for the pin the diagram labels '3V'. GND_1 was used for GND."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 24.5,
+   "input_tokens": 14015,
+   "output_tokens": 1902,
+   "cost_usd": 0.0482,
+   "check_seconds": 0.0,
+   "matched": 4,
+   "listed": 5,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Nano 33 BLE",
+     "type": "arduino-nano-33-ble",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/arduino-nano-33-ble.html"
+      ]
+     ],
+     "seconds": 18.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.9,
+   "input_tokens": 18133,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6127,
+   "cost_usd": 0.1129,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 11.7
+}

@@ -1,0 +1,367 @@
+{
+ "tutorial": "pi-python-quick-reaction-game",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/quick-reaction-circuit.png"
+ ],
+ "legs_and_ends": 24,
+ "with_position": 20,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi",
+     "type": "raspberry-pi-5",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "btn1",
+     "type": "pushbutton",
+     "label": "Left tactile push button",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "1t.e",
+       "mm": [
+        0.0,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "1b.f",
+       "mm": [
+        0.0,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "3t.e",
+       "mm": [
+        5.08,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "3b.f",
+       "mm": [
+        5.08,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "330 ohm Resistor",
+     "props": {
+      "value": "330"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "15t.a",
+       "mm": [
+        35.56,
+        0.0
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.10",
+       "mm": [
+        22.86,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "LED",
+     "props": {
+      "colour": "red"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "16t.e",
+       "mm": [
+        38.1,
+        10.16
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "15t.e",
+       "mm": [
+        35.56,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "btn2",
+     "type": "pushbutton",
+     "label": "Right tactile push button",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "28t.e",
+       "mm": [
+        68.58,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "28b.f",
+       "mm": [
+        68.58,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "30t.e",
+       "mm": [
+        73.66,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "30b.f",
+       "mm": [
+        73.66,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire-mf",
+     "colour": "orange",
+     "label": "Pin-to-socket jumper wire (GPIO14 to left button)",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "GPIO_HEADER",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "3b.g",
+       "mm": [
+        5.08,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire-mf",
+     "colour": "red",
+     "label": "Pin-to-socket jumper wire (GPIO4 to LED long leg)",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "GPIO_HEADER",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "16t.a",
+       "mm": [
+        38.1,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire-mf",
+     "colour": "orange",
+     "label": "Pin-to-socket jumper wire (GPIO15 to right button)",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "GPIO_HEADER",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "28b.g",
+       "mm": [
+        68.58,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Pin-to-pin jumper wire (left button to blue strip)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "1b.g",
+       "mm": [
+        0.0,
+        20.32
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire-mf",
+     "colour": "black",
+     "label": "Pin-to-socket jumper wire (GND to blue strip)",
+     "ends": [
+      {
+       "part": "pi",
+       "port": "GPIO_HEADER",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "tn.19",
+       "mm": [
+        45.72,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Pin-to-pin jumper wire (right button to blue strip)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "30b.g",
+       "mm": [
+        73.66,
+        20.32
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.25",
+       "mm": [
+        60.96,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

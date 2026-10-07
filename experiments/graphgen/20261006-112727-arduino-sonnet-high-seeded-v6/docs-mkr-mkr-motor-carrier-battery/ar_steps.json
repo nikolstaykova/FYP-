@@ -1,0 +1,112 @@
+{
+ "tutorial": "docs-mkr-mkr-motor-carrier-battery",
+ "anchor": {
+  "id": "carrier1",
+  "type": "arduino-mkr-motor-carrier",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-motor-carrier/tutorials/mkr-motor-carrier-battery/assets/MKRMOTORCARRIER_T1_IMG01.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-motor-carrier/tutorials/mkr-motor-carrier-battery/assets/MKRMOTORCARRIER_T1_IMG02.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-motor-carrier/tutorials/mkr-motor-carrier-battery/assets/MKRMOTORCARRIER_T1_IMG03.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-motor-carrier/tutorials/mkr-motor-carrier-battery/assets/MKRMOTORCARRIER_T1_IMG04.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/03.carriers/mkr-motor-carrier/tutorials/mkr-motor-carrier-battery/assets/MKRMOTORCARRIER_T1_IMG05.png"
+ ],
+ "legs_and_ends": 5,
+ "with_position": 1,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "carrier1",
+     "type": "arduino-mkr-motor-carrier",
+     "label": "MKR Motor Carrier"
+    },
+    {
+     "id": "mkr1",
+     "type": "arduino-mkr1000-wifi",
+     "label": "Arduino MKR family board"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "batt1",
+     "type": "lipo-battery-3s",
+     "label": "LiPo Battery (3S, 11.1V)",
+     "props": {
+      "value": "11.1V"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "negative",
+       "part": "carrier1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "leg": "positive",
+       "part": "carrier1",
+       "port": "VIN",
+       "mm": [
+        43.18,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "motor1",
+     "type": "dc-motor-12v",
+     "label": "DC motor (optional)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "carrier1",
+       "port": "M1+",
+       "mm": null
+      },
+      {
+       "leg": "2",
+       "part": "carrier1",
+       "port": "M1-",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "usb1",
+     "type": "usb-cable",
+     "label": "Micro USB cable",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "mkr1",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,159 @@
+{
+ "case": "docs-due-due-motor-shield-dc",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 107.6,
+  "input_tokens": 77865,
+  "output_tokens": 12293,
+  "cost_usd": 0.2404,
+  "repair_rounds_used": 2
+ },
+ "parts": 6,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The motor shield is stacked on the Due by its header pins. The Due's digital and analog pins are single group ports in the catalogue ('D0-D53' and 'A0-A11'), and each can be used only once. So the shield has matching group ports ('D0-D13' and 'A0-A5'), and each stacks onto the Due with one joined+electrical pair.",
+  "The sketch uses pins 3 (PWM_A), 9 (BRAKE_A), 12 (DIR_A) and A0 (SNS_A). All of them pass through those group connections. GND, VIN and 5V are stacked individually.",
+  "The motor's two wires are permanently attached, so there are no separate jumper-wire parts. Motor port 1 (red wire) goes to channel A+ and port 2 (black wire) goes to A-. The motor is symmetric, so the polarity only sets the spin direction.",
+  "The wall wart (12V in the example) plugs into the Due's DC jack. The shield draws motor power from the Due's VIN pin. The validator rejected a 'lead' port on a socket, so the wall wart's barrel plug uses kind 'ball'. That is the only listed kind that pairs with a socket and stands in for a barrel plug in a jack.",
+  "The USB cable to the computer is visible in the photo and is needed to upload the sketch. The usb-cable catalogue entry has no ports, so those edges use null ports on the cable side.",
+  "The wheel on the motor is not a listed part and is left out."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 37.1,
+   "check_seconds": 0.0,
+   "input_tokens": 18894,
+   "output_tokens": 1477,
+   "cost_usd": 0.0503,
+   "listed": 4,
+   "matched": 2,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Due",
+     "card": "arduino-due",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/arduino-giga-r1-wifi.html (The page describes the Arduino GIGA R1 WiFi (STM32H747XI, 3.3V, 6-24V VIN). The )"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/2193"
+      ]
+     ],
+     "seconds": 16.4
+    },
+    {
+     "item": "Arduino Motor Shield",
+     "card": "arduino-motor-shield-rev3",
+     "skipped": false
+    },
+    {
+     "item": "DC motor",
+     "card": "dc-motor",
+     "skipped": false
+    },
+    {
+     "item": "Wall wart power supply",
+     "card": null,
+     "skipped": true
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.0,
+   "input_tokens": 15480,
+   "cache_read_tokens": 5507,
+   "output_tokens": 3515,
+   "cost_usd": 0.0761,
+   "check_seconds": 0.0,
+   "issues": 9,
+   "issue_rules": {
+    "V4": 8,
+    "V3": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 27.8,
+   "input_tokens": 19501,
+   "cache_read_tokens": 15478,
+   "output_tokens": 4326,
+   "cost_usd": 0.0624,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V4": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.7,
+   "input_tokens": 23990,
+   "cache_read_tokens": 19499,
+   "output_tokens": 2975,
+   "cost_usd": 0.0516,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 9,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-motor-shield-rev3",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "wall-wart-power-supply",
+   "family": "wall-wart-power-supply",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 22.6
+}

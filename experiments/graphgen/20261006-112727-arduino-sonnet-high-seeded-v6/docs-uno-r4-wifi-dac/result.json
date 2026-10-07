@@ -1,0 +1,117 @@
+{
+ "case": "docs-uno-r4-wifi-dac",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 96.8,
+  "input_tokens": 124743,
+  "output_tokens": 16402,
+  "cost_usd": 0.322,
+  "repair_rounds_used": 2
+ },
+ "parts": 11,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "E8 is not a real problem for this manual, so I kept the 5V wire. The circuit image runs a red wire from the UNO R4 WiFi's 5V pin to the breadboard rail. On this board 5V is an output: the board makes it from its USB power. It is not a supply input, so the catalogue's 6.0 V minimum (which applies to VIN or the barrel jack) does not apply. The potentiometer, buzzer and rail only draw 5 V from the board.",
+  "My step-2 revision added a USB cable to show the power source. It did not clear the warning and the tutorial does not list a cable, so I removed it again to keep to the manual's parts list (UNO R4 WiFi, piezo buzzer, potentiometer, jumper wires, plus the breadboard in the image). In practice the board is powered and programmed over its USB-C port.",
+  "Potentiometer is placed in one row (columns 13-15) in the card's order GND, SIG, VCC. It is symmetric (GND=VCC), so 5V goes to the column 15 end and GND to the column 13 end. The image has the opposite wire colours at those columns, which is the same circuit with the pot flipped.",
+  "In the image the A5 wire lands on the opposite half from the potentiometer's legs. I put it in the same column strip as the wiper (14) so the wiper reaches A5.",
+  "Breadboard rows follow the catalogue naming (bank 't' = rows a-e). The lower rail pair is used: 'bn' is the ground rail and 'bp' is the 5V rail. The rail hole numbers are approximate.",
+  "The buzzer is polarised: pin 2 (+) is in column 26 and goes to A0 (the DAC output). Pin 1 (-) is in column 29 and goes to GND through the short black wire. A5 reads the potentiometer wiper."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.6,
+   "input_tokens": 25530,
+   "cache_read_tokens": 3468,
+   "output_tokens": 1394,
+   "cost_usd": 0.1029,
+   "check_seconds": 0.0,
+   "parts_listed": 11,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.4,
+   "input_tokens": 27113,
+   "cache_read_tokens": 25528,
+   "output_tokens": 6122,
+   "cost_usd": 0.0727,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.8,
+   "input_tokens": 33645,
+   "cache_read_tokens": 27111,
+   "output_tokens": 4626,
+   "cost_usd": 0.0778,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.0,
+   "input_tokens": 38455,
+   "cache_read_tokens": 33643,
+   "output_tokens": 4260,
+   "cost_usd": 0.0686,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 5.4
+}

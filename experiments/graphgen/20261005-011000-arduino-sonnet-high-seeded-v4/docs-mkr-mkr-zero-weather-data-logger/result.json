@@ -1,0 +1,152 @@
+{
+ "case": "docs-mkr-mkr-zero-weather-data-logger",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 145.1,
+  "input_tokens": 23441,
+  "output_tokens": 6926,
+  "cost_usd": 0.115,
+  "repair_rounds_used": 0
+ },
+ "parts": 14,
+ "edges": 40,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Arduino MKR Zero is not in the catalogue; created as arduino-mkr-zero with BAT+/BAT- JST ports and an SD socket. The LiPo battery is also a new type.",
+  "The listed capacitor match (capacitor-10uf) is wrong for 100 nF; used catalogue capacitor-100nf.",
+  "The text says to plug the MKR Zero into the breadboard, but the image shows it off-board linked by three jumper wires (red VCC, black GND, orange pin 7); followed the image.",
+  "The DHT22 (RHT03 in the image) is placed in row a at columns 27-30 (VCC, DATA, NC, GND). Column numbers are estimated from the image.",
+  "The capacitor and 4.7k resistor sit off the breadboard in the image, attached with blue and yellow jumper wires. Modelled as wire ends joined to the component leads (marked solder, which is an assumption). Cap between VCC (col 27) and GND (col 30); resistor between VCC (col 27) and DATA (col 28).",
+  "The 4.75k resistor in the parts list is modelled as value=4700 (the text says 4k7).",
+  "The NC pin of the DHT22 is not connected.",
+  "Battery is shown connected to the MKR Zero's JST connector."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 103.4,
+   "check_seconds": 0.0,
+   "input_tokens": 9433,
+   "output_tokens": 328,
+   "cost_usd": 0.0052,
+   "listed": 7,
+   "matched": 5,
+   "looked_up": 1,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino MKR Zero",
+     "card": null,
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (The content describes the Arduino MKR CAN Shield, a CAN bus shield. It is not th)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 6.0
+    },
+    {
+     "item": "Jumper wires (generic)",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "Capacitor 100 nF",
+     "card": "capacitor-10uf",
+     "skipped": false
+    },
+    {
+     "item": "Resistor 4.75k ohm",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "microSD card",
+     "card": null,
+     "skipped": true
+    },
+    {
+     "item": "Medium breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "DHT22 Temperature and Humidity sensor",
+     "card": "dht22",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.7,
+   "input_tokens": 14008,
+   "cache_read_tokens": 3203,
+   "output_tokens": 6598,
+   "cost_usd": 0.1098,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.667
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-zero",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "lipo-battery-3v7",
+   "family": "lipo-battery-3v7",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 20.1
+}

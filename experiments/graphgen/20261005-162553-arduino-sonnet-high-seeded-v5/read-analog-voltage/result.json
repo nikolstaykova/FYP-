@@ -1,0 +1,106 @@
+{
+ "case": "read-analog-voltage",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 30.1,
+  "input_tokens": 40233,
+  "output_tokens": 4015,
+  "cost_usd": 0.079,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 18,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Step 1 parts were correct: Arduino Uno, breadboard, 10k potentiometer and three jumper wires (red, black, yellow). Nothing was added or dropped.",
+  "The pot straddles the breadboard centre gap. Its two outer pins are in column 10 and column 12 of the half with rows a-e (bank 't'). Its middle pin is in column 11 of the half with rows f-j (bank 'b').",
+  "The image is drawn with rows j-f at the top and e-a at the bottom. I mapped the image's lower half to the catalogue's 't' bank (rows a-e) and its upper half to the 'b' bank (rows f-j).",
+  "The black GND wire goes in 10t.d and the red 5V wire in 12t.d, the same strips as the pot's outer pins. The yellow wire goes in 11b.g, the same strip as the wiper pin.",
+  "The outer pins of a pot are interchangeable, so GND on column 10 and VCC on column 12 follows the image. The tutorial says one outer pin goes to ground and the other to 5V.",
+  "The black wire goes to the second GND pin on the Uno's power header, which I named GND.2.",
+  "No series resistor is needed, because the circuit has no LED."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 8.2,
+   "input_tokens": 19657,
+   "cache_read_tokens": 12122,
+   "output_tokens": 752,
+   "cost_usd": 0.0401,
+   "check_seconds": 0.0,
+   "parts_listed": 6,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.9,
+   "input_tokens": 20576,
+   "cache_read_tokens": 19655,
+   "output_tokens": 3263,
+   "cost_usd": 0.0389,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "score_initial": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "pot": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "pot": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 5.2
+}

@@ -1,0 +1,126 @@
+{
+ "case": "pi-python-quick-reaction-game",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 118.0,
+  "input_tokens": 194391,
+  "output_tokens": 20059,
+  "cost_usd": 0.4033,
+  "repair_rounds_used": 2
+ },
+ "parts": 12,
+ "edges": 48,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Board model: the manual only says '1 x Raspberry Pi', so raspberry-pi-5 is used because the checker expects it. The catalogue card (looked up) lists only GPIO_HEADER and no individual header pins. Every wire that goes to the Pi therefore uses port GPIO_HEADER. The pin each wire uses is in its label, and the pins match the GPIO labels in the circuit image: wire3 = GPIO14 (left button side 2), wire4 = GPIO15 (right button side 2), wire5 = GPIO4 (LED anode, long leg), wire6 = GND (blue rail). Because all four share one port name, the graph cannot tell the pins apart by port alone.",
+  "Buttons: they straddle the centre gap, as the catalogue's breadboard rule for pushbuttons requires. btn1 is in columns 1 and 3 and btn2 in columns 28 and 30. Each column has one leg in the top bank (row e) and one in the bottom bank (row f). The booklet's drawing and its 'rows H and J' text show the buttons on one half only. I followed the catalogue fit; the electrical connections are the same.",
+  "Button sides: side 1 is column 1 (left button) or column 30 (right button), and goes by a black wire to the GND rail. Side 2 is column 3 (left) or column 28 (right), and goes by an orange wire to GPIO14 or GPIO15. These wires sit in row g of the bottom bank so they do not clash with the button legs in row f.",
+  "Breadboard naming follows the catalogue: bank 'b' is rows f-j and bank 't' is rows a-e. The blue ground rail beside rows a-e is named 'tn'. A rail is one strip, so the hole index does not matter electrically (the image has the left button wire at tn.1, the resistor at tn.10, the Pi GND wire at tn.19 and the right button wire at tn.25).",
+  "LED: the image shows the legs in row e (the text says D). Long leg (anode) is in column 16 and short leg (cathode) in column 15. The 330 ohm resistor goes from 15t.a to the GND rail. The GPIO4 wire goes to 16t.a.",
+  "Wires: the 4 pin-to-socket wires are jumper-wire-mf, with end 'a' the female socket on the Pi header and end 'b' the male pin in the breadboard. The 2 pin-to-pin wires are jumper-wire.",
+  "Each physical connection has both a joined and an electrical edge."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 10.3,
+   "input_tokens": 30485,
+   "cache_read_tokens": 3468,
+   "output_tokens": 1391,
+   "cost_usd": 0.1227,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Python Quick Reaction Game\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/python-quick-reaction"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 40.8,
+   "input_tokens": 32018,
+   "cache_read_tokens": 30483,
+   "output_tokens": 6700,
+   "cost_usd": 0.0792,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Python Quick Reaction Game\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/python-quick-reaction"
+   ],
+   "check_seconds": 0.01,
+   "issues": 3,
+   "issue_rules": {
+    "E6": 1,
+    "B1": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 34.6,
+   "input_tokens": 39313,
+   "cache_read_tokens": 32016,
+   "output_tokens": 6321,
+   "cost_usd": 0.0988,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Python Quick Reaction Game\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/python-quick-reaction"
+   ],
+   "check_seconds": 0.01,
+   "issues": 8,
+   "issue_rules": {
+    "V4": 8
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.3,
+   "input_tokens": 92575,
+   "cache_read_tokens": 85308,
+   "output_tokens": 5647,
+   "cost_usd": 0.1026,
+   "tools_used": [
+    "lookup_part {\"name\": \"Raspberry Pi 5\", \"type_id\": \"raspberry-pi-5\"}",
+    "StructuredOutput {\"title\": \"Python Quick Reaction Game\", \"source_id\": \"https://projects.raspberrypi.org/en/projects/python-quick-reaction"
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E3": 2
+   }
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 2,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "score_initial": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 7.8
+}

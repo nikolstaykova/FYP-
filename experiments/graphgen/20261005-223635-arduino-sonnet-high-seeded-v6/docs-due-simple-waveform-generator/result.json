@@ -1,0 +1,121 @@
+{
+ "case": "docs-due-simple-waveform-generator",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 140.5,
+  "input_tokens": 173624,
+  "output_tokens": 25671,
+  "cost_usd": 0.3915,
+  "repair_rounds_used": 2
+ },
+ "parts": 18,
+ "edges": 74,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Not a real problem, so the graph is unchanged: the [E8] 'needs at least 7.0 V but 3V3 is on 3.3 V' warning treats the Due's 3V3 pin as a supply input. On the Arduino Due, 3V3 is an output from the board's on-board 3.3 V regulator. The tutorial and its image use it to feed the breadboard 3.3 V rail through a red wire, which powers the potentiometer and the button supply sides. Nothing powers the Due from that pin.",
+  "The Due itself is powered through its USB or power-jack input, with 7-12 V or 5 V USB. The tutorial lists no power source or USB cable, so I added none. This matches the manual's exact parts list. Nothing in the circuit drives a 5 V signal into the 3.3 V-only I/O pins.",
+  "Used arduino-due-r3 because the circuit needs D2, D3 and A0. The 'arduino-due' card lists only power ports. I assumed arduino-due-r3 also has ports named 3V3 and GND.",
+  "Rails: tp and bp are 3.3 V, tn and bn are ground. wire3 and wire4 join the top rails to the bottom rails.",
+  "Potentiometer: one outer leg to 3.3 V, the other outer leg to ground, wiper to A0 (yellow wire). It sits in columns 14-16 in the order GND, SIG, VCC.",
+  "Each pushbutton sits across the centre gap. Side 1 (top half) has the input-pin wire (D2 or D3) and the 10k pull-down resistor to ground on the same side. Side 2 (bottom half) goes to 3.3 V. The two legs of a side are joined inside the button, so one wire per side is enough.",
+  "The image places the resistors and red wires near the bottom of the breadboard. I followed the circuit text, so exact hole positions are my own choice.",
+  "Every physical connection has a joined edge and an electrical edge between the same ports."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.1,
+   "input_tokens": 27191,
+   "cache_read_tokens": 20859,
+   "output_tokens": 2035,
+   "cost_usd": 0.0498,
+   "check_seconds": 0.0,
+   "parts_listed": 18,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 57.5,
+   "input_tokens": 59429,
+   "cache_read_tokens": 56638,
+   "output_tokens": 9451,
+   "cost_usd": 0.117,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.1,
+   "input_tokens": 39804,
+   "cache_read_tokens": 29976,
+   "output_tokens": 7214,
+   "cost_usd": 0.1174,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.8,
+   "input_tokens": 47200,
+   "cache_read_tokens": 39802,
+   "output_tokens": 6971,
+   "cost_usd": 0.1073,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.4
+}

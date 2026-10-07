@@ -1,0 +1,103 @@
+{
+ "case": "7613-1",
+ "domain": "lego",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 120.7,
+  "input_tokens": 232982,
+  "output_tokens": 17429,
+  "cost_usd": 0.663,
+  "repair_rounds_used": 1
+ },
+ "parts": 28,
+ "edges": 27,
+ "repeats": [
+  {
+   "group": "wheel",
+   "times": 4,
+   "overrides": 3
+  }
+ ],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The supplied extract has no parts-list pages, so element IDs are best-fit catalogue types by shape and colour; several are guesses (wheel holders, wheel, rods, fenders, bonnet piece).",
+  "Step 1 (4x4 black plate) is the base; the step 2 2x6 black plate sits offset on it.",
+  "Step 3: both wheel holders are modelled as pushed up into the underside of the 4x4 plate (distinct anti-stud positions) so no port is reused.",
+  "Fix for clip/axle: the yellow rods in step 11 are now a bar-type rod (lego-6116604, bar.1) so the clip-to-bar join is valid.",
+  "Fix for ball/ball: rim and tyre were previously joined through ports the validator treats as incompatible; each wheel is now one part (lego-614126, pin-hole.1) pushed onto a wheel-holder pin. This approximates rim + tyre as a single wheel; a 4x repeat covers the four wheels.",
+  "Fix for reused single-use ports: parts with several studs were substituted so each stud/anti-stud is used once: 4x4 plate -> lego-3031, front bonnet piece -> lego-4160343 (two anti-studs), front red 1x4 plate -> lego-371023 (colour prop red), red rear 2x4 plate -> lego-302001 (colour prop red), red 1x2 plate -> lego-3023. Fenders now sit on the red side plates rather than on the bonnet piece. Stud positions are approximate because the booklet does not allow exact cell positions to be read.",
+  "Headlights, trans plates and the extra small red rear pieces in steps 6-11 are approximated; some small pieces visible in the pictures may be missing or merged."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 72.6,
+   "input_tokens": 111127,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9976,
+   "cost_usd": 0.5233,
+   "check_seconds": 0.04,
+   "issues": 15,
+   "issue_rules": {
+    "V3": 6,
+    "V4": 9
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 48.0,
+   "input_tokens": 121855,
+   "cache_read_tokens": 111125,
+   "output_tokens": 7453,
+   "cost_usd": 0.1397,
+   "check_seconds": 0.04,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 15,
+ "issues_final": 0,
+ "score": {
+  "pieces_expected": 34,
+  "pieces_built": 28,
+  "pieces_unmapped": 0,
+  "inventory_matched": 8,
+  "exact_matched": 3,
+  "inventory_precision": 0.286,
+  "inventory_recall": 0.235,
+  "exact_recall": 0.088,
+  "joined_edges": 27,
+  "contacts_expected": 3,
+  "contacts_predicted": 4,
+  "contacts_correct": 0,
+  "contact_precision": 0.0,
+  "contact_recall": 0.0
+ },
+ "score_initial": {
+  "pieces_expected": 34,
+  "pieces_built": 32,
+  "pieces_unmapped": 0,
+  "inventory_matched": 8,
+  "exact_matched": 6,
+  "inventory_precision": 0.25,
+  "inventory_recall": 0.235,
+  "exact_recall": 0.176,
+  "joined_edges": 31,
+  "contacts_expected": 3,
+  "contacts_predicted": 2,
+  "contacts_correct": 0,
+  "contact_precision": 0.0,
+  "contact_recall": 0.0
+ },
+ "postprocess_ms": 17.7
+}

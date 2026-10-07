@@ -1,0 +1,117 @@
+{
+ "case": "debounce",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 41.6,
+  "input_tokens": 17473,
+  "output_tokens": 5413,
+  "cost_usd": 0.0821,
+  "repair_rounds_used": 0
+ },
+ "parts": 9,
+ "edges": 32,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the catalogue: the half with rows f-j (top of the picture) is bank 'b', and the half with rows a-e is bank 't'. Rail hole numbers (bp.1, bp.3, bn.1, bn.7) are approximate. Each rail is one strip, so the exact number does not change the connectivity.",
+  "The pushbutton straddles the centre gap at columns 4 and 6. I assumed the pairs joined inside it are the two legs in the same column. So side 1 is column 4 (5V side) and side 2 is column 6 (pin 2 and resistor side). This matches the schematic, where the switch sits between 5V and the pin 2 / pull-down node.",
+  "The 10k resistor is on the same side as the input pin (column 6). It runs to column 9, which a black jumper wire connects to the ground rail. The 5V wire (red) feeds the + rail, and an orange wire takes it from the + rail to the button's column 4.",
+  "The Uno GND on the power header is taken as GND.2. The manual does not say which GND pin."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.6,
+   "input_tokens": 17473,
+   "cache_read_tokens": 11032,
+   "output_tokens": 5413,
+   "cost_usd": 0.0821,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 5,
+  "nets_built": 3,
+  "nets_matched": 2,
+  "net_precision": 0.667,
+  "net_recall": 0.4,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 2,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 14.7
+}

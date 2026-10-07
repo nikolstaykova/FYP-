@@ -1,0 +1,123 @@
+{
+ "tutorial": "pi-rpi-python-piezoelectric-buzzer",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main//images/buzzer-circuit.png"
+ ],
+ "legs_and_ends": 6,
+ "with_position": 6,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "pi1",
+     "type": "raspberry-pi-4-gpio",
+     "label": "Raspberry Pi"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "buzzer1",
+     "type": "buzzer",
+     "label": "Piezoelectric buzzer",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "15t.b",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "18t.b",
+       "mm": [
+        43.18,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire-mf",
+     "colour": "black",
+     "label": "Black jumper wire (GND)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "15t.a",
+       "mm": [
+        35.56,
+        0.0
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "9",
+       "mm": [
+        41.66,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire-mf",
+     "colour": "purple",
+     "label": "Purple jumper wire (GPIO17)",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "18t.a",
+       "mm": [
+        43.18,
+        0.0
+       ]
+      },
+      {
+       "part": "pi1",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1290 @@
+{
+ "tutorial": "docs-communication-digitalpotcontrol",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/communication/DigitalPotControl/assets/AD5206_pins.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/communication/DigitalPotControl/assets/AD5206_pinsDescript.jpg",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/communication/DigitalPotControl/assets/AD5206_arduino_bb2.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/tutorials/communication/DigitalPotControl/assets/AD5206_arduino_sch.png"
+ ],
+ "legs_and_ends": 90,
+ "with_position": 90,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "uno",
+     "type": "arduino-uno",
+     "label": "Arduino board"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "pot1",
+     "type": "ad5206",
+     "label": "AD5206 Digital Potentiometer",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "A1",
+       "part": "bb1",
+       "port": "11b.f",
+       "mm": [
+        25.4,
+        17.78
+       ]
+      },
+      {
+       "leg": "A2",
+       "part": "bb1",
+       "port": "10b.f",
+       "mm": [
+        22.86,
+        17.78
+       ]
+      },
+      {
+       "leg": "A3",
+       "part": "bb1",
+       "port": "14b.f",
+       "mm": [
+        33.02,
+        17.78
+       ]
+      },
+      {
+       "leg": "A4",
+       "part": "bb1",
+       "port": "7b.f",
+       "mm": [
+        15.24,
+        17.78
+       ]
+      },
+      {
+       "leg": "A5",
+       "part": "bb1",
+       "port": "16t.e",
+       "mm": [
+        38.1,
+        10.16
+       ]
+      },
+      {
+       "leg": "A6",
+       "part": "bb1",
+       "port": "5t.e",
+       "mm": [
+        10.16,
+        10.16
+       ]
+      },
+      {
+       "leg": "B1",
+       "part": "bb1",
+       "port": "13b.f",
+       "mm": [
+        30.48,
+        17.78
+       ]
+      },
+      {
+       "leg": "B2",
+       "part": "bb1",
+       "port": "8b.f",
+       "mm": [
+        17.78,
+        17.78
+       ]
+      },
+      {
+       "leg": "B3",
+       "part": "bb1",
+       "port": "16b.f",
+       "mm": [
+        38.1,
+        17.78
+       ]
+      },
+      {
+       "leg": "B4",
+       "part": "bb1",
+       "port": "5b.f",
+       "mm": [
+        10.16,
+        17.78
+       ]
+      },
+      {
+       "leg": "B5",
+       "part": "bb1",
+       "port": "14t.e",
+       "mm": [
+        33.02,
+        10.16
+       ]
+      },
+      {
+       "leg": "B6",
+       "part": "bb1",
+       "port": "7t.e",
+       "mm": [
+        15.24,
+        10.16
+       ]
+      },
+      {
+       "leg": "CLK",
+       "part": "bb1",
+       "port": "12t.e",
+       "mm": [
+        27.94,
+        10.16
+       ]
+      },
+      {
+       "leg": "CS",
+       "part": "bb1",
+       "port": "9t.e",
+       "mm": [
+        20.32,
+        10.16
+       ]
+      },
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "8t.e",
+       "mm": [
+        17.78,
+        10.16
+       ]
+      },
+      {
+       "leg": "SDI",
+       "part": "bb1",
+       "port": "11t.e",
+       "mm": [
+        25.4,
+        10.16
+       ]
+      },
+      {
+       "leg": "VDD",
+       "part": "bb1",
+       "port": "10t.e",
+       "mm": [
+        22.86,
+        10.16
+       ]
+      },
+      {
+       "leg": "VSS",
+       "part": "bb1",
+       "port": "13t.e",
+       "mm": [
+        30.48,
+        10.16
+       ]
+      },
+      {
+       "leg": "W1",
+       "part": "bb1",
+       "port": "12b.f",
+       "mm": [
+        27.94,
+        17.78
+       ]
+      },
+      {
+       "leg": "W2",
+       "part": "bb1",
+       "port": "9b.f",
+       "mm": [
+        20.32,
+        17.78
+       ]
+      },
+      {
+       "leg": "W3",
+       "part": "bb1",
+       "port": "15b.f",
+       "mm": [
+        35.56,
+        17.78
+       ]
+      },
+      {
+       "leg": "W4",
+       "part": "bb1",
+       "port": "6b.f",
+       "mm": [
+        12.7,
+        17.78
+       ]
+      },
+      {
+       "leg": "W5",
+       "part": "bb1",
+       "port": "15t.e",
+       "mm": [
+        35.56,
+        10.16
+       ]
+      },
+      {
+       "leg": "W6",
+       "part": "bb1",
+       "port": "6t.e",
+       "mm": [
+        12.7,
+        10.16
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r4",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "6b.i",
+       "mm": [
+        12.7,
+        25.4
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "26b.i",
+       "mm": [
+        63.5,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "r6",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "6t.b",
+       "mm": [
+        12.7,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "24t.b",
+       "mm": [
+        58.42,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "9b.i",
+       "mm": [
+        20.32,
+        25.4
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "22b.i",
+       "mm": [
+        53.34,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "12b.i",
+       "mm": [
+        27.94,
+        25.4
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "20b.i",
+       "mm": [
+        48.26,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "add": [
+    {
+     "id": "r3",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "15b.i",
+       "mm": [
+        35.56,
+        25.4
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "24b.i",
+       "mm": [
+        58.42,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "add": [
+    {
+     "id": "r5",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "15t.b",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "22t.b",
+       "mm": [
+        53.34,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "LED 1",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "20b.h",
+       "mm": [
+        48.26,
+        22.86
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "bn.20",
+       "mm": [
+        48.26,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "add": [
+    {
+     "id": "led2",
+     "type": "led",
+     "label": "LED 2",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "22b.h",
+       "mm": [
+        53.34,
+        22.86
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "bn.22",
+       "mm": [
+        53.34,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "add": [
+    {
+     "id": "led5",
+     "type": "led",
+     "label": "LED 5",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "22t.c",
+       "mm": [
+        53.34,
+        5.08
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "tn.22",
+       "mm": [
+        53.34,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "add": [
+    {
+     "id": "led3",
+     "type": "led",
+     "label": "LED 3",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "24b.h",
+       "mm": [
+        58.42,
+        22.86
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "bn.24",
+       "mm": [
+        58.42,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "add": [
+    {
+     "id": "led6",
+     "type": "led",
+     "label": "LED 6",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "24t.c",
+       "mm": [
+        58.42,
+        5.08
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "tn.24",
+       "mm": [
+        58.42,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "add": [
+    {
+     "id": "led4",
+     "type": "led",
+     "label": "LED 4",
+     "props": {},
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "26b.h",
+       "mm": [
+        63.5,
+        22.86
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "bn.26",
+       "mm": [
+        63.5,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "CS to pin 10",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "10",
+       "mm": [
+        39.12,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "9t.a",
+       "mm": [
+        20.32,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "SDI to pin 11",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "11",
+       "mm": [
+        36.58,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "11t.a",
+       "mm": [
+        25.4,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "CLK to pin 13",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "13",
+       "mm": [
+        31.5,
+        50.8
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "12t.a",
+       "mm": [
+        27.94,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 18,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "5V to top + rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "5V",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.1",
+       "mm": [
+        0.0,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 19,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "GND to top - rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "GND.1",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 20,
+   "power": true,
+   "add": [
+    {
+     "id": "wire21",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "GND.2 to bottom - rail",
+     "ends": [
+      {
+       "part": "uno",
+       "port": "GND.2",
+       "mm": [
+        40.64,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.1",
+       "mm": [
+        0.0,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 21,
+   "power": true,
+   "add": [
+    {
+     "id": "wire14",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "A6 to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "5t.a",
+       "mm": [
+        10.16,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.5",
+       "mm": [
+        10.16,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 22,
+   "power": true,
+   "add": [
+    {
+     "id": "wire18",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "B4 to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "5b.j",
+       "mm": [
+        10.16,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.5",
+       "mm": [
+        10.16,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 23,
+   "power": true,
+   "add": [
+    {
+     "id": "wire12",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "A4 to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "7b.j",
+       "mm": [
+        15.24,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.7",
+       "mm": [
+        15.24,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 24,
+   "power": true,
+   "add": [
+    {
+     "id": "wire20",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "B6 to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "7t.a",
+       "mm": [
+        15.24,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.7",
+       "mm": [
+        15.24,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 25,
+   "power": true,
+   "add": [
+    {
+     "id": "wire16",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "B2 to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "8b.j",
+       "mm": [
+        17.78,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.8",
+       "mm": [
+        17.78,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 26,
+   "power": true,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "GND pin to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "8t.a",
+       "mm": [
+        17.78,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.8",
+       "mm": [
+        17.78,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 27,
+   "power": true,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "A2 to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "10b.j",
+       "mm": [
+        22.86,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.12",
+       "mm": [
+        27.94,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 28,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "VDD to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.10",
+       "mm": [
+        22.86,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 29,
+   "power": true,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "A1 to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "11b.j",
+       "mm": [
+        25.4,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.11",
+       "mm": [
+        25.4,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 30,
+   "power": true,
+   "add": [
+    {
+     "id": "wire15",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "B1 to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "13b.j",
+       "mm": [
+        30.48,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.13",
+       "mm": [
+        30.48,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 31,
+   "power": true,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "VSS to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "13t.a",
+       "mm": [
+        30.48,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.13",
+       "mm": [
+        30.48,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 32,
+   "power": true,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "A3 to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "14b.j",
+       "mm": [
+        33.02,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.14",
+       "mm": [
+        33.02,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 33,
+   "power": true,
+   "add": [
+    {
+     "id": "wire19",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "B5 to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "14t.a",
+       "mm": [
+        33.02,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tn.14",
+       "mm": [
+        33.02,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 34,
+   "power": true,
+   "add": [
+    {
+     "id": "wire13",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "A5 to +5V",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "16t.a",
+       "mm": [
+        38.1,
+        0.0
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.16",
+       "mm": [
+        38.1,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 35,
+   "power": true,
+   "add": [
+    {
+     "id": "wire17",
+     "type": "jumper-wire",
+     "colour": null,
+     "label": "B3 to ground",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "16b.j",
+       "mm": [
+        38.1,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.16",
+       "mm": [
+        38.1,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

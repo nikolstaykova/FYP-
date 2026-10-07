@@ -1,0 +1,124 @@
+{
+ "case": "pi-interactive-traffic-lights-python",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 62.1,
+  "input_tokens": 23117,
+  "output_tokens": 8624,
+  "cost_usd": 0.1457,
+  "repair_rounds_used": 0
+ },
+ "parts": 17,
+ "edges": 64,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e2: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e5: port 'GPIO15' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e6: port 'GPIO15' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e9: port 'GPIO25' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e10: port 'GPIO25' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e13: port 'GPIO8' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e14: port 'GPIO8' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e17: port 'GPIO7' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e18: port 'GPIO7' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e21: port 'GPIO21' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e22: port 'GPIO21' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The diagram is treated as authoritative. The text says Amber is GPIO 28 and Green is GPIO 27, which do not exist on a Pi. The diagram wires the red LED to GPIO25, the amber (yellow) LED to GPIO8 and the green LED to GPIO7. The diagram does the same for the button (GPIO21) and the buzzer (GPIO15).",
+  "The catalogue entry for rpi-4b lists only GPIO_HEADER as a port. I named individual header pins (GND, GPIO7, GPIO8, GPIO15, GPIO21, GPIO25) as ports, as the task instructions suggest.",
+  "The breadboard is drawn vertically. Columns 1-30 are the numbered rows. Letters a-e are bank 't' and f-j are bank 'b'. The ground rail on the right edge is called 'tn.<n>', where n is roughly the row it sits beside. All 'tn' holes are one strip.",
+  "The resistor value is not stated, so 220 ohm is assumed. The resistors straddle the centre gap, from column e (bank t) to column h (bank b).",
+  "The black wire from GND on the Pi goes to the right-hand ground rail. The LED cathodes, the buzzer's second leg and the button's ground wire also go to that rail.",
+  "The button straddles the centre gap. Side 1 (rows 28, ground) is at 28t.e and 28b.f. Side 2 (row 30, GPIO21) is at 30t.e and 30b.f. There is no external pull resistor, so the internal pull-up is assumed, as gpiozero's Button does by default.",
+  "The buzzer's positive leg is placed at 4b.i, in the strip fed by the blue wire at 4b.g. The rail hole used for the negative leg is approximate.",
+  "All jumper wires use the generic jumper-wire type, as the parts list says. The ends that go onto the Pi header would physically be female sockets."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.8,
+   "input_tokens": 9520,
+   "output_tokens": 439,
+   "cost_usd": 0.0304,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 7,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 55.3,
+   "input_tokens": 13597,
+   "cache_read_tokens": 5507,
+   "output_tokens": 8185,
+   "cost_usd": 0.1153,
+   "check_seconds": 0.0,
+   "issues": 12,
+   "issue_rules": {
+    "V4": 12
+   }
+  }
+ ],
+ "issues_first": 12,
+ "issues_final": 12,
+ "score": {
+  "families_listed": [
+   "button",
+   "buzzer",
+   "led",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 18.7
+}

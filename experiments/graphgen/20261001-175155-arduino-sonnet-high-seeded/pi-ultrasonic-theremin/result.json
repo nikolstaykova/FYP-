@@ -1,0 +1,77 @@
+{
+ "case": "pi-ultrasonic-theremin",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 58.9,
+  "api_seconds": 55.8,
+  "first_token_seconds": 34.5,
+  "input_tokens": 21626,
+  "cache_read_tokens": 14806,
+  "output_tokens": 8821,
+  "cost_usd": 0.1184,
+  "turns": 2
+ },
+ "parts": 15,
+ "edges": 52,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e1: port 'VCC' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e2: port 'VCC' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e3: port 'Trig' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e4: port 'Trig' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e5: port 'Echo' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e6: port 'Echo' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e7: port 'GND' not on hc-sr04"
+  ],
+  [
+   "V4",
+   "e8: port 'GND' not on hc-sr04"
+  ]
+ ],
+ "notes": [
+  "The circuit diagram is treated as the authority: the sensor VCC is wired to the Pi 5V pin (top-left, 5V.1) even though the text says 3V3 and mentions a 3.3V-compatible sensor.",
+  "The diagram shows Trig on GP4 and Echo on GP17 (via a resistor divider). The text and code mention trigger=27 in places, but the text also says trigger is 4; the diagram was followed.",
+  "Resistor values are not stated. The two resistors form an Echo voltage divider (Echo -> r1 -> GPIO17 junction -> r2 -> GND). I assumed 330 ohm and 470 ohm from the band colours.",
+  "Breadboard row naming follows the catalogue: bank 'b' = rows f-j (top half in the diagram), bank 't' = rows a-e (bottom half in the diagram). Sensor pins are in row j, columns 1-4.",
+  "Rail hole numbers (bn.10, bn.20, bn.23) are estimated from the image, counting 25 holes per rail and skipping the gaps between groups of five. 'bn' is the negative rail along the bottom of the breadboard, used as the ground rail.",
+  "The Echo wire (wire3) ends at column 4 in the lower half. The diagram colours that column black, which looks like a drawing quirk. It was treated as the start of the divider, with the resistor going to column 8.",
+  "The buzzer circuit image (circuit_2) was not provided. The text says the buzzer goes directly to the Pi with two female-to-female jumper leads on GPIO21 and a GND pin. Buzzer pin 1 is assumed to be the signal and pin 2 ground. GND.7 was assumed because GND.8 is already used.",
+  "Female-to-female jumper leads are not in the catalogue, so the generic jumper-wire type was used. The manual says 6 leads are needed. The diagram shows 7 breadboard wires, plus 2 for the buzzer.",
+  "The software (gpiozero Python code) is not part of the physical graph."
+ ],
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 10.9
+}

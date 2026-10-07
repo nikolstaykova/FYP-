@@ -1,0 +1,192 @@
+{
+ "case": "pi-physical-computing",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 135.1,
+  "input_tokens": 131050,
+  "output_tokens": 11980,
+  "cost_usd": 0.4013,
+  "repair_rounds_used": 0
+ },
+ "parts": 7,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e11: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port '3V3' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e15: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e16: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e19: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e20: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "single-use port bb1:3t.e used 2 times"
+  ]
+ ],
+ "notes": [
+  "The tutorial covers many separate circuits (LED, button, buzzer, traffic lights, PIR, ultrasonic, MCP3008, motors). The two supplied images both show only the LDR + capacitor light-sensing circuit, so that is the circuit built here.",
+  "Image 1 (Fritzing) shows the Pi rotated 180\u00b0: red wire to top-row rightmost pin = physical pin 1 (3V3); green wire to pin 7 (GPIO4, matching LightSensor(4) in the code); black wire to bottom row pin 6 (GND).",
+  "Breadboard: wires in row a of columns 1, 3 and 5; LDR across columns 1 and 3 (row e); capacitor across columns 3 (+, long leg, same strip as the LDR leg) and 5 (-). Circuit: 3V3 -> LDR -> GPIO4 node -> capacitor -> GND. Column numbers are read as labelled on the breadboard images (column 1 at the right in image 1).",
+  "Breadboard bank/row naming: the components and wires are placed in the top half (rows a-e) as 't' holes.",
+  "The capacitor-1uf type is not in the catalogue, so a new part type was added (ports + and -, polarized).",
+  "Jumper-wire-mf port 'a' is taken as the male end (into the breadboard) and 'b' as the female end (onto the Pi header pin).",
+  "The Pi is matched to rpi-4b; its GPIO header pins are used as ports 3V3, GPIO4 and GND (physical pin 6) even though the catalogue lists only GPIO_HEADER.",
+  "The component types and the three wire colours (red, green, black) come from the Fritzing image; the manual does not name them."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 98.9,
+   "input_tokens": 103909,
+   "output_tokens": 7100,
+   "cost_usd": 0.2649,
+   "check_seconds": 0.0,
+   "matched": 15,
+   "listed": 19,
+   "ingested": 3,
+   "ingest": [
+    {
+     "part": "1\u03bcF capacitor",
+     "type": "capacitor-1uf",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-220uf-20-6-3v.html (The content describes a 220uF, 6.3V Panasonic FK SMT aluminum electrolytic capac)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/capacitor-aluminum-electrolytic-47-f-20-35v.html (The page describes a 47\u00b5F 35V Panasonic FK SMT aluminum electrolytic capacitor ()"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/RTC-Module-Super-Capacitor-p-2137.html (The content is a Seeed Studio page for an RTC module with a super capacitor. It )"
+      ],
+      [
+       "seeed",
+       "did not match: https://www.seeedstudio.com/0805-SMT-Capacitor-sample-book-4416-pcs-in-92-values-free-shippin-p-571.html (The content is a Seeed Studio page for a 0805 SMT capacitor sample book (4416 pc)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 25.8
+    },
+    {
+     "part": "Motor controller",
+     "type": "motor-driver-l293d",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/1438 (The page describes the Adafruit Motor/Stepper/Servo Shield v3, which uses TB6612)"
+      ],
+      [
+       "adafruit",
+       "did not match: https://www.adafruit.com/product/4280 (Content describes the Adafruit DC & Stepper Motor Bonnet (product 4280), which u)"
+      ],
+      [
+       "sparkfun",
+       "did not match: https://www.sparkfun.com/tb6612-1-2a-dc-stepper-motor-driver-breakout-board.html (The wanted id motor-driver-l293d names an L293D driver, but the page describes t)"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-full-bridge-motor-driver-breakout-l298n.html"
+      ]
+     ],
+     "seconds": 44.2
+    },
+    {
+     "part": "Battery pack",
+     "type": "battery-pack-aa",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/battery-holder-4xaa-square.html"
+      ]
+     ],
+     "seconds": 9.6
+    },
+    {
+     "part": "MCP3008 ADC",
+     "type": "adc-mcp3008",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/856"
+      ]
+     ],
+     "seconds": 10.1
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 36.2,
+   "input_tokens": 27141,
+   "cache_read_tokens": 5507,
+   "output_tokens": 4880,
+   "cost_usd": 0.1364,
+   "check_seconds": 0.0,
+   "issues": 7,
+   "issue_rules": {
+    "V4": 7
+   }
+  }
+ ],
+ "issues_first": 7,
+ "issues_final": 7,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 12.5
+}

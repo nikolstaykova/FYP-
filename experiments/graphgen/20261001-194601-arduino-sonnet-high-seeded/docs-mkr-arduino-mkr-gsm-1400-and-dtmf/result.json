@@ -1,0 +1,83 @@
+{
+ "case": "docs-mkr-arduino-mkr-gsm-1400-and-dtmf",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 49.2,
+  "input_tokens": 15507,
+  "output_tokens": 8475,
+  "cost_usd": 0.1262,
+  "repair_rounds_used": 0
+ },
+ "parts": 18,
+ "edges": 58,
+ "repeats": [],
+ "new_types_declared": 5,
+ "new_types_added": 5,
+ "problems": [],
+ "notes": [
+  "The schematic image was not visible; connections are inferred from the text and the standard 2N7000 bidirectional level-shifter: gate to 3.3V (VCC), source to the 3.3V Arduino signal pin, drain to the NeoPixel DIN with a 10k pull-up to 5V.",
+  "The manual does not state the data pin; pin 6 is assumed.",
+  "The layout uses a single NeoPixel instead of the ring, as the manual says; the ring would connect the same way (5V, GND, DIN). The NeoPixel is powered from the board 5V pin (USB-supplied) and GND.",
+  "Breadboard hole positions are assumed. Wires from the board header go to the breadboard (the board is not plugged into it).",
+  "The antenna, SIM, LiPo battery connector, and micro USB cable are modelled with board ports ANT, SIM, BATT+/BATT-, USB; the code and serial monitor are not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 49.2,
+   "input_tokens": 15507,
+   "cache_read_tokens": 5414,
+   "output_tokens": 8475,
+   "cost_usd": 0.1262,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "resistor"
+  ],
+  "families_missing": [
+   "led"
+  ],
+  "hardware_recall": 0.5
+ },
+ "drafts": [
+  {
+   "type": "arduino-mkr-gsm-1400",
+   "family": "board",
+   "checked": false
+  },
+  {
+   "type": "2n7000",
+   "family": "2n7000",
+   "checked": false
+  },
+  {
+   "type": "lipo-battery-3v7",
+   "family": "lipo-battery-3v7",
+   "checked": false
+  },
+  {
+   "type": "gsm-antenna",
+   "family": "gsm-antenna",
+   "checked": false
+  },
+  {
+   "type": "micro-sim-card",
+   "family": "micro-sim-card",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 16.1
+}

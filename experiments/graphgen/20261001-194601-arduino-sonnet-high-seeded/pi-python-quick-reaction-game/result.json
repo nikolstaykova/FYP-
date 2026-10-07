@@ -1,0 +1,60 @@
+{
+ "case": "pi-python-quick-reaction-game",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 53.1,
+  "input_tokens": 21086,
+  "output_tokens": 7910,
+  "cost_usd": 0.1516,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 48,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The Raspberry Pi is not in the catalogue, so a new type 'raspberry-pi' with GPIO header ports was added. GND.2 is physical pin 9 (the GND next to GPIO15 in the image).",
+  "The catalogue's breadboard banks are 't' = rows a-e and 'b' = rows f-j. The image shows rows f-j on the upper half, so those holes use bank 'b' and the lower half (a-e) uses bank 't'.",
+  "The bottom blue (negative) rail is used as ground and is named 'bn.<n>'. Rail hole numbers are approximate. The rail is one strip, so this doesn't change the connectivity.",
+  "The buttons are placed with legs in rows h and j, as the text says. The image highlights rows f/g, but the same column strip is joined either way. Each button's side 1 is its left column and side 2 is its right column.",
+  "Left button: columns 1 (to GND rail) and 3 (to GPIO14). Right button: columns 28 (to GPIO15) and 30 (to GND rail). Buttons have no pull resistors in the circuit because gpiozero Button enables internal pull-ups.",
+  "LED: the long leg (anode) is in column 16 and the short leg (cathode) is in column 15, both in row e. The 330 ohm resistor goes from column 15 (row a) to the GND rail. The red wire goes from column 16 (row a) to GPIO4.",
+  "The pin-to-socket wires are jumper-wire-mf, with port a at the breadboard (pin) end and port b at the Pi socket end. The two pin-to-pin wires are jumper-wire."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 53.1,
+   "input_tokens": 21086,
+   "cache_read_tokens": 3110,
+   "output_tokens": 7910,
+   "cost_usd": 0.1516,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "raspberry-pi",
+   "family": "raspberry-pi",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 23.0
+}

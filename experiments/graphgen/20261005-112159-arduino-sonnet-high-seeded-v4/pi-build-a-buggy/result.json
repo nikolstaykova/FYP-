@@ -1,0 +1,82 @@
+{
+ "case": "pi-build-a-buggy",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 28.8,
+  "input_tokens": 20187,
+  "output_tokens": 3779,
+  "cost_usd": 0.0699,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 22,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Motor wires and battery-holder leads are pre-attached (motors soldered if needed), so they are modelled as the motor/holder ports going directly into the controller's screw terminals; no separate jumper wires.",
+  "The motor controller board is a new part type; it is a HAT pushed onto the first 26 GPIO pins. Only the pins used by the gpiozero Robot (GPIO7, 8, 9, 10) plus one GND are modelled; the exact GND pin (GND.1) is an assumption.",
+  "Terminal labels A/B (motors) and +/- (battery) follow the manual; the board's own labels may differ.",
+  "Motor polarity is arbitrary (swap pins in code to fix direction).",
+  "Chassis, wheels, ball caster, USB power bank for the Pi and optional components (breadboard, distance/line sensors) are not part of the electrical build and are omitted.",
+  "The left/right assignment of motor1/motor2 is arbitrary; the manual has the user test and swap pin numbers in code."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 0,
+   "matched": 0,
+   "looked_up": 0,
+   "found": 0,
+   "items": []
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 28.8,
+   "input_tokens": 20187,
+   "cache_read_tokens": 12803,
+   "output_tokens": 3779,
+   "cost_usd": 0.0699,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "motor-controller-board",
+   "family": "motor-controller-board",
+   "checked": false
+  },
+  {
+   "type": "battery-holder-4aa",
+   "family": "battery-holder-4aa",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 14.0
+}

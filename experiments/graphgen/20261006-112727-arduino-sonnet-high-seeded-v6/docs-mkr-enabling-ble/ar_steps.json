@@ -1,0 +1,175 @@
+{
+ "tutorial": "docs-mkr-enabling-ble",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/01.boards/mkr-wifi-1010/tutorials/enabling-ble/assets/mkr_tutorial_05_img_02_rev2.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/01.boards/mkr-wifi-1010/tutorials/enabling-ble/assets/mkr_tutorial_03_img_02.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mkr/01.boards/mkr-wifi-1010/tutorials/enabling-ble/assets/mkr_tutorial_05_img_01.png"
+ ],
+ "legs_and_ends": 9,
+ "with_position": 6,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "mkr1",
+     "type": "arduino-mkr1000-wifi",
+     "label": "Arduino MKR WiFi 1010"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "220 ohm resistor",
+     "props": {
+      "value": "220"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "3b.h",
+       "mm": [
+        5.08,
+        22.86
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "6b.h",
+       "mm": [
+        12.7,
+        22.86
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "led1",
+     "type": "led",
+     "label": "LED",
+     "props": {
+      "colour": "red"
+     },
+     "polarised": true,
+     "legs": [
+      {
+       "leg": "A",
+       "part": "bb1",
+       "port": "6b.i",
+       "mm": [
+        12.7,
+        25.4
+       ]
+      },
+      {
+       "leg": "C",
+       "part": "bb1",
+       "port": "8b.i",
+       "mm": [
+        17.78,
+        25.4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "usb1",
+     "type": "usb-cable",
+     "label": "Micro USB cable",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "mkr1",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "green",
+     "label": "Signal jumper wire (pin 2 to resistor)",
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "D2",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "3b.g",
+       "mm": [
+        5.08,
+        20.32
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Ground jumper wire (GND to LED cathode)",
+     "ends": [
+      {
+       "part": "mkr1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "8b.h",
+       "mm": [
+        17.78,
+        22.86
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

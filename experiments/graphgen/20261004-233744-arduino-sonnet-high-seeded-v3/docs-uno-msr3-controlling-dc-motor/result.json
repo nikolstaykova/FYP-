@@ -1,0 +1,117 @@
+{
+ "case": "docs-uno-msr3-controlling-dc-motor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 167.0,
+  "input_tokens": 39479,
+  "output_tokens": 9295,
+  "cost_usd": 0.1785,
+  "repair_rounds_used": 0
+ },
+ "parts": 6,
+ "edges": 70,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V3",
+   "e63: lug \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e65: lug \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e67: lug \u2194 lug is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "No breadboard or jumper wires are used. The battery holder leads and the motor leads go directly into the shield's screw terminals.",
+  "Channel A is the A+/A- terminal pair, mapped to shield ports OUT1 (A+) and OUT2 (A-). The orange motor wire goes to A+ and the black wire to A-, so motor + goes to OUT1 and motor - to OUT2.",
+  "The external supply goes to the VIN and GND screw terminals, mapped to VIN_T and GND_T. VIN takes the orange wire and GND the black wire.",
+  "The two 18650 cells are assumed to be in series. bat1 + is joined to bat2 -, bat2 + goes to VIN and bat1 - goes to GND. The image doesn't show how the two cells are joined inside the holder.",
+  "Mounting the shield on the Uno joins each header pin to the Uno pin with the same name. Shield GND_D is assumed to sit over Uno GND.3, by the pin-13 header. Shield GND_1 and GND_2 are matched to Uno GND.1 and GND.2.",
+  "The USB cable has no ports in the catalogue, so its edge has null ports. It runs from the Uno to the computer, which is not modelled.",
+  "Arduino pin use (D12 direction, D3 PWM, D9 brake for channel A) is software only and adds no extra physical connections."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 131.7,
+   "input_tokens": 22833,
+   "output_tokens": 3386,
+   "cost_usd": 0.0738,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 5,
+   "ingested": 2,
+   "ingest": [
+    {
+     "part": "Arduino Motor Shield Rev3 (L298P)",
+     "type": "shield-arduino-motor-rev3",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/sparkfun-ardumoto-motor-driver-shield.html"
+      ]
+     ],
+     "seconds": 57.5
+    },
+    {
+     "part": "3.7V Li-Ion 18650 battery",
+     "type": "battery-18650",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/lithium-ion-battery-18650-cell-2600mah.html"
+      ]
+     ],
+     "seconds": 68.3
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 35.3,
+   "input_tokens": 16646,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5909,
+   "cost_usd": 0.1047,
+   "check_seconds": 0.0,
+   "issues": 3,
+   "issue_rules": {
+    "V3": 3
+   }
+  }
+ ],
+ "issues_first": 3,
+ "issues_final": 3,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 31.1
+}

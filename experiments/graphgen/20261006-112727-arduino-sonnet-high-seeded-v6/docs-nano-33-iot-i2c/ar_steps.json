@@ -1,0 +1,444 @@
+{
+ "tutorial": "docs-nano-33-iot-i2c",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/nano/boards/nano-33-iot/tutorials/i2c/./assets/nano33BS_06_illustration.png",
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/nano/boards/nano-33-iot/tutorials/i2c/./assets/nano33BS_06_printing_values.png"
+ ],
+ "legs_and_ends": 26,
+ "with_position": 22,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "reader",
+     "type": "arduino-nano-33-iot",
+     "label": "READER"
+    },
+    {
+     "id": "writer",
+     "type": "arduino-nano-33-iot",
+     "label": "WRITER"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "mini breadboard 1 (I2C bus)"
+    },
+    {
+     "id": "bb2",
+     "type": "breadboard",
+     "label": "mini breadboard 2 (pull-ups)"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "4.7 k\u03a9 pull-up (SCL, teal)",
+     "props": {
+      "value": "4700"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb2",
+       "port": "14t.b",
+       "mm": [
+        33.02,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb2",
+       "port": "15t.a",
+       "mm": [
+        35.56,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "4.7 k\u03a9 pull-up (SDA, yellow)",
+     "props": {
+      "value": "4700"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb2",
+       "port": "18t.b",
+       "mm": [
+        43.18,
+        2.54
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb2",
+       "port": "19t.a",
+       "mm": [
+        45.72,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "usb1",
+     "type": "usb-cable",
+     "label": "USB cable to reader",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "reader",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "usb2",
+     "type": "usb-cable",
+     "label": "USB cable to writer",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "end1",
+       "part": "writer",
+       "port": "USB",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "power": false,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "teal",
+     "label": "reader A5 (SCL)",
+     "ends": [
+      {
+       "part": "reader",
+       "port": "A5",
+       "mm": [
+        60.96,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.a",
+       "mm": [
+        22.86,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "teal",
+     "label": "writer A5 (SCL)",
+     "ends": [
+      {
+       "part": "writer",
+       "port": "A5",
+       "mm": [
+        60.96,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "10t.b",
+       "mm": [
+        22.86,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": false,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "teal",
+     "label": "SCL bus to pull-up r1",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "10t.e",
+       "mm": [
+        22.86,
+        10.16
+       ]
+      },
+      {
+       "part": "bb2",
+       "port": "14t.a",
+       "mm": [
+        33.02,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": false,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "reader A4 (SDA)",
+     "ends": [
+      {
+       "part": "reader",
+       "port": "A4",
+       "mm": [
+        58.42,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "12t.a",
+       "mm": [
+        27.94,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": false,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "writer A4 (SDA)",
+     "ends": [
+      {
+       "part": "writer",
+       "port": "A4",
+       "mm": [
+        58.42,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "12t.b",
+       "mm": [
+        27.94,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": false,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "SDA bus to pull-up r2",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "12t.e",
+       "mm": [
+        27.94,
+        10.16
+       ]
+      },
+      {
+       "part": "bb2",
+       "port": "18t.a",
+       "mm": [
+        43.18,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "power": false,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "brown",
+     "label": "GND reader to writer",
+     "ends": [
+      {
+       "part": "reader",
+       "port": "GND1",
+       "mm": null
+      },
+      {
+       "part": "writer",
+       "port": "GND1",
+       "mm": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": true,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "pull-up r1 to 3V rail",
+     "ends": [
+      {
+       "part": "bb2",
+       "port": "15t.b",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      },
+      {
+       "part": "bb2",
+       "port": "tp.1",
+       "mm": [
+        0.0,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "reader 3V3 to pull-up rail",
+     "ends": [
+      {
+       "part": "reader",
+       "port": "3V3",
+       "mm": [
+        33.02,
+        2.54
+       ]
+      },
+      {
+       "part": "bb2",
+       "port": "tp.2",
+       "mm": [
+        2.54,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": true,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "pull-up r2 to 3V rail",
+     "ends": [
+      {
+       "part": "bb2",
+       "port": "19t.b",
+       "mm": [
+        45.72,
+        2.54
+       ]
+      },
+      {
+       "part": "bb2",
+       "port": "tp.3",
+       "mm": [
+        5.08,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

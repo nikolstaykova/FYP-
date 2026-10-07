@@ -1,0 +1,92 @@
+{
+ "case": "pi-pir-motion-sensors",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 21.3,
+  "input_tokens": 13383,
+  "output_tokens": 2325,
+  "cost_usd": 0.0525,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 12,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e3: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e4: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e7: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e8: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e11: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port 'GND' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The manual text only says the PIR's three pins connect to the Raspberry Pi and gives no pin assignments or circuit image. I assumed the standard wiring: VCC to 5V, OUT to GPIO4, GND to GND.",
+  "The catalogue lists the rpi-4b with a single GPIO_HEADER port. I used individual header pin names (5V, GPIO4, GND) as the task instructions say, so these ports are not in the catalogue entry.",
+  "No breadboard is used. Each of the three male-to-female jumper wires connects one PIR pin directly to a Pi header pin.",
+  "Which end of each wire is male and which is female isn't specified. I assumed end 'a' goes to the PIR pin and end 'b' goes to the Pi header.",
+  "The manual is marked DRAFT and is incomplete."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 5.9,
+   "input_tokens": 7553,
+   "output_tokens": 245,
+   "cost_usd": 0.0206,
+   "check_seconds": 0.0,
+   "matched": 3,
+   "listed": 3,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.4,
+   "input_tokens": 5830,
+   "cache_read_tokens": 3203,
+   "output_tokens": 2080,
+   "cost_usd": 0.0319,
+   "check_seconds": 0.01,
+   "issues": 6,
+   "issue_rules": {
+    "V4": 6
+   }
+  }
+ ],
+ "issues_first": 6,
+ "issues_final": 6,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 20.1
+}

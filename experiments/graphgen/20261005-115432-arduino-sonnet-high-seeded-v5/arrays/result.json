@@ -1,0 +1,73 @@
+{
+ "case": "arrays",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "one-shot",
+  "seconds": 58.5,
+  "input_tokens": 18336,
+  "output_tokens": 9870,
+  "cost_usd": 0.1301,
+  "repair_rounds_used": 0
+ },
+ "parts": 27,
+ "edges": 100,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "All parts exist in the catalogue, so no lookup was needed.",
+  "The catalogue names the breadboard's top half bank 't' (rows a-e) and its bottom half bank 'b' (rows f-j). The picture labels the rows the other way round (j-f on top, e-a on bottom). I used the catalogue naming. The top half holds the LEDs, the black wires and the resistors' upper legs. The bottom half holds the resistors' lower legs and the blue wires.",
+  "From the circuit image, each LED's anode (the longer leg, which bends toward the resistor) is in the same column as its resistor's top leg. The cathode is in the next column. A black jumper runs from each cathode column to the top ground rail (tn). Arduino GND goes to the same rail, as in the schematic.",
+  "Pin-to-LED mapping follows the image and schematic: pin 7 goes to the first LED (breadboard column 7), then pins 6, 5, 4, 3 and 2 to columns 10, 13, 16, 19 and 22.",
+  "The image shows 220 ohm resistors, as the schematic says. The anode/cathode assignment follows the schematic symbol direction (pin, resistor, anode, cathode, GND).",
+  "Rail hole numbers (tn.8, tn.11 and so on) are approximate. Each rail is one strip, so the exact hole does not change the circuit.",
+  "The Arduino sketch uses the pins in the array order {2, 7, 4, 6, 5, 3}. This only changes the software, not the wiring."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 58.5,
+   "input_tokens": 18336,
+   "cache_read_tokens": 11032,
+   "output_tokens": 9870,
+   "cost_usd": 0.1301,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 13,
+  "nets_built": 13,
+  "nets_matched": 13,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 6,
+   "led": 6
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 6,
+   "resistor": 6
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 17.5
+}

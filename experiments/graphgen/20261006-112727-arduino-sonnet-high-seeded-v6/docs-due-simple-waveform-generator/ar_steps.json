@@ -1,0 +1,563 @@
+{
+ "tutorial": "docs-due-simple-waveform-generator",
+ "anchor": {
+  "id": "bb1",
+  "type": "breadboard",
+  "how": "lock onto the breadboard: hole 1t.a is (0, 0) mm, x along the columns, y down the rows (the board's pins: Uno R3 shield layout)"
+ },
+ "reference_images": [
+  "https://raw.githubusercontent.com/arduino/docs-content/main/content/hardware/mega/boards/due/tutorials/simple-waveform-generator/assets/DueSimpleWaveform_fritzing.png"
+ ],
+ "legs_and_ends": 37,
+ "with_position": 34,
+ "steps": [
+  {
+   "step": 1,
+   "say": "Put the board and the breadboard in front of you.",
+   "add": [
+    {
+     "id": "due1",
+     "type": "arduino-due-r3",
+     "label": "Arduino Due"
+    },
+    {
+     "id": "bb1",
+     "type": "breadboard",
+     "label": "Breadboard"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "add": [
+    {
+     "id": "pot1",
+     "type": "potentiometer-10k",
+     "label": "10K potentiometer",
+     "props": {
+      "value": "10k"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "GND",
+       "part": "bb1",
+       "port": "14t.a",
+       "mm": [
+        33.02,
+        0.0
+       ]
+      },
+      {
+       "leg": "SIG",
+       "part": "bb1",
+       "port": "15t.a",
+       "mm": [
+        35.56,
+        0.0
+       ]
+      },
+      {
+       "leg": "VCC",
+       "part": "bb1",
+       "port": "16t.a",
+       "mm": [
+        38.1,
+        0.0
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "add": [
+    {
+     "id": "r1",
+     "type": "resistor",
+     "label": "Pull-down resistor 1",
+     "props": {
+      "value": "10000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "22t.a",
+       "mm": [
+        53.34,
+        0.0
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.18",
+       "mm": [
+        43.18,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "add": [
+    {
+     "id": "btn1",
+     "type": "pushbutton",
+     "label": "Push button (pin 2)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "22t.e",
+       "mm": [
+        53.34,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "23t.e",
+       "mm": [
+        55.88,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "22b.f",
+       "mm": [
+        53.34,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "23b.f",
+       "mm": [
+        55.88,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 5,
+   "add": [
+    {
+     "id": "r2",
+     "type": "resistor",
+     "label": "Pull-down resistor 2",
+     "props": {
+      "value": "10000"
+     },
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1",
+       "part": "bb1",
+       "port": "27t.a",
+       "mm": [
+        66.04,
+        0.0
+       ]
+      },
+      {
+       "leg": "2",
+       "part": "bb1",
+       "port": "tn.22",
+       "mm": [
+        53.34,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 6,
+   "add": [
+    {
+     "id": "btn2",
+     "type": "pushbutton",
+     "label": "Push button (pin 3)",
+     "props": {},
+     "polarised": false,
+     "legs": [
+      {
+       "leg": "1.l",
+       "part": "bb1",
+       "port": "27t.e",
+       "mm": [
+        66.04,
+        10.16
+       ]
+      },
+      {
+       "leg": "1.r",
+       "part": "bb1",
+       "port": "28t.e",
+       "mm": [
+        68.58,
+        10.16
+       ]
+      },
+      {
+       "leg": "2.l",
+       "part": "bb1",
+       "port": "27b.f",
+       "mm": [
+        66.04,
+        17.78
+       ]
+      },
+      {
+       "leg": "2.r",
+       "part": "bb1",
+       "port": "28b.f",
+       "mm": [
+        68.58,
+        17.78
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 7,
+   "power": false,
+   "add": [
+    {
+     "id": "wire7",
+     "type": "jumper-wire",
+     "colour": "yellow",
+     "label": "Potentiometer wiper to A0",
+     "ends": [
+      {
+       "part": "due1",
+       "port": "A0",
+       "mm": [
+        48.26,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "15t.b",
+       "mm": [
+        35.56,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 8,
+   "power": false,
+   "add": [
+    {
+     "id": "wire8",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "Pin 2 to button 1",
+     "ends": [
+      {
+       "part": "due1",
+       "port": "D2",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "23t.b",
+       "mm": [
+        55.88,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 9,
+   "power": false,
+   "add": [
+    {
+     "id": "wire9",
+     "type": "jumper-wire",
+     "colour": "blue",
+     "label": "Pin 3 to button 2",
+     "ends": [
+      {
+       "part": "due1",
+       "port": "D3",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "28t.b",
+       "mm": [
+        68.58,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 10,
+   "power": true,
+   "add": [
+    {
+     "id": "wire3",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Left power rail link",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tp.1",
+       "mm": [
+        0.0,
+        -5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bp.1",
+       "mm": [
+        0.0,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 11,
+   "power": true,
+   "add": [
+    {
+     "id": "wire4",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Left ground rail link",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tn.1",
+       "mm": [
+        0.0,
+        -7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bn.1",
+       "mm": [
+        0.0,
+        35.56
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 12,
+   "power": true,
+   "add": [
+    {
+     "id": "wire1",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Due 3.3V to breadboard power rail",
+     "ends": [
+      {
+       "part": "due1",
+       "port": "3V3",
+       "mm": [
+        33.02,
+        2.54
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "tp.5",
+       "mm": [
+        10.16,
+        -5.08
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 13,
+   "power": true,
+   "add": [
+    {
+     "id": "wire2",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Due GND to breadboard ground rail",
+     "ends": [
+      {
+       "part": "due1",
+       "port": "GND",
+       "mm": null
+      },
+      {
+       "part": "bb1",
+       "port": "tn.6",
+       "mm": [
+        12.7,
+        -7.62
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 14,
+   "power": true,
+   "add": [
+    {
+     "id": "wire5",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Power to potentiometer",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tp.8",
+       "mm": [
+        17.78,
+        -5.08
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "16t.b",
+       "mm": [
+        38.1,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 15,
+   "power": true,
+   "add": [
+    {
+     "id": "wire6",
+     "type": "jumper-wire",
+     "colour": "black",
+     "label": "Ground to potentiometer",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "tn.8",
+       "mm": [
+        17.78,
+        -7.62
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "14t.b",
+       "mm": [
+        33.02,
+        2.54
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 16,
+   "power": true,
+   "add": [
+    {
+     "id": "wire10",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Power to button 1",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "22b.j",
+       "mm": [
+        53.34,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bp.18",
+       "mm": [
+        43.18,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "step": 17,
+   "power": true,
+   "add": [
+    {
+     "id": "wire11",
+     "type": "jumper-wire",
+     "colour": "red",
+     "label": "Power to button 2",
+     "ends": [
+      {
+       "part": "bb1",
+       "port": "27b.j",
+       "mm": [
+        66.04,
+        27.94
+       ]
+      },
+      {
+       "part": "bb1",
+       "port": "bp.22",
+       "mm": [
+        53.34,
+        33.02
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

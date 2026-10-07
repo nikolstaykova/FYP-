@@ -1,0 +1,80 @@
+{
+ "case": "pi-python-quick-reaction-game",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 91.4,
+  "input_tokens": 33974,
+  "output_tokens": 7744,
+  "cost_usd": 0.1746,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 48,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Pi header ports use physical pin numbers: GPIO4=7, GND=9, GPIO14=8, GPIO15=10.",
+  "Breadboard banks follow the catalogue: rows f-j are bank 'b' and rows a-e are bank 't', although the picture draws f-j at the top. The blue strip is the rail 'bn'. Rail hole numbers (1, 10, 19, 25) are estimated from the image. Any hole on the rail is equivalent.",
+  "Each button straddles the centre gap in two columns, with legs on rows h and j. Left button: side 1 = column 1 (to the blue strip), side 2 = column 3 (GPIO14). Right button: side 1 = column 28 (GPIO15), side 2 = column 30 (to the blue strip). Wires attach in row f of the same columns.",
+  "The LED's long leg (anode) is in 16t.e and its short leg (cathode) is in 15t.e. The resistor runs from 15t.a to the blue (ground) rail. The GPIO4 wire goes to 16t.a.",
+  "For male-to-female jumpers, port a is the female socket on the Pi header and port b is the male pin in the breadboard.",
+  "The manual says to put the resistor leg in the same column as the 'short leg of the resistor'. This is read as the short leg of the LED.",
+  "The manual lists four pin-to-socket wires: GPIO14, GPIO15, GPIO4 and GND. It lists two pin-to-pin wires, which join each button's outer leg to the blue strip."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 47.4,
+   "input_tokens": 18075,
+   "output_tokens": 1564,
+   "cost_usd": 0.0701,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 7,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Raspberry Pi",
+     "type": "rpi-4b",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/4296"
+      ]
+     ],
+     "seconds": 40.2
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.0,
+   "input_tokens": 15899,
+   "cache_read_tokens": 5507,
+   "output_tokens": 6180,
+   "cost_usd": 0.1045,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 6.5
+}

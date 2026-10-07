@@ -1,281 +1,371 @@
 # Graph generation: results
 
-> Can Claude turn a real manual into one build graph that follows [GRAPH_SPEC.md](./GRAPH_SPEC.md)? How accurate, how fast, how expensive?
-> Method and test sets: [RESEARCH.md](./RESEARCH.md) R21. Code: [`graphgen/`](./graphgen/). Raw results: `experiments/graphgen/`.
+> Can Claude turn a real manual into one build graph that follows [GRAPH_SPEC.md](./GRAPH_SPEC.md)? How accurate, how fast, how expensive, and which design works best?
+> Method and test sets: [RESEARCH.md](./RESEARCH.md) R21; architecture of v3–v7: R22. Code: [`graphgen/`](./graphgen/). Raw results: `experiments/graphgen/`. Full tables: `experiments/graphgen/electronics_eval.md`, `electronics_judged.md`, `lego_studkey_all.md`, `lego_studkey_v1235.md` (made by `python -m graphgen.evaluate`). Charts: `figures/graphgen/` (`python -m graphgen.plots`).
+
+*Updated 7 October 2026.*
+
+| Run | Status |
+|---|---|
+| Electronics v1–v6 | ✅ complete (117 tutorials) |
+| Electronics v6 from links (browser) | ✅ complete (48 tutorials with an answer key) |
+| LEGO v1 | stopped at 34 sets (kept as the baseline) |
+| LEGO v2, v3, v5 | ✅ complete (100 sets) |
+| LEGO v4 | Path A (3D model by code) ✅ on all 100 sets; Path B stopped at 11 sets |
+| LEGO v6 | **running** (whole booklet; 76 of 100) |
+| LEGO v7 | **running** (one id per piece, positions, laws; started 7 October) |
+
+**Model in every version:** Claude Sonnet (`claude-sonnet-5-5`), effort `high`, on the Claude subscription through headless Claude Code. **Cost** is Claude Code's estimate at **API list prices**, not what the subscription charges.
 
 ---
 
-## Price and performance at a glance
+## 1. Summary
 
-**Model:** Claude Sonnet (`sonnet` → `claude-sonnet-5-5`), effort `high`, run on the Claude subscription through headless Claude Code. **Cost** is Claude Code's estimate at **API list prices**: what the same calls would cost with an API key, not what the subscription charges.
+| | Best for accuracy | Best for time and cost | Why |
+|---|---|---|---|
+| **Electronics** | **v6** | v2 | v6 is the only version with no real wiring mistakes; v2 has one, but is 23 s and $0.06 cheaper per tutorial |
+| **LEGO** | **v3** (v6/v7 still running) | v3 | Every piece right, the best balance of connections found and real, the fastest and cheapest |
 
-| | Electronics (Arduino + Raspberry Pi) | LEGO (official PDF manuals) |
-|---|---:|---:|
-| **Pilot** | 9 tutorials | 10 manuals (all < 100 pieces) |
-| Mean time per manual | **38 s** (median 37, 90th pct 69) | **88 s** (median 71, 90th pct 175) |
-| Mean cost per manual | **$0.089** | **$0.198** |
-| Cost per 100 manuals | **≈ $9** | **≈ $20** |
-| Input / output tokens (mean) | ≈ 16k / 5.6k | ≈ 24k / 12.8k |
-| **Full run** | **117 tutorials** (116 ok, 1 safety false positive) | 100 manuals: *running* |
-| Mean time per manual | **41 s** (median 35, 90th pct 79) | *pending* |
-| Mean cost per manual | **$0.104** (median $0.10, 90th pct $0.16) | *pending* |
-| Cost per 100 manuals | **≈ $10.45** (whole run: $12.12) | *pending* |
-| Input / output tokens (mean) | ≈ 19.7k / 5.9k | *pending* |
-| **v1 full run (build only)** | see above | **34 booklets** before it was stopped: 221 s, $0.55 mean (median 180 s); big sets up to 650 s / $1.40 |
-| **v2 (check + repair)** | **117/117, 44 s, $0.122** per tutorial (see below) | **100/100** (99 valid): **457 s** mean (median 410, 90th pct 890), **$1.48** mean, ≈ $148 per 100 |
+| | v1 | v2 | v3 | v4 | v5 | v6 | v7 |
+|---|---|---|---|---|---|---|---|
+| **Idea** | Claude reads the manual, writes the graph | + code checks, Claude repairs | Know the parts first | One generic pipeline | One fix per weakness found | Breadboard sense, pin tables; reads links | LEGO: one id per piece, positions, laws, stud answer key |
+| **Electronics: circuit correct** (reviewed answer key, 28) | 82% | 96% | 93% | 89% | 96% | **100%** | = v6 |
+| **Electronics: real wiring mistakes** (of 47) | 5 | 1 | 2 | 3 | 1 | **0** | = v6 |
+| **Electronics: time / cost per tutorial** | 41 s / $0.10 | 44 s / $0.12 | 100 s / $0.19 | 79 s / $0.15 | 70 s / $0.16 | 67 s / $0.18 | = v6 |
+| **LEGO: sets with exactly the right pieces** | 25% | 27% | **100%** | – | 65% | *running* | *running* |
+| **LEGO: connections found / real** (stud key) | 0.50 / **0.57** | 0.47 / 0.52 | 0.58 / 0.53 | – | **0.61** / 0.46 | *running* | *running* |
+| **LEGO: time / cost per set** | 221 s / $0.55 * | 452 s / $1.47 | **362 s / $0.95** | – | 432 s / $1.71 | *running* | *running* |
 
-*The v1 LEGO full run was stopped at 34 booklets, so v1 has no 100-booklet row; v1 and v2 are compared on those booklets below.*
+\* v1 only ran 34 sets (it was stopped and kept as the baseline); on those same sets v2 took 363 s / $1.08, v3 311 s / $0.79, v5 391 s / $1.14. LEGO v4's Path B was not run in full.
 
----
-
-## Latest: re-run with the new logic (v2)
-
-**v2 = improved catalogue** (pushbutton explanation, missing pinouts) **+ allowed port kinds in the prompt + build → check → up to 2 repair rounds → final check.** Same 117 electronics tutorials, same model (Sonnet, effort high, subscription route). Compared with v1 (build only, old catalogue):
-
-| Measure | v1: build only | **v2: build + check + repair** |
-|---|---:|---:|
-| Succeeded | 116 / 117 | **117 / 117** (2 safety-filter false positives passed on a retry) |
-| Mean seconds per tutorial | 40.8 | 44.3 |
-| Median seconds per tutorial | 34.8 | 35.0 |
-| Mean cost per tutorial | $0.104 | **$0.122** |
-| Cost per 100 tutorials | $10.45 | **$12.21** |
-| Tutorials with rule problems | 30 | **0** |
-| Rule problems in total | 210 | **0** |
-| Answer-key tutorials, every net identical (strict) | 23 / 47 | **27 / 47** |
-| Mean net precision / recall | 0.65 / 0.62 | **0.72 / 0.70** |
-| Other tutorials: listed parts present | 0.97 | 0.96 |
-| Needed a repair round | – | 22 / 115 |
-| Check issues: first build → final | – | **67 → 2** |
-
-**Phases in v2:**
-
-| Phase | Runs | Mean time | Mean cost |
-|---|---:|---:|---:|
-| Build | 115 | 38.9 s | $0.103 |
-| Repair round 1 | 22 | 25.7 s | $0.091 |
-| Repair round 2 | 3 | 17.7 s | $0.048 |
-| Checks (code) | every phase | < 0.01 s | free |
-
-**What changed in accuracy:** Button, DigitalReadSerial, KeyboardMessage and toneMelody went from wrong to **exactly right**; nothing that was right became wrong. The 20 tutorials that still differ from the answer key were read by hand (the 4 whose graph changed were re-checked against the official tutorial):
-
-| Category | Tutorials | Count |
-|---|---|---:|
-| Answer key differs from the official tutorial; Claude follows the tutorial | ADXL3xx, ifStatement, Debounce, StateChangeDetection, Knock, toneMultiple, Midi, Ping, InputPullupSerial | 9 |
-| Valid alternative / electrically equivalent | Calibration, LED bar graph, PitchFollower, SerialCallResponse ×2, VirtualColorMixer, WhileLoop | 7 |
-| **Real error** | RowColumnScanning (LED-matrix pins on the wrong rows) | 1 |
-| Ambiguous | JoystickMouseControl (X/Y axes possibly swapped; the tutorial is unclear) | 1 |
-| Not verified | ArduinoISP, ArduinoToBreadboard | 2 |
-
-**Adjusted accuracy v2: ≈ 43 / 47 (≈ 91%) correct or valid**, against ≈ 80% in v1. **The price: +$0.018 and +3.6 s per tutorial on average**; 81% of tutorials need no repair at all.
-
-### LEGO v2: full run (100 booklets)
-
-Same settings (Sonnet, effort high, subscription route, 4 in parallel, up to 2 repair rounds). Raw results: `experiments/graphgen/20261002-225230-lego-sonnet-high-empty/` (the run was resumed four times with `--replay` after session limits and sleep; finished booklets were carried over, not re-run).
-
-- **3316** (Friends advent calendar) is left out: the downloaded PDF is only a back cover and a product page. Claude returned an empty graph and said so, as in v1.
-- **Timing excludes 3930 and 60066:** the Mac slept during their sessions, which inflated their times (3930, 45 pieces, logged 474 s). They count for cost and accuracy.
-
-**Overall (99 booklets):**
-
-| Measure | Result |
-|---|---:|
-| Mean / median / 90th pct seconds per booklet | 457 / 410 / 890 (max 1,969: 40413, 366 pieces) |
-| Mean / median / 90th pct cost per booklet | $1.48 / $1.36 / $2.80 (whole run $146.67) |
-| Input / output tokens (mean) | ≈ 425k / 78k |
-| Pieces built ÷ pieces in set | 1.00 |
-| Inventory recall / precision (by design) | 0.76 / 0.75 |
-| Contact recall / precision | 0.44 / 0.39 (83 booklets with checkable contacts: 1,080 of 1,955 found) |
-| Repair rounds used | 0: 1 booklet · 1: 32 · 2: 66 |
-| Check issues: first build → final | 2,327 → 125 (44 booklets end fully clean) |
-| Rule problems after repair | 31, in 10 booklets |
-
-**Time, cost and accuracy by set size** (seconds per piece stays at ≈ 3–5 s, so time grows roughly linearly with pieces):
-
-| Pieces | Booklets | Mean time | Mean cost | Inventory R / P | Contact R / P |
-|---|---:|---:|---:|---:|---:|
-| under 50 | 25 | 131 s | $0.53 | 0.40 / 0.43 | 0.20 / 0.25 |
-| 50–119 | 39 | 360 s | $1.17 | 0.86 / 0.81 | 0.48 / 0.39 |
-| 120–199 | 13 | 594 s | $1.94 | 0.96 / 0.95 | 0.63 / 0.41 |
-| 200+ | 22 | 897 s | $2.84 | 0.87 / 0.89 | 0.50 / 0.45 |
-
-Small booklets score worst on inventory: they have no parts page, so pieces are guessed from pictures.
-
-**Where the time goes:**
-
-| Phase | Runs | Mean time | Mean cost |
-|---|---:|---:|---:|
-| Build | 97 | 273 s | $0.83 |
-| Repair round 1 | 96 | 118 s | $0.42 |
-| Repair round 2 | 64 | 102 s | $0.36 |
-
-The build is 60% of the time (56% of the cost); **repair is the other 40%** and buys no accuracy:
-
-| Before → after repair (99 booklets) | First build | Final |
-|---|---:|---:|
-| Inventory recall / precision | 0.75 / 0.74 | 0.76 / 0.75 |
-| Contact recall / precision | 0.44 / 0.38 | 0.44 / 0.39 |
-
-First-build issues were mostly port problems (V4 ×1,522, V3 ×543) and invented part numbers (L2 ×124); what is left after repair is mostly L2 ×43, L3 (build in separate groups) ×36 and V3 ×24.
-
-**v1 vs v2 on the 33 booklets both completed (3316 left out):**
-
-| Measure | v1: build only | v2: build + check + repair |
-|---|---:|---:|
-| Mean / median seconds per booklet | 227 / 184 | **374 / 375** |
-| Mean cost per booklet | $0.56 | **$1.11** |
-| Booklets with rule problems | 33 / 33 | **0 / 33** |
-| Rule problems in total | 939 | **0** |
-| Pieces built ÷ pieces in set | 0.98 | 0.98 |
-| Inventory recall / precision | 0.73 / 0.72 | 0.72 / 0.71 |
-| Contact recall / precision | 0.53 / 0.44 | 0.44 / 0.39 |
-
-v2's own first build already scores 0.43 / 0.37 on contacts on these booklets, so the drop from v1 comes from the first build (Claude does not give the same answer twice), not from the repair.
-
-**Conclusion:** on LEGO, v2 makes the output valid (rule problems 939 → 0) at **1.6× the time and 2× the cost**, with no gain in accuracy. Time is driven by piece count in the build and by repairs that almost every booklet needs. The levers for v3: avoid the repairs (give Claude the set's parts and valid port names up front, so V3/V4/L2 do not happen) and shorten the build output for big sets.
-
-### LEGO v2: first 10 booklets (1 October, kept for reference)
-
-**Same 10 booklets, v1 vs v2:**
-
-| Measure | v1: build only | v2: build + check + repair |
-|---|---:|---:|
-| Mean seconds per booklet | 92 | 136 |
-| Mean cost per booklet | $0.19 | **$0.41** |
-| Booklets with rule problems | 10 / 10 | **0 / 10** |
-| Rule problems in total | 102 | **0** |
-| Needed a repair round | – | 10 / 10 |
-| Check issues: first build → final | – | 110 → 7 |
-| Pieces built ÷ pieces in set | 0.96 | 0.98 |
-| Inventory recall / precision (by design) | 0.44 / 0.41 | 0.41 / 0.37 |
-| Contact recall / precision | 0.25 / 0.29 | 0.17 / 0.08 |
-
-**What this means:**
-- **The repair fixes form, not content.** First-build issues were port names (V3 ×31, V4 ×50) and invented part numbers (L2 ×27); repair cleared 110 → 7. But **contacts were identical before and after repair** in every booklet, so the repair neither helped nor hurt accuracy.
-- **The accuracy difference between v1 and v2 is noise.** It comes from the first build (Claude does not give the same answer twice) and the samples are tiny: 0–11 checkable contacts per booklet, and 4 of these 10 have none.
-- **The cost doubles** because every LEGO booklet needs a repair round, while 81% of electronics tutorials need none.
-- **Conclusion so far:** for LEGO the check-and-repair loop is worth it only for clean, valid output (real part numbers, valid ports), not for accuracy. Accuracy needs a better input: **the official parts list for the set**, which would also remove most part-number issues before they happen.
-
-
+![Electronics accuracy by version](figures/graphgen/electronics_accuracy.png)
 
 ---
 
-## Pilot: what the scores say
+## 2. How we measure
+
+**Test sets:** 117 electronics tutorials (95 official Arduino + 22 Raspberry Pi) and 100 official LEGO instruction PDFs (31–498 pieces). Every version runs all of them; time and cost are over all of them.
+
+Every result is split into the same four questions:
 
 | | Electronics | LEGO |
 |---|---|---|
-| Fully correct | **4 of 7** tutorials with an answer key have every electrical connection right | — |
-| Mean accuracy | net precision 0.76, recall 0.72 | piece count ≈ 99% right; correct pieces by design 53% found (49% precision); brick contacts 56% found (48% precision) |
-| Repeats | 2 of 2 multi-LED tutorials used `repeats` + `attach` overrides, and both expanded to **6 correct copies** | 7 of 10 booklets used repeats (e.g. 4 wheels) |
-| New part types | Raspberry Pi board, speaker created on first use | 2–31 new piece types per booklet (catalogue starts empty) |
+| **1. Parts:** are the right parts there? | Kinds of part (board, LED, resistor …) against the answer key | Pieces against the official inventory (Rebrickable): count, shape, shape + colour |
+| **2. Graph:** are they connected right? | Is the circuit right? Judged by **CircuitQuest's own checker** | Which pieces really connect, from the set's 3D model (**stud key**) |
+| **3. Mistakes:** what goes wrong, and whose fault? | Each wrong circuit explained; model or answer key | Pieces missing / extra; connections missed / invented |
+| **4. Time and cost** | Per tutorial, per phase | Per set, by set size |
+
+**Electronics answer key.** Only **47** of the 117 tutorials have one (a verified CircuitQuest lesson), so circuits can be judged right or wrong only on those 47. For the other 70 we check that the listed parts are in the graph and that the circuit laws hold. The rule, the same for every version (`python -m graphgen.evaluate --judged`; `graphgen/cq_score.py` calls CircuitQuest's `checker.check` and `engine._try_pin_substitution`):
+- **correct:** exactly right; or right apart from a symmetric-leg swap (resistor legs, potentiometer ends, button sides); or a part on another board pin of the same kind (digital for digital); or connected in an **electrically equivalent** way (resistors and LEDs in another series order). Polarity still counts: a reversed buzzer is wrong;
+- **wrong:** anything else, explained (what is missing, what the graph has instead) and put down to the **model** or to the **answer key**.
+- **Reviewed answer key:** in 19 of the 47, CircuitQuest's circuit is not the only right answer (extra LEDs, a buzzer where the tutorial has a speaker, one of several set-ups the tutorial offers). Claude follows the official tutorial there, so the headline is on the other **28** (reasons: `research/data/answer_key_review.json`). Every table also shows the score on **all 47** (the strict one); no version can get above 28 of 47 (60%) there, because those 19 fail in every version for the same answer-key reason. A hand check of these tutorials (20 in the link test, which had one more) found every one wired as its tutorial says (section 3.5); turning that check into corrected answer keys would let all 47 count.
+
+**LEGO answer key (from v7, used for every version).** The **stud key** (`graphgen/stud_key.py`) finds every real connection in a set's LDraw 3D model from the parts library's own geometry: a stud of one piece inside another piece, or a pin or axle through a hole, for every kind of piece. It replaced the old **box key**, which only compared the footprints of plain bricks, plates and tiles. The old key's numbers are kept in section 4.2 for comparison. How we know the stud key is right, and what it fixed: section 4.5. Scores are given for all sets and for the **38 trusted sets**, whose model has exactly the set's pieces.
 
 ---
 
-## Manual sanity check (read by hand)
+## 3. Electronics
 
-The automatic score depends on the answer key. Every pilot graph was also read by hand with `python -m graphgen.inspect <run>/<manual>`, to see whether the **logic** holds.
+### 3.1 Parts: are the right parts there?
+
+| | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| Tutorials with every part exactly right (of 47) | 62% | 62% | **64%** | 62% | 62% | 62% |
+| Parts that are right (precision) / parts found (recall) | 0.86 / 0.85 | 0.85 / 0.84 | **0.91 / 0.87** | 0.87 / 0.86 | 0.87 / 0.86 | 0.87 / 0.86 |
+| Other 70 tutorials: listed parts present | 0.97 | 0.96 | **0.98** | 0.96 | 0.97 | 0.97 |
+
+The parts that differ are almost all answer-key cases: the tutorial uses the built-in LED where the answer key adds one (resistor and LED "missing"), or force sensors and speakers where the answer key has potentiometers and buzzers ("extra"). v3's higher precision is mostly the answer key's own choice ("any analog sensor" → potentiometer).
+
+### 3.2 Graph: is the circuit right?
+
+| | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| **Correct, reviewed answer key (28)** | 82% | 96% | 93% | 89% | 96% | **100%** |
+| Correct, all 47 | 49% | 57% | 55% | 53% | 57% | **60%** |
+| …exactly right / right with a harmless leg swap | 16 / 7 | 22 / 5 | 19 / 7 | 16 / 9 | 18 / 9 | 22 / 6 |
+| When the parts were right: circuit right | 23 / 29 | 27 / 29 | 26 / 30 | 25 / 29 | 27 / 29 | **28 / 29** |
+| Connections right (precision) / found (recall) | 0.64 / 0.61 | 0.67 / 0.64 | 0.67 / 0.65 | 0.69 / 0.67 | 0.70 / 0.67 | **0.71 / 0.68** |
+
+### 3.3 Mistakes made
+
+**Real wiring mistakes** (the model's fault; ✗ = wrong in that version):
+
+| Mistake | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+| **row-column-scanning:** LED-matrix rows and columns crossed (row 1 belongs on pin 2, row 2 on pin 7) | ✗ | ✗ | ✗ | ✗ | ✗ | |
+| **tone-melody:** buzzer reversed (+ to GND, − to pin 8) | ✗ | | ✗ | ✗ | | |
+| **button, digital-read-serial:** pull-down resistor on the button's 5V side, so the input floats | ✗ | | | | | |
+| **keyboard-message:** the input pin wired straight to 5V through the button side | ✗ | | | | | |
+| **read-ascii-string:** RGB LED's common pin wired as "A" instead of COM | | | | ✗ | | |
+| **Total** | 5 | 1 | 2 | 3 | 1 | **0** |
+
+**Answer-key cases** (the same 19 in every version, not the model's fault): CircuitQuest adds an external LED where the tutorial uses the built-in one (debounce, if-statement, knock, calibration, while-loop, state-change-detection, input-pullup-serial), uses other parts (buzzers for speakers, potentiometers for force sensors, another sensor name), or picked another of the tutorial's set-ups (arduino-isp, arduino-to-breadboard, led-bar-graph, serial-call-response). Full list with explanations: `experiments/graphgen/electronics_judged.md`.
+
+![Electronics real model errors](figures/graphgen/electronics_errors.png)
+
+**Problems the checks still find at the end** (form and law problems, not judged wrong by CircuitQuest):
+
+| | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| Problems left | 210 (no checks) | **2** | 251 | 12 | 24 | 19 |
+| Most common | invented part numbers, port names | 2 circuit-law issues | missing / bad port names, 14 pins shorted | port names | port names, supply range | supply range, 3 shorted parts |
+
+### 3.4 Time and cost
+
+| | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---:|---:|---:|---:|---:|---:|
+| Mean time per tutorial | **41 s** | 44 s | 100 s | 79 s | 70 s | 67 s |
+| Mean cost per tutorial | **$0.104** | $0.122 | $0.187 | $0.154 | $0.160 | $0.182 |
+| Parts step | – | – | 54 s | 34 s | 24 s | **18 s** |
+| Build | 41 s | 39 s | 40 s | 39 s | 36 s | 37 s |
+| Tutorials repaired | 0 | 22 | 12 | 21 | 26 | 33 |
+
+The parts step got faster with every version because the parts database grows: v5 looked up 84 parts on shop sites, v6 only 40. v6 repairs more tutorials than v5 mostly because of stricter port-name and placement checks, not wrong circuits.
+
+![Electronics time per tutorial](figures/graphgen/electronics_time.png)
+
+### 3.5 Reading the tutorial from its link
+
+The v6 pipeline, but Claude gets only the tutorial's URL and opens it itself with the `open_page` tool (a real browser, `graphgen/browser.py`; docs.arduino.cc builds its pages with JavaScript, so a plain fetch returns nothing). Tested on the 48 built-in examples with an answer key.
+
+| | v6 (saved text) | v6 (link + browser) |
+|---|---:|---:|
+| Correct, reviewed answer key (28) | **100%** | **100%** |
+| Correct, all 48 | 58% | 58% |
+| Real wiring mistakes | 0 | 0 |
+| **Wired as the tutorial says (hand check, 48)** | – | **48 / 48** |
+| Opened the page | – | 48 / 48 |
+| Mean / median time | 49 s / 41 s | 49 s / 44 s |
+| Mean cost | $0.131 | **$0.106** |
+| Tutorials repaired | 2 | 6 |
+
+The hand check compared each of the 20 answer-key cases with the tutorial's own circuit text and code: every connection matches (e.g. adxl3xx powered from A4/A5 as the code does; speakers with 100 Ω resistors on the tutorial's pins). One small flaw: in joystick-mouse-control Claude added the USB cable as a part. **The app can therefore take a link;** it needs headless Chrome on the server.
+
+---
+
+## 4. LEGO
+
+Same sets in every column: v2, v3 and v5 on all 97 sets with a graph in every version (3 sets with an empty graph in one version left out); v1 on its 32. Time and cost on 98 sets (two v2 sets paused by the Mac sleeping left out).
+
+### 4.1 Parts: are the right pieces there?
+
+| | v1 (32 sets) | v2 | v3 | v5 |
+|---|---:|---:|---:|---:|
+| Sets with exactly the right number of pieces | 25% | 27% | **100%** | 65% |
+| Pieces right by shape: recall / precision | 0.81 / 0.83 | 0.86 / 0.86 | **1.00 / 1.00** | 0.98 / 0.97 |
+| Right shape AND colour | 0.74 | 0.83 | **1.00** | 0.97 |
+
+v1 and v2 read the pieces from the booklet pictures. From v3 on Claude is given the official parts list, so these rows show whether it **used** the list. v3 does exactly. v5, reading one page at a time, adds and drops pieces (section 4.3).
+
+### 4.2 Graph: are the pieces connected right?
+
+| | v1 (32 sets) | v2 | v3 | v5 |
+|---|---:|---:|---:|---:|
+| **Connections found** (stud key, recall) | 0.50 | 0.47 | 0.58 | **0.61** |
+| **Joins that are real** (stud key, precision) | **0.57** | 0.52 | 0.53 | 0.46 |
+| Found / real, 38 trusted sets only | 0.51 / **0.62** | 0.49 / 0.56 | 0.62 / 0.57 | **0.64** / 0.45 |
+| Joins written per piece | 1.08 | 1.05 | 1.15 | 1.36 |
+| *Old box key: contacts found / real (plain bricks, plates, tiles)* | *0.60 / 0.49* | *0.55 / 0.49* | *0.64 / 0.46* | *0.70 / 0.36* |
+
+How to read it: **found** = of the real connections, how many the graph has; **real** = of the joins the graph has, how many exist. v3 balances both. v5 asks each piece for *everything* it rests on, so it writes more joins (1.36 per piece) and finds the most, but invents the most. Every version finds only about half of the real connections, and about half of what it writes is real: this is the main LEGO weakness, and the target of v6 and v7.
+
+![LEGO brick contacts](figures/graphgen/lego_contacts.png)
+
+### 4.3 Mistakes made
+
+**Pieces** (all 97 sets):
+
+| | Most often missing | Most often extra |
+|---|---|---|
+| v1 (32 sets) | Plate 1×2 ×26, Tile 1×6 ×19, Plate Round 1×1 ×19 | Plate 2×4 ×16, Panel 1×2×1 ×16, Brick 1×2 with handle ×16 |
+| v2 | Plate 1×2 ×62, Jumper plate ×52, Curved brick 4×1 ×51 | Jumper plate (other mould) ×43, Tyre ×42, Plate 2×2 ×33 |
+| v3 | 2 pieces in all 97 sets (a Technic brick and an axle, look-alike moulds) | the same 2 |
+| v5 | Plate 1×1 ×23, Plate Round 1×1 ×13, Tile 1×2 ×13 | Plate Round 1×1 ×39, Plate 1×2 ×15, Plate 2×4 ×14 |
+
+- **v1/v2: reading pieces from pictures.** Small and similar pieces get confused (two jumper-plate moulds; Plate 1×2 vs 1×3).
+- **v5: drift.** A page shows the pieces already built as well as the new ones, so pieces are added twice or dropped. Repair can add pieces in a later turn but cannot remove them.
+
+**Connections** (old box key, all 97 sets):
+
+| | Most often missed | Most often invented |
+|---|---|---|
+| v2 | Plate 1×2 on Plate 1×2 ×43, Plate 3×3 + Plate 1×2 ×27 | Plate 1×2 + Plate 1×1 ×34, Plate 1×2 + Plate 1×3 ×30 |
+| v3 | Plate 3×3 + Plate 1×2 ×30, Plate 1×2 on Plate 1×2 ×23 | Plate 2×4 + Plate 1×2 ×42, Plate 1×2 + Plate 1×1 ×35 |
+| v5 | Plate 1×2 on Plate 1×2 ×32, Plate 1×1 on Plate 1×1 ×26 | Plate 2×4 + Plate 1×2 ×58, Plate 1×8 + Tile 1×8 ×57 |
+
+- **Missed: identical pieces stacked** (Plate 1×2 on Plate 1×2). Claude loses track of which copy is which. v7 gives each copy its own id.
+- **Invented: look-alike plates.** Claude knows a piece sits on "a plate" but picks the wrong one. v7 adds positions and laws.
+- **v5 invents joins to pieces on earlier pages** that the piece does not touch.
+
+### 4.4 Time and cost
+
+| | v2 | v3 | v5 |
+|---|---:|---:|---:|
+| Mean / median time per set | 452 s / 408 s | **362 s / 307 s** | 432 s / 326 s |
+| Mean cost per set | $1.47 | **$0.95** | $1.71 |
+| Sets repaired | 96 | 47 | 82 |
+
+v3 by set size (87 sets, against v2):
+
+| Pieces | Sets | v3 time | v3 cost | v2 time | v2 cost |
+|---|---:|---:|---:|---:|---:|
+| under 50 | 22 | 134 s | $0.26 | 133 s | $0.47 |
+| 50–119 | 34 | 268 s | $0.67 | 360 s | $1.14 |
+| 120–199 | 11 | 491 s | $1.34 | 598 s | $1.92 |
+| 200+ | 20 | 672 s | $1.85 | 847 s | $2.67 |
+
+v1 on its 34 sets: 221 s, $0.55 (v2 363 s / $1.08, v3 311 s / $0.79, v5 391 s / $1.14 on the same sets). v1 is fastest because it neither checks nor repairs.
+
+![LEGO time per set](figures/graphgen/lego_time.png)
+
+### 4.5 The stud answer key: why it replaced the box key
+
+The box key compared the footprints of plain bricks, plates and tiles, standing upright. Building the stud key exposed three problems with it:
+
+| Problem | Example | Fix |
+|---|---|---|
+| Only plain bricks, plates and tiles were scored | slopes, round and special pieces, Technic pins left out | the stud key scores every piece with studs, holes or pins |
+| Models built at an angle could not be read | 40457-1 is built tilted 45°: the box key found 30 contacts, the stud key 177 | studs are matched in any direction |
+| Custom parts in 26 model files were split into their drawing primitives | 7893-1 counted 803 "pieces" instead of 419 | the model reader now treats a custom part as one piece |
+
+**How we know the stud key is right:**
+- **Hand-built test models** with known answers all pass: stacked, offset by a stud, crossed at 90°, side by side, floating, half a stud off the grid, a plate bridging two bricks, a tile on a brick, a brick on a tile, a tower (`tests/test_graphgen.py`).
+- **Physical laws** run on every model: a stud fits only one piece; nothing clutches itself; no more clutches than studs; no floating pieces.
+- **Odd shapes:** corner, round and wedge pieces were at first treated as full rectangles. A stud under an L-shaped brick's empty corner seemed held twice; the piece with material over that cell now wins. 310 of 12,682 joins remain undecidable (curved slopes, wing plates) and are not scored.
+- **Spot checks** where the stud and box keys disagree favour the studs (e.g. a jumper plate on a plate, which the box key missed).
+- **One name per piece:** the parts list (Rebrickable) and the 3D models (LDraw) sometimes name one piece differently (mould variants such as `3794a` / `3794b` / `15573`, prints, the cheese slope `54200` / `50746`). Rebrickable's own part relationships, letter variants of one number, and a one-line alias list put them under one name (`stud_key.canon`). Before this, 10% of pieces could not be scored at all; now 3%.
+
+**What it changes:** the old key undercounted real joins (v3: 53% real, not 46%). It also missed connections between non-plain pieces, so every version now finds a smaller share of a larger set of real connections. The ranking of the versions does not change.
+
+---
+
+## 5. The versions
+
+### v1: Claude builds the graph in one go
+
+```
+manual (text + 2 images, or the LEGO PDF) + spec + catalogue
+        │
+        ▼
+   Claude, 1 turn ──► graph ──► expand repeats ──► spec rules (report only) ──► score
+```
+
+Claude reads the whole manual and writes the whole graph. Electronics catalogue: 82 verified CircuitQuest cards; LEGO: empty. **Main issues:** no checks, so form problems stay (invented part numbers and port names); LEGO pieces guessed from small pictures; pushbutton legs wired wrongly (4 tutorials).
+
+### v2: check and repair
+
+```
+manual + spec + catalogue ──► Claude ──► graph ──► CHECK (code) ──► problems? ──yes──► same Claude repairs (≤2 rounds)
+                                                     │                                        │
+                                                     no                                        └──► CHECK again
+CHECK = circuit laws (short, pin to supply, part shorted, unconnected leg, floating input)
+        + LEGO laws (parts page, real part numbers, build in one piece) + spec rules
+```
+
+Code checks the graph; every problem goes back to the same conversation. The catalogue got the pushbutton's internal leg pairs and missing pinouts. **Main issues:** electronics good (the pushbutton tutorials became right); LEGO repair fixes form, not content, and doubles time and cost.
+
+### v3: parts first
+
+```
+LEGO:        set number ──► Rebrickable (local dump) ──► parts list + cards ─┐
+Electronics: tutorial ──► Claude call A: "list the parts" ──► shop lookups ──┤
+                                                                              ▼
+             manual + ONLY these cards + parts list ──► Claude call B ──► graph ──► CHECK ──► repair REAL errors only
+```
+
+The parts are known before the build. LEGO: the official inventory and 1,018 reusable part cards. Electronics: a separate Claude call and shop lookups. **Main issues:** LEGO a clear win (every piece right, faster, cheaper) but still guesses which piece sits on which; electronics a loss (twice as slow, pin-name clashes left unrepaired).
+
+### v4: one generic pipeline
+
+```
+                         recipe (domains.py: data only)
+                                   │
+manual ──► 1 PARTS ──► 2 BUILD ──► 3 CHECK (laws) ──► 4 REPAIR ──► graph ──► 5 UPKEEP (card new part types)
+              │           ├─ LEGO: Path A = LDraw 3D model by code (if it matches the set)
+              │           │        Path B = booklet one page per turn
+              │           └─ Electronics: one shot, full catalogue (as v2)
+              ├─ LEGO: Rebrickable inventory + cards
+              └─ Electronics: code reads the parts list, free-text search, shop lookups
+parts machinery (all domains): registry.json ──► site adapters ──► scrape + JSON-LD ──► prompt engine ──► schema gate ──► card store
+```
+
+Everything runs through one pipeline; a domain changes only its recipe. LEGO Path A builds the graph from the 3D model by code (3 s, free) when the model matches the set. **Main issues:** electronics ≈ v2 but 35 s slower (shop lookups before the build; reading parts lists by code is brittle); Path A cannot be scored (the model is also the answer key) and only 23 of 100 models are exactly the set as sold.
+
+### v5: one fix per weakness found
+
+```
+ELECTRONICS:
+tutorial ──► turn 1 (Claude): list the parts ──► lookup_part tool ──► database ──► approved sites (stored)
+                ▼  same conversation
+             turn 2 (Claude): add all connections ──► graph
+                ▼
+             CHECK: circuit laws + E6 parts count + E7 named board pins wired + E8–E10 electrical
+                ▼
+             REPAIR (≤2) ──► UPKEEP ──► electrical recheck
+LEGO: as v4, but Path B asks each piece "what do you rest on?" (all of them), page by page; code makes the joins.
+```
+
+Electronics parts are chosen by Claude in the same conversation, with a `lookup_part` tool; cards carry electrical facts; new laws. **Main issues:** electronics fixed the buzzer polarity (v2's accuracy) but slower; LEGO finds the most connections but invents the most, and loses exact pieces reading page by page.
+
+### v6: breadboard sense and pin tables; whole booklet
+
+```
+ELECTRONICS: as v5, plus
+             CHECK: B1/B2 breadboard placement (legs in neighbouring holes, in order; a button across the gap)
+                    E11 pin tables in the tutorial wired as written · E12 LED-matrix resistors on one side only
+             optional input: the tutorial's LINK ──► open_page tool (a real browser)
+LEGO: Path A at stud level (code); Path B reads the WHOLE booklet in one turn, answering with rests_on.
+```
+
+**Main issues:** electronics has no real mistakes left (row-column-scanning right for the first time); more repairs from stricter port-name checks. LEGO running; on its first 72 sets: every piece right, connections found 0.69 and real 0.49 (old key), v3 0.64 / 0.48 on the same sets, same time and cost as v3.
+
+### v7: LEGO connections
+
+```
+set id ──► Rebrickable parts list ──► PIECE LIST: one id per physical piece (p1..pN fixes type and colour)
+                                          ▼
+booklet PDF (whole) ──► Claude, one turn: for every id ─ step ─ rests_on ─ position (x, y, layer, turned)
+                                          ▼
+             CHECK: v6 laws + L6 every id once · L7 nothing rests on a later step · L8 nothing on a smooth tile
+                    · L9 stud capacity · L10 positions agree with rests_on, no two pieces in one space
+                                          ▼
+             REPAIR (≤2, complete list) ──► graph from rests_on            (scored as "v7")
+                                        └─► graph from positions by code   (scored as "v7-positions")
+ANSWER KEY (all versions): LDraw model ──► stud / hole / pin geometry ──► real joins (section 4.5)
+```
+
+Each copy of a piece has its own id, so identical pieces cannot be confused, invented or dropped. Each piece also gives its position on the stud grid, code computes the joins from positions alone, and laws L6–L10 catch impossible answers. Electronics is unchanged from v6. **First test** (2 small trusted sets): connections found / real 0.53 / 0.49 against 0.42 / 0.38 for v6 and 0.42 / 0.32 for v3; on 30105-1 law L10 caught 3 positions that disagreed with `rests_on` and the repair fixed them. Full run in progress.
+
+---
+
+## 6. Common issues to target next
 
 ### Electronics
 
-| Tutorial | Does the logic hold? | Finding |
-|---|---|---|
-| ForLoop, Arrays | ✅ Yes | 6 LED + resistor copies on pins 7…2 (one repeat, `attach` overrides per copy), all cathodes to one GND rail. 13/13 nets. |
-| Blink, Fade | ✅ Yes | LED + resistor on pin 13 / 9 to GND. |
-| ifStatement | ✅ Yes (answer key differs) | Claude used the **built-in** LED, as the official tutorial says; CircuitQuest's lesson adds an external one, so the score is lower than it should be. |
-| ADXL3xx (earlier test) | ✅ Yes (answer key differs) | Claude followed the **official** wiring (sensor in A0–A5, code drives A4/A5 as GND/power); CircuitQuest wires it to GND/3.3V instead. |
-| Pi traffic lights | ✅ Yes | LEDs on GPIO 25/8/7 through resistors, button on 21, buzzer on 15. Claude noted that the text and the diagram disagree and followed the diagram. |
-| **Button, DigitalReadSerial** | ❌ **No** | The pull-down resistor went on the button's **5V leg** instead of the pin-2 leg: the pin floats and the resistor sits across 5V–GND. Both tutorials share one image; the model misread which button legs are joined. A real error, correctly scored as wrong. |
-| Pi music box | ⚠️ Unclear | The catalogue had **no ports** for the male-female jumper wire, so Claude invented `pin`/`socket`; nets cannot be folded. **Our catalogue's fault**, now fixed. |
+| Issue | Seen in | Evidence | Next step |
+|---|---|---|---|
+| **Answer key is not the only right answer** | all versions, 19 of 47 | CircuitQuest differs from the official tutorial or picked another set-up | Rebuild those keys from the official tutorials (the hand check of section 3.5 is a start) |
+| **Only 47 of 117 tutorials can be judged** | all versions | CircuitQuest has lessons for the classic examples only | New answer keys for the "docs" and Raspberry Pi tutorials |
+| ~~Complex pin maps~~ | row-column-scanning, v1–v5 | rows and columns crossed | **Fixed in v6** (E11, E12) |
+| **Extra repairs from strict port names** | v6 (33 repaired) | repairs fix names, not circuits | Map common port spellings to the card's names in code |
+| **Speed** | v3–v6 | parts step: +18–54 s over v2 | The parts database grows; lookups become rare |
 
 ### LEGO
 
-| Booklet | Does the logic hold? | Finding |
-|---|---|---|
-| 30103 Car | ✅ Mostly | Plates stacked on two base plates; one `wheel ×4` repeat attached to the wheel pins with `attach` overrides. Piece count 25 vs 28. |
-| All 10 | ⚠️ | **Small booklets have no inventory page** (many are 2 pages), so there are no Element IDs; Claude names pieces by **design number** (`lego-3023` = Plate 1×2) from its own knowledge. Colours come from the pictures. |
-| All 10 | ⚠️ | Without a list of allowed **port kinds**, Claude invented its own (`socket`, `wheel-pin`), causing most rule warnings (V3/V4). The allowed kinds are now in the prompt. |
-
-### What was fixed after the pilot
-
-| Problem found | Fix |
-|---|---|
-| Answer key used `cq-adxl335`, catalogue `adxl335` | Type names normalised before scoring |
-| Male-female jumper wire and alligator lead had no ports | Added (`a`, `b`, conducting) |
-| Potentiometer pins in a breadboard flagged incompatible | `lug ↔ breadboard-hole` allowed |
-| First, incomplete draft of a new type (Raspberry Pi with 8 pins) blocked later, fuller drafts | **Unverified** entries now **merge** ports from later manuals |
-| LEGO pieces named by design number scored as 0 | Scored by design number as well as Element ID |
-| Model invented port kinds | Allowed port kinds and compatible pairs added to the prompt |
-
----
-
-## Full electronics run (117 tutorials)
-
-| | Result |
-|---|---|
-| Succeeded | 116 / 117 (one safety-filter false positive on `tone-keyboard`) |
-| Tutorials with an answer key | 47 |
-| **Strict score:** every net identical to CircuitQuest | 23 / 47 (49%) |
-| Tutorials without an answer key | 69: 96.7% of the part families each tutorial lists are in its graph |
-| Rule warnings | 178, mostly **our catalogue**: CircuitQuest's cards for Leonardo, Mega, Zero, HC-SR04, servo, OLED, DHT22 have no pin list, so every pin used on them was "unknown" |
-
-**Read by hand, the 24 "wrong" tutorials split into:**
-
-| Category | Tutorials | Count |
-|---|---|---:|
-| Answer key differs from the **official** tutorial; Claude followed the tutorial | ADXL3xx, ifStatement, Debounce, StateChangeDetection, Knock (answer key adds an LED), toneMultiple (tutorial: speakers + 100 Ω), Midi (tutorial: two 220 Ω), Ping (same part, different name) | 8 |
-| Valid alternative or electrically equivalent | VirtualColorMixer, SerialCallResponse ×2 ("any analog sensor + 10k"), LED bar graph, Calibration, WhileLoop, PitchFollower (resistor on the other side of the LED) | 7 |
-| **Real model errors** | Button, DigitalReadSerial, KeyboardMessage, InputPullupSerial (**4 × pushbutton legs**), JoystickMouseControl, RowColumnScanning (partly) | 6 |
-| Not verified | ArduinoISP, ArduinoToBreadboard, toneMelody | 3 |
-
-**Adjusted accuracy: ≈ 38 / 47 (≈ 80%) correct or valid; ≈ 13% real errors.**
-
----
-
-## Check and repair loop
-
-**Flow:** Claude builds the graph → code checks it → if anything fails, the exact problems go back to Claude **in the same conversation** (the manual is not resent) → Claude returns a corrected graph → final check. Every phase is timed and costed separately; the score is kept for both the first and the final graph.
-
-**Checks** ([`graphgen/checks.py`](./graphgen/checks.py)):
-
-| Electronics (circuit laws) | LEGO |
-|---|---|
-| E1 supply shorted to GND · E2 board pin wired straight to 5V/GND · E3 a two-legged part shorted out · E4 a leg connected to nothing · E5 input pin floating (only a button on it, no pull-up/down, unless the code uses `INPUT_PULLUP`) | L1 piece counts differ from the booklet's own parts page · L2 not a real LEGO part number · L3 the build falls apart into separate groups |
-| + the spec rules (V2 unused part, V3 incompatible ports, V4 missing/over-used port) | + the same spec rules |
-
-### Electronics
-
-- **Do the checks catch real errors?** Run on the graphs from the full run: they flag **5 of the 6 real errors** (Button, DigitalReadSerial: E5 floating pin; KeyboardMessage, InputPullupSerial: E2 pin shorted; Joystick: E1 supply shorted) and **nothing** on correct graphs (Blink, Fade, ForLoop). The miss, RowColumnScanning, has pins on the wrong rows: no circuit law can see that.
-- **Catalogue fixes first:** the pushbutton entry now says which legs are joined inside it, and the missing pinouts were added. Re-run on the 6 error tutorials:
-
-| Tutorial | Before | After | Note |
+| Issue | Seen in | Evidence | Next step |
 |---|---|---|---|
-| Button | 1/3 | **3/3 ✅** | fixed on the first build |
-| DigitalReadSerial | 1/3 | **3/3 ✅** | fixed on the first build |
-| KeyboardMessage | 1/3 | **3/3 ✅** | fixed on the first build |
-| InputPullupSerial | 0/4 | 1/4, **correct** | internal pull-up, as the tutorial says; the answer key adds an LED |
-| JoystickMouseControl | 2/8 | 2/8, mostly correct | only the X/Y axes may be swapped (the tutorial is ambiguous); the answer key adds 2 buttons |
-| RowColumnScanning | 19/28 | 19/28 ❌ | pins on the wrong rows of the LED matrix |
-
-  None of the six triggered a repair any more: every first build passed the checks. **The catalogue fix did more than the repair loop**; the loop stays as a safety net (it catches the error types we saw).
-
-### LEGO (5 booklets, up to 2 repair rounds)
-
-| Booklet | Issues build → final | Repair rounds | Build | Repair | Inventory recall | Contact recall |
-|---|---|---:|---|---|---|---|
-| 7268 Crab | 13 → **0** | 1 | 48 s, $0.08 | 51 s, $0.13 | 0.25 → 0.25 | 0.0 → 0.0 |
-| 30103 Car | 13 → **0** | 1 | 71 s, $0.10 | 35 s, $0.11 | 0.11 → 0.11 | – |
-| 4991 | 14 → 1 | 2 | 56 s, $0.10 | 68 + 42 s, $0.30 | 0.85 → **0.89** | 1.0 → 1.0 |
-| 30161 | 3 → **0** | 1 | 53 s, $0.10 | 25 s, $0.09 | 0.16 → **0.22** | 0.25 → 0.25 |
-| 7246 | 8 → **0** | 1 | 67 s, $0.13 | 46 s, $0.14 | 0.09 → 0.09 | – |
-
-- **Issues: 51 → 1.** One repair round almost always clears them (invented part numbers, incompatible ports, missing ports).
-- **Cost of repair:** about **+25–70 s and +$0.09–0.16 per round**, roughly doubling the cost of a small booklet.
-- **Accuracy barely moves** (small gains on 2 of 5): the LEGO checks catch *impossible* graphs, not *plausible but wrong* pieces. These booklets have no parts page, so which piece is which is guessed from small pictures; **giving Claude the official parts list** (from the set number) is the bigger lever for LEGO.
+| **Half the real connections missed, half the joins invented** | all versions | found 0.47–0.61, real 0.46–0.57 (stud key) | v7: one id per piece, positions, laws L6–L10 (running) |
+| **Identical pieces confused** | all versions | Plate 1×2 on Plate 1×2 missed most often | v7 ids per copy |
+| **Look-alike plates** | all versions | Plate 2×4 + Plate 1×2 invented most often | v7 positions and L10 |
+| **Page-by-page drift** | v5 | 65% of sets with the right pieces | v6/v7 read the whole booklet |
+| **Big sets are slow** | all versions | 200+ pieces: 11–14 min | Path A when a matching 3D model exists |
 
 ---
 
-## Limits of this experiment
+## 7. Limits of this evaluation
 
-- **Answer-key noise (electronics):** CircuitQuest's circuits sometimes differ from the official tutorial (ifStatement, ADXL3xx, Button's extra LED). Only Button's difference is excluded automatically.
-- **LEGO contacts** are checked only by design pair among plain bricks, plates and tiles; slopes, Technic, minifigures and wheels are not checked, and 4 of 10 pilot booklets had nothing checkable.
-- **Strict nets:** an electrically equivalent circuit (resistor on the other side of an LED) counts as wrong.
-- **Cost** is an API-price estimate; the run itself used the Claude subscription.
+- **Electronics answer key:** 47 of 117 tutorials; 19 of those are not the only right answer (reviewed list). Our graphs are aligned to the answer key's parts before CircuitQuest judges; an alignment mistake would show as "wrong".
+- **LEGO answer key:** the LDraw models are fan-made; 62 of 100 differ from the set as sold (piece count off by more than 5%, or many undecidable joins). Hence the separate trusted-set rows. Connections are compared by piece **design** (Plate 1×2 + Plate 1×2), not by individual piece.
+- **Circular scores:** from v3 the LEGO parts list given to Claude is also the parts answer key; v4 Path A uses the 3D model that is also the connections answer key.
+- **Timing:** runs were paused by the subscription's session limit and the Mac sleeping; affected sets are left out of time averages.
+- **Cost** is an API-price estimate; the runs used the subscription.

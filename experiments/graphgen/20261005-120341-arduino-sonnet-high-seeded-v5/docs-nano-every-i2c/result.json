@@ -1,0 +1,101 @@
+{
+ "case": "docs-nano-every-i2c",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 81.6,
+  "input_tokens": 96900,
+  "output_tokens": 10814,
+  "cost_usd": 0.2246,
+  "repair_rounds_used": 1
+ },
+ "parts": 13,
+ "edges": 36,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Dropped the second mini breadboard (bb2) from the previous graph. The manual's generic parts list says 2 mini breadboards, but the circuit image, which is the authority on connections, needs only one shared bus. Nothing would connect to a second breadboard without inventing wiring the image does not show.",
+  "The circuit image does not show a breadboard at all. I placed the shared SCL (column 10t), SDA (column 14t) and 3V3 (rail tp, one strip) nodes on the one mini breadboard. Each pull-up resistor goes between its bus column and the 3V3 rail.",
+  "The manual says 10 jumper wires, but the circuit uses only 6 (GND, 2x A5, 2x A4, 3V3), so I listed those 6.",
+  "SCL is A5 and SDA is A4, as the text states. The SCL and SDA lines cross in the image without connecting.",
+  "Only the reader's 3V3 pin feeds the pull-ups. The writer's 3V3 is not connected.",
+  "GND is a single direct jumper from reader GND to writer GND. The Nano Every GND and GND2 pins are joined inside the board, so GND is used.",
+  "The USB cables plug into each board's USB port. The computer end is not modelled as a part.",
+  "The image draws Nano 33 BLE-style boards, but I kept the Nano Every the text names."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 30.6,
+   "input_tokens": 43876,
+   "cache_read_tokens": 25081,
+   "output_tokens": 1796,
+   "cost_usd": 0.0981,
+   "check_seconds": 0.0,
+   "parts_listed": 14,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-nano-every"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.7,
+   "input_tokens": 24012,
+   "cache_read_tokens": 22259,
+   "output_tokens": 4593,
+   "cost_usd": 0.0574,
+   "check_seconds": 0.0,
+   "issues": 1,
+   "issue_rules": {
+    "V2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 24.3,
+   "input_tokens": 29012,
+   "cache_read_tokens": 24010,
+   "output_tokens": 4425,
+   "cost_usd": 0.0691,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.6
+}

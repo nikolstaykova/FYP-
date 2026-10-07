@@ -1,0 +1,1882 @@
+{
+ "graph": {
+  "title": "8x8 LED Matrix Row-Column Scanning",
+  "source_id": "https://docs.arduino.cc/built-in-examples/display/RowColumnScanning",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "matrix1",
+    "type": "led-matrix-8x8",
+    "label": "8 x 8 LED Matrix",
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "10k potentiometer (to A1)",
+    "props": []
+   },
+   {
+    "id": "pot2",
+    "type": "potentiometer-10k",
+    "label": "10k potentiometer (to A0)",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "5V to + rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to - rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "pot1 wiper to A1",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "pot2 wiper to A0",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "pot1 GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "pot1 5V",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "pot2 GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "pot2 5V",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot2",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot2",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot2",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot2",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot2",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "15b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot2",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "15b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "13b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "13b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [
+   {
+    "group": "rb",
+    "times": 8,
+    "parts": [
+     {
+      "id": "r",
+      "type": "resistor",
+      "label": "1k resistor",
+      "props": [
+       {
+        "key": "value",
+        "value": "1000"
+       }
+      ]
+     },
+     {
+      "id": "w",
+      "type": "jumper-wire",
+      "label": "yellow wire",
+      "props": [
+       {
+        "key": "colour",
+        "value": "yellow"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "1",
+      "v": "uno",
+      "v_port": "2",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "1",
+      "v": "uno",
+      "v_port": "2",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "2",
+      "v": "w",
+      "v_port": "a",
+      "method": "clip",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "2",
+      "v": "w",
+      "v_port": "a",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R1",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R1",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:3"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C4"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:4"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C6"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:5"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:R4"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:6"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C1"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:7"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:R2"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:8"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C7"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:9"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C8"
+     }
+    ]
+   },
+   {
+    "group": "dw",
+    "times": 8,
+    "parts": [
+     {
+      "id": "w",
+      "type": "jumper-wire",
+      "label": "green wire",
+      "props": [
+       {
+        "key": "colour",
+        "value": "green"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "w",
+      "u_port": "a",
+      "v": "uno",
+      "v_port": "13",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "w",
+      "u_port": "a",
+      "v": "uno",
+      "v_port": "13",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R5",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R5",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:12"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R7"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:11"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:C2"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:10"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:C3"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A2"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R8"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A3"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:C5"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A4"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R6"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A5"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R3"
+     }
+    ]
+   }
+  ],
+  "notes": [
+   "The suggested catalogue match (Adafruit HT16K33 FeatherWing) is wrong for this tutorial; the plain 8x8 LED matrix (led-matrix-8x8, 1088AS-style, ports R1-R8 / C1-C8) was used instead.",
+   "Pin mapping follows the manual's table: matrix pin 1 (row5)=13, 2 (row7)=12, 3 (col2)=11, 4 (col3)=10, 5 (row8)=A2, 6 (col5)=A3, 7 (row6)=A4, 8 (row3)=A5, 9 (row1)=2, 10 (col4)=3, 11 (col6)=4, 12 (row4)=5, 13 (col1)=6, 14 (row2)=7, 15 (col7)=8, 16 (col8)=9.",
+   "The 8 x 1k resistors sit on the yellow wires on Arduino pins 2-9, as in the image: resistor leg 1 in the Uno header socket, leg 2 joined to a yellow jumper that goes to the matrix pin. Pins 10-13 and A2-A5 go straight to the matrix by green jumpers.",
+   "Breadboard rows in the image (1-30) are mapped to the catalogue's column numbers. Pot1 (rows 8-10) wiper goes to A1; pot2 (rows 13-15) wiper goes to A0. Pot GND/5V legs are wired to the right-hand rails; exact rail hole numbers are assumed because a rail is one strip.",
+   "The Uno red/black wires go from 5V and GND.1 to the + and - rails. The tutorial does not say which GND header pin is used, so GND.1 was assumed.",
+   "The Claude.ai Gmail, Google Calendar and Google Drive connectors need authorization (via the claude.ai connector settings) before they can be used. They were not needed for this task."
+  ]
+ },
+ "graph_initial": {
+  "title": "8x8 LED Matrix Row-Column Scanning",
+  "source_id": "https://docs.arduino.cc/built-in-examples/display/RowColumnScanning",
+  "new_part_types": [],
+  "parts": [
+   {
+    "id": "uno",
+    "type": "arduino-uno",
+    "label": "Arduino Board",
+    "props": []
+   },
+   {
+    "id": "bb1",
+    "type": "breadboard",
+    "label": "breadboard",
+    "props": []
+   },
+   {
+    "id": "matrix1",
+    "type": "led-matrix-8x8",
+    "label": "8 x 8 LED Matrix",
+    "props": []
+   },
+   {
+    "id": "pot1",
+    "type": "potentiometer-10k",
+    "label": "10k potentiometer (to A1)",
+    "props": []
+   },
+   {
+    "id": "pot2",
+    "type": "potentiometer-10k",
+    "label": "10k potentiometer (to A0)",
+    "props": []
+   },
+   {
+    "id": "wire1",
+    "type": "jumper-wire",
+    "label": "5V to + rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire2",
+    "type": "jumper-wire",
+    "label": "GND to - rail",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire3",
+    "type": "jumper-wire",
+    "label": "pot1 wiper to A1",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire4",
+    "type": "jumper-wire",
+    "label": "pot2 wiper to A0",
+    "props": [
+     {
+      "key": "colour",
+      "value": "blue"
+     }
+    ]
+   },
+   {
+    "id": "wire5",
+    "type": "jumper-wire",
+    "label": "pot1 GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire6",
+    "type": "jumper-wire",
+    "label": "pot1 5V",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   },
+   {
+    "id": "wire7",
+    "type": "jumper-wire",
+    "label": "pot2 GND",
+    "props": [
+     {
+      "key": "colour",
+      "value": "black"
+     }
+    ]
+   },
+   {
+    "id": "wire8",
+    "type": "jumper-wire",
+    "label": "pot2 5V",
+    "props": [
+     {
+      "key": "colour",
+      "value": "red"
+     }
+    ]
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "5V",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire1",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "a",
+    "v": "uno",
+    "v_port": "GND.1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire2",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "9t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "8b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot1",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "10b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot2",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot2",
+    "u_port": "SIG",
+    "v": "bb1",
+    "v_port": "14t.e",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot2",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot2",
+    "u_port": "GND",
+    "v": "bb1",
+    "v_port": "13b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pot2",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "15b.f",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pot2",
+    "u_port": "VCC",
+    "v": "bb1",
+    "v_port": "15b.f",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "9t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A1",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire3",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A1",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "14t.a",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire4",
+    "u_port": "b",
+    "v": "uno",
+    "v_port": "A0",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "8b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire5",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "10b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire6",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.5",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "13b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "13b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire7",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tn.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15b.j",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "a",
+    "v": "bb1",
+    "v_port": "15b.j",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.12",
+    "method": "insert",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "wire8",
+    "u_port": "b",
+    "v": "bb1",
+    "v_port": "tp.12",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [
+   {
+    "group": "rb",
+    "times": 8,
+    "parts": [
+     {
+      "id": "r",
+      "type": "resistor",
+      "label": "1k resistor",
+      "props": [
+       {
+        "key": "value",
+        "value": "1000"
+       }
+      ]
+     },
+     {
+      "id": "w",
+      "type": "jumper-wire",
+      "label": "yellow wire",
+      "props": [
+       {
+        "key": "colour",
+        "value": "yellow"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "1",
+      "v": "uno",
+      "v_port": "2",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "1",
+      "v": "uno",
+      "v_port": "2",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "r",
+      "u_port": "2",
+      "v": "w",
+      "v_port": "a",
+      "method": "clip",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "r",
+      "u_port": "2",
+      "v": "w",
+      "v_port": "a",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R1",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R1",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:3"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C4"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:4"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C6"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:5"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:R4"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:6"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C1"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:7"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:R2"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:8"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C7"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "uno:2",
+      "value": "uno:9"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "matrix1:R1",
+      "value": "matrix1:C8"
+     }
+    ]
+   },
+   {
+    "group": "dw",
+    "times": 8,
+    "parts": [
+     {
+      "id": "w",
+      "type": "jumper-wire",
+      "label": "green wire",
+      "props": [
+       {
+        "key": "colour",
+        "value": "green"
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "type": "joined",
+      "u": "w",
+      "u_port": "a",
+      "v": "uno",
+      "v_port": "13",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "w",
+      "u_port": "a",
+      "v": "uno",
+      "v_port": "13",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     },
+     {
+      "type": "joined",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R5",
+      "method": "insert",
+      "freedom": "rigid",
+      "reversible": "hand"
+     },
+     {
+      "type": "electrical",
+      "u": "w",
+      "u_port": "b",
+      "v": "matrix1",
+      "v_port": "R5",
+      "method": null,
+      "freedom": null,
+      "reversible": null
+     }
+    ],
+    "overrides": [
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:12"
+     },
+     {
+      "copy_number": 2,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R7"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:11"
+     },
+     {
+      "copy_number": 3,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:C2"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:10"
+     },
+     {
+      "copy_number": 4,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:C3"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A2"
+     },
+     {
+      "copy_number": 5,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R8"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A3"
+     },
+     {
+      "copy_number": 6,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:C5"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A4"
+     },
+     {
+      "copy_number": 7,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R6"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "uno:13",
+      "value": "uno:A5"
+     },
+     {
+      "copy_number": 8,
+      "kind": "attach",
+      "target": "matrix1:R5",
+      "value": "matrix1:R3"
+     }
+    ]
+   }
+  ],
+  "notes": [
+   "The suggested catalogue match (Adafruit HT16K33 FeatherWing) is wrong for this tutorial; the plain 8x8 LED matrix (led-matrix-8x8, 1088AS-style, ports R1-R8 / C1-C8) was used instead.",
+   "Pin mapping follows the manual's table: matrix pin 1 (row5)=13, 2 (row7)=12, 3 (col2)=11, 4 (col3)=10, 5 (row8)=A2, 6 (col5)=A3, 7 (row6)=A4, 8 (row3)=A5, 9 (row1)=2, 10 (col4)=3, 11 (col6)=4, 12 (row4)=5, 13 (col1)=6, 14 (row2)=7, 15 (col7)=8, 16 (col8)=9.",
+   "The 8 x 1k resistors sit on the yellow wires on Arduino pins 2-9, as in the image: resistor leg 1 in the Uno header socket, leg 2 joined to a yellow jumper that goes to the matrix pin. Pins 10-13 and A2-A5 go straight to the matrix by green jumpers.",
+   "Breadboard rows in the image (1-30) are mapped to the catalogue's column numbers. Pot1 (rows 8-10) wiper goes to A1; pot2 (rows 13-15) wiper goes to A0. Pot GND/5V legs are wired to the right-hand rails; exact rail hole numbers are assumed because a rail is one strip.",
+   "The Uno red/black wires go from 5V and GND.1 to the + and - rails. The tutorial does not say which GND header pin is used, so GND.1 was assumed.",
+   "The Claude.ai Gmail, Google Calendar and Google Drive connectors need authorization (via the claude.ai connector settings) before they can be used. They were not needed for this task."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 84.3,
+  "input_tokens": 38038,
+  "output_tokens": 10430,
+  "cost_usd": 0.1819,
+  "repair_rounds_used": 0
+ },
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 20.6,
+   "check_seconds": 0.0,
+   "input_tokens": 18408,
+   "output_tokens": 1083,
+   "cost_usd": 0.0308,
+   "listed": 6,
+   "matched": 5,
+   "looked_up": 1,
+   "found": 1,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "8 x 8 LED Matrix",
+     "card": "led-matrix-featherwing-ht16k33",
+     "skipped": false,
+     "looked_up": true,
+     "trail": [
+      [
+       "adafruit",
+       "card from https://www.adafruit.com/product/3153"
+      ]
+     ],
+     "seconds": 11.7
+    },
+    {
+     "item": "2x 10k ohm potentiometers",
+     "card": "potentiometer-10k",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    },
+    {
+     "item": "8x 1k ohm resistors",
+     "card": "resistor",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 63.7,
+   "input_tokens": 19630,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9347,
+   "cost_usd": 0.1511,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "final_issue_list": []
+}

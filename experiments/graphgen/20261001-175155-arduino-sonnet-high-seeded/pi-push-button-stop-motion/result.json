@@ -1,0 +1,52 @@
+{
+ "case": "pi-push-button-stop-motion",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 36.0,
+  "api_seconds": 31.9,
+  "first_token_seconds": 20.5,
+  "input_tokens": 20665,
+  "cache_read_tokens": 5414,
+  "output_tokens": 4665,
+  "cost_usd": 0.1087,
+  "turns": 2
+ },
+ "parts": 7,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "The Pi's camera (CSI) connector is not a named port in the raspberry-pi catalogue entry, so the ribbon cable attaches to the Pi with a null port.",
+  "The camera ribbon cable and camera module are new part types, since the catalogue has neither.",
+  "The pin-socket jumper leads are modelled as jumper-wire-mf. Port a is the female socket end on the Pi header and port b is the male pin end in the breadboard.",
+  "The black wire goes to the GND pin in the right-hand column, third row of the header (physical pin 6, GND.1). The orange wire goes to GP17 (physical pin 11, GPIO17). The diagram labels this wire yellow, but the picture shows orange.",
+  "The diagram shows the button at rows 3 and 5 of the a-e bank, with the wires in column a. I assumed the button legs sit in columns c and e, with l as column c and r as column e. I also assumed pushbutton pins 1.l/1.r are one terminal (row 3) and 2.l/2.r the other (row 5). Wires and button then share the strips 3t and 5t.",
+  "Python code, software installation (picamzero, ffmpeg, vlc) and the animation folder are not physical parts and are not in the graph.",
+  "The camera module is shown standing on its own, so no mounting hardware is modelled. The tutorial mentions a mount only as an option."
+ ],
+ "score": {
+  "families_listed": [
+   "button"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "pi-camera-module",
+   "family": "pi-camera-module",
+   "checked": false
+  },
+  {
+   "type": "csi-ribbon-cable",
+   "family": "wire",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 19.3
+}

@@ -1,0 +1,619 @@
+{
+ "nodes": [
+  {
+   "id": "nano1",
+   "type": "arduino-nano-every",
+   "label": "Arduino Nano Every",
+   "props": {}
+  },
+  {
+   "id": "rtc1",
+   "type": "ds3231-module",
+   "label": "DS3231 RTC module",
+   "props": {}
+  },
+  {
+   "id": "bme1",
+   "type": "bme280-breakout",
+   "label": "BME280 sensor",
+   "props": {}
+  },
+  {
+   "id": "strip1",
+   "type": "ws2812-strip-8",
+   "label": "WS2812B LED strip",
+   "props": {}
+  },
+  {
+   "id": "usb1",
+   "type": "usb-cable",
+   "label": "USB power cable",
+   "props": {}
+  },
+  {
+   "id": "wire1",
+   "type": "jumper-wire",
+   "label": "3V3 to RTC VCC",
+   "props": {
+    "colour": "red"
+   }
+  },
+  {
+   "id": "wire2",
+   "type": "jumper-wire",
+   "label": "GND to RTC GND",
+   "props": {
+    "colour": "black"
+   }
+  },
+  {
+   "id": "wire3",
+   "type": "jumper-wire",
+   "label": "A4 SDA",
+   "props": {
+    "colour": "blue"
+   }
+  },
+  {
+   "id": "wire4",
+   "type": "jumper-wire",
+   "label": "A5 SCL",
+   "props": {
+    "colour": "yellow"
+   }
+  },
+  {
+   "id": "wire5",
+   "type": "jumper-wire",
+   "label": "RTC pass-through VCC to BME280",
+   "props": {
+    "colour": "red"
+   }
+  },
+  {
+   "id": "wire6",
+   "type": "jumper-wire",
+   "label": "RTC pass-through GND to BME280",
+   "props": {
+    "colour": "black"
+   }
+  },
+  {
+   "id": "wire7",
+   "type": "jumper-wire",
+   "label": "RTC pass-through SDA to BME280",
+   "props": {
+    "colour": "blue"
+   }
+  },
+  {
+   "id": "wire8",
+   "type": "jumper-wire",
+   "label": "RTC pass-through SCL to BME280",
+   "props": {
+    "colour": "yellow"
+   }
+  },
+  {
+   "id": "wire9",
+   "type": "jumper-wire",
+   "label": "5V to LED strip VDC",
+   "props": {
+    "colour": "red"
+   }
+  },
+  {
+   "id": "wire10",
+   "type": "jumper-wire",
+   "label": "D7 to LED strip DIN",
+   "props": {
+    "colour": "white"
+   }
+  },
+  {
+   "id": "wire11",
+   "type": "jumper-wire",
+   "label": "GND to LED strip GND",
+   "props": {
+    "colour": "black"
+   }
+  }
+ ],
+ "edges": [
+  {
+   "type": "joined",
+   "u": "usb1",
+   "u_port": null,
+   "v": "nano1",
+   "v_port": "USB",
+   "method": "insert",
+   "freedom": "rigid",
+   "reversible": "hand",
+   "id": "e1"
+  },
+  {
+   "type": "joined",
+   "u": "wire1",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "3V3",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e2"
+  },
+  {
+   "type": "electrical",
+   "u": "wire1",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "3V3",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e3"
+  },
+  {
+   "type": "joined",
+   "u": "wire1",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "VCC",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e4"
+  },
+  {
+   "type": "electrical",
+   "u": "wire1",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e5"
+  },
+  {
+   "type": "joined",
+   "u": "wire2",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "GND.1",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e6"
+  },
+  {
+   "type": "electrical",
+   "u": "wire2",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "GND.1",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e7"
+  },
+  {
+   "type": "joined",
+   "u": "wire2",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "GND",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e8"
+  },
+  {
+   "type": "electrical",
+   "u": "wire2",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e9"
+  },
+  {
+   "type": "joined",
+   "u": "wire3",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "A4",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e10"
+  },
+  {
+   "type": "electrical",
+   "u": "wire3",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "A4",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e11"
+  },
+  {
+   "type": "joined",
+   "u": "wire3",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "SDA",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e12"
+  },
+  {
+   "type": "electrical",
+   "u": "wire3",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "SDA",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e13"
+  },
+  {
+   "type": "joined",
+   "u": "wire4",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "A5",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e14"
+  },
+  {
+   "type": "electrical",
+   "u": "wire4",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "A5",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e15"
+  },
+  {
+   "type": "joined",
+   "u": "wire4",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "SCL",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e16"
+  },
+  {
+   "type": "electrical",
+   "u": "wire4",
+   "u_port": "b",
+   "v": "rtc1",
+   "v_port": "SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e17"
+  },
+  {
+   "type": "joined",
+   "u": "wire5",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.VCC",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e18"
+  },
+  {
+   "type": "electrical",
+   "u": "wire5",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e19"
+  },
+  {
+   "type": "joined",
+   "u": "wire5",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "VCC",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e20"
+  },
+  {
+   "type": "electrical",
+   "u": "wire5",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "VCC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e21"
+  },
+  {
+   "type": "joined",
+   "u": "wire6",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.GND",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e22"
+  },
+  {
+   "type": "electrical",
+   "u": "wire6",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e23"
+  },
+  {
+   "type": "joined",
+   "u": "wire6",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "GND",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e24"
+  },
+  {
+   "type": "electrical",
+   "u": "wire6",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e25"
+  },
+  {
+   "type": "joined",
+   "u": "wire7",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.SDA",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e26"
+  },
+  {
+   "type": "electrical",
+   "u": "wire7",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.SDA",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e27"
+  },
+  {
+   "type": "joined",
+   "u": "wire7",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "SDA",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e28"
+  },
+  {
+   "type": "electrical",
+   "u": "wire7",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "SDA",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e29"
+  },
+  {
+   "type": "joined",
+   "u": "wire8",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.SCL",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e30"
+  },
+  {
+   "type": "electrical",
+   "u": "wire8",
+   "u_port": "a",
+   "v": "rtc1",
+   "v_port": "P.SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e31"
+  },
+  {
+   "type": "joined",
+   "u": "wire8",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "SCL",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e32"
+  },
+  {
+   "type": "electrical",
+   "u": "wire8",
+   "u_port": "b",
+   "v": "bme1",
+   "v_port": "SCL",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e33"
+  },
+  {
+   "type": "joined",
+   "u": "wire9",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "5V",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e34"
+  },
+  {
+   "type": "electrical",
+   "u": "wire9",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "5V",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e35"
+  },
+  {
+   "type": "joined",
+   "u": "wire9",
+   "u_port": "b",
+   "v": "strip1",
+   "v_port": "VDC",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e36"
+  },
+  {
+   "type": "electrical",
+   "u": "wire9",
+   "u_port": "b",
+   "v": "strip1",
+   "v_port": "VDC",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e37"
+  },
+  {
+   "type": "joined",
+   "u": "wire10",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "D7",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e38"
+  },
+  {
+   "type": "electrical",
+   "u": "wire10",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "D7",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e39"
+  },
+  {
+   "type": "joined",
+   "u": "wire10",
+   "u_port": "b",
+   "v": "strip1",
+   "v_port": "DIN",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e40"
+  },
+  {
+   "type": "electrical",
+   "u": "wire10",
+   "u_port": "b",
+   "v": "strip1",
+   "v_port": "DIN",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e41"
+  },
+  {
+   "type": "joined",
+   "u": "wire11",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "GND.2",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e42"
+  },
+  {
+   "type": "electrical",
+   "u": "wire11",
+   "u_port": "a",
+   "v": "nano1",
+   "v_port": "GND.2",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e43"
+  },
+  {
+   "type": "joined",
+   "u": "wire11",
+   "u_port": "b",
+   "v": "strip1",
+   "v_port": "GND",
+   "method": "solder",
+   "freedom": "rigid",
+   "reversible": "tool",
+   "id": "e44"
+  },
+  {
+   "type": "electrical",
+   "u": "wire11",
+   "u_port": "b",
+   "v": "strip1",
+   "v_port": "GND",
+   "method": null,
+   "freedom": null,
+   "reversible": null,
+   "id": "e45"
+  }
+ ]
+}

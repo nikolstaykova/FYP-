@@ -1,0 +1,149 @@
+{
+ "case": "docs-due-simple-waveform-generator",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 199.1,
+  "input_tokens": 107462,
+  "output_tokens": 27050,
+  "cost_usd": 0.4581,
+  "repair_rounds_used": 2
+ },
+ "parts": 18,
+ "edges": 74,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e5: port 'GND1' not on arduino-due"
+  ],
+  [
+   "V4",
+   "e6: port 'GND1' not on arduino-due"
+  ]
+ ],
+ "notes": [
+  "Exact breadboard hole positions are estimated from the image. Connectivity follows the manual's text and the circuit image.",
+  "The 3.3V pin is wired to the power rail (tp) and GND to the ground rail (tn). Long red and black wires carry power and ground to the bottom rails (bp, bn).",
+  "Each button has its input side (1.l/1.r) on the column holding the digital-pin wire (D2 or D3) and the 10K pull-down resistor to ground. The other side (2.l/2.r) goes to 3.3V from the bottom power rail.",
+  "Potentiometer: VCC to 3.3V, GND to ground, wiper (SIG) to A0 via the yellow wire. Its outer legs are interchangeable.",
+  "The DAC0 and DAC1 outputs are not wired because the tutorial only mentions an optional oscilloscope.",
+  "The resistor value is given as 10000 ohms, per the manual (10K). The catalogue default shows 100 ohms.",
+  "Wire colours are taken from the image.",
+  "Checker error E2 (due 5V, 5V2 and 5V3 'wired straight' together) is not caused by this graph, so I left the graph unchanged. No edge touches any Due 5V, 5V2 or 5V3 port, and no wire or part joins those pins. They are tied together only inside the board's catalogue entry, and I added no edge between them. The manual says to use 3.3V, and the image shows the red wire on the 3V3 header pin. The Due's I/O is 3.3V only, so moving the supply to 5V would be a real fault."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 62.1,
+   "input_tokens": 35981,
+   "output_tokens": 3728,
+   "cost_usd": 0.1099,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 6,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino Due",
+     "type": "arduino-due",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-giga-r1-wifi.html (This page sells the Arduino Giga R1 WiFi (SparkFun WRL-23319), not the Arduino D)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/arduino-mega-2560-r3.html (This page sells the Arduino Mega 2560 R3 (SparkFun DEV-11061, ATmega2560, 8-bit )"
+      ],
+      [
+       "pololu",
+       "card from https://www.pololu.com/product/2193"
+      ]
+     ],
+     "seconds": 55.5
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.3,
+   "input_tokens": 14713,
+   "cache_read_tokens": 5507,
+   "output_tokens": 9232,
+   "cost_usd": 0.1302,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.0,
+   "input_tokens": 24754,
+   "cache_read_tokens": 14711,
+   "output_tokens": 7053,
+   "cost_usd": 0.1136,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.7,
+   "input_tokens": 32014,
+   "cache_read_tokens": 24752,
+   "output_tokens": 7037,
+   "cost_usd": 0.1044,
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E2": 1
+   }
+  }
+ ],
+ "issues_first": 1,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "button",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 6.1
+}

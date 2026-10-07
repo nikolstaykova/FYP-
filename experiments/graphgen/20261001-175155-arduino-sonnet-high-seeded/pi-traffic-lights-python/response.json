@@ -1,0 +1,168 @@
+{
+ "graph": {
+  "title": "Python Traffic Lights: Pi-Stop on Raspberry Pi GPIO",
+  "source_id": "https://projects.raspberrypi.org/en/projects/python-traffic-lights",
+  "new_part_types": [
+   {
+    "type": "pi-stop",
+    "name": "Pi-Stop traffic light board",
+    "category": "led",
+    "ports": [
+     {
+      "name": "R",
+      "kind": "header-socket"
+     },
+     {
+      "name": "A",
+      "kind": "header-socket"
+     },
+     {
+      "name": "G",
+      "kind": "header-socket"
+     },
+     {
+      "name": "GND",
+      "kind": "header-socket"
+     }
+    ],
+    "conducts": [],
+    "through": [
+     [
+      "R",
+      "GND"
+     ],
+     [
+      "A",
+      "GND"
+     ],
+     [
+      "G",
+      "GND"
+     ]
+    ],
+    "symmetric": [],
+    "polarized": true,
+    "connector": false,
+    "mirror_of": null,
+    "rotation_symmetry": "none"
+   }
+  ],
+  "parts": [
+   {
+    "id": "pi1",
+    "type": "raspberry-pi",
+    "label": "Raspberry Pi computer",
+    "props": []
+   },
+   {
+    "id": "pistop1",
+    "type": "pi-stop",
+    "label": "pi-stop traffic light board",
+    "props": []
+   }
+  ],
+  "edges": [
+   {
+    "type": "joined",
+    "u": "pistop1",
+    "u_port": "R",
+    "v": "pi1",
+    "v_port": "GPIO22",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pistop1",
+    "u_port": "R",
+    "v": "pi1",
+    "v_port": "GPIO22",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pistop1",
+    "u_port": "A",
+    "v": "pi1",
+    "v_port": "GPIO27",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pistop1",
+    "u_port": "A",
+    "v": "pi1",
+    "v_port": "GPIO27",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pistop1",
+    "u_port": "G",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pistop1",
+    "u_port": "G",
+    "v": "pi1",
+    "v_port": "GPIO17",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   },
+   {
+    "type": "joined",
+    "u": "pistop1",
+    "u_port": "GND",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": "push-on",
+    "freedom": "rigid",
+    "reversible": "hand"
+   },
+   {
+    "type": "electrical",
+    "u": "pistop1",
+    "u_port": "GND",
+    "v": "pi1",
+    "v_port": "GND.2",
+    "method": null,
+    "freedom": null,
+    "reversible": null
+   }
+  ],
+  "repeats": [],
+  "notes": [
+   "The diagram shows the pi-stop's 4-pin socket pushed directly onto four adjacent GPIO header pins (GP22, GP27, GP17, GND), so there is no breadboard or jumper wire.",
+   "The pi-stop pins in the diagram are labelled R, A, G, GND; R=GPIO22, A (amber)=GPIO27, G=GPIO17.",
+   "The GND pin in the diagram is physical pin 9, which is GND.2 in the catalogue's raspberry-pi port naming.",
+   "The manual also lists '3x LEDs and resistors' as an alternative but gives no wiring details or diagram, so only the pi-stop build shown in the diagram is modelled.",
+   "The software steps (Mu editor, gpiozero code) are not physical parts and are not in the graph."
+  ]
+ },
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 19.1,
+  "api_seconds": 15.7,
+  "first_token_seconds": 9.8,
+  "input_tokens": 19477,
+  "cache_read_tokens": 5414,
+  "output_tokens": 2198,
+  "cost_usd": 0.0793,
+  "turns": 2
+ }
+}

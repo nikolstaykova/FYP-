@@ -1,0 +1,137 @@
+{
+ "case": "docs-mkr-mkr-zero-weather-data-logger",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 176.9,
+  "input_tokens": 43917,
+  "output_tokens": 7085,
+  "cost_usd": 0.1246,
+  "repair_rounds_used": 0
+ },
+ "parts": 11,
+ "edges": 33,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "arduino-mkr-zero is not in the provided catalogue, so it is defined as a new part type with a simplified port list.",
+  "The manual text says to plug the MKR Zero into the breadboard, but the image shows it separate and wired with 3 jumpers. I followed the image.",
+  "Breadboard positions are read from the image. The DHT22 sits in row a of columns 26-29 (VCC, SDA, NC, GND). The jumpers are in row b, the capacitor in row d, and the resistor in row e.",
+  "The capacitor and resistor are drawn with long bendable legs (blue and yellow). I treated them as legs inserted directly into the breadboard, not as extra jumper wires.",
+  "The 4.7k pull-up resistor goes between VCC (column 26) and data (column 27). The 100nF capacitor goes between VCC (column 26) and GND (column 29).",
+  "The microUSB cable is in the parts list but not drawn. It is attached to the MKR Zero USB port, and its far end is not modelled.",
+  "The microSD card is inserted in the MKR Zero SD slot. Its internal pin connections are not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 137.6,
+   "input_tokens": 32682,
+   "output_tokens": 1562,
+   "cost_usd": 0.0454,
+   "check_seconds": 0.0,
+   "matched": 7,
+   "listed": 9,
+   "ingested": 1,
+   "ingest": [
+    {
+     "part": "Arduino MKR Zero",
+     "type": "arduino-mkr-zero",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "no search result"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-CAN-SHIELD-p-3180.html (This page sells the Arduino MKR CAN Shield, which is an add-on shield for MKR bo)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/ARDUINO-MKR-485-SHIELD-p-3179.html (The page sells the Arduino MKR 485 Shield, an RS-485 expansion shield. It does n)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 44.7
+    },
+    {
+     "part": "microSD card",
+     "type": "microsd-card-media",
+     "found": true,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "card from https://www.sparkfun.com/microsd-card-32gb-class-10.html"
+      ]
+     ],
+     "seconds": 86.0
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.3,
+   "input_tokens": 11235,
+   "cache_read_tokens": 5507,
+   "output_tokens": 5523,
+   "cost_usd": 0.0792,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.667
+ },
+ "score_initial": {
+  "families_listed": [
+   "capacitor",
+   "resistor",
+   "sensor"
+  ],
+  "families_missing": [
+   "sensor"
+  ],
+  "hardware_recall": 0.667
+ },
+ "drafts": [],
+ "postprocess_ms": 6.5
+}

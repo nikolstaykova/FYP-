@@ -1,0 +1,130 @@
+{
+ "case": "docs-projects-full-control-of-your-tv-using-alexa-and-arduino-iot-cloud",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 247.4,
+  "input_tokens": 193671,
+  "output_tokens": 36580,
+  "cost_usd": 0.6543,
+  "repair_rounds_used": 2
+ },
+ "parts": 12,
+ "edges": 50,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged: 12 parts, all catalogue types.",
+  "[E8] kept on purpose, not a real problem. In the manual's image the red wire runs from the Nano's 3V3 pin to the breadboard + rail, so 3V3 is used as an OUTPUT. The Nano 33 IoT's on-board regulator makes 3.3 V from its USB supply (the board is powered over USB while it runs the sketch and talks to Arduino Cloud). The 4.5 V minimum applies to power fed INTO VIN or VUSB, and nothing here feeds the 3V3 pin. The catalogue card lists 3V3 among the supply pins, which is why the check fires.",
+  "I did not move the rail to VUSB (5 V) to quiet the check. That would put a 5 V-powered receiver output on D11, a 3.3 V-only, non-5V-tolerant input, which is a real fault. The manual has no separate supply part (no battery or adapter), so adding one would break the 'exactly the manual's parts' rule.",
+  "The IR receiver's legs sit in three neighbouring holes in the card's order GND, VCC, DAT (cols 1, 2, 3 of row e). The black wire goes to GND, the red wire to VCC and the green wire to DAT. This differs slightly from the image, but the nets are the same.",
+  "The breadboard has 30 columns in the catalogue, so the image layout (columns 30-63) is compressed to columns 1-27 with the same topology. The lower block of the image is the 't' bank. The Nano straddles the gap, with its bottom row in 't' row e and its top row in 'b' row f.",
+  "Nano pin order is inferred. Bottom row, left to right: D1, D0, RST, GND1, D2 to D12. Top row, left to right: VIN, GND, RST, VUSB, A7 to A0, AREF, 3V3, D13. The IR LED, on the anode side through the 330 ohm resistor, goes to D9 and the receiver's DAT goes to D11 (IRrecvDumpV2's default RECV_PIN). Both are read from the image positions.",
+  "Only the Nano pins that carry a connection (D9, D11, GND1, 3V3) are listed as joined. The other header pins sit in unused strips.",
+  "The sketch, Arduino Cloud Thing and Alexa skill are software, not part of the graph."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 11.7,
+   "input_tokens": 33368,
+   "cache_read_tokens": 0,
+   "output_tokens": 1416,
+   "cost_usd": 0.1476,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Alexa-controlled TV remote (Arduino Nano 33 IoT, IR LED and IR receiver)\", \"source_id\": \"TVRemoteController ("
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 12,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 178.1,
+   "input_tokens": 34978,
+   "cache_read_tokens": 33366,
+   "output_tokens": 24035,
+   "cost_usd": 0.2535,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Alexa-controlled TV remote (Arduino Nano 33 IoT, IR LED and IR receiver)\", \"source_id\": \"TVRemoteController ("
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "E8": 1,
+    "B2": 1
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 31.6,
+   "input_tokens": 59600,
+   "cache_read_tokens": 34976,
+   "output_tokens": 5939,
+   "cost_usd": 0.1649,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Alexa-controlled TV remote (Arduino Nano 33 IoT, IR LED and IR receiver)\", \"source_id\": \"TVRemoteController ("
+   ],
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 26.0,
+   "input_tokens": 65725,
+   "cache_read_tokens": 59598,
+   "output_tokens": 5190,
+   "cost_usd": 0.0883,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Alexa-controlled TV remote (Arduino Nano 33 IoT, IR LED and IR receiver)\", \"source_id\": \"TVRemoteController ("
+   ],
+   "check_seconds": 0.01,
+   "issues": 1,
+   "issue_rules": {
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 1,
+ "score": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 11.2
+}

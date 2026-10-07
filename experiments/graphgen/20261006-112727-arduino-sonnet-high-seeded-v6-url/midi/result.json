@@ -1,0 +1,197 @@
+{
+ "case": "midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 46.6,
+  "input_tokens": 98676,
+  "output_tokens": 5919,
+  "cost_usd": 0.1039,
+  "repair_rounds_used": 1
+ },
+ "parts": 9,
+ "edges": 20,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Fix: a resistor lead can't join a MIDI jack header-pin directly. I added two hook-up wires, wire4 (R1 to MIDI pin 4) and wire5 (R2 to MIDI pin 5), so step 1 had two parts too few. The tutorial lists 'hook-up wires' without a count.",
+  "The schematic wires everything directly with no breadboard, so none is used.",
+  "Connections: MIDI pin 5 goes through R2 (220 ohm) to Uno D1 (TX). MIDI pin 2 goes to GND. MIDI pin 4 goes through R1 (220 ohm) to 5V. MIDI pins 1 and 3 are unused.",
+  "The tutorial doesn't say how the wires attach to the resistors and jack. I assumed soldered joints at the resistor leads and jack pins, and wire ends pushed into the Uno header sockets."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 19.1,
+   "input_tokens": 45731,
+   "cache_read_tokens": 42753,
+   "output_tokens": 1257,
+   "cost_usd": 0.033,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/communication/Midi/\"}",
+    "StructuredOutput {\"title\": \"MIDI Note Player\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/communication/Midi/\", \"new_part_ty"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 7,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 12.1,
+   "input_tokens": 25343,
+   "cache_read_tokens": 23995,
+   "output_tokens": 1955,
+   "cost_usd": 0.0297,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"MIDI Note Player\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/communication/Midi/\", \"new_part_ty"
+   ],
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.4,
+   "input_tokens": 27602,
+   "cache_read_tokens": 25341,
+   "output_tokens": 2707,
+   "cost_usd": 0.0412,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"MIDI Note Player\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/communication/Midi/\", \"new_part_ty"
+   ],
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 5,
+  "nets_matched": 3,
+  "net_precision": 0.6,
+  "net_recall": 0.75,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "midi-jack": 1,
+   "resistor": 2
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "midi-jack",
+     "5"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "1"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "midi-jack",
+     "5"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 14.9
+}

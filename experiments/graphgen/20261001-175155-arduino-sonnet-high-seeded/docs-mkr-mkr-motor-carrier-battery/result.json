@@ -1,0 +1,68 @@
+{
+ "case": "docs-mkr-mkr-motor-carrier-battery",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 27.4,
+  "api_seconds": 23.6,
+  "first_token_seconds": 11.0,
+  "input_tokens": 23278,
+  "cache_read_tokens": 5414,
+  "output_tokens": 3869,
+  "cost_usd": 0.1112,
+  "turns": 2
+ },
+ "parts": 5,
+ "edges": 23,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 2,
+ "problems": [
+  [
+   "V3",
+   "e15: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e17: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e19: lead \u2194 lug is not a compatible pair"
+  ],
+  [
+   "V3",
+   "e21: lead \u2194 lug is not a compatible pair"
+  ]
+ ],
+ "notes": [
+  "The manual says 'Arduino MKR family board' without naming a model; arduino-mkr-1000 was chosen (the sketch comments mention MKR1000). Any MKR board would work.",
+  "The MKR Motor Carrier and the 3S LiPo battery (11.1 V) are not in the catalogue, so they are new part types. The carrier lists only the header pins and terminals this tutorial uses.",
+  "The battery can go on the male pins or the blue terminal block (VIN/GND); the terminal block was chosen. The carrier's ON/OFF switch is not modelled.",
+  "The optional power supply is omitted (the LiPo battery is the supply). The DC motor is optional but included, since the circuit image shows it on M1+/M1-.",
+  "The usb-cable has no catalogue ports, so its edge to the board's USB port has no port on the cable side. The computer on the other end of the cable is not shown in the manual and is omitted.",
+  "Which motor lead goes to M1+ and which to M1- is arbitrary, as the motor is symmetric. The 6, 11 and 12 header connections carry the carrier's communication lines; the manual only says to mount the board."
+ ],
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-motor-carrier",
+   "family": "mkr-motor-carrier",
+   "checked": false
+  },
+  {
+   "type": "lipo-battery-3s",
+   "family": "lipo-battery-3s",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 7.7
+}

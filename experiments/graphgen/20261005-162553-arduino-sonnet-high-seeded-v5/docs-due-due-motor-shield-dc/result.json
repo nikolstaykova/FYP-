@@ -1,0 +1,118 @@
+{
+ "case": "docs-due-due-motor-shield-dc",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 93.8,
+  "input_tokens": 96397,
+  "output_tokens": 8933,
+  "cost_usd": 0.1743,
+  "repair_rounds_used": 2
+ },
+ "parts": 5,
+ "edges": 14,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts unchanged from step 1: no breadboard or jumper wires are used.",
+  "The lead-to-screw warning on the motor-to-shield terminal edges (motor wire 1 to MOTOR_A+, wire 2 to MOTOR_A-) is not a real problem for this manual, so I kept those edges unchanged. The manual says to connect the motor's two wires to the screw terminals of channel A, and the photo shows exactly that. The bare wire ends are clamped under the terminal block's screws, which is a normal and valid connection. The catalogue gives the shield's terminal ports a 'screw' kind and the motor's ports a 'lead' kind, and no other port pairing describes this join. Replacing the motor wires with extra jumper wires or dropping the edges would misstate the build.",
+  "The shield stacks on the Due. Its headers carry the control signals (PWM_A on pin 3, DIR_A on 12, BRAKE_A on 9, current sense on A0), but the Due catalogue card has no digital or analog pin ports. Those pass-through signals are therefore covered by the whole-board stacking join rather than per-pin edges. VIN and GND are given explicit edges.",
+  "Motor polarity: wire 1 goes to MOTOR_A+ and wire 2 to MOTOR_A-. The photo shows the red lead on the + terminal and the black lead on the - terminal. Swapping them only reverses the direction.",
+  "The 12 V wall wart plugs into the Due's DC power jack, which feeds VIN and the shield's motor supply. 12 V is within the Due's 6-20 V range and the motor's 6-12 V range.",
+  "The USB cable goes to the computer for programming; the computer is not modelled."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 44.2,
+   "input_tokens": 33610,
+   "cache_read_tokens": 19787,
+   "output_tokens": 1090,
+   "cost_usd": 0.0687,
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-due",
+    "wall-wart-12v"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 16.1,
+   "input_tokens": 18236,
+   "cache_read_tokens": 17287,
+   "output_tokens": 2513,
+   "cost_usd": 0.031,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 15.0,
+   "input_tokens": 20938,
+   "cache_read_tokens": 18234,
+   "output_tokens": 2486,
+   "cost_usd": 0.0353,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  },
+  {
+   "phase": "repair2",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.5,
+   "input_tokens": 23613,
+   "cache_read_tokens": 20936,
+   "output_tokens": 2844,
+   "cost_usd": 0.0393,
+   "check_seconds": 0.0,
+   "issues": 2,
+   "issue_rules": {
+    "V3": 2
+   }
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 2,
+ "score": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "motor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [],
+ "postprocess_ms": 4.9
+}

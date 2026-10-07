@@ -1,0 +1,347 @@
+{
+ "case": "tone-multiple",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 33.7,
+  "input_tokens": 18860,
+  "output_tokens": 4829,
+  "cost_usd": 0.0815,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 40,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The speaker is not in the catalogue, so I added a 'speaker' type with POS (red lead) and NEG (black lead).",
+  "The manual's parts list says 100 ohm resistors, but the schematic labels them 10k ohm. I used 100 ohm, following the parts list and the code comments.",
+  "The circuit image shows the speaker leads plugged straight into the breadboard. The breadboard's top rail (tn) is the ground rail, and the black wire runs from Uno GND to it.",
+  "The exact rail hole numbers (tn.1, 7, 15, 23) are estimated from the image. The rail is one strip, so only the strip matters.",
+  "Each resistor bridges the centre gap, from row f (bank b) to row e (bank t) in the same column. The speaker red lead goes in row g of the same column strip as the resistor's top end. The signal wire goes in row d of the bottom-half column.",
+  "Pin mapping: Uno pin 8 goes to the speaker in column 8 (blue wire), pin 7 to column 17 (teal wire), and pin 6 to column 25 (orange wire).",
+  "Wire-to-breadboard and wire-to-Uno joins are written as plain insert joins."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 0.0,
+   "check_seconds": 0.0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0,
+   "listed": 5,
+   "matched": 5,
+   "looked_up": 0,
+   "found": 0,
+   "items": [
+    {
+     "item": "Arduino Board",
+     "card": "arduino-uno",
+     "skipped": false
+    },
+    {
+     "item": "3 8 ohm speakers",
+     "card": "speaker",
+     "skipped": false
+    },
+    {
+     "item": "3 100 ohm resistor",
+     "card": "resistor",
+     "skipped": false
+    },
+    {
+     "item": "hook-up wires",
+     "card": "jumper-wire",
+     "skipped": false
+    },
+    {
+     "item": "breadboard",
+     "card": "breadboard",
+     "skipped": false
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 33.7,
+   "input_tokens": 18860,
+   "cache_read_tokens": 11120,
+   "output_tokens": 4829,
+   "cost_usd": 0.0815,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 7,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "buzzer": 3
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker": 3,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "buzzer",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ]
+   ],
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "POS"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "score_initial": {
+  "nets_expected": 4,
+  "nets_built": 7,
+  "nets_matched": 0,
+  "net_precision": 0.0,
+  "net_recall": 0.0,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "buzzer": 3
+  },
+  "inventory_built": {
+   "board": 1,
+   "speaker": 3,
+   "resistor": 3
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "buzzer",
+     "1"
+    ],
+    [
+     "buzzer",
+     "1"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "buzzer",
+     "2"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ],
+    [
+     "speaker",
+     "NEG"
+    ]
+   ],
+   [
+    [
+     "resistor",
+     "x"
+    ],
+    [
+     "speaker",
+     "POS"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "6"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 5.2
+}

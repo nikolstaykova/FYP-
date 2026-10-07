@@ -1,0 +1,81 @@
+{
+ "case": "pi-rpi-physical-connect-motor-controller",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 50.1,
+  "input_tokens": 57011,
+  "output_tokens": 7478,
+  "cost_usd": 0.1402,
+  "repair_rounds_used": 1
+ },
+ "parts": 5,
+ "edges": 22,
+ "repeats": [],
+ "new_types_declared": 2,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "No breadboard or separate jumper wires are used: the battery pack and motors have their own fixed leads, which are screwed into the controller board's terminal blocks.",
+  "Battery red lead goes to VIN and black lead to GND, as the manual requires. The battery pack is switched off while wiring.",
+  "Motors can go either way round, so the left motor is Motor B and the right motor is Motor A. The terminal labels in the photos are only partly legible, so the A/B assignment is inferred.",
+  "The board sits on the Pi's GPIO header, so the board's GPIO ports are header-sockets and the Pi's are header-pins. This fixes the incompatible header-pin to header-pin pairs. The manual says the board uses GPIO 7, 8, 9 and 10. Only those and one GND pin are modelled. Its other pass-through pins are ignored.",
+  "Which GPIO pin drives which motor terminal is not given, so no through-connections are modelled inside the controller board.",
+  "The header GND pin is taken as the Pi's GND.1. The exact GND pin is not shown.",
+  "The 4xAA battery pack is not in the catalogue, so it is a new type with POS and NEG leads and a built-in on/off switch."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 32.2,
+   "input_tokens": 26063,
+   "cache_read_tokens": 16735,
+   "output_tokens": 4392,
+   "cost_usd": 0.0846,
+   "check_seconds": 0.01,
+   "issues": 5,
+   "issue_rules": {
+    "V3": 5
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 17.9,
+   "input_tokens": 30948,
+   "cache_read_tokens": 26061,
+   "output_tokens": 3086,
+   "cost_usd": 0.0556,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 5,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "score_initial": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [
+  {
+   "type": "battery-pack-4xaa",
+   "family": "battery-pack-4xaa",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 7.4
+}

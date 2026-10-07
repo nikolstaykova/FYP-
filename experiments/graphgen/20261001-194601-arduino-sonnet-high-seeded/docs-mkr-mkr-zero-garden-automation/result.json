@@ -1,0 +1,121 @@
+{
+ "case": "docs-mkr-mkr-zero-garden-automation",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 110.7,
+  "input_tokens": 53537,
+  "output_tokens": 18480,
+  "cost_usd": 0.3131,
+  "repair_rounds_used": 1
+ },
+ "parts": 24,
+ "edges": 61,
+ "repeats": [],
+ "new_types_declared": 8,
+ "new_types_added": 7,
+ "problems": [],
+ "notes": [
+  "Fixed port kinds: Grove cable ends are now 'wire-end' (plugs) and every Grove socket on the modules, carrier and hub is a 'header-socket', so each cable join is a compatible wire-end into header-socket pair. The MKR Zero's USB receptacle is also a header-socket.",
+  "The Grove I2C Hub, Grove cable, and each Grove module are new part types; a Grove 4-pin connector is modelled as one bundled port (GROVE / A0 / D0 / D1 / TWI), so VCC/GND/signal lines are not separated. The TWI (SDA+SCL) pair is likewise bundled as one 'TWI' port on the MKR Zero and the carrier.",
+  "The catalogue grove-relay-module has separate VCC/GND/SIG ports; the Grove cable is attached to its SIG port to stand for the Grove connector.",
+  "The Arduino MKR Zero is a new type (not in the catalogue). It plugs onto the MKR Connector Carrier via its headers; only the pins used (A0, D0, D1, TWI, VIN, GND) are modelled.",
+  "The manual's BOM lists a Grove DPS310 barometric sensor and OLED connected via the I2C hub on the TWI port; the hub's third output is unused.",
+  "The 'next step' power diagram is not available as text; the relay is assumed wired as: 12V supply + -> carrier VIN screw terminal -> relay COM; relay NO -> pump; pump other terminal -> GND. The 12V supply is also assumed to power the board through the carrier's VIN/GND screw block.",
+  "Two solid wires of different lengths (about 10 cm difference) are soldered to two non-adjacent (not internally connected) tinned bars of the water sensor; the other ends are placed in the tank. They are modelled as jumper-wire parts; the solder itself is recorded as the 'solder' join method rather than a part. The tank, plant vase and USB host are not modelled.",
+  "The pump/valve is modelled as a dc-motor. The USB cable is modelled port-less and connected to the MKR Zero's USB port; its host end is not specified."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 59.8,
+   "input_tokens": 21161,
+   "cache_read_tokens": 14306,
+   "output_tokens": 10218,
+   "cost_usd": 0.1325,
+   "check_seconds": 0.01,
+   "issues": 12,
+   "issue_rules": {
+    "V3": 12
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 50.9,
+   "input_tokens": 32376,
+   "cache_read_tokens": 21159,
+   "output_tokens": 8262,
+   "cost_usd": 0.1806,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 12,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "lcd",
+   "sensor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "mkr-connector-carrier",
+   "family": "mkr-connector-carrier",
+   "checked": false
+  },
+  {
+   "type": "grove-cable",
+   "family": "wire",
+   "checked": false
+  },
+  {
+   "type": "grove-moisture-sensor",
+   "family": "grove-moisture-sensor",
+   "checked": false
+  },
+  {
+   "type": "grove-water-sensor",
+   "family": "grove-water-sensor",
+   "checked": false
+  },
+  {
+   "type": "grove-i2c-hub",
+   "family": "grove-i2c-hub",
+   "checked": false
+  },
+  {
+   "type": "grove-dps310",
+   "family": "grove-dps310",
+   "checked": false
+  },
+  {
+   "type": "grove-oled-096",
+   "family": "led",
+   "checked": true,
+   "polarized_ok": true,
+   "symmetric_ok": true,
+   "port_count_ok": false
+  }
+ ],
+ "postprocess_ms": 31.3
+}

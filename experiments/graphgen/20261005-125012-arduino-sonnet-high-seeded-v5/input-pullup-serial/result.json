@@ -1,0 +1,133 @@
+{
+ "case": "input-pullup-serial",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 27.1,
+  "input_tokens": 39532,
+  "output_tokens": 3727,
+  "cost_usd": 0.0745,
+  "repair_rounds_used": 0
+ },
+ "parts": 5,
+ "edges": 16,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "The onboard LED on pin 13 is part of the Uno, so there is no external LED or resistor. Pin 2 uses the internal pull-up (INPUT_PULLUP).",
+  "The image shows the pushbutton straddling the centre gap with its legs in columns 10 and 12. I used the catalogue's naming, where bank 't' is rows a-e and bank 'b' is rows f-j. The button therefore sits in rows f (bank b) and e (bank t).",
+  "The image does not show which button legs are joined internally. I took the two legs in column 10 as side 1 and the two in column 12 as side 2. Pressing the button then joins the pin 2 column to the GND column, as the schematic shows.",
+  "The teal wire goes from Uno pin 2 to column 10, row c (10t.c). The black wire goes from the Uno power-header GND (the second GND, GND.2) to column 12, row c (12t.c)."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 5.8,
+   "input_tokens": 19385,
+   "cache_read_tokens": 12122,
+   "output_tokens": 602,
+   "cost_usd": 0.0375,
+   "check_seconds": 0.0,
+   "parts_listed": 5,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 21.3,
+   "input_tokens": 20147,
+   "cache_read_tokens": 19383,
+   "output_tokens": 3125,
+   "cost_usd": 0.037,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 4,
+  "nets_built": 2,
+  "nets_matched": 1,
+  "net_precision": 0.5,
+  "net_recall": 0.25,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1,
+   "led": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "button",
+     "x"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 16.0
+}

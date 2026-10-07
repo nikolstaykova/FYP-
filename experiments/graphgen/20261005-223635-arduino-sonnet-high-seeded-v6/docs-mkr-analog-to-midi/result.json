@@ -1,0 +1,119 @@
+{
+ "case": "docs-mkr-analog-to-midi",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 240.6,
+  "input_tokens": 177098,
+  "output_tokens": 35783,
+  "cost_usd": 0.5903,
+  "repair_rounds_used": 1
+ },
+ "parts": 23,
+ "edges": 94,
+ "repeats": [],
+ "new_types_declared": 3,
+ "new_types_added": 2,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1, except that the board's type changed. The catalogue's arduino-mkr1000 card has no analog or digital pins (only USB, VIN, VCC, GND, BAT), so the A0 wire could not be attached. The board is now the new type arduino-mkr1000-headers (MKR1000 with pin headers, ports A0-A6, D0-D14, VCC, GND and others), modelled on the existing arduino-yun-headers entry. It is still the same physical MKR1000 board.",
+  "Breadboard hole names follow the catalogue: rows a-e are bank 't', rows f-j are bank 'b'. In the image rows A-E are drawn at the bottom half, and the rails are tp (top, red row), bn (bottom, blue/negative row).",
+  "The LMV358 has its notch at the left. Pins 1-4 (OUT1, IN1-, IN1+, GND) are in 14-17t.e, and pins 5-8 (IN2+, IN2-, OUT2, VCC) are in 17-14b.f.",
+  "Net list built from the image and schematic. VCC feeds R8 (100k) to the + input, which is biased to mid-supply. R9 (100k) goes from the + input to GND. C1 (100n) couples the jack signal to the + input. R10 (47k) goes from the - input to GND. R11 (47k) goes to the trimmer end, and the trimmer wiper goes to the op-amp output (non-inverting gain stage).",
+  "In the image the brown wire from the MKR1000 A0 pin lands on the op-amp pin 1 (OUT1) column, so A0 is wired to OUT1. This is as the image shows. The schematic's DAC0/A0 comes from the second amplifier, whose inputs are left unconnected there.",
+  "The trimmer is placed in 1-3t.e, with the wiper on column 2 and the end pin on column 3 (R11). The purple wire goes from 2t.d to op-amp OUT1. In the image the purple wire starts in the top-half column 2, but only this placement makes the wiper connection electrically work.",
+  "Jack ports: SLEEVE goes to GND and RING1 (right channel) goes through C1 to the amplifier. The wires from the jack are treated as soldered to the breakout pins.",
+  "The MKR1000 is powered over USB. No USB cable is in the parts list or image, so none is added.",
+  "The resistor leads were read as 4 holes apart. R8 is 12-16, R9 is 16-20, R11 is 3-7 and R10 is 6-10. The resistor colour bands were hard to read, so values are taken from the parts list and schematic."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 37.0,
+   "input_tokens": 57118,
+   "cache_read_tokens": 31565,
+   "output_tokens": 3124,
+   "cost_usd": 0.1398,
+   "check_seconds": 0.0,
+   "parts_listed": 23,
+   "changed_in_build": 0,
+   "looked_up": [
+    "capacitor-100nf",
+    "lmv358"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 155.8,
+   "input_tokens": 64668,
+   "cache_read_tokens": 61065,
+   "output_tokens": 22269,
+   "cost_usd": 0.2493,
+   "check_seconds": 0.01,
+   "issues": 2,
+   "issue_rules": {
+    "V4": 2
+   }
+  },
+  {
+   "phase": "repair1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 47.8,
+   "input_tokens": 55312,
+   "cache_read_tokens": 32616,
+   "output_tokens": 10390,
+   "cost_usd": 0.2012,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 2,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "capacitor",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "capacitor-100nf",
+   "family": "capacitor",
+   "checked": true,
+   "polarized_ok": false,
+   "symmetric_ok": false,
+   "port_count_ok": true
+  },
+  {
+   "type": "arduino-mkr1000-headers",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 30.3
+}

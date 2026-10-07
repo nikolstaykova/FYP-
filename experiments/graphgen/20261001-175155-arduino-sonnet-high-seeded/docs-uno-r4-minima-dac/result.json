@@ -1,0 +1,47 @@
+{
+ "case": "docs-uno-r4-minima-dac",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "seconds": 40.1,
+  "api_seconds": 37.0,
+  "first_token_seconds": 20.2,
+  "input_tokens": 16075,
+  "cache_read_tokens": 5414,
+  "output_tokens": 6005,
+  "cost_usd": 0.1038,
+  "turns": 2
+ },
+ "parts": 11,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The UNO R4 Minima is not in the catalogue, so a new part type with only the used header ports (5V, GND, A0, A5) was created. The picture shows a different board outline.",
+  "The breadboard in the image has rows f-j in the top half and a-e in the bottom half. The catalogue names rows f-j bank 'b' and rows a-e bank 't', so I used those names. The pot's wiper is in column 14 at row f (top half). Its outer pins are in columns 13 and 15 at row e (bottom half).",
+  "The potentiometer's outer pins are wired as VCC (column 13, to the + rail by the red jumper) and GND (column 15, to the - rail by the black jumper). The wiper (SIG) goes to A5 via the yellow wire in column 14 (hole 14b.j).",
+  "Rail hole numbers are estimated from the picture. 5V goes to bp.2 (+ rail, lower row) and GND goes to bn.1 (- rail, upper row). The red jumper ends at bp.11. The black jumpers end at bn.12 and bn.25.",
+  "The buzzer legs are in columns 26 and 30 at row e. A0 (yellow wire) goes to column 26 row a, so A0 drives buzzer pin 1. A black jumper from column 30 row a goes to the GND rail, so buzzer pin 2 is ground. The buzzer's polarity is assumed.",
+  "The sketch's DAC output is on A0, which is why the buzzer is fed from A0. The potentiometer on A5 sets the frequency."
+ ],
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-uno-r4-minima",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 4.5
+}

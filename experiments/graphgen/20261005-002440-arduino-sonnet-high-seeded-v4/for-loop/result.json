@@ -1,0 +1,72 @@
+{
+ "case": "for-loop",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 62.4,
+  "input_tokens": 19216,
+  "output_tokens": 10796,
+  "cost_usd": 0.1426,
+  "repair_rounds_used": 0
+ },
+ "parts": 27,
+ "edges": 100,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Breadboard hole names follow the catalogue (bank 't' = top half rows a-e, 'b' = bottom half rows f-j). The image labels the top half j-f and the bottom half e-a, so I mapped by physical position: top half rows j,i,f -> t.a, t.b, t.e; bottom half rows e,d -> b.f, b.g.",
+  "Each LED sits in the top half with anode in column 7/10/13/16/19/22 and cathode in the next column (8/11/14/17/20/23). I read the longer leg on the left as the anode, matching the schematic, where the resistor feeds the anode.",
+  "Each resistor straddles the centre gap in the same column as its LED's anode: leg 1 in the top half, leg 2 in the bottom half. A blue wire from Arduino pins 7, 6, 5, 4, 3, 2 reaches the bottom half of that column.",
+  "Each LED cathode column has a short black jumper to the top ground rail (tn). Rail hole numbers are approximate, read from the picture. The long black wire runs from the Arduino GND next to AREF (GND.1) to the same rail (tn.1).",
+  "The schematic shows 220 ohm resistors; the bill of materials says the same.",
+  "The first circuit image is the authority on the connections; the schematic agrees (pins 2-7 -> resistor -> LED -> GND)."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 62.4,
+   "input_tokens": 19216,
+   "cache_read_tokens": 11120,
+   "output_tokens": 10796,
+   "cost_usd": 0.1426,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 13,
+  "nets_built": 13,
+  "nets_matched": 13,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "resistor": 6,
+   "led": 6
+  },
+  "inventory_built": {
+   "board": 1,
+   "led": 6,
+   "resistor": 6
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 21.8
+}

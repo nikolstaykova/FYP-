@@ -1,0 +1,101 @@
+{
+ "case": "pi-generic-electronics-connect-ultrasonic-distance-sensor",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 47.7,
+  "input_tokens": 11953,
+  "output_tokens": 6880,
+  "cost_usd": 0.1011,
+  "repair_rounds_used": 0
+ },
+ "parts": 12,
+ "edges": 44,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [
+  [
+   "V4",
+   "e11: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e12: port '5V' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e15: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e16: port 'GPIO4' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e35: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e36: port 'GPIO17' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e43: port 'GND' not on rpi-4b"
+  ],
+  [
+   "V4",
+   "e44: port 'GND' not on rpi-4b"
+  ]
+ ],
+ "notes": [
+  "The image shows 7 wires (red, green, 3 black, 2 blue) although the parts list says 6; all 7 are included.",
+  "The Pi is rpi-4b, whose catalogue only lists GPIO_HEADER. I named header pins 5V, GPIO4, GPIO17 and GND, as the task instructs. In the image these are GP4 (physical pin 7), GP17 (pin 11), 5V (pin 2) and the GND pin at the far right of the bottom row (pin 39).",
+  "The sensor sits in row j of columns 1-4 (VCC, Trig, Echo, GND). Row j-f is the 'b' bank in the catalogue naming, and rows e-a are the 't' bank.",
+  "The Echo wire goes from 3b.f to 4t.d. The 330\u03a9 resistor runs from 4t.c to 8t.c, and the 470\u03a9 resistor from 8t.b to 12t.b. The 8t strip, which holds the GPIO17 wire at 8t.e, is the divider midpoint. The 470\u03a9 resistor then goes to ground through a short black wire from 12t.a to the bottom negative rail.",
+  "Rail hole numbers (bn.12, bn.24, bn.28) are estimated from pixel positions in the image. All of 'bn' is one strip, so electrically the numbers don't matter.",
+  "Breadboard resistor columns and rows are estimated from the image."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 6.1,
+   "input_tokens": 4434,
+   "output_tokens": 393,
+   "cost_usd": 0.0183,
+   "check_seconds": 0.0,
+   "matched": 6,
+   "listed": 6,
+   "ingested": 0,
+   "ingest": []
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 41.6,
+   "input_tokens": 7519,
+   "cache_read_tokens": 3203,
+   "output_tokens": 6487,
+   "cost_usd": 0.0828,
+   "check_seconds": 0.01,
+   "issues": 8,
+   "issue_rules": {
+    "V4": 8
+   }
+  }
+ ],
+ "issues_first": 8,
+ "issues_final": 8,
+ "score": {
+  "families_listed": [],
+  "families_missing": [],
+  "hardware_recall": null
+ },
+ "drafts": [],
+ "postprocess_ms": 7.9
+}

@@ -1,0 +1,112 @@
+{
+ "case": "docs-uno-r4-wifi-dac",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v5",
+  "builder": "parts-then-build",
+  "seconds": 111.6,
+  "input_tokens": 83885,
+  "output_tokens": 13938,
+  "cost_usd": 0.2324,
+  "repair_rounds_used": 1
+ },
+ "parts": 11,
+ "edges": 38,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "Parts are unchanged from step 1.",
+  "Checker finding E8 (uno1 needs at least 6.0 V but its 5V pin is at 5 V) is not a real problem for this manual, so I kept the 5V wire. On the UNO R4 WiFi the 5V header pin is a regulated 5 V output, not a supply input. The board is powered over its USB port (or by 6-24 V on VIN or the barrel jack), and the 6 V minimum applies only to VIN and the jack. The diagram shows the red wire from the board's 5V pin to the breadboard + rail, which feeds the potentiometer. Nothing is fed into the board's 5V pin.",
+  "The tutorial does not list a USB cable or power adapter, so none is added. The 5 V on the 5V pin comes from the board's own USB power.",
+  "Breadboard rows follow the diagram's printed labels: rows a-e are the 't' bank and rows f-j are the 'b' bank, although the diagram draws a-e in the lower half. The rail holes the wires use are the bottom rails of the diagram.",
+  "Rail hole numbers (bn.1, bp.2, bp.11, bn.12, bn.25) are estimated from the positions in the picture. Each rail is one strip, so the exact hole does not change the circuit.",
+  "Bottom rail: the upper row (black line) is the ground rail 'bn' and the lower row (red line, +) is the 5V rail 'bp'.",
+  "Potentiometer: the outer legs are in 13t.e and 15t.e and the wiper is in 14b.f, across the centre gap. 13 is wired to 5V and 15 to GND, and the wiper goes to A5 through a yellow wire in 14b.j. The pot's end legs are symmetric, so VCC sits at 13 and GND at 15. The tutorial gives no value, so the catalogue 10k type is an assumption.",
+  "Piezo buzzer: leg 2 (+) is in 26t.e with the yellow wire from A0 (the DAC output), and leg 1 (-) is in 30t.e with a short black wire to the ground rail.",
+  "The yellow wire from A5 goes to the potentiometer wiper and A0 goes to the buzzer. The diagram shows this, and I kept it as drawn.",
+  "The Arduino UNO R4 WiFi was not found by lookup_part, so a new part type was drafted using the UNO R3 pin names."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 45.4,
+   "input_tokens": 36266,
+   "cache_read_tokens": 21239,
+   "output_tokens": 2023,
+   "cost_usd": 0.0835,
+   "check_seconds": 0.0,
+   "parts_listed": 11,
+   "changed_in_build": 0,
+   "looked_up": [
+    "arduino-uno-r4-wifi"
+   ]
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 40.3,
+   "input_tokens": 20351,
+   "cache_read_tokens": 18491,
+   "output_tokens": 6733,
+   "cost_usd": 0.0757,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  },
+  {
+   "phase": "repair-after-upkeep",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 25.9,
+   "input_tokens": 27268,
+   "cache_read_tokens": 20349,
+   "output_tokens": 5182,
+   "cost_usd": 0.0732,
+   "check_seconds": 0.0,
+   "issues": 3,
+   "issue_rules": {
+    "V4": 2,
+    "E8": 1
+   }
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 3,
+ "score": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "buzzer",
+   "pot"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "arduino-uno-r4-wifi",
+   "family": "board",
+   "checked": false
+  }
+ ],
+ "postprocess_ms": 5.1
+}

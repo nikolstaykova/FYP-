@@ -1,0 +1,323 @@
+{
+ "case": "arduino-isp",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v6",
+  "builder": "parts-then-build",
+  "seconds": 40.9,
+  "input_tokens": 80653,
+  "output_tokens": 4787,
+  "cost_usd": 0.0993,
+  "repair_rounds_used": 0
+ },
+ "parts": 10,
+ "edges": 29,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "The parts are the same as in step 1. Nothing was added or dropped.",
+  "The page shows several set-ups (UNO to UNO, UNO to Nano, Mega to UNO, MKR1000 to UNO). I built the UNO programmer to UNO target one with old-style wiring: D13 to D13 (SCK), D12 to D12 (MISO), D11 to D11 (MOSI), programmer D10 to target RESET, 5V to 5V and GND to GND.",
+  "The 10 \u00b5F capacitor goes between the programmer's RESET (positive, long leg) and GND. The catalogue's UNO card has no GND.2 position noted, so I used GND.2 for the capacitor and GND.1 for the GND wire. They are the same ground net.",
+  "The images show no breadboard, so the capacitor legs go straight into the programmer's RESET and GND header sockets.",
+  "The USB cable joins the programmer only. The UNO card has no USB port name, so I left that port null. The target is powered from the programmer over the 5V and GND wires.",
+  "The optional status LEDs mentioned for the sketch are not listed or shown on the page, so I left them out."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "builder": "claude turn 1",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 22.4,
+   "input_tokens": 50343,
+   "cache_read_tokens": 42761,
+   "output_tokens": 1601,
+   "cost_usd": 0.0549,
+   "tools_used": [
+    "open_page {\"url\": \"https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP/\"}",
+    "StructuredOutput {\"title\": \"Arduino as ISP and Arduino Bootloaders\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/arduino-isp/"
+   ],
+   "check_seconds": 0.0,
+   "parts_listed": 10,
+   "changed_in_build": 0,
+   "looked_up": []
+  },
+  {
+   "phase": "build",
+   "builder": "parts-then-build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 18.5,
+   "input_tokens": 30310,
+   "cache_read_tokens": 28599,
+   "output_tokens": 3186,
+   "cost_usd": 0.0444,
+   "tools_used": [
+    "StructuredOutput {\"title\": \"Arduino as ISP and Arduino Bootloaders\", \"source_id\": \"https://docs.arduino.cc/built-in-examples/arduino-isp/"
+   ],
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 15,
+  "nets_built": 7,
+  "nets_matched": 1,
+  "net_precision": 0.143,
+  "net_recall": 0.067,
+  "all_nets_correct": false,
+  "inventory_correct": false,
+  "inventory_expected": {
+   "board": 1,
+   "atmega328p": 1,
+   "crystal": 1,
+   "capacitor": 3,
+   "resistor": 3,
+   "led": 3
+  },
+  "inventory_built": {
+   "board": 2,
+   "capacitor": 1
+  },
+  "missing_nets": [
+   [
+    [
+     "atmega328p",
+     "1"
+    ],
+    [
+     "board",
+     "10"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "20"
+    ],
+    [
+     "atmega328p",
+     "7"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "22"
+    ],
+    [
+     "atmega328p",
+     "8"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "neg"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ],
+    [
+     "led",
+     "C"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "9"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "crystal",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "10"
+    ],
+    [
+     "capacitor",
+     "x"
+    ],
+    [
+     "crystal",
+     "x"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "17"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "18"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "atmega328p",
+     "19"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "9"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "led",
+     "A"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "8"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ],
+   [
+    [
+     "board",
+     "7"
+    ],
+    [
+     "resistor",
+     "x"
+    ]
+   ]
+  ],
+  "extra_nets": [
+   [
+    [
+     "board",
+     "13"
+    ],
+    [
+     "board",
+     "13"
+    ]
+   ],
+   [
+    [
+     "board",
+     "12"
+    ],
+    [
+     "board",
+     "12"
+    ]
+   ],
+   [
+    [
+     "board",
+     "11"
+    ],
+    [
+     "board",
+     "11"
+    ]
+   ],
+   [
+    [
+     "board",
+     "10"
+    ],
+    [
+     "board",
+     "RESET"
+    ]
+   ],
+   [
+    [
+     "board",
+     "5V"
+    ],
+    [
+     "board",
+     "5V"
+    ]
+   ],
+   [
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "board",
+     "GND"
+    ],
+    [
+     "capacitor",
+     "neg"
+    ]
+   ]
+  ]
+ },
+ "drafts": [],
+ "postprocess_ms": 24.0
+}

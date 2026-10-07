@@ -1,0 +1,72 @@
+{
+ "case": "keyboard-message",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v4",
+  "builder": "one-shot",
+  "seconds": 39.4,
+  "input_tokens": 18604,
+  "output_tokens": 5035,
+  "cost_usd": 0.0825,
+  "repair_rounds_used": 0
+ },
+ "parts": 8,
+ "edges": 28,
+ "repeats": [],
+ "new_types_declared": 0,
+ "new_types_added": 0,
+ "problems": [],
+ "notes": [
+  "Circuit: 5V -> pushbutton (column 8) ; pin 4 -> pushbutton (column 6) with 10k pull-down resistor from column 6 (pin 4 node) to GND rail. Matches the manual text; the schematic drawing shows pin 2 but the manual text and breadboard image use pin 4, so pin 4 is used.",
+  "Breadboard hole positions are estimated from the image: black GND wire at bn.2, red 5V wire at bp.3, resistor lower lead at bn.6, button legs in columns 6 and 8 straddling the centre gap, blue wire at 6t.c, short red wire from 8t.c to bp.8. The picture's rows f-j are shown at the top, but the catalogue names the rows a-e half 't' and f-j half 'b', so button legs are 6t.e/8t.e and 6b.f/8b.f.",
+  "The two button legs in the same column are treated as one side (1 = column 6, 2 = column 8), per the catalogue pushbutton note.",
+  "The Leonardo's USB cable to the computer is mentioned in the text but is not part of the wired circuit, so it is not included.",
+  "Rail polarity: the rail row next to the black line is treated as negative (bn) and the row next to the red line as positive (bp).",
+  "The Leonardo's first GND pin (highlighted in the image) is mapped to GND.1."
+ ],
+ "phases": [
+  {
+   "phase": "build",
+   "builder": "one-shot",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 39.4,
+   "input_tokens": 18604,
+   "cache_read_tokens": 11120,
+   "output_tokens": 5035,
+   "cost_usd": 0.0825,
+   "check_seconds": 0.0,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "nets_expected": 3,
+  "nets_built": 3,
+  "nets_matched": 3,
+  "net_precision": 1.0,
+  "net_recall": 1.0,
+  "all_nets_correct": true,
+  "inventory_correct": true,
+  "inventory_expected": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "inventory_built": {
+   "board": 1,
+   "button": 1,
+   "resistor": 1
+  },
+  "missing_nets": [],
+  "extra_nets": []
+ },
+ "drafts": [],
+ "postprocess_ms": 13.6
+}

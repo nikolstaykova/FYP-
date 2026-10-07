@@ -1,0 +1,129 @@
+{
+ "case": "docs-communication-digitalpotcontrol",
+ "domain": "arduino",
+ "stats": {
+  "model": "claude-sonnet-5-5",
+  "effort": "high",
+  "route": "claude-code subscription",
+  "version": "v3",
+  "seconds": 164.5,
+  "input_tokens": 43435,
+  "output_tokens": 19558,
+  "cost_usd": 0.2947,
+  "repair_rounds_used": 0
+ },
+ "parts": 37,
+ "edges": 184,
+ "repeats": [],
+ "new_types_declared": 1,
+ "new_types_added": 1,
+ "problems": [],
+ "notes": [
+  "The AD5206 was not in the catalogue, so a new part type digipot-ad5206 was created. Port names are the datasheet pin names (A1..A6, W1..W6, B1..B6, GND, CS, VDD, SDI, CLK, VSS). 'Through' pairs model each channel's resistor track (A-B, A-W, W-B).",
+  "The 24-pin DIP straddles the breadboard centre gap. Pins 1-12 go in 9t..20t on row e, and pins 13-24 go in 20b..9b on row f, so pin 13 sits opposite pin 12.",
+  "The Fritzing image was not available, so exact hole positions are assumed. The connections follow the tutorial text: all A pins and VDD to +5V; all B pins, GND and VSS to ground; CS to pin 10, SDI to pin 11 and CLK to pin 13; each W pin through a 220 ohm resistor and an LED (anode on the resistor side) to ground.",
+  "The top and bottom power rails are linked by jumpers (wire3 and wire4). The Arduino 5V and GND.1 feed the top rails.",
+  "Pin numbering note: the datasheet mapping is pin 17 = W1, pin 20 = W2, pin 14 = W3, pin 23 = W4, pin 11 = W5, pin 2 = W6.",
+  "VSS is tied to ground, as the tutorial's 0 V operation implies."
+ ],
+ "phases": [
+  {
+   "phase": "parts",
+   "seconds": 65.5,
+   "input_tokens": 35704,
+   "output_tokens": 1463,
+   "cost_usd": 0.095,
+   "check_seconds": 0.0,
+   "matched": 5,
+   "listed": 6,
+   "ingested": 0,
+   "ingest": [
+    {
+     "part": "AD5206 Digital Potentiometer",
+     "type": "digipot-ad5206",
+     "found": false,
+     "trail": [
+      [
+       "adafruit",
+       "no search result"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/digital-potentiometer-10k.html (The page is SparkFun COM-10613, a \"Digital Potentiometer - 10K\". The description)"
+      ],
+      [
+       "sparkfun",
+       "page did not match: https://www.sparkfun.com/rotary-potentiometer-100k-ohm-logarithmic-panel-mount.html (The page sells a Bourns 100k logarithmic rotary (mechanical) potentiometer, COM-)"
+      ],
+      [
+       "pololu",
+       "no search result"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/DSO-Quad-4-Channel-Digital-Storage-Oscilloscope-p-736.html (The page is for the DSO Quad 4-channel oscilloscope from Seeed Studio. It does n)"
+      ],
+      [
+       "seeed",
+       "page did not match: https://www.seeedstudio.com/Grove-6-Axis-Digital-Accelerometer-Gyroscope-40g-ADIS16470-p-4036.html (The page sells the Seeed Grove 6-Axis Digital Accelerometer & Gyroscope (ADIS164)"
+      ],
+      [
+       "mouser",
+       "skipped: needs MOUSER_API_KEY"
+      ],
+      [
+       "digikey",
+       "skipped: needs DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET"
+      ]
+     ],
+     "seconds": 58.7
+    }
+   ]
+  },
+  {
+   "phase": "build",
+   "model": "claude-sonnet-5-5",
+   "effort": "high",
+   "route": "claude-code subscription",
+   "seconds": 99.0,
+   "input_tokens": 7731,
+   "cache_read_tokens": 3203,
+   "output_tokens": 18095,
+   "cost_usd": 0.1997,
+   "check_seconds": 0.01,
+   "issues": 0,
+   "issue_rules": {}
+  }
+ ],
+ "issues_first": 0,
+ "issues_final": 0,
+ "score": {
+  "families_listed": [
+   "led",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "score_initial": {
+  "families_listed": [
+   "led",
+   "pot",
+   "resistor"
+  ],
+  "families_missing": [],
+  "hardware_recall": 1.0
+ },
+ "drafts": [
+  {
+   "type": "digipot-ad5206",
+   "family": "pot",
+   "checked": true,
+   "polarized_ok": false,
+   "symmetric_ok": false,
+   "port_count_ok": false
+  }
+ ],
+ "postprocess_ms": 6.7
+}
