@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parts Lab</title>
+<style>
+:root {
+  --bg: #f6f6f3; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6b66; --line: #e2e1dc;
+  --accent: #2f5bd3; --accent-ink: #ffffff;
+  --have: #1f7a4a; --have-bg: #e3f3ea; --use: #2f5bd3; --use-bg: #e6ecfb;
+  --check: #9a6400; --check-bg: #fcf0d9; --miss: #b3261e; --miss-bg: #fbe6e4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161615; --panel: #1f1f1d; --ink: #ecebe6; --muted: #a09f98; --line: #34332f;
+    --accent: #7c9cf5; --accent-ink: #10131c;
+    --have: #6fd39b; --have-bg: #17301f; --use: #93aef7; --use-bg: #1b2440;
+    --check: #f0bd5e; --check-bg: #362a12; --miss: #f28b82; --miss-bg: #3a1a18;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1200px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 13px; margin: 0 0 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.sub { color: var(--muted); margin: 0 0 16px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+select, button, input[type=number] { font: inherit; color: inherit; }
+select { width: 100%; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 13px; background: var(--bg); }
+.chip b { font-weight: 600; }
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
+.tabs button { background: none; border: 0; padding: 10px 14px; cursor: pointer; color: var(--muted); font-weight: 600;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs button.on { color: var(--ink); border-bottom-color: var(--accent); }
+.drop { border: 2px dashed var(--line); border-radius: 10px; padding: 18px; text-align: center; color: var(--muted); cursor: pointer; display: block; }
+.drop.over { border-color: var(--accent); color: var(--accent); }
+.thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.thumb { position: relative; width: 96px; }
+.thumb img { width: 96px; height: 72px; object-fit: cover; border-radius: 6px; display: block; border: 1px solid var(--line); }
+.thumb span { font-size: 11px; color: var(--muted); }
+.thumb button { position: absolute; top: 2px; right: 2px; border: 0; border-radius: 50%; width: 22px; height: 22px;
+  background: rgba(0,0,0,.6); color: #fff; cursor: pointer; line-height: 22px; padding: 0; }
+.models { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 6px; }
+.models label { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
+.models label.off { opacity: .5; }
+.models small { color: var(--muted); display: block; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 12px; }
+.run { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 10px 22px; font-weight: 600; cursor: pointer; }
+.run:disabled { opacity: .5; cursor: default; }
+.ghost { background: none; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+.note { color: var(--muted); font-size: 13px; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { border-bottom: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; }
+th { font-weight: 600; white-space: nowrap; }
+td.num { font-variant-numeric: tabular-nums; }
+.st { display: inline-block; border-radius: 6px; padding: 1px 8px; font-weight: 600; font-size: 13px; white-space: nowrap; }
+.st.have { color: var(--have); background: var(--have-bg); }
+.st.use { color: var(--use); background: var(--use-bg); }
+.st.check { color: var(--check); background: var(--check-bg); }
+.st.missing { color: var(--miss); background: var(--miss-bg); }
+.detail { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+td .detail { max-width: 220px; }
+.mark { font-weight: 700; margin-left: 4px; }
+.mark.ok { color: var(--have); } .mark.bad { color: var(--miss); }
+.best { color: var(--have); font-weight: 700; }
+.spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--line); border-top-color: var(--accent);
+  border-radius: 50%; animation: s 0.8s linear infinite; vertical-align: -2px; margin-right: 6px; }
+@keyframes s { to { transform: rotate(360deg); } }
+.err { color: var(--miss); font-size: 13px; }
+details { border-top: 1px solid var(--line); padding: 8px 0; }
+summary { cursor: pointer; font-weight: 600; }
+pre { white-space: pre-wrap; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--bg);
+  padding: 10px; border-radius: 8px; border: 1px solid var(--line); overflow-x: auto; }
+.truth select { width: auto; padding: 3px 6px; font-size: 13px; }
+
+/* camera */
+.cam { position: relative; background: #000; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; max-height: 62vh;
+  display: flex; align-items: center; justify-content: center; }
+.cam video { width: 100%; height: 100%; object-fit: cover; }
+.cam .placeholder { color: #bbb; text-align: center; padding: 20px; }
+.shutter { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); width: 68px; height: 68px; border-radius: 50%;
+  border: 4px solid #fff; background: rgba(255,255,255,.25); cursor: pointer; }
+.shutter:active { background: rgba(255,255,255,.7); }
+.camtool { position: absolute; top: 10px; right: 10px; border: 0; border-radius: 8px; padding: 6px 10px; background: rgba(0,0,0,.55);
+  color: #fff; cursor: pointer; font-size: 13px; }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity .25s; }
+.steps { list-style: none; padding: 0; margin: 0; }
+.steps li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.steps li:last-child { border-bottom: 0; }
+.steps .who { font-weight: 600; }
+.parts-list .part { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.parts-list .part:last-child { border-bottom: 0; }
+.parts-list .part > .st { flex: 0 0 auto; min-width: 104px; text-align: center; }
+.parts-list .name { font-weight: 600; }
+.changed { font-size: 12px; color: var(--accent); font-weight: 600; margin-left: 6px; }
+.prelim { opacity: .55; }
+.banner { position: absolute; top: 10px; left: 10px; right: 120px; background: rgba(0,0,0,.65); color: #fff; border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; }
+.ask { border: 1px solid var(--check); background: var(--check-bg); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.ask p { margin: 0 0 8px; color: var(--ink); }
+.ask .row { margin-top: 0; }
+.expert { border: 1px dashed var(--line); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+@media (max-width: 520px) { .parts-list .part > .st { min-width: 92px; } .shutter { width: 60px; height: 60px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Parts lab</h1>
+  <p class="sub">Choose a lesson, photograph your parts, see what you have, what can stand in, and what is missing.</p>
+
+  <section class="panel">
+    <h2>Lesson</h2>
+    <select id="lesson"></select>
+    <div class="chips" id="parts"></div>
+  </section>
+
+  <nav class="tabs">
+    <button data-tab="flow" class="on">Check flow</button>
+    <button data-tab="compare">Compare models</button>
+  </nav>
+
+  <!-- ===================== the flow: camera -> Haiku -> Opus where needed -> report -->
+  <div id="tab-flow">
+    <div class="grid">
+      <section class="panel">
+        <h2>1 · Photograph your parts</h2>
+        <div class="cam" id="cam">
+          <div class="placeholder" id="camPlaceholder">
+            <p>Spread the parts out on a plain surface.<br>Take 1–3 photos from different angles.</p>
+            <button class="run" id="camStart">Start camera</button>
+          </div>
+          <video id="video" playsinline muted autoplay hidden></video>
+          <button class="camtool" id="camSwitch" hidden>Switch camera</button>
+          <button class="shutter" id="shutter" hidden aria-label="Take photo"></button>
+          <div class="flash" id="flash"></div>
+          <div class="banner" id="camBanner" hidden></div>
+        </div>
+        <div class="row">
+          <label class="ghost" style="cursor:pointer">
+            <input type="file" id="flowFile" accept="image/*" capture="environment" multiple hidden>
+            Use the camera app or choose photos
+          </label>
+          <span class="note" id="camNote"></span>
+        </div>
+        <div class="thumbs" id="flowThumbs"></div>
+        <div class="row">
+          <button class="run" id="flowRun">Check my parts</button>
+          <button class="ghost" id="flowNew" hidden>Start again</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>2 · Checking</h2>
+        <ul class="steps" id="flowSteps"><li class="note">Take photos, then press “Check my parts”.</li></ul>
+      </section>
+    </div>
+
+    <section class="panel" id="flowResult" hidden>
+      <h2>3 · Your parts</h2>
+      <div id="flowAsks"></div>
+      <div class="parts-list" id="flowParts"></div>
+      <div id="flowRetake"></div>
+      <div id="flowExtra"></div>
+      <div id="flowChanges"></div>
+      <details><summary>Full report</summary><pre id="flowReport"></pre></details>
+    </section>
+  </div>
+
+  <!-- ===================== compare models on the same photos -->
+  <div id="tab-compare" hidden>
+    <section class="panel">
+      <h2>Photos</h2>
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/*" multiple hidden>
+        Drop photos here, or tap to choose
+      </label>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="note" id="photoNote">Photos are shrunk to 1600 px on the long side, the same for every model.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Models</h2>
+      <div class="models" id="models"></div>
+      <div class="row">
+        <label>Runs per model <input type="number" id="repeat" min="1" max="5" value="1" style="width:56px"></label>
+        <label><input type="checkbox" id="research"> Research unknown parts (slower)</label>
+        <button class="run" id="run">Check parts</button>
+        <span class="note" id="runNote"></span>
+      </div>
+      <div class="note" style="margin-top:6px">Several runs per model show how much the time varies; the verdicts are from the first run.</div>
+    </section>
+
+    <section class="panel" id="resultsPanel" hidden>
+      <h2>Results</h2>
+      <p class="note">Set “what is really there” for a part to score each model against it.</p>
+      <div class="tablewrap"><table id="results"></table></div>
+      <div id="details" style="margin-top:12px"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Earlier runs</h2>
+      <button class="ghost" id="loadHistory">Show</button>
+      <div class="tablewrap"><table id="history"></table></div>
+    </section>
+  </div>
+</main>
+
+<script>
+const KEY = new URLSearchParams(location.search).get('key');
+const api = (p) => p + (KEY ? (p.includes('?') ? '&' : '?') + 'key=' + encodeURIComponent(KEY) : '');
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const post = (path, body) => fetch(api(path), { method: 'POST', headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify(body) }).then(async r => { const j = await r.json(); if (j.error) throw new Error(j.error); return j; });
+function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function safeSet(k, v) { try { localStorage.setItem(k, v); } catch {} }
+
+let LESSONS = [], MODELS = [];
+const STATUS_CLASS = (s) => s.startsWith('have') ? 'have' : s.startsWith('use') ? 'use' : s.startsWith('check') ? 'check' : 'missing';
+const STATUS_LABEL = { have: '✓ have', use: '↔ use instead', check: '? check', missing: '✗ missing' };
+const STATUS_WORD = (s) => ({ have: '✓ have', use: '↔ use instead', check: '? check' }[STATUS_CLASS(s)] || '✗ ' + s);
+
+// ---- shared: lesson and tabs
+async function init() {
+  try {
+    [LESSONS, MODELS] = await Promise.all([fetch(api('/api/lessons')).then(r => r.json()),
+                                           fetch(api('/api/models')).then(r => r.json())]);
+  } catch (e) { LESSONS = { error: e.message }; }
+  if (LESSONS.error) { document.querySelector('main').innerHTML = '<p class="err">' + esc(LESSONS.error) + '</p>'; return; }
+  $('lesson').innerHTML = LESSONS.map(l => `<option value="${esc(l.id)}">${esc(l.name)} (${esc(l.id)})</option>`).join('');
+  const last = safeGet('lab.lesson');
+  if (last && LESSONS.some(l => l.id === last)) $('lesson').value = last;
+  showLesson();
+  const picked = JSON.parse(safeGet('lab.models') || '["claude-haiku-5-5","gemini-3.5-flash-lite"]');
+  $('models').innerHTML = MODELS.map(m => `
+    <label class="${m.ready ? '' : 'off'}" title="${m.ready ? '' : 'No ' + esc(m.key) + ' in .env'}">
+      <input type="checkbox" value="${esc(m.id)}" ${m.ready ? '' : 'disabled'} ${m.ready && picked.includes(m.id) ? 'checked' : ''}>
+      <span>${esc(m.label)}<small>${esc(m.price)} per 1M tokens${m.ready ? '' : ' · no key'}</small></span>
+    </label>`).join('');
+  const tab = safeGet('lab.tab'); if (tab) showTab(tab);
+}
+function lesson() { return LESSONS.find(l => l.id === $('lesson').value); }
+function showLesson() {
+  const l = lesson(); if (!l) return;
+  safeSet('lab.lesson', l.id);
+  $('parts').innerHTML = l.parts.map(p => `<span class="chip"><b>${esc(p.name)}</b> ×${p.count}` +
+    (p.values.length ? ` · ${esc(p.values.join(', '))}` : '') + `</span>`).join('');
+}
+$('lesson').addEventListener('change', showLesson);
+function showTab(t) {
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  $('tab-flow').hidden = t !== 'flow'; $('tab-compare').hidden = t !== 'compare';
+  safeSet('lab.tab', t);
+  if (t !== 'flow') stopCamera();
+}
+document.querySelector('.tabs').addEventListener('click', e => { if (e.target.dataset.tab) showTab(e.target.dataset.tab); });
+
+// ---- shared: shrink photos so every model gets the same image
+function canvasToPhoto(src, w, h, name) {
+  const s = Math.min(1, 1600 / Math.max(w, h));
+  const c = document.createElement('canvas');
+  c.width = Math.round(w * s); c.height = Math.round(h * s);
+  c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
+  return { name, data: c.toDataURL('image/jpeg', 0.88), w: c.width, h: c.height };
+}
+function shrink(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(canvasToPhoto(img, img.naturalWidth, img.naturalHeight, file.name)); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read ' + file.name)); };
+    img.src = url;
+  });
+}
+async function addFiles(files, list, draw, note) {
+  for (const f of files) {
+    if (!f.type.startsWith('image/') && !/\.(heic|jpe?g|png|webp)$/i.test(f.name)) continue;
+    try { list.push(await shrink(f)); } catch (e) { note.textContent = e.message; }
+  }
+  draw();
+}
+function thumbs(el, list) {
+  el.innerHTML = list.map((p, i) => `<div class="thumb"><img src="${p.data}" alt="">
+    <button data-i="${i}" aria-label="Remove photo ${i + 1}">×</button><span>Photo ${i + 1}</span></div>`).join('');
+}
+async function upload(list) {
+  return (await post('/api/upload', { lesson: lesson().id, photos: list.map(p => ({ name: p.name, data: p.data })) })).upload;
+}
+
+// ===================== the flow: Haiku looks, the learner sends close-ups, Opus only on request
+const FLOW = [];
+let stream = null, facing = 'environment', UPLOAD = null, PENDING = null, LAST = null;
+const drawFlow = () => thumbs($('flowThumbs'), FLOW);
+$('flowThumbs').addEventListener('click', e => { if (e.target.dataset.i) { FLOW.splice(+e.target.dataset.i, 1); drawFlow(); } });
+$('flowFile').addEventListener('change', async e => {
+  const files = [...e.target.files]; e.target.value = '';
+  if (PENDING) { if (files[0]) sendCloseup(await shrink(files[0])); return; }
+  addFiles(files, FLOW, drawFlow, $('camNote'));
+});
+
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    $('camNote').textContent = window.isSecureContext ? 'This browser has no camera access: use the camera app button.'
+      : 'The live camera needs https on a phone (start the lab with --lan --https). The camera app button works now.';
+    return;
+  }
+  if (stream) return;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: false,
+      video: { facingMode: { ideal: facing }, width: { ideal: 1920 }, height: { ideal: 1440 } } });
+  } catch (e) { $('camNote').textContent = 'Camera not available: ' + e.message; return; }
+  const v = $('video'); v.srcObject = stream; v.hidden = false;
+  $('camPlaceholder').hidden = true; $('shutter').hidden = false;
+  const cams = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+  $('camSwitch').hidden = cams.length < 2;
+  $('camNote').textContent = '';
+}
+function stopCamera() {
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  stream = null; $('video').hidden = true; $('shutter').hidden = true; $('camSwitch').hidden = true; $('camPlaceholder').hidden = false;
+}
+$('camStart').addEventListener('click', startCamera);
+$('camSwitch').addEventListener('click', () => { facing = facing === 'environment' ? 'user' : 'environment'; stopCamera(); startCamera(); });
+$('shutter').addEventListener('click', () => {
+  const v = $('video'); if (!v.videoWidth) return;
+  const photo = canvasToPhoto(v, v.videoWidth, v.videoHeight, `camera-${FLOW.length + 1}.jpg`);
+  const f = $('flash'); f.style.opacity = .8; setTimeout(() => f.style.opacity = 0, 120);
+  if (PENDING) { sendCloseup(photo); return; }
+  FLOW.push(photo); drawFlow();
+  $('camNote').textContent = `${FLOW.length} photo${FLOW.length > 1 ? 's' : ''} taken` + (FLOW.length < 3 ? ' · another angle helps' : '');
+});
+
+function stepLine(id, html) {
+  let li = document.querySelector(`#flowSteps [data-id="${id}"]`);
+  if (!li) { li = document.createElement('li'); li.dataset.id = id; $('flowSteps').appendChild(li); }
+  li.innerHTML = html;
+}
+function timer(id, label) {
+  const t0 = performance.now();
+  const tick = () => stepLine(id, `<span class="spin"></span><span class="who">${label}</span> · ${((performance.now() - t0) / 1000).toFixed(0)} s`);
+  tick(); const h = setInterval(tick, 500); return () => clearInterval(h);
+}
+const cents = (usd) => (usd * 100).toFixed(2) + '¢';
+const who = (m) => m === 'claude-opus-5-5' ? 'Claude Opus' : m === 'claude-haiku-5-5' ? 'Claude Haiku' : m;
+
+function partsHtml(parts, before) {
+  return parts.map(r => {
+    const cls = STATUS_CLASS(r.status);
+    const was = before?.find(b => b.type === r.type);
+    const changed = was && was.status !== r.status ? `<span class="changed">was “${esc(was.status)}” at first look</span>` : '';
+    const lines = [
+      ...r.have.map(h => `${h.ok === null ? 'have? ' : ''}${h.count}× ${esc(h.object)}${h.value ? ' (' + esc(h.value) + ')' : ''}${h.why ? ': ' + esc(h.why) : ''}`),
+      ...r.use_instead.map(u => `${{ true: 'can use', null: 'may use, check', false: 'cannot use' }[u.ok]} ${esc(u.object)}: ${esc(u.why)}` +
+        (u.pin_moves && Object.keys(u.pin_moves).length ? ` · pins: ${Object.entries(u.pin_moves).map(([a, b]) => esc(a) + '→' + esc(b)).join(', ')}` : '')),
+    ];
+    return `<div class="part"><span class="st ${cls}">${esc(STATUS_WORD(r.status))}</span>
+      <div><span class="name">${esc(r.part)} ×${r.need}</span>${changed}${lines.map(l => `<span class="detail">${l}</span>`).join('')}</div></div>`;
+  }).join('');
+}
+
+function steps(st) {
+  $('flowSteps').innerHTML = '';
+  st.steps.forEach((x, i) => stepLine('s' + i, `✓ <span class="who">${esc(who(x.model))}</span>, ${esc(x.what)} · ${x.seconds} s · ${cents(x.cost_usd || 0)}` +
+    (x.answer ? `<span class="detail">saw: ${esc(x.answer.join('; ') || 'nothing useful')}</span>` : '') +
+    (x.changes ? `<span class="detail">${x.changes.length} answer${x.changes.length === 1 ? '' : 's'} changed</span>` : '')));
+  stepLine('total', `<b>${cents(st.total_cost_usd)} so far</b><span class="detail">saved as runs/lab/${esc(UPLOAD)}</span>`);
+}
+
+function show(st) {
+  LAST = st; steps(st);
+  $('flowResult').hidden = false;
+  $('flowParts').innerHTML = partsHtml(st.parts, st.first_parts);
+  const open = st.asks.length;
+  $('flowAsks').innerHTML = st.asks.map(q => `<div class="ask"><p>${esc(q.message)}</p><div class="row">
+      <button class="run" data-closeup="${esc(q.key)}">Take a close-up</button>
+      <button class="ghost" data-dismiss="${esc(q.key)}">${q.kind === 'find' ? 'I don’t have it' : 'Skip'}</button></div></div>`).join('') +
+    (!open ? `<p class="note"><b>All settled.</b></p>` : '');
+  $('flowExtra').innerHTML = st.not_needed?.length ? `<details><summary>Also there, not needed (${st.not_needed.length})</summary>
+    ${st.not_needed.map(x => `<span class="detail">${x.count}× ${esc(x.object)}${x.value ? ' (' + esc(x.value) + ')' : ''}${x.type ? '' : ' · not in the catalogue'}</span>`).join('')}</details>` : '';
+  $('flowChanges').innerHTML = '';
+  $('flowRetake').innerHTML = '';
+  $('flowReport').textContent = st.report || '';
+}
+
+async function act(action, body, label) {
+  const stop = label ? timer('busy', label) : null;
+  try { show(await post('/api/flow/' + action, { upload: UPLOAD, ...body })); }
+  catch (e) { stepLine('err', `<span class="err">${esc(e.message)}</span>`); }
+  finally { stop?.(); document.querySelector('#flowSteps [data-id="busy"]')?.remove(); }
+}
+
+$('flowAsks').addEventListener('click', e => {
+  const k = e.target.dataset.closeup, d = e.target.dataset.dismiss;
+  if (k) {
+    const q = LAST.asks.find(x => x.key === k); PENDING = q;
+    $('camBanner').hidden = false;
+    $('camBanner').innerHTML = `Close-up: <b>${esc(q.object || q.part)}</b>. Fill the frame with it. <a href="#" id="cancelCloseup" style="color:#fff">Cancel</a>`;
+    $('cancelCloseup').onclick = (ev) => { ev.preventDefault(); PENDING = null; $('camBanner').hidden = true; };
+    $('cam').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    startCamera();
+  }
+  if (d) act('dismiss', { key: d });
+});
+
+async function sendCloseup(photo) {
+  const q = PENDING; PENDING = null; $('camBanner').hidden = true;
+  $('flowResult').scrollIntoView({ behavior: 'smooth' });
+  await act('closeup', { key: q.key, photo: photo.data }, `Looking at the close-up of ${esc(q.object || q.part)} (Claude Opus helps if Haiku can't tell)`);
+}
+
+$('flowRun').addEventListener('click', async () => {
+  if (!FLOW.length) { $('camNote').textContent = 'Take at least one photo first.'; return; }
+  $('flowRun').disabled = true; $('flowSteps').innerHTML = ''; $('flowResult').hidden = true;
+  try {
+    stepLine('up', '<span class="spin"></span>Uploading photos…');
+    UPLOAD = await upload(FLOW);
+    stepLine('up', '');
+    await act('first', { lesson: lesson().id }, 'Claude Haiku is looking');
+    $('flowNew').hidden = false;
+  } catch (e) { stepLine('err', `<span class="err">${esc(e.message)}</span>`); }
+  $('flowRun').disabled = false;
+});
+$('flowNew').addEventListener('click', () => {
+  FLOW.length = 0; drawFlow(); UPLOAD = null; LAST = null; PENDING = null;
+  $('flowResult').hidden = true; $('flowSteps').innerHTML = '<li class="note">Take photos, then press “Check my parts”.</li>';
+  $('flowNew').hidden = true;
+});
+
+// ===================== compare models
+const PHOTOS = [];
+let RESULTS = {}, ORDER = [], TRUTH = {}, CURRENT = null;
+const drawCompare = () => thumbs($('thumbs'), PHOTOS);
+$('thumbs').addEventListener('click', e => { if (e.target.dataset.i) { PHOTOS.splice(+e.target.dataset.i, 1); drawCompare(); } });
+$('file').addEventListener('change', e => { addFiles(e.target.files, PHOTOS, drawCompare, $('photoNote')); e.target.value = ''; });
+const drop = $('drop');
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addFiles(e.dataTransfer.files, PHOTOS, drawCompare, $('photoNote')));
+
+$('run').addEventListener('click', async () => {
+  const models = [...document.querySelectorAll('#models input:checked')].map(i => i.value);
+  if (!PHOTOS.length) { $('runNote').textContent = 'Add at least one photo.'; return; }
+  if (!models.length) { $('runNote').textContent = 'Tick at least one model.'; return; }
+  safeSet('lab.models', JSON.stringify(models));
+  $('run').disabled = true; $('runNote').textContent = 'Uploading…';
+  let up;
+  try { up = await upload(PHOTOS); }
+  catch (e) { $('runNote').textContent = 'Upload failed: ' + e.message; $('run').disabled = false; return; }
+  CURRENT = { lesson: lesson(), upload: up };
+  RESULTS = {}; ORDER = models; TRUTH = {};
+  const started = performance.now();
+  models.forEach(m => RESULTS[m] = { pending: true, t0: performance.now() });
+  $('resultsPanel').hidden = false; render();
+  const tick = setInterval(render, 500);
+  $('runNote').textContent = `Running ${models.length} model${models.length > 1 ? 's' : ''} at once…`;
+  await Promise.all(models.map(async m => {
+    try { RESULTS[m] = await post('/api/check', { upload: up, lesson: CURRENT.lesson.id, model: m,
+                                                  repeat: +$('repeat').value || 1, research: $('research').checked }); }
+    catch (e) { RESULTS[m] = { error: e.message }; }
+    render();
+  }));
+  clearInterval(tick); render();
+  $('runNote').textContent = `Done in ${((performance.now() - started) / 1000).toFixed(1)} s · saved as runs/lab/${up}`;
+  $('run').disabled = false;
+});
+
+function label(m) { return (MODELS.find(x => x.id === m) || {}).label || m; }
+function cellFor(part, r) {
+  const row = r.parts.find(p => p.type === part.type) || r.parts.find(p => p.part === part.name);
+  if (!row) return { status: 'missing', html: '<span class="st missing">✗ missing</span>' };
+  const cls = STATUS_CLASS(row.status);
+  const what = row.use_instead?.length && cls !== 'have' ? row.use_instead[0] : row.have?.[0];
+  const why = [...(row.have || []).map(h => `${h.count}× ${h.object}${h.value ? ' (' + h.value + ')' : ''}${h.why ? ': ' + h.why : ''}`),
+               ...(row.use_instead || []).map(u => `instead: ${u.object}: ${u.why}`)].join('\n');
+  return { status: cls, html: `<span class="st ${cls}" title="${esc(why)}">${esc(row.status)}</span>` +
+    (what ? `<span class="detail">${esc(what.object)}${what.value ? ' · ' + esc(what.value) : ''}</span>` : '') };
+}
+function render() {
+  if (!CURRENT) return;
+  const parts = CURRENT.lesson.parts;
+  const done = ORDER.filter(m => RESULTS[m] && !RESULTS[m].pending && !RESULTS[m].error);
+  const fastest = done.length ? Math.min(...done.map(m => RESULTS[m].median_s)) : null;
+  const cheapest = done.length ? Math.min(...done.map(m => RESULTS[m].cost_usd)) : null;
+  const head = `<tr><th>Part</th><th class="truth">What is really there</th>${ORDER.map(m => `<th>${esc(label(m))}</th>`).join('')}</tr>`;
+  const stat = (name, f) => `<tr><th>${name}</th><td></td>${ORDER.map(m => {
+    const r = RESULTS[m];
+    if (r.pending) return `<td><span class="spin"></span>${((performance.now() - r.t0) / 1000).toFixed(0)} s</td>`;
+    if (r.error) return `<td class="err">${esc(r.error)}</td>`;
+    return `<td class="num">${f(r)}</td>`; }).join('')}</tr>`;
+  const rows = [
+    stat('Look time', r => `<span class="${r.median_s === fastest ? 'best' : ''}">${r.median_s} s</span>` +
+      (r.times.length > 1 ? `<span class="detail">${r.times.join(' · ')} s</span>` : '')),
+    stat('Cost per check', r => `<span class="${r.cost_usd === cheapest ? 'best' : ''}">${(r.cost_usd * 100).toFixed(3)}¢</span>` +
+      `<span class="detail">${r.tokens_in ?? '?'} in · ${r.tokens_out ?? '?'} out</span>`),
+    stat('Objects seen', r => `${r.parsed ?? r.seen.length}`),
+  ];
+  const score = Object.fromEntries(ORDER.map(m => [m, [0, 0]]));
+  const partRows = parts.map(p => {
+    const t = TRUTH[p.type] || '';
+    const sel = `<select data-t="${esc(p.type)}"><option value=""></option>` +
+      ['have', 'use', 'check', 'missing'].map(s => `<option value="${s}" ${t === s ? 'selected' : ''}>${STATUS_LABEL[s]}</option>`).join('') + '</select>';
+    return `<tr><th>${esc(p.name)} ×${p.count}${p.values.length ? `<span class="detail">${esc(p.values.join(', '))}</span>` : ''}</th>
+      <td class="truth">${sel}</td>${ORDER.map(m => {
+        const r = RESULTS[m];
+        if (r.pending || r.error) return '<td></td>';
+        const c = cellFor(p, r);
+        let mark = '';
+        if (t) { const ok = c.status === t; score[m][1]++; if (ok) score[m][0]++;
+                 mark = `<span class="mark ${ok ? 'ok' : 'bad'}">${ok ? '✔' : '✘'}</span>`; }
+        return `<td>${c.html}${mark}</td>`; }).join('')}</tr>`;
+  });
+  const anyTruth = Object.values(TRUTH).some(Boolean);
+  const scoreRow = anyTruth ? `<tr><th>Right</th><td></td>${ORDER.map(m => {
+    const r = RESULTS[m]; return `<td class="num">${r.pending || r.error ? '' : `<b>${score[m][0]}/${score[m][1]}</b>`}</td>`; }).join('')}</tr>` : '';
+  const retake = `<tr><th>Could not tell</th><td></td>${ORDER.map(m => {
+    const r = RESULTS[m]; return `<td><span class="detail">${r.pending || r.error ? '' : esc((r.retake || []).join(' | ') || '—')}</span></td>`; }).join('')}</tr>`;
+  $('results').innerHTML = head + rows.join('') + partRows.join('') + scoreRow + retake;
+  $('details').innerHTML = done.map(m => `<details><summary>${esc(label(m))}: full report</summary>
+    <pre>${esc(RESULTS[m].report)}</pre>
+    <details><summary>What the model said (raw)</summary><pre>${esc(RESULTS[m].raw)}</pre></details></details>`).join('');
+}
+$('results').addEventListener('change', e => { if (e.target.dataset.t !== undefined) { TRUTH[e.target.dataset.t] = e.target.value; render(); } });
+
+$('loadHistory').addEventListener('click', async () => {
+  const rows = await fetch(api('/api/history')).then(r => r.json());
+  $('history').innerHTML = rows.length ? '<tr><th>Run</th><th>Lesson</th><th>Model</th><th>Photos</th><th>Look</th><th>Cost</th><th>Verdicts</th></tr>' +
+    rows.map(r => `<tr><td>${esc(r.upload)}</td><td>${esc(r.lesson)}</td><td>${esc(label(r.model))}</td><td class="num">${r.photos}</td>
+      <td class="num">${r.median_s} s</td><td class="num">${(r.cost_usd * 100).toFixed(3)}¢</td>
+      <td>${Object.entries(r.statuses).map(([k, v]) => `<span class="st ${STATUS_CLASS(v)}" title="${esc(k)}">${esc(k)}: ${esc(v)}</span>`).join(' ')}</td></tr>`).join('')
+    : '<tr><td class="note">No runs yet.</td></tr>';
+});
+
+init();
+</script>
+</body>
+</html>

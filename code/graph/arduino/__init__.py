@@ -1,0 +1,1 @@
+"""Lessons from an Arduino tutorial link: circuit_lesson.py is the recipe (with where everything goes on the breadboard), circuit_graph reads and checks the circuit, part_review checks the parts, browser reads the page, graphs stores the lesson and follows a learner, pins says what each pin can do and where the sketch uses it."""

@@ -51,6 +51,11 @@
 | [R20](#r20-manual-survey-connections-across-sauder-lego-and-arduino) | Manual survey: connections across Sauder, LEGO and Arduino; do repeated copies differ? | ✅ Done → [`GRAPH_SPEC.md`](./GRAPH_SPEC.md) |
 | [R21](#r21-experiment-can-claude-build-the-graph) | Experiment: can Claude build the graph from 100 LEGO + 100 Arduino manuals? | 🟡 Set up; results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md) |
 | [R22](#r22-architecture-parts-first-one-pipeline-for-every-domain) | **Architecture:** parts first, one pipeline for every domain (v3, v4) | ✅ **Decided and built**; v4 under test |
+| [R23](#r23-lessons-from-3d-models) | **Lessons:** human step-by-step lessons from a set's 3D model, with bags and a 3D hint page | ✅ **Built**; tested on 5 sets |
+| [R24](#r24-one-lesson-pipeline-code-suggests-claude-plans-code-checks) | **Lessons:** one pipeline for LEGO and Arduino: code suggests, Claude plans, code checks | ✅ **Built** |
+| [R25](#r25-a-lesson-data-structure-record-graphs-and-one-parts-catalogue) | **Data structure:** lesson record, steps / physical graphs, one parts catalogue | ✅ **Built** → [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md), [`DATASTRUCTURE.md`](./DATASTRUCTURE.md) |
+| [R26](#r26-lego-lessons-from-the-booklet-pdf-alone) | **Lessons from the booklet PDF alone** (no 3D model): builds, sub-builds, parts | ✅ **Built**; 3 sets READY |
+| [R27](#r27-batch-tests-10-lessons-per-route-twice) | **Batch tests** on all three routes: 25 sets, 20 Arduino links; every error made a rule | ✅ **Done**; batch two 29/29 READY after one round of fixes |
 
 ---
 
@@ -1169,14 +1174,14 @@ edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel
 
 **Question:** given our spec (connection types, rules, naming) and the catalogue, how well and how fast does Claude turn a real manual into the graph, and can it create part types the first time it meets them (store on demand)? For now the program is given the manual's link or set number directly; identifying the product comes later.
 
-**Code:** [`graphgen/`](./graphgen/). The pipeline per manual:
+**Code:** [`code/graph/`](./graph/). The pipeline per manual:
 1. Send the manual to Claude (structured output = the `ExtractedGraph` schema; spec, hint and catalogue in a cached system prompt).
 2. Add new part types to the catalogue, marked `unverified` (store on demand).
 3. Expand repeats into N real copies, with overrides.
 4. Check the spec rules (unknown parts, missing/over-used ports, incompatible ports, unused parts).
 5. Compute the logical view (nets), score against the answer key, record time, tokens and cost.
 
-**Test sets** (built by `research/scrape/lego_official.py` and `arduino_official.py`):
+**Test sets** (built by `tests/research/scrape/lego_official.py` and `arduino_official.py`):
 
 | Domain | Input Claude reads | Answer key |
 |---|---|---|
@@ -1194,7 +1199,7 @@ edges: wheel1.tyre—wheel1.rim, …, wheel4.tyre—wheel4.rim     (+ each wheel
 
 ## R22. Architecture: parts first, one pipeline for every domain
 
-**Date:** 4–5 October 2026 · **Status:** ✅ Decided and built ([`graphgen/pipeline.py`](./graphgen/pipeline.py), [`graphgen/domains.py`](./graphgen/domains.py), [`graphgen/parts/`](./graphgen/parts/)); v4 under test, results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+**Date:** 4–5 October 2026 · **Status:** ✅ Decided and built ([`code/tests/research/pipeline.py`](./graph/pipeline.py), [`code/tests/research/domains.py`](./graph/domains.py), [`code/graph/parts/`](./graph/parts/)); v4 under test, results in [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
 
 **Why:** R21 showed Claude reads electronics tutorials well but LEGO booklets poorly: on 99 sets, v2 found 76% of the pieces by design and 44% of brick contacts, at 457 s and $1.48 a set, and its repair loop fixed form, not content. Vision on whole PDFs guesses which piece is which from small pictures. The architecture below was worked out in a design discussion with an AI assistant on 4 October 2026 and adopted as the plan.
 
@@ -1252,18 +1257,18 @@ pipeline.py (same code for every domain; domains.py gives each domain's recipe):
 
 ### v5: one targeted fix per domain (5 October 2026)
 
-The evaluation (`graphgen/evaluate.py`: parts and graph scored separately, with the most frequent mistakes) showed where each domain fails, so v5 changes **one thing per domain** to measure its effect:
+The evaluation (`code/tests/tools/evaluate.py`: parts and graph scored separately, with the most frequent mistakes) showed where each domain fails, so v5 changes **one thing per domain** to measure its effect:
 
 | | Change | Evidence that motivated it |
 |---|---|---|
 | Electronics | **E6 parts-count law:** quantities stated in the tutorial's list must match the graph | When the parts are right, v2's circuit is right 27 times in 29; the wrong parts are mostly counts |
-| Electronics | **Pin notes as data** (`graphgen/parts/card_notes.json`) | The LED matrix and MIDI tutorials fail in every version |
+| Electronics | **Pin notes as data** (`code/graph/parts/card_notes.json`) | The LED matrix and MIDI tutorials fail in every version |
 | LEGO | **`rests_on` output:** each piece names every piece it sits on; code makes the joins | Claude wrote about one join per piece (a chain); a brick usually rests on 2–3 |
-| Any domain | **Agreement of two independent builds** (`graphgen/consensus.py`): both graphs are compared on the logical view (nets, direct joins), components are aligned by type and neighbourhood, only agreed relations are kept. Built and tested, **switched off** | Raises precision at double the cost; cannot catch a mistake both builds share |
+| Any domain | **Agreement of two independent builds** (`code/tests/tools/consensus.py`): both graphs are compared on the logical view (nets, direct joins), components are aligned by type and neighbourhood, only agreed relations are kept. Built and tested, **switched off** | Raises precision at double the cost; cannot catch a mistake both builds share |
 
-Scoring was made fairer for every version alike: a reviewed answer-key list (`research/data/answer_key_review.json`), series-order equivalence for resistors/LEDs, and LEGO contacts over slopes and round/special pieces too. Results: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+Scoring was made fairer for every version alike: a reviewed answer-key list (`data/reference/answer_key_review.json`), series-order equivalence for resistors/LEDs, and LEGO contacts over slopes and round/special pieces too. Results: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
 
-**Free-text part search.** Electronics parts are matched to cards by a MongoDB `$text`-style index (`graphgen/parts/search.py`): weighted fields (id, aliases, name, category), stop words, stemming, quoted phrases, -exclusions, text score; component values (220 ohm, 100 nF) are left out of the query, sizes are normalised ("8 x 8" → 8x8), and a hit must contain two thirds of the query's terms and every model number. Other names live in `aliases.json` (data).
+**Free-text part search.** Electronics parts are matched to cards by a MongoDB `$text`-style index (`code/graph/parts/search.py`): weighted fields (id, aliases, name, category), stop words, stemming, quoted phrases, -exclusions, text score; component values (220 ohm, 100 nF) are left out of the query, sizes are normalised ("8 x 8" → 8x8), and a hit must contain two thirds of the query's terms and every model number. Other names live in `aliases.json` (data).
 
 **LEGO v5 result (all 100 sets, 7 October 2026).** `rests_on` with the booklet read page by page finds the most real contacts of any version (recall 0.70; v3 0.64, v2 0.55) because Claude names more supports per piece (1.36 joins per piece; v3 1.15). Page by page costs exactness, though: only 65% of sets have exactly the right pieces (v3 100%), since pages repeat pieces already built and an additive repair cannot remove them. Joins are less often real (precision 0.36; v3 0.46), as pieces get joined to parts from earlier pages they do not touch. It is also slower and dearer than v3 (432 s and $1.71 per set; v3 362 s and $0.95). Conclusion: keep `rests_on`, but read the whole booklet in one turn, which is what v6 does.
 
@@ -1273,8 +1278,8 @@ Scoring was made fairer for every version alike: a reviewed answer-key list (`re
 |---|---|---|
 | Electronics | **Breadboard placement laws** (B1/B2, as CircuitQuest checks): a part's legs in nearby holes and in order; a pushbutton straddles the gap. Same rule in the prompt | Claude had no sense of the board's geometry |
 | Electronics | **Pin-table law** (E11) and **LED-matrix resistor law** (E12: resistors on rows only or on columns only) | row-column-scanning was wrong in v1–v5 |
-| LEGO | **Path A at stud level** (`ldraw_studs.py`: studs, receptacles, physical laws G1–G4, cross-check with the box model); **Path B reads the whole booklet** in one turn | Page-by-page (v5) lost exact pieces; whole-booklet v3 had them all |
-| Any domain | **`open_page` tool** (`graphgen/browser.py`, served by the same MCP server as `lookup_part`): headless Chrome runs the page's JavaScript and returns its text and circuit images; only the recipe's sites can be opened | docs.arduino.cc builds pages in JavaScript, so a plain fetch (WebFetch) returned no text. The app should take a tutorial's link, not a saved copy |
+| LEGO | **Path A at stud level** (`lego_model.py`: studs, receptacles, physical laws G1–G4, cross-check with the box model); **Path B reads the whole booklet** in one turn | Page-by-page (v5) lost exact pieces; whole-booklet v3 had them all |
+| Any domain | **`open_page` tool** (`code/graph/arduino/browser.py`, served by the same MCP server as `lookup_part`): headless Chrome runs the page's JavaScript and returns its text and circuit images; only the recipe's sites can be opened | docs.arduino.cc builds pages in JavaScript, so a plain fetch (WebFetch) returned no text. The app should take a tutorial's link, not a saved copy |
 
 Result: electronics v6 has no real model errors (28/28 reviewed), and reading the 48 built-in examples from their links is as accurate as reading the saved text, at the same speed. Details: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
 
@@ -1282,17 +1287,744 @@ Result: electronics v6 has no real model errors (28/28 reviewed), and reading th
 
 | | Change | Evidence that motivated it |
 |---|---|---|
-| Scoring | **Answer key from stud geometry** (`stud_key.py`): clutch and pin joins from the parts library's primitives, for every kind of piece. Validated by hand-built models with known answers, physical laws G1–G4 per model, cross-check with the box method. Ambiguous joins (a stud two pieces seem to hold) are not scored; 38 "trusted" sets | The old key saw only plain bricks, plates and tiles, assumed models stand upright (40457-1 is tilted 45°), and expanded custom parts embedded in 26 model files into primitives (7893-1: 803 "pieces", really 419) |
+| Scoring | **Answer key from stud geometry** (`lego_model.py`): clutch and pin joins from the parts library's primitives, for every kind of piece. Validated by hand-built models with known answers, physical laws G1–G4 per model, cross-check with the box method. Ambiguous joins (a stud two pieces seem to hold) are not scored; 38 "trusted" sets | The old key saw only plain bricks, plates and tiles, assumed models stand upright (40457-1 is tilted 45°), and expanded custom parts embedded in 26 model files into primitives (7893-1: 803 "pieces", really 419) |
 | LEGO | **One id per physical piece** from the parts list | Most missed contacts are between identical pieces (Plate 1×6 on Plate 1×6) |
 | LEGO | **Positions on the stud grid**; code computes joins from them (scored separately) | Claude picks the wrong one of several look-alike plates |
 | LEGO | **Laws L6–L10** for Path B: ids once, step order, nothing on smooth tiles, stud capacity, positions agree with `rests_on` and never overlap | Half the joins Claude wrote were not real (old key) |
 
-Re-scored with the stud key, every version's joins are more often real than the old key said (v3: 0.53, not 0.46), and the ranking of v1–v5 holds. Pieces are compared under one name per physical piece (Rebrickable part relationships, letter variants, an alias list: `stud_key.canon`), since the parts list and the 3D models name mould variants differently; this raised the scorable share of pieces from 90% to 97%. Details: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+Re-scored with the stud key, every version's joins are more often real than the old key said (v3: 0.53, not 0.46), and the ranking of v1–v5 holds. Pieces are compared under one name per physical piece (Rebrickable part relationships, letter variants, an alias list: `lego_model.canon`), since the parts list and the 3D models name mould variants differently; this raised the scorable share of pieces from 90% to 97%. Details: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md).
+
+### v8: placements instead of guessed connections (7–8 October 2026)
+
+| | Change | Evidence that motivated it |
+|---|---|---|
+| LEGO | **Claude gives each piece's placement** (column and row in studs, layer in plates, turn/tilt/roll in degrees); **code finds the connections** from the pieces' real 3D shapes (`lego_model.py`) | v7: half the connections Claude wrote were not real |
+| LEGO | **Snapping:** quarter turns, the piece's own studs onto the grid, a piece settled onto the studs of the pieces it says it rests on, pins into holes | Rough readings must still give exact connections |
+| LEGO | **Laws L11–L14:** two pieces in one space, a piece held by nothing, `rests_on` contradicting the placements, one stud in two pieces | Physical impossibilities are cheap to detect and to send back for repair |
+| LEGO | **Text guides** for blind builders (LEGO Audio & Braille, Bricks for the Blind) added when a set has one | They state stud offsets and orientation in words |
+| LEGO | **Step pictures:** each step's picture compared with the previous one, new pieces boxed in red (`step_diff.py`); optional labelled grids and close-ups | Research: models find exact positions more easily when they can read labels |
+| Both | **AR export:** steps, an anchor piece, positions, the booklet picture of each step; electronics with breadboard positions and an equivalence-aware live check (`ar.py`, `ar_circuit.py`) | The AR app needs where each piece goes, not only what touches what |
+
+Result in plain words: the engine is exact when the placements are right (99.9% of connections from true placements),
+but Claude places only about **25%** of pieces in the right spot, however the pictures are shown (whole booklet,
+red boxes, grids, close-ups, or Opus; six-set test). v8 does write far fewer invented connections than v7. The
+limit is reading exact positions from drawings, which the research on vision models predicts. Details and the
+five-way table: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md) section 5.
+
+### v9: render and compare (8 October 2026, first version)
+
+Let geometry check Claude's guess instead of trusting its stud counting (`lego_model.py`, `v9.py`). For each booklet
+step: draw Claude's pieces so far, fit the camera so the drawing covers the model in the step's picture, take the
+pixels that changed since the previous step in the new piece's colour, and move the new piece to the nearby placement
+(±2 studs, ±3 plates, the four quarter turns) whose drawn outline covers them best. Tested on the v8.2 answers of the
+6 sets (no new model calls):
+
+| | In place | Connections found | Connections real |
+|---|---:|---:|---:|
+| v8.2 as Claude answered | 20% | 42% | 55% |
+| v9, any nearby placement allowed | 12% | 39% | 55% |
+| v9, only placements that sit on the stated supports and overlap nothing | 19% | 42% | 56% |
+
+What we learned: the camera fit works (the drawn outline matches the booklet's model, IoU 0.84–0.86 on 41589-1), but
+drawing each piece as a plain box is too crude to tell nearby placements apart, and changed pixels also come from
+call-outs and arrows. Without physical rules the moves are mostly wrong; with them almost nothing moves (6 of 335
+pieces).
+
+**Second version: real shapes and colour.** Pieces drawn with their real LDraw triangles (studs, slopes), the camera's
+side chosen by colour (a cube-shaped model fits the same outline from four sides), and each candidate scored by how
+many pixels of the drawn picture have the same LEGO colour as the booklet picture around the new piece. On two sets
+(30103-1, 41589-1): in place **40% → 32%** (25 pieces moved, mostly to wrong spots).
+
+Why it does not work yet: the camera is fitted to Claude's own placements, which are mostly wrong, so the drawing it
+compares against is itself off by about the size of the corrections we want (a stud or two). Render and compare would
+need a camera found independently of Claude's answer (for example from the booklet's own parts call-outs or from the
+first steps, which are usually right) before it can correct individual pieces.
+
+### Which 3D models can be used (9 October 2026)
+
+All 1,470 LDraw OMR models were audited against their sets (`tests/research/scrape/omr_audit.py`): 619 usable at first,
+**1,306 of 1,421 (92%)** after fixing how pieces are counted on each side (minifigures and Fabuland figures, custom
+parts, segmented hoses and cables, renamed and alias parts, assemblies, alternate builds, numbering schemes;
+`lego_model.mpd_sections`, `lego_model.reconcile`, `lego_model.pair_by_name`). The pipeline's Plan
+A check uses the same reading, so Plan A now applies to about twice as many sets. Details: `data/reference/omr_audit.md`.
+
+### Related work: MEPNet (Stanford and MIT, ECCV 2022)
+
+[MEPNet](https://cs.stanford.edu/~rcwang/projects/lego_manual) ("Translating a Visual LEGO Manual to a
+Machine-Executable Plan", Wang et al., [paper](https://arxiv.org/pdf/2207.12572)) solves the same problem as Path B:
+from manual pictures, place each new component in 3D. Its approach is close to our v9 idea, done with learned
+models: a network finds the new component's 2D keypoints and mask in the step picture, and 2D-to-3D projection with
+a known camera and LEGO's connection rules (studs) turns them into a 3D pose. It reports **88.7% pose accuracy** on
+its synthetic LEGO data. Code and trained weights are public ([github.com/Relento/lego_release](https://github.com/Relento/lego_release),
+MIT licence).
+
+What it would take to use it here:
+- **Its inputs are not our PDFs.** It reads manual-style pictures rendered from LDraw models with a known camera,
+  plus the 3D shapes (voxels) of the new components and of the model built so far. Official booklet pages differ in
+  style (backgrounds, call-outs, arrows, sub-assemblies), so the networks would likely need fine-tuning on renders that
+  look like real booklets.
+- **It assumes the camera is known.** That is exactly what our v9 lacked: v9 fitted the camera to Claude's own
+  (mostly wrong) placements.
+- **Hardware:** trained on 4 Titan RTX GPUs for 5 days; running it needs a CUDA GPU and PyTorch3D (a cloud GPU, not
+  this Mac).
+- **Fit with our pipeline:** we already have what it needs besides the pictures: each piece's 3D shape (LDraw),
+  the pieces of each step (Claude, or the parts list), and the model so far.
+
+## R23. Lessons from 3D models
+
+**Date:** 9–12 October 2026 · **Code:** `code/graph/lego_3d/lesson.py`, `assembly.py`, `bags.py`, `lesson_viewer.py` ·
+**Results:** [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md) section 6
+
+**Question:** reading exact placements from booklet pictures stays at about 25% (R22, v8–v9), even with written guides.
+Can we still make a good, human lesson for a set?
+
+**Answer: yes, from the 3D model.** 1,306 sets have a usable 3D model (R22, "Which 3D models can be used"). It gives
+every piece's exact place, so code knows the true graph. Claude then does only what it is good at: grouping pieces
+into sensible steps and writing them in plain words ("Put a red 2×4 plate on the two black 2×2 bricks"). Code checks
+every plan, so a bad graph cannot become a bad lesson.
+
+### The decisions, in plain words
+
+| Decision | Why |
+|---|---|
+| **Claude plans from the graph, not the pictures** | Pictures give wrong positions; the 3D model's graph is exact |
+| **Steps of 3–6 pieces**; identical sub-assemblies together | 1-piece steps (v1: 100 steps for 155 pieces) are tedious; big steps are hard to follow |
+| **Real physics:** each piece has a direction it goes on (down onto studs, up from below, sideways, along an axle, into a clip), and its path must be clear (pieces as 4-LDU cubes, slid in along that direction) | The user found steps that could not be built: a piece put on after the piece that covers it |
+| **Nothing floats:** a new piece must click, clip or slide onto something already built | Small tiles were placed before the plate they sit on; bars before their clips |
+| **Follow LEGO's own order** (the official steps recorded in the 3D model) | Designers already solved the order; before this rule 57% of pieces were out of LEGO's order, now 0% on the two sets regenerated |
+| **Open bag 1, 2 … from the booklet** | Nothing else records bags. Claude reads bag numbers and call-outs from the booklet (a reading task, which works); code checks the counts |
+| **Shrink big booklets** before sending them | Booklets over about 15 MB never reached Claude; redrawn as page images they are 4–10 MB and still readable |
+| **Main build only** | 3-in-1 booklets hold B and C models, but no official 3D files exist for them (Rebrickable lists 284 alternates for 7 sets, none by LEGO; fan files cannot be downloaded by API) |
+| **3D hint page:** pieces animated from their real direction; a sub-assembly shown alone while it is built, then lined up and pushed onto the model | The learner sees how a piece goes on, not only where |
+
+### What testing found
+
+- Desert Racers (65 pieces): every check passes, 19 steps, 0% out of LEGO's order, $0.61.
+- Off-Road Buggy (371 pieces): 92 steps in LEGO's order; 12 physical-path warnings left, mostly on Technic pins and
+  axles, which the cube shapes treat as solid (likely false alarms).
+- Audi (262 pieces): the booklet reading now finds bag 1 (steps 1–28) and bag 2 (steps 29–62) and the separate
+  minifigure, $0.88. The full lesson with bags is being regenerated.
+
+### Open questions
+
+- Should a physical-path warning give way when LEGO's own order says the piece goes first? (Done: LEGO's order now overrules it.)
+- **Next rule:** within one official step, a base goes before what sits in it (6245-1: a cannon before its base).
+- Clips and bars are found from part names; a list of clip and bar parts would be safer.
+- A batch test on about 20 varied sets (Technic, City, Creator, Architecture) before calling it general.
+
+## R24. One lesson pipeline: code suggests, Claude plans, code checks
+
+**Date:** 12–15 October 2026 · **Code:** `code/graph/lessons.py`, `lesson.py`, `circuit_lesson.py`, `assembly.py`,
+`lego_model.py`, `compare_cq.py`, `compile_check.py`, `lesson_batch.py` · **Write-ups:**
+[`HOW_IT_WORKS.md`](./HOW_IT_WORKS.md) (plain-language walk-through: pipelines, code and AI, prompts and inputs),
+[`LESSONS.md`](./LESSONS.md) (rules and results)
+
+**Question:** can one pipeline make step-by-step lessons for LEGO and Arduino alike, and how should the work be split
+between code and Claude?
+
+**Answer:** one lesson loop (`lessons.make`) with a recipe per domain, as for graphs (R22). The best split found is
+**code suggests, Claude plans and writes, code checks**:
+- **Suggest (code):** code knows the exact facts (the graph, LEGO's own steps, each wire's holes).
+- **Plan and write (Claude):** Claude is good at order, grouping and plain words.
+- **Check (code):** code checks every plan against physical and circuit rules, and sends problems back.
+
+### The decisions, in plain words
+
+| Decision | Why |
+|---|---|
+| **Code suggests the steps; Claude orders, groups and writes** | Arduino: code alone gave one part per step (LED Bar Graph 35 steps); Claude alone could miss a wire. LEGO: Claude alone started from nothing; code alone gives no words and tiny steps |
+| **Generic physical rules in Claude's instructions** (way in, nothing floats, base first, what spans comes after, locking pieces last, stop end first, one push for sub-assemblies, things that move, see what you do) | Each was found wrong in a real test build (the Buggy) and generalised; code's checks (S1–S13) still verify them |
+| **The sketch wins over the page's text** (E11: pins the sketch reads must be wired) | A page can contradict its own sketch (joystick: text pin 6, sketch pin 2); a lesson must run |
+| **A page with no runnable sketch gets one written for its circuit**, marked as such | 5 pages (cloud, MATLAB, PLC) had none; a lesson must run |
+| **Shields join their pins to the board's** (datasheet table) | A stacked shield's pins were missing from every graph |
+| **Better joins:** stud sockets from a part's own studs when its outline gives none; wheels on built-in pins; all figure parts | Clips, handles, car bases and Fabuland figures were seen as "only resting" |
+
+### How it works: two reused pipelines, a recipe per domain
+
+**The graph pipeline** (`pipeline.run_case`: parts → build → check → repair → save) and **the steps pipeline**
+(`lessons.make`: source → suggest → plan → check → repair → finish) are the same for every domain. LEGO and Arduino
+differ only in their recipe:
+
+| | Graph | Steps |
+|---|---|---|
+| **LEGO** | Code only, from the official 3D model (studs, sockets, pins, axles matched; name rules for clips, hinges, wheels, figures; LEGO's steps and sub-builds read). Claude only when there is just the booklet PDF (code cuts out each step and boxes the new pieces; Claude places them; code joins them from the real shapes) | Code suggests a plan from LEGO's own steps; Claude merges, splits and reorders it and writes the words, following generic physical rules; code checks S1–S13 and W1–W3; Claude repairs; code moves leftover pieces and rewords steps whose words differ from the 3D page |
+| **Arduino** | Claude reads the tutorial link (with tools to open the page and look up parts); code checks electrical laws E1–E11, adds stacked shields' connections from a datasheet table, finds the sketch (examples, page, linked file, online editor), and follows the sketch where the page contradicts it | Code suggests each part and wire with exact holes; Claude orders, groups (up to 3) and writes the words and extras; code checks W1–W4, O1, C1–C3; the sketch is compiled for the lesson's board |
+
+**AI is used in 8 places, code everywhere else.**
+
+| Domain | AI calls |
+|---|---|
+| LEGO | Placing pieces from a booklet PDF; reading bag numbers; planning and writing the lesson; rewording changed steps |
+| Arduino | Reading the circuit; planning and writing the lesson; writing a sketch when a page has none; fixing a sketch that does not compile |
+
+Each AI call has a fixed prompt, an input built by code, and a structured output that code checks (HOW_IT_WORKS.md
+section 5).
+
+**What Claude is given to plan a LEGO lesson:** code writes each piece of the graph as one line.
+
+```
+b4 | official step 2 | Plate 1 x 3 | Yellow | col 2 row 0 layer 1 turn 360 | on: b1 | clicks onto: b9 | touches: b11
+```
+
+- **The fields:** id; LEGO's step and sub-build; name; colour; position in studs and plates; the pieces it sits
+  on; the pieces it fastens to; the pieces it only touches.
+- **Then:** code's suggested plan and the problems the checks find in it.
+- **For Arduino:** each suggested step lists the part or wire, every leg with its hole or pin ("12t.c" = column
+  12, top half, row c), what it connects, and whether it has a right way round.
+
+### What testing found
+
+- **Arduino:**
+  - **Lessons:** all 95 lessons from links pass every check, plus one note: a pin the sketch drives that the circuit
+    does not use, which works fine.
+  - **Compiling:** 90 of 95 sketches compile for their own board (`arduino-cli`, needs Rosetta on Apple Silicon).
+    The other 5 need Arduino Cloud (3) or a library that does not support the Nano Matter (2).
+  - **Tutorial bugs fixed by the smallest change that compiles:** a typo (`prinln`), and MIDI note names (`A3` had
+    silently meant the analog pin).
+  - **Against CircuitQuest's 48 shared lessons:** circuits identical in 27 (match score 0.75), sketches in 21
+    (similarity 0.84). Most differences are where CircuitQuest changed the tutorial's circuit and we follow it.
+  - **Shorter lessons:** the new ordering cut build steps by 25% across all lessons (881 → 665).
+- **LEGO, old way against new way:**
+  - **8 small sets:** repair rounds 16 → 6, cost $1.77 → $0.66, 0 issues left either way.
+  - **8 bigger sets (Technic and System, made both ways the same night):**
+    - first-plan issues fell sharply on Technic (42101: 14 → 4; 42102: 10 → 2);
+    - issues left were the same kind both ways;
+    - cost $10.32 → $9.39.
+  - **271 sets made both ways** (old lessons against the full run, all judged by today's checks):
+
+| | Old | New |
+|---|---:|---:|
+| Lessons with no issues | 60% | **92%** |
+| Issues left | 198 | **39** (−80%) |
+| Repair rounds | 429 | **224** |
+| Cost | $60.78 | **$38.54** (−37%) |
+
+  - **The Off-Road Buggy (371 pieces):** 137 steps, 0 issues. Every problem step found by hand is right: the drive
+    motor fitted before its axles, pins before the beam over them, the differential after its axle, the motor
+    block with the motor last.
+- **What the leftovers taught us (each now a generic rule):**
+  - **Sets with several separate models** (a truck, a street lamp, cones, a figure): LEGO's file may list a small
+    one first. The main model is now the biggest, and the others are set beside it, never attached.
+  - **Joins the 3D library does not mark:**
+    - parts "with Axle/Pin";
+    - turntables, hinges;
+    - bars into holes and through round plates;
+    - plates "with 2 Clips";
+    - stud holes;
+    - round tiles on a centre stud;
+    - arches and brackets whose sockets are not at the bottom of their outline.
+
+    Together these add about 10% more real stud joins on 60 sample sets, with no false ones (the "one stud in two
+    pieces" count stays at 27).
+  - **Words:** code names in the instructions ("block 42", "drivemotor") and text that starts from the part the 3D
+    page puts on last are found by code and reworded.
+  - **Real limits, rare:** a part only wedged in place, and cardboard with no holes in the 3D file.
+  - **Blind re-runs do not help.** Re-making a lesson with the same rules gives Claude another roll of the dice: of
+    4 tried, 1 got better and 3 worse. Re-run only lessons whose issue matches a newly fixed gap, and keep the
+    version with fewer issues.
+- **The full run (15 October):**
+  - 482 lessons made, 85% passing every check, $137, sets up to 371 pieces.
+  - 229 sets were marked failed by the subscription's *weekly* limit, which the retry rule did not recognise. Fixed,
+    and those sets are being made again (`lessons-batch-14.log`).
+
+### Open questions
+
+- **Leftovers:** what the full run leaves, mostly "only rests" (S3) and LEGO sub-builds put on the model (S9).
+  Which are join gaps and which are planning mistakes?
+- **Visibility rule:** is "every new piece visible" (S13) too strict when pieces in the same step cover each other?
+- **The checker:** the next big part. When the learner says "done", compare what they built with the step's expected
+  state, with adaptive feedback as in CircuitQuest; a vision model and AR later.
+
+---
+
+## R25. A lesson data structure: record, graphs and one parts catalogue
+
+**Date:** 18–19 October 2026 · **Code:** `code/graph/lesson_store.py`, `lesson_store.py`, `lesson_store.py`, `naming.py`,
+`pins.py`, `code_links.py`, `part_catalogue.py`, `part_metadata.py`, `part_review.py`, `progress.py`, `tutor_mcp.py` ·
+**Write-ups:** [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) (the specification), [`DATASTRUCTURE.md`](./DATASTRUCTURE.md)
+(the data as it is, generated from the store), the shared page *Pinpoint Lesson Data*
+
+**Question:** how should a lesson be stored so that the steps, the parts and their connections, the code and the
+parts catalogue can all be reached together, by the tutor and by the AR check, for LEGO and Arduino alike?
+
+**Answer:** a **multilayer labelled property graph** with a **type–instance split** (a part definition in the
+catalogue, its copies in the lesson):
+- **Lesson record** (`lesson.json`): name, link, what it is about, how it works, troubleshooting, the expected
+  result, the parts list, the substitutions; it points to its graphs (a missing one is `null`, never empty).
+- **Steps graph** (`instruction.json`): steps and their order (`NEXT_STEP`; the previous step is worked out, not
+  stored), what each step `PLACES` and `MAKES`, `DEPENDS_ON` (strict order, from the joins) and `ALIGNS_WITH`
+  (two parts must share a breadboard strip, in any order); the upload step carries the code and its links to pins.
+- **Physical graph** (`physical.json`): part instances and their joins, with one vocabulary for every domain
+  (`method`, `holds_by`, `freedom`, `reversible`).
+- **One parts catalogue** (`parts.json`): LEGO and Arduino together (`metadata.domain`), each card with standard
+  metadata (schema v2: maker, model, chip, voltages, studs…, each value's source named) and its substitutes.
+- **Every fact stored once**; an audit rebuilds each saved lesson from the graphs alone (Blink and Fade exactly).
+
+Decided along the way: naming rules N1–N6 given to Claude from the start; a generic name ("resistor") reuses a part
+we have; a second Claude session reviews the parts with the catalogue in reach, and only what code confirms counts;
+the parts are settled (matched, reviewed, added, described) **before** the circuit is built; pins carry what they
+can do, so the code can move a pin (CircuitQuest-style), and a substitution that would break the sketch is refused.
+Tests: a tutor reading the lesson only through tools answered 15/15 conversation turns, including questions about
+other steps.
+
+---
+
+## R26. LEGO lessons from the booklet PDF alone
+
+**Date:** 19–20 October 2026 · **Code:** `code/graph/lego_booklet/pdf_lesson.py` (the pipeline), `booklet_layout.py` (the
+booklet's layout), `step_diff.py` (cuts, overlays, arrows), `booklet_size.py` (areas by code) · **Sets:** 30103-1
+Car (32 pieces), 30105-1 Stephanie and Mailbox (41), 30055-1 Vulture Droid (42) · **Results on the page:** section 3
+of *Pinpoint Lesson Data*, and [`DATASTRUCTURE.md`](./DATASTRUCTURE.md) §3
+
+**Question:** can a lesson be made from a LEGO booklet PDF when there is no 3D model? Models were not good at working
+out exact joins from pictures (R21), so the lesson has **no physical graph**: a strict-order steps graph, each step
+saying which parts-list rows it adds, how many, where, and what the model looks like.
+
+**Answer: yes, for the three small sets tested**, all three READY (every piece of the parts list placed by a step),
+with the order matching the set's 3D model (used only to score, never to build) at 1.000, 0.976 and 0.891–0.910
+inside each build, for $0.6–1.0 and 4–8 minutes a set.
+
+### How it works
+
+| | Who | What |
+|---|---|---|
+| parts list | code | the set's inventory from Rebrickable (all 106 booklets are covered), and a **parts sheet**: a numbered picture of every row in its colour |
+| layout | code | the booklet's builds, main steps, boxed **sub-builds** (with their "2x") and arrows, read from the PDF (below) |
+| pictures | code | each step cut at the booklet's own 300 DPI; an **overlay** of what changed against its own previous step; the changed areas enlarged; the arrows' start enlarged |
+| read | Claude (Sonnet) | per step: which numbered parts are new, how many, where; a full description; what changed; the instruction for a child |
+| check | code | every part a row, never more than is left, the call-out box agrees, no part ids in the words, and the **size check** (below); problems go back once or twice |
+| repair | code first, then Claude | leftovers: symmetry (hidden twins), balance between neighbouring steps, size fill; then a recount (Opus) and a last allocation that code accepts only with evidence (the step's words name the colour, confidence ≥ 0.6); every repaired step is reworded and flagged for review |
+| build | code | lesson record, steps graph, names (one small call with the set's name), the gate: READY only if every piece is placed |
+
+### What each change did (Car 30103-1 unless named)
+
+| Change | Why | Effect |
+|---|---|---|
+| parts list as text, previous + current picture | first version | order 0.909–0.981 across runs; two pink tiles under the seat missed in most runs |
+| leftover repair (Claude picks the step) | pieces no step added | placed the tiles in the wrong step; counting per step instead, with code choosing, was better |
+| **parts sheet** (a picture per row) | the reader only had names | both tiles read the first time; 0.981 |
+| **overlay** + description + what changed | show what is new | 1.000; a bracket moved to its right step |
+| cut to the step (divider lines, panels) | adverts and "rate this set" panels in the picture | step 7's grille read directly; step 8's double count gone |
+| arrow rule + what the previous step added | a piece shown with arrows was counted again next step | double count gone |
+| **parts-used gate** + evidence-checked allocation | a lesson must not ship with pieces missing | an unsure guess (0.5) refused: NOT READY instead of wrong |
+| **symmetry** (the 3D route's S11) | the far side of the model is hidden | the hidden wheels found |
+| **300 DPI** (was 150) | the seams between tiles | sharp seams; still 1 run in 2 misses the tiles |
+| **size by code**: each part's outline from its LDraw model, step 1 for the scale, new area per colour | code's own evidence for counts | a read with the panel alone measures 1.7× its pink: asked again, or the tiles filled in by size |
+| **balance**: the whole new area of two neighbouring steps compared | a white piece read one step early (colour cannot show it) | code found the pair and the two candidates; Claude picked the headlight mudguard; moved 4 → 5 (the order score could not see it) |
+| **arrows from the PDF** (red line + filled head; the clipped line walked back to its start) | arrows were taken for changes | arrows never counted; the reader is shown what sits at the arrow's start |
+| no "top 22%" rule; moved pieces and pixels gone to background taken out | a plate floating above the model was hidden | caught |
+
+### Generalising to other sets: the layout was the problem
+
+Run on two new sets, the order fell to **0.643** (Stephanie and Mailbox) and **0.734** (Vulture Droid). The reads
+were not the cause: the **step cutter** took the most common digit size for the step numbers (the sub-build numbers
+in the droid's booklet, so all seven main steps were dropped), sorted two builds on one page by number (mailbox 1,
+stand 1, mailbox 2…), and knew no sub-builds. A layout parser fixed it, from the PDF itself:
+- **main steps** are the largest step-number digits; a **new build** starts where the numbers start again, read
+  column by column;
+- a **sub-build** is a cream panel with its own smaller numbers (none: one step), a "2x" beside it, attached in the
+  main step its **dark connector line** leads into (followed through its bends; a thin filled shape counts), else the
+  next main step in reading order;
+- a panel whose line leads elsewhere (a **figure** drawn finished beside it) is a **build of its own**, and that
+  finished picture is its last step (where Stephanie's letter is);
+- two steps one above the other are split at the **empty strip** between their pictures, not at the lower number (a
+  mailbox taller than its "2");
+- each step is compared with **its own previous step** (in its build or sub-build); the first starts from nothing.
+
+The order is now scored only inside each build: separate builds have no order between them, and a 3D model file
+lists them in whatever order its author chose.
+
+### The data structure for builds (decided with the user)
+
+- the first step (`overview`) **SHOWS** each build; each build **STARTS** at its own step 1; **NEXT_STEP** runs only
+  inside one build or one sub-build (the mailbox's last step does not point to the stand);
+- steps are numbered as the booklet: `flower-stand-7`; a sub-build is **part of the main step that needs it**, its
+  steps `flower-stand-7.1`, `7.2`…; the main step STARTS it, and the edge carries its name and "2x";
+- a step that puts a sub-build on can still add loose pieces of its own (it is told so, and its new area is checked
+  against the sub-build's pieces and its own).
+
+### Results
+
+| Set | Builds · sub-builds | Steps | Ready | Order inside builds | Model pieces matched | Cost |
+|---|---|---|---|---|---|---|
+| 30103-1 Car | 2 · 0 | 9 | yes | 1.000 | 30/35 | $0.59 |
+| 30105-1 Stephanie and Mailbox | 3 · 4 | 19 | yes | 0.976 | 34/41 | $0.99 |
+| 30055-1 Vulture Droid | 1 · 3 (wings 2x) | 17 | yes | 0.891 | 42/42 | $0.75 |
+
+Pieces not matched to a step are mostly minidoll parts that the inventory and the 3D model split differently. The
+three sets' 58 parts now all have catalogue cards and metadata (8 minidoll parts carded, 54 drafted; $0.51).
+
+### What this shows
+
+- **Code should cut and measure; Claude should read and word.** Every large gain came from giving the reader better
+  evidence made by code (the parts sheet, the overlay, the booklet's own resolution, the arrows, the layout), and
+  every repair that holds is code checking Claude's answer against a measurement.
+- **A score can hide errors.** The order score could not see a piece one step early when the two steps are next to
+  each other in the model; the area balance could.
+- **Run-to-run variance is real.** The two pink tiles under the Car's seat were read in some runs and not others; the
+  gate makes such a run NOT READY instead of wrong.
+- **Open:** a clean re-run of all three sets from scratch after the last fixes; more sets (bigger, with parts boxes
+  per step and pages with several sub-builds); a part-for-part substitute table (two 1 x 2 plates for one 2 x 2).
+
+---
+
+## R27. Batch tests: 10 lessons per route, twice
+
+**Date:** 20–22 October 2026 · **Code:** `code/graph/lego_booklet/pdf_lesson.py`, `booklet_layout.py`, `booklet_check.py`,
+`booklet_eval.py`, `lesson_store.py`, `lego_ids.py`, `code_links.py`, `lesson_store.py`, `part_review.py`,
+`pinouts.py`, `browser.py` · **Runs:** `tests/experiments/batch_20261020/` (batch one) and `tests/experiments/batch_20261022/`
+(batch two): set lists, `run.sh`, logs, `results.tsv`, `findings.json` · **Review pages:** batch one
+`claude.ai/artifact/Q8zeCr6wj1Lq8e1JhqUwjw`, batch two `claude.ai/artifact/CXf5gzMQCVRu8zukUYtWPX`
+
+**Question:** does lesson creation work on sets and tutorials it has never seen, on all three routes (a LEGO booklet
+PDF, a LEGO 3D model, an Arduino tutorial link), and does every part it needs get created?
+
+**Method.** A batch is 10 LEGO sets made twice (from the booklet PDF and from the 3D model) and 10 Arduino links,
+three at a time per route. Every error found is fixed **as a rule in the creation code**, never by hand in one
+lesson, and the fix is checked on the earlier lessons so it does not make them worse. A booklet lesson is scored
+against the set's 3D model (`booklet_eval`; never used to build it): each piece is in the model's step (exact), one
+step off, in the wrong step, or missed. The 3D model's steps and the booklet's are lined up by a monotone alignment
+that matches the most pieces.
+
+### Batch one (20–21 October): 15 sets, 10 links
+
+The person reviewing the lessons found errors in most of the first booklet lessons. Each review note became a rule:
+
+| Found | Rule now |
+|---|---|
+| steps missed, cut through the picture, a sub-build made its own step | **page check**: Claude sees each page with code's cut drawn on it and corrects boxes and where panels go; code refuses a box that drops the step's number, is little more than the number, or is much smaller than code's own box; crops then grow to take in any shape they cut through, never another step's number |
+| scanned booklets (no text layer) with no steps found | OCR with Apple Vision at two resolutions, then Claude reads each page's numbers and code snaps each to its glyph; cream panels found by colour |
+| a piece placed more times than the set has | **the parts list is a hard limit** (`enforce_inventory`): over-placed pieces are recounted by Claude only in the steps that place them, and code trims the rest from the least sure steps |
+| a sub-build's pieces counted again where it is attached | `attach_overcount` |
+| the "balance" repair | scored against the 3D models it moved 3 pieces wrong for every 1 right: **off by default** (`--balance`) |
+| Arduino: chips with no pin names (LCD, 74HC595) | `pinouts.py`: the Wokwi element's pin list, else a datasheet pinout drafted by Claude and checked by code |
+| Arduino: a part replaced by a look-alike, a join with no port | checks E7 and V5 |
+| 3D: missing cards, LDraw numbers, prints, minifigure assemblies | cards made when missing; `lego_ids` matches prints, moulds, LDraw aliases and assemblies; minifigures do not have to match ("as long as it looks the same") |
+
+After all the fixes every booklet was made again: 538 → 530 of 829 model pieces in the right step (0.649 → 0.639),
+the same within the run-to-run variation (±4 pieces a booklet), with clear gains on the worst reviewed sets (Backhoe
+22 → 28 of 41). With balance off the panda (40396-1) read 51 of 53. Then **every piece of the set must be used**: the
+last repair used to drop a piece Claude was under 60% sure of, so 2 booklets left pieces out; a guess now goes to
+Claude's best step, flagged for review, and all 18 booklets use exactly their set's pieces.
+
+### Batch two (22 October): 10 new sets, 10 new links
+
+The sets (all have a booklet PDF and a 3D model and were never used before): 4904-1, 8658-1, 7603-1, 7268-1,
+7613-1, 4991-1, 7803-1 (all scanned), 30161-1, 31028-1 and 5761-1 (two Creator 3-in-1 sets). The links (docs.arduino.cc
+tutorials never made before): knight-rider, multiple-blinks, tilt-sensor, two-switches-one-pin,
+interfacing-a-joystick, capacitance-meter, unipolar-stepper-motor, clap-detector, secrets-of-arduino-pwm, opamp.
+
+**Was it made without issues? Not on the first run; yes after one round of rule fixes.** The first run left 12 of 30
+cases with a problem: 3 Arduino lessons failed to start, 6 lessons had problems the final check found, and 3
+booklets had the wrong structure (the check found none of these; scoring and looking at the pages did). Each was
+fixed as a general rule:
+
+| Route | First run | Cause | Rule now |
+|---|---|---|---|
+| Arduino | 3 failed before reading the page | the headless browser failed to start with several starting at once | `browser.render` starts it again, up to 3 times |
+| Arduino | PWM tutorial built on an Adafruit Metro Mini | "an ATmega168 or ATmega328 board": the Uno failed R3 (no ATmega168), so the parts lookup's look-alike was kept | R3: one of the chips a lesson offers is enough. With the Uno the page has no circuit (an oscilloscope explanation) and is refused, like SPI |
+| Arduino | "code uses pin 13, nothing wired" (3 lessons) | pin 13 is the board's own LED | a pin the board's card names LED_BUILTIN (or aliases so), driven as an output, needs no wire |
+| Arduino | "code uses pin 0" (capacitance meter) | `analogRead(0)` was read as digital pin 0 | a bare number in `analogRead` is the analog input: A0 |
+| Arduino | "resistor-220 is listed but not in the build" (2) | every resistor-N row is the resistor card, so the first row took every resistor | a row naming a value takes only parts of that value |
+| Arduino | "r2-r1 is never made" (opamp) | two legs twisted together: no step's targets named the join | a twisted or soldered join between two parts is made by the step that places the second |
+| Arduino | "net uln1:10-uln1:7 is not in the final check" (stepper) | the ULN2003's input and output are joined through the chip, and unused | a net joins at least 2 parts |
+| 3D | "join never made" (7613: 6, 30161: 8) | an attached sub-assembly's pieces still counted as the sub-assembly, so a later piece on them never joined | attached pieces belong to what they went onto |
+| 3D | 4 wheels "not on the inventory" (5761) | the model has wheel and tyre as one LDraw shortcut (6014bc02), the set lists rim and tyre | `lego_ids.shortcut_parts`: the shortcut's own parts; one piece accounts for both rows |
+| Booklet | 8658: 20 steps, 13 repairs | page 2 builds a combination with another set ("8655 + 8658 ="), read as a second build of this set | a page whose text names this set and another set number (not a year, never the first page) is left out; the page check asks Claude too, but Claude did not see it (it looks at the boxes) |
+| Booklet | 5761, 31028: 37 and 66 repairs | a 3-in-1 booklet holds three models, each from all the pieces, read as one build | for a set in Rebrickable's 3-in-1 theme whose numbers restart at 1 for another long build, the lesson is model A, the others are recorded (`alternate_models.json`); model A need not use every piece |
+
+**Results after the fixes:** 29 lessons, all READY with 0 problems, and 1 page correctly refused.
+
+| Route | Made | READY | Problems | Time each (median) | Cost |
+|---|---|---|---|---|---|
+| Booklet PDF | 10 | 10 | 0 (every set piece used; model A only for 3-in-1) | 6 min | $13.01 |
+| 3D model | 10 | 10 | 0 | 1.5 min | $2.70 |
+| Arduino link | 9 (+1 refused) | 9 | 0 | 4.5 min | $1.23 |
+
+Booklet times run 4–26 minutes because 9 lessons ran at once. 13 parts were created (8 LEGO, 5 electronics: the
+ULN2003, the stepper, a tilt sensor, an I2S microphone and the Metro Mini, which no lesson uses now).
+
+Booklets against their 3D models, pieces in the right step (minifigures left out):
+
+| Set | Steps | Right step | One off | Repairs | Note |
+|---|---|---|---|---|---|
+| 7603-1 | 13 | 31/33 | 0 | 4 | |
+| 31028-1 Sea Plane (3-in-1) | 17 | 43/53 | 2 | 6 | was 34/53 with all three models |
+| 4904-1 Elephant | 10 | 26/32 | 4 | 3 | |
+| 7268-1 | 10 | 25/32 | 0 | 4 | |
+| 7803-1 | 9 | 29/38 | 0 | 1 | |
+| 5761-1 Mini Digger (3-in-1) | 14 | 38/53 | 0 | 4 | was 29/53 with all three models |
+| 8658-1 Big Bling Wheelie | 11 | 22/31 | 1 | 0 | was 19/31 with the combination page |
+| 4991-1 Police Helicopter | 12 | 20/28 | 4 | 2 | the model's steps do not follow the booklet |
+| 7613-1 | 12 | 22/34 | 1 | 3 | the model's steps do not follow the booklet |
+| 30161-1 | 16 | 25/44 | 4 | 1 | the model's steps do not follow the booklet |
+| **All** | | **281/378 (0.743)** | | | batch one: 0.649 (other sets; minifigures were scored then) |
+
+**The score is a lower bound where the 3D model was not drawn to the booklet.** Three of the models have far fewer
+steps than the booklet (7613: 9 against 12; 30161: 9 against 16) and put pieces in another order (30161's tail
+lights in step 1). Looking at 7613's two pages against its lesson, only **2 pieces** are really in the wrong step (a
+white 2 x 4 plate shown in step 6 read in step 10, a white curved piece of step 10 read in step 5), not the 11 the
+score counts. `booklet_eval` now reports `model_follows_booklet` (the model has at least 0.8 as many steps as the
+booklet's main steps), and the review page marks the others.
+
+**Regression check, and a mistake from batch one it found.** Regenerating `DATASTRUCTURE.md` showed Blink's
+circuit as **one** net, where it has three. Batch one had made nets follow every part's `internal_pass_through` (so a
+Grove cable's wires join its ends), but resistors, LEDs and buttons carry one too, so a whole circuit merged into one
+net and the final-check comparison passed without saying anything. Nets now follow the pass-through of cables and
+connectors only. The stricter nets then showed two more checker gaps: a final check that names a net through a
+connector's pin ("header pin 15 to the resistor", "header pin 15 to the LCD's A") had both pairs dropped (the pin is
+folded away), so pairs that meet at a connector pin are now joined first; and a sketch that toggles the built-in LED
+(`digitalWrite(led, !digitalRead(led))`) reads the LED's own state, which needs no wire. With all of it, batch
+one's 15 3D lessons, all 18 Arduino lessons of both batches and Blink rebuild with 0 problems; the tests went from
+70 to 81.
+
+### What this shows
+
+- **The final check does not see structure.** All 30 first-run lessons that were made passed or nearly passed the
+  check, yet 3 booklets were built from the wrong pages (a combination page, two alternate models). Only scoring
+  against the 3D model and looking at the pages found them. Such errors need rules about the booklet as a whole, made
+  from facts code can check (the set's theme, set numbers on a page, numbers starting again at 1).
+- **Most first-run problems were checker rules, not lessons.** 6 of the 9 problems in Arduino and 3D lessons were
+  right lessons that a rule judged wrong (pin 13, analogRead(0), resistor values, twisted legs, chip-only nets,
+  shortcut wheels). A wrong rule is as costly as a wrong lesson: it hides the real problems.
+- **The parts list as a hard limit only helps when the booklet is one model.** For a 3-in-1 set it spread the pieces
+  over three models; for a combination page it pulled the set's pieces into another set's steps.
+- **A check that cannot fail proves nothing.** The merged nets made every circuit agree with its final check. A
+  checker rule needs a case where it must fail (the tests now include one per rule).
+- **What remains is timing:** a piece that is in the picture is read one or more steps early or late. Next: read each
+  uncertain step twice and keep what both reads agree on.
+
+### Rerun of both batches (27 October)
+
+Every batch lesson was made again with all the rules since: 25 sets as booklet and 3D lessons, and 20 Arduino links
+(`tests/experiments/batch_20261027`; the lessons from before are in `before/`). It cost about $10 in Claude calls.
+
+| Route | Clear | What was left |
+|---|---|---|
+| Booklet | 25/25 READY | 5761-1 (a 3-in-1 set) was NOT READY until model A got its own parts list (below) |
+| Arduino | 18/18 made, 2 refused | SPI and Secrets of Arduino PWM have no circuit, so they are refused by design |
+| 3D model | 17/25 with no plan issues (18 before) | 8 sets with 1-6 issues, mostly S3 "only rests there" |
+
+Every lesson is valid in the store (77/77). The issues the 3D lessons have left differ from run to run, because
+Claude makes a new plan each time: 41502-1 went 6 → 2 and 30161-1 2 → 1, while 31028-1 went 1 → 6 and 3931-1 1 → 3.
+31028-1 split LEGO's float build (official steps 41-53, interleaved) into two sub-assemblies attached one after the
+other, so one of the two always goes against LEGO's order. 3931-1 built a "garnish" that only rests on the model and
+never attached it. Code cannot fix either one by moving pieces, because in the 3D model those pieces really only rest
+there.
+
+The rerun found five bugs, all fixed:
+- **The wire tutorial.** That page holds several circuits, and Claude extracted a different one on each of three
+  runs. Each run showed one more gap in how a step's joins are matched:
+  - a wire end pushed onto a module's pin is now in the step's `at`;
+  - every `at` key names its part, so two cables in the same sockets stay apart;
+  - a module's step joins the Grove cable plugged into it;
+  - the final check follows a cable's lead from one end to the other.
+- **A failed case returned exit code 0.** So the batch built the store from a stale lesson. `lessons` now exits 1.
+- **Model A of a 3-in-1 set** was checked against the whole set's inventory. Its parts list is now the pieces its
+  steps place, and each row keeps the set's own count.
+
+## R28. Same input, same lesson? The repeat test, a checker that varied, and prompts and models in promptfoo
+
+**Date:** 28–30 October 2026 · **Code:** `code/graph/lessons.py` (the loop), `code/graph/lego_3d/lesson.py`
+(check, side_builds) · **Runs:** `tests/experiments/repeat_20261028/` (run1–run3),
+`research/promptfoo/round1/` (three models), `research/promptfoo/round2/` (v8 against v9: config, `results.json`,
+every lesson in `runs/`); the harness (provider, checks, config) is `research/promptfoo/harness/`
+
+**Question:** can we guarantee a lesson is made correctly however Claude goes about it? Three parts: does the same
+input give a clean lesson every time; when it does not, is the cause Claude, our checker or the source; and does a
+better prompt or another model help?
+
+### The repeat test: 30 lessons, the whole flow three times
+
+The 10 batch-two sets as booklet and 3D lessons and the 10 batch-two Arduino links, each made three times from
+scratch (about 21 minutes a run; two first attempts were thrown away: one hit the usage limit, the other ran while
+the Mac slept, so calls now wait and retry on both, and runs keep the Mac awake with `caffeinate`).
+
+| Route | Run 1 | Run 2 | Run 3 |
+|---|---|---|---|
+| Booklet | 10/10 READY | 10/10 | 10/10 |
+| Arduino | 9/9 (1 refused by design) | 9/9 | 9/9 |
+| 3D model | 8/10 | 8/10 | 8/10 |
+
+Nothing varied between runs. The same two 3D lessons failed every time, and **in both the checker, not Claude,
+was the cause: no plan could pass.**
+- **30161-1 Batmobile (S9).** The 3D model's rear 1 x 4 plate and its two lights are joined to nothing (the plate
+  only lies edge to edge against the wheel plate), yet LEGO lists them in its sub-build 'unit 1'. Built into that
+  sub-assembly they are a loose group (S2, S3); left out, S9 says the sub-build is incomplete.
+- **31028-1 Sea Plane (S3).** LEGO builds the floats as one sub-build and clips it on as one. Our join finder sees
+  three loose groups, so S3 says the sub-assembly would fall apart. Measured: the 1 x 6 cross-plate (b44) runs
+  through the rear curved slope (b46), sharing 50 of its shape cubes, and the front curved slope (b41) overlaps
+  the 1 x 4 plate (b42) in the same way. Only one of each pair can be there, so **the model file places these
+  pieces wrongly** (most likely the slopes sit one plate higher, on the cross-plate). There is no join to find.
+
+### The checker gave different answers to the same plan
+
+Re-checking the saved plans found a worse problem: the same 10014-1 plan got 9, 20 or 31 issues depending on the
+Python process. `side_builds` (which finds the units LEGO builds off the model) merged pieces in Python's set
+order, which changes with every process, so which pieces made a unit changed and S9 and S7 judged a different
+target each time. S6 had a smaller case (the way a block is pushed on was chosen by `max` over set order). Both
+now go in a fixed order; 10014-1 gives the same answer under 6 hash seeds, and 246 saved plans checked under two
+seeds agree. **Part of the run-to-run variation blamed on Claude was the target moving.**
+
+### Checker and loop fixes, each tested before it went in
+
+Every rule change was compared on all saved 3D plans (901: the repeat runs, the batch backups, the store), old
+checker against new in one process on the same model, so only the rule can make a difference.
+
+| Change | Plans changed | Issues removed | New issues | Kept? |
+|---|---|---|---|---|
+| S9: pieces nothing joins to the rest of LEGO's sub-build are not asked for | 3 | 3 S9 (30161-1, 3937-1) | 0 | yes |
+| S3: trust a sub-assembly that is exactly LEGO's sub-build | 15+ | 14 S3, 2 S2 | 0 | **no**: also cleared 'trailer', 'engines', 'cake', which may be real |
+| S3: the same, only where its loose groups overlap | 18+ | S3 on 'droid', 'heart on a stick', 'nixel' ... | 0 | **no**: neighbouring boxes overlap too often to prove a join |
+| S3: a sub-assembly nothing in the model fastens to is set in place (fix 1) | 124 | 193 S3 "nothing fastens it" | 0 | yes: clean plans 624 → 662 |
+| The loop keeps the plan with the fewest issues of all rounds (fix 2) | | | | yes |
+
+Fix 1 removes only S3 issues that asked for lock pieces our data does not have, so no plan could fix them; the
+only way to pass was to stop building the part as a sub-assembly. Most are figures, BrickHeadz feet, cake tiers,
+trailers and decorations, likely joins the finder misses (where it is wrong, the lesson says "put the foot on"
+without naming a lock, which is still physically right). Fix 2 came from sonnet on 31028-1: its issue counts went
+11 → 12 → 1 → 7, and the loop kept the 7. A unit test checks it (answers with 3, 1, 5 issues end with the
+1-issue plan); 89 tests pass.
+
+### promptfoo: the lesson prompt across models and prompt versions
+
+[promptfoo](https://www.promptfoo.dev/) (0.124.1) runs a grid of test cases against providers, with assertions,
+repeats and a results viewer. Our setup (`research/promptfoo/harness/`):
+- **a test case** is one set; **a provider** is one model (and prompt version). `provider.py` runs the product's
+  whole 3D flow for it, as its own process with `LESSON_OUT` pointing into `runs/`, never the store: the planning
+  prompt, up to 3 repairs, code's order fix and rewording, the final check;
+- **the metrics are ours**: promptfoo does not know what a good lesson is. `checks.py` scores each lesson with our
+  checker: `final_clean` passes only with 0 issues (score 1/(1+issues)); `first_shot` scores the first answer
+  before any repair (always passes, so the prompt itself can be compared). promptfoo adds pass counts, the named
+  scores summed per provider, cost and latency (token counts are passed back too from 30 October; the runs below
+  show 0 tokens).
+
+**Round 1 (29 October): three models, prompt v8, 10 sets × 2 runs, before fixes 1 and 2.** 51/60 clean; all 9
+failures were 30161-1 and 31028-1.
+
+| Model | Clean | First answer clean | Mean first-answer issues | Median time | Cost (20 lessons) |
+|---|---|---|---|---|---|
+| opus | 18/20 | 11/20 | 1.50 | 73 s | $6.34 |
+| sonnet | 17/20 | 9/20 | 2.50 | 80 s | $5.86 |
+| haiku | 16/20 | 12/20 | 1.75 | 217 s | $0.87 |
+
+**Round 2 (30 October): v8 against v9, three models each, 10 sets × 2 runs, with fixes 1 and 2.** v9 rewrote the
+instructions: each rule named by its check (the repair messages say "S3: ..."), "joined to (either way)" in place
+of the misleading "clicks onto" (it listed pieces sitting on a piece as pieces it clicks onto), LOOSE marks on
+pieces nothing else is fastened to, an order of priority when rules conflict ("never break a physical rule to keep
+LEGO's order: code moves pieces back into LEGO's order after you"), and the answer's fields with examples.
+
+| | v8 (the product's) | v9 |
+|---|---|---|
+| Lessons clean | 53/60 | 53/60 |
+| Clean leaving out 31028-1 (the model fault) | 53/54 | 53/54 |
+| First answer clean | **30/60** | 24/60 |
+| Mean first-answer issues | **1.63** | 4.30 |
+| S7 (LEGO's order) issues in first answers | **69** | 215 |
+| S3 issues in first answers | 8 | **0** |
+| S7 issues left in final lessons | **0** | 41 |
+| Cost (60 lessons) | **$12.19** | $13.87 |
+
+Per model on v8: opus 18/20 clean (12 first answers clean, $6.63), sonnet 18/20 (9, $4.59), haiku 17/20 (9, $0.98,
+about three times slower). v9 was worse for every model, sonnet most (mean first-answer issues 2.20 → 6.75).
+
+### What this shows
+
+- **When a lesson fails every time, suspect the checker and the source first.** Both lessons that never passed
+  were right plans judged by a rule that could not be met (a piece joined to nothing; a model file with pieces in
+  the same place). A rule a correct plan cannot pass makes the result depend on which of two valid choices the model
+  happens to make (30161-1: models that laid the plate straight on passed, models that built it as a sub-assembly
+  failed).
+- **A checker must be deterministic before anything else is measured.** Set order changed the target between
+  processes; now every check orders its pieces.
+- **An exemption that clears the case you want also clears cases you cannot see.** The two broad S3 exemptions
+  were rejected because the regression comparison showed what else they removed. The kept fixes remove only
+  issues no plan could fix.
+- **Keep the best answer, not the last.** A repair can make a plan worse.
+- **The prompt is not the bottleneck; the repair loop and the code fixes carry the lesson.** With v8 every model
+  reaches 53/54 on the sets the source allows, but only half the first answers are clean. Opus and sonnet are
+  equal on the final result; haiku gives the same lessons for a seventh of the cost, slower.
+- **Telling the model "code will fix it" makes it stop doing it.** v9's priority line tripled the S7 issues, and
+  code's order fix cannot reorder inside a step. The LOOSE marks did help (S3 in first answers 8 → 0; 30161-1
+  clean 6/6 against 5/6). Next: v10 = v8 with the LOOSE marks, "joined to" and the rule codes only, compared on
+  the sets whose first answers varied most.
+- **31028-1 needs a source decision**, not a checker rule: correct the float pieces' positions in our copy of the
+  model, or leave the set out as a known source fault.
+
+**Round 3 (30 October): v8 against v10, sonnet and haiku, the 5 sets whose first answers varied most (30161-1,
+4904-1, 4991-1, 7603-1, 7613-1) × 2 runs** (`research/promptfoo/round3/`, 36 minutes). v10 is v8 word for word
+plus only what helped in v9: each rule marked with its check's code, the input's "joined to" and LOOSE explained.
+Not v9's order of priority or its line that code fixes the order.
+
+| | v8 | v10 |
+|---|---|---|
+| Lessons clean | 20/20 | 20/20 |
+| First answer clean | 7/20 | **9/20** |
+| Mean first-answer issues | 1.85 | **1.40** (sonnet 1.50 → 0.80, haiku 2.20 → 2.00) |
+| Repairs per lesson | 0.75 | **0.65** |
+| S7 issues in first answers | 22 | **15** |
+| Cost (20 lessons) | $2.38 | **$2.02** |
+
+With the priority line gone, S7 fell instead of tripling. The sample is small (20 lessons a prompt) and single runs
+vary widely (haiku on 7613-1: 0 and 6 issues), so v10 leans better on every measure without proving it. Tokens per
+10 lessons: sonnet about 0.5 M, haiku 1.3–1.4 M.
+
+**Round 4: opus, v8 against v10, the same 5 sets × 2 runs** (`research/promptfoo/round4/`; rounds 3 and 4
+side by side: `research/promptfoo/compare_v8_v10.json`). For opus v10 was worse: mean first-answer issues 0.30 → 1.00
+(S6 and W3), first answers clean 8/10 → 6/10; all 20 lessons ended clean.
+
+| Prompt + model | Clean | First answer clean | Mean first-answer issues | Repairs | Median time | Cost (10 lessons) |
+|---|---|---|---|---|---|---|
+| **v8 + opus** | 10/10 | **8/10** | **0.30** | **0.20** | 92 s | $2.48 |
+| v10 + opus | 10/10 | 6/10 | 1.00 | 0.40 | 85 s | $2.55 |
+| v8 + sonnet | 10/10 | 5/10 | 1.50 | 0.60 | 106 s | $1.96 |
+| v10 + sonnet | 10/10 | 5/10 | 0.80 | 0.60 | 68 s | $1.61 |
+| v8 + haiku | 10/10 | 2/10 | 2.20 | 0.90 | 281 s | $0.42 |
+| v10 + haiku | 10/10 | 4/10 | 2.00 | 0.70 | 301 s | $0.41 |
+
+**Decision (30 October): 3D lessons use prompt v8 with opus** (`LegoLessons.default_model`; the bags and rewording
+calls use the same model). v9 and v10 were then taken out of the code: their text is in
+`research/promptfoo/prompt_versions.py`, the switch in `research/removed_code/`.
+
+**Repeat test with the choice (30 October): the 10 sets' whole 3D flow on v8 + opus, 4 times**
+(`tests/experiments/repeat_v8_opus_20261030/`: per run the lessons, every prompt sent, logs, the store check;
+`summary.txt`). Each run: the booklet's bags read, the plan and repairs, code's fixes, the store build, validation.
+
+| | Result |
+|---|---|
+| Lessons clean | 36/40; 9 of 10 sets clean in all 4 runs; 31028-1 has the float S3 every run (the model fault) |
+| Instructions, bags-read prompt, plan prompt | byte for byte the same in all 4 runs, for all 10 sets |
+| Rewording prompt | differs (it rewords the steps the plan made) |
+| Steps per set across runs | the same or within 1-2 (30161-1: 10-15) |
+| Grouping agreement between runs (share of piece pairs grouped alike) | 0.94-0.99 |
+| Cost | $12.17 (about $0.30 a lesson); about 8 minutes a run of 10 |
+
+**The input is deterministic and the lesson is right every time; only where the step boundaries fall varies.**
+The same set and code give the same prompt in every run (the ordering fixes above); Claude then splits or merges a
+step differently, every version passing every check. A whole-flow comparison across all
+three routes with one model for every call (`research/promptfoo_flow/`) was set up but not run; the switches it
+needs are in the same patch.
 
 ---
 
 ## Next steps
 
+- [x] Lessons from 3D models for LEGO (R23)
+- [x] One lesson pipeline for LEGO and Arduino; Arduino lessons from links (R24)
+- [x] Decide old vs new on bigger LEGO sets: the new way (R24)
+- [x] Compile-check every Arduino sketch (`arduino-cli`): 90 of 95 (R24)
+- [ ] Finish the full LEGO lesson run with the final method, then fix the kinds of leftovers it shows (R24)
+- [ ] Parts and lessons database; reusable builds table
+- [ ] The checker: VLM reads a photo of the build, code compares with the step's expected state, adaptive feedback; then AR
+- [ ] Regenerate the Audi, Cherry Picker and London lessons with all rules (R23)
+- [x] Batch tests: 25 sets and 20 Arduino links on all three routes, every error made a rule (R27)
+- [ ] Booklet reading: read each uncertain step twice and keep what both reads agree on (R27)
+- [ ] Lessons for a 3-in-1 set's models B and C (`alternate_models.json`, R27)
+- [x] Repeat test, deterministic checker, fixes 1 and 2, promptfoo: three models and prompt v8 against v9 (R28)
+- [x] Prompt v10 (v8 + LOOSE marks, "joined to", rule codes) against v8 in promptfoo: slightly better, no regression (R28)
+- [x] Prompt and model for 3D lessons: v8 + opus (R28)
+- [ ] 31028-1 floats: correct the model's positions or mark it a source fault (R28)
+- [ ] Part info and pin maps for AR (Arduino Uno, Nano, MKR; Raspberry Pi; LEGO)
 - [ ] Settle the R14 questions, then write one Arduino lesson and one small LEGO set in the chosen structure
 - [ ] Find a small LEGO set available both as an official PDF and in LDraw (R13)
 - [ ] Collect 3–5 more Sauder manuals (include drawers or doors) and write each in the draft form
@@ -1347,3 +2079,6 @@ Re-scored with the stud key, every version's joins are more often real than the 
 - [Kinematic pair (Wikipedia)](https://en.wikipedia.org/wiki/Kinematic_pair)
 - [And/Or Graph Representation of Assembly Plans (Homem de Mello & Sanderson, AAAI 1986)](https://aaai.org/papers/01113-AAAI86-184-and-or-graph-representation-of-assembly-plans/)
 - [Assemble Them All: Physics-Based Planning for Generalizable Assembly by Disassembly (2022)](https://arxiv.org/abs/2211.03977)
+
+**Evaluation**
+- [promptfoo](https://www.promptfoo.dev/docs/intro/): test grids of prompts and providers with assertions, repeats and a results viewer; custom Python providers and assertions (used in R28)

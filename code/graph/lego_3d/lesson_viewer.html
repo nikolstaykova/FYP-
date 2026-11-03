@@ -1,0 +1,349 @@
+<title>{{TITLE}} Build Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one working screen. The 3D stage on top, the step card under it with the instruction and three controls. */
+:root {
+  --bg: #eef0f3; --stage: #dfe3e9; --card: #ffffff; --fg: #1d2330; --muted: #5b6577;
+  --line: #cfd5de; --accent: #f2c717; --accent-ink: #3a2e00; --focus: #2a6fdb;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #13161c; --stage: #1b2029; --card: #1f2530; --fg: #e8ebf1; --muted: #9aa4b5;
+  --line: #2f3746; --accent: #f2c717; --accent-ink: #2a2100; --focus: #7aa7ff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #13161c; --stage: #1b2029; --card: #1f2530; --fg: #e8ebf1; --muted: #9aa4b5;
+  --line: #2f3746; --accent: #f2c717; --accent-ink: #2a2100; --focus: #7aa7ff; color-scheme: dark }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--body); }
+.app { height: 100%; display: flex; flex-direction: column; gap: 12px; padding-inline: 16px; padding-block: 12px;
+  max-width: 980px; margin-inline: auto; box-sizing: border-box; }
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h1 { font: 800 clamp(1.25rem, 3.5vw, 1.75rem)/1.1 var(--display); margin: 0; text-wrap: balance; }
+.count { font: 500 0.85rem var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.stage { position: relative; flex: 1 1 auto; min-height: 260px; background: var(--stage); border-radius: 14px; overflow: hidden; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.hint-tag { position: absolute; left: 12px; top: 12px; font: 500 0.75rem var(--mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+  display: grid; gap: 12px; }
+.bag { font: 800 0.8rem var(--display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.instruction { font-size: 1.1rem; margin: 0; min-height: 3em; max-width: 65ch; }
+.sub { font-size: 0.85rem; color: var(--muted); }
+.pieces { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; max-height: 9.5em; overflow-y: auto; }
+.pieces li { display: flex; gap: 10px; align-items: baseline; padding: 4px 8px; border-radius: 8px; cursor: pointer;
+  color: var(--muted); }
+.pieces li .len { display: block; max-width: 100%; margin-top: 4px; padding: 1px 6px; box-sizing: border-box;
+  border-radius: 999px; background: color-mix(in srgb, var(--fg) 14%, transparent); color: var(--muted);
+  font: 500 0.7rem var(--mono); white-space: nowrap; overflow: hidden; }
+.pieces li .n { font: 500 0.75rem var(--mono); font-variant-numeric: tabular-nums; min-width: 2.2em; }
+.pieces li.on { background: color-mix(in srgb, var(--accent) 28%, transparent); color: var(--fg); }
+.pieces li.done { color: var(--fg); }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: 700 1rem var(--body); border-radius: 10px; border: 1px solid var(--line); background: var(--card);
+  color: var(--fg); padding: 10px 18px; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button:disabled { opacity: 0.45; cursor: default; }
+button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.error { color: var(--fg); padding: 16px; }
+.jump { display: flex; align-items: center; gap: 8px; flex: 1 1 16rem; min-width: 0; }
+.jump span { font: 500 0.75rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.jump select { flex: 1 1 auto; min-width: 0; font: 400 0.95rem var(--body); color: var(--fg); background: var(--card);
+  border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; }
+.jump select:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+</style>
+
+<div class="app">
+  <header>
+    <h1 id="title">{{TITLE}}</h1>
+    <span class="count" id="count">Loading the model…</span>
+  </header>
+  <div class="stage" id="stage"><span class="hint-tag">Drag to turn · pinch or scroll to zoom</span></div>
+  <section class="card" aria-live="polite">
+    <div class="bag" id="bag"></div>
+    <p class="instruction" id="instruction">The model is loading.</p>
+    <div class="sub" id="sub"></div>
+    <ol class="pieces" id="pieces" aria-label="This step, piece by piece"></ol>
+    <div class="controls">
+      <button id="prev" type="button">Back</button>
+      <button id="hint" type="button" class="primary">Show me, piece by piece</button>
+      <button id="next" type="button">Next step</button>
+      <label class="jump"><span>Go to</span><select id="jump" aria-label="Go to step"></select></label>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(async function () {
+  const $ = (id) => document.getElementById(id);
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let lesson, bin;
+  try {
+    lesson = await (await fetch("lesson.json")).json();
+    const raw = atob(lesson.geometry), bytes = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    bin = bytes.buffer;
+  } catch (e) {
+    $("instruction").textContent = "The model files could not be loaded. Reload the page to try again.";
+    return;
+  }
+  const stage = $("stage");
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  stage.appendChild(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 1, 100000);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 0.9));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.75); sun.position.set(1, 2, 1.5); scene.add(sun);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+
+  // pieces: LDraw coordinates (-Y up) -> three.js (Y up): y = -y
+  const palette = lesson.palette.map((c) => new THREE.Color(c));
+  const meshes = {}, home = {};
+  const box = new THREE.Box3();
+  for (const p of lesson.pieces) {
+    const pos = new Int16Array(bin, p.at, p.tris * 9);
+    const cols = new Uint8Array(bin, p.colours_at, p.tris);
+    const v = new Float32Array(p.tris * 9), c = new Float32Array(p.tris * 9);
+    for (let i = 0; i < p.tris * 3; i++) {
+      v[i * 3] = pos[i * 3] / 2; v[i * 3 + 1] = -pos[i * 3 + 1] / 2; v[i * 3 + 2] = pos[i * 3 + 2] / 2;
+      const col = palette[cols[Math.floor(i / 3)]];
+      c[i * 3] = col.r; c[i * 3 + 1] = col.g; c[i * 3 + 2] = col.b;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(v, 3));
+    g.setAttribute("color", new THREE.BufferAttribute(c, 3));
+    g.computeVertexNormals();
+    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide,
+      roughness: 0.55, metalness: 0.0, emissive: 0x000000 }));
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(g, 35),
+      new THREE.LineBasicMaterial({ color: 0x1a1d24, transparent: true, opacity: 0.55 }));
+    m.add(edges);
+    m.visible = false;
+    scene.add(m);
+    meshes[p.id] = m; home[p.id] = m.position.clone();
+    g.computeBoundingBox(); box.union(g.boundingBox);
+  }
+  const centre = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
+  const radius = Math.max(size.x, size.y, size.z);
+  controls.target.copy(centre);  // re-aimed below once the sub-assemblies' table is known
+  camera.position.set(centre.x - radius * 1.2, centre.y + radius * 0.9, centre.z - radius * 1.6);
+  camera.near = radius / 50; camera.far = radius * 50; camera.updateProjectionMatrix();
+
+  const steps = lesson.steps;
+  const doneBefore = (k) => { const s = new Set(); for (let i = 0; i < k; i++) steps[i].pieces.forEach((x) => s.add(x)); return s; };
+  let k = 0, anim = null;
+
+  // sub-assemblies are built on the table beside the model, and moved into place by the step that attaches them
+  const subOf = {}, attachAt = {}, side = {};
+  steps.forEach((st, i) => {
+    if (st.subassembly) st.pieces.forEach((id) => { subOf[id] = st.subassembly; });
+    if (st.attach && !(st.attach in attachAt)) attachAt[st.attach] = i;
+  });
+  let shelf = box.max.x + radius * 0.25;
+  for (const name of [...new Set(Object.values(subOf))]) {
+    const b = new THREE.Box3();
+    for (const id in subOf) if (subOf[id] === name) { const g = meshes[id].geometry; g.computeBoundingBox(); b.union(g.boundingBox); }
+    side[name] = new THREE.Vector3(shelf - b.min.x, box.min.y - b.min.y, centre.z - (b.min.z + b.max.z) / 2);
+    shelf += (b.max.x - b.min.x) + radius * 0.15;
+  }
+  if (Object.keys(side).length) {  // look at the model and the table beside it
+    const span = shelf - box.min.x, mid = new THREE.Vector3((box.min.x + shelf) / 2, centre.y, centre.z);
+    controls.target.copy(mid);
+    camera.position.set(mid.x - span * 0.7, mid.y + span * 0.55, mid.z - span * 1.0);
+    camera.far = span * 50; camera.updateProjectionMatrix();
+  }
+  let framed = null;
+  let viewed = null;
+  function look(step) {  // the step's view (booklet three-quarter views); the viewer's own turning is kept otherwise
+    const v = steps[step].view;
+    if (!v || JSON.stringify(v) === viewed) return;
+    viewed = JSON.stringify(v);
+    const dist = camera.position.distanceTo(controls.target);
+    const d = new THREE.Vector3(v[0], v[1] * 0.8, v[2]).normalize();
+    camera.position.copy(controls.target).addScaledVector(d, dist);
+  }
+  function frame(step) {  // aim at the section being built; keep the viewer's angle while it stays the same
+    const s = steps[step], key = s.subassembly || "main";
+    if (key === framed) { look(step); return; }
+    framed = key;
+    const b = new THREE.Box3();
+    for (const id in meshes) {
+      const inSec = s.subassembly ? owner(id, steps.length) === s.subassembly || subOf[id] === s.subassembly
+        : !loose(id, steps.length);
+      if (!inSec) continue;
+      const g = meshes[id].geometry; g.computeBoundingBox();
+      b.union(g.boundingBox.clone().translate(s.subassembly ? side[s.subassembly] : new THREE.Vector3()));
+    }
+    if (b.isEmpty()) return;
+    const c = b.getCenter(new THREE.Vector3()), r = Math.max(...b.getSize(new THREE.Vector3()).toArray()) || radius;
+    const dir = camera.position.clone().sub(controls.target).normalize();
+    controls.target.copy(c);
+    camera.position.copy(c).addScaledVector(dir, r * 2.4);
+    viewed = null; look(step);
+  }
+  // a sub-assembly attached into a bigger one moves with it until that one is attached too
+  const parentOf = {};
+  for (const name in attachAt) parentOf[name] = steps[attachAt[name]].subassembly || "";
+  const owner = (id, step) => { let n = subOf[id] || ""; while (n && (attachAt[n] ?? Infinity) <= step) n = parentOf[n]; return n; };
+  const loose = (id, step) => !!owner(id, step);
+  const base = (id, step) => { const o = owner(id, step); return o ? home[id].clone().add(side[o]) : home[id].clone(); };
+
+  const mid = (id) => { const g = meshes[id].geometry; g.computeBoundingBox(); return g.boundingBox.getCenter(new THREE.Vector3()); };
+  function turn(a, step, angle) {  // an arm turned on its pin: about the pin's line through its centre
+    const m = meshes[a.piece], p = new THREE.Vector3(...a.at);
+    const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(...a.axis).normalize(), angle);
+    m.quaternion.copy(q);
+    m.position.copy(base(a.piece, step)).add(p).sub(p.clone().applyQuaternion(q));
+  }
+  function aside(a, target) {  // the way round that moves the arm away from the piece going in
+    const p = new THREE.Vector3(...a.at), c = mid(a.piece), t = mid(target), ax = new THREE.Vector3(...a.axis).normalize();
+    const far = (s) => c.clone().sub(p).applyAxisAngle(ax, s * 0.4).add(p).distanceTo(t);
+    return (far(1) >= far(-1) ? 1 : -1) * 0.38;  // about 22 degrees
+  }
+  let queue = [], playing = -1;
+  function show(step, animate) {
+    const before = doneBefore(step), now = steps[step].pieces, s = steps[step];
+    // only the section being built: a sub-assembly on its own; the main model with the parts already attached
+    const here = (id) => owner(id, step) === (s.subassembly || "");
+    for (const id in meshes) {
+      const m = meshes[id];
+      m.visible = (before.has(id) || now.includes(id)) && here(id);
+      m.position.copy(base(id, step)); m.quaternion.identity();
+      m.material.emissive.setHex(0x000000);
+    }
+    frame(step);
+    $("count").textContent = `Step ${step + 1} of ${steps.length}`;
+    $("jump").value = step;
+    try { localStorage.setItem("step:" + document.title, step); } catch (e) {}
+    $("bag").textContent = s.bag ? `Bag ${s.bag}` : "";
+    $("instruction").textContent = s.instruction;
+    const times = s.copies > 1 ? ` · build this ×${s.copies}` : "";
+    $("sub").textContent = (s.subassembly ? `Built on its own first: ${s.subassembly}` : (s.attach ? `Attach: ${s.attach}` : "")) + times
+      + (s.turn ? " · ↻ turn the model over" : "");
+    const list = $("pieces"); list.innerHTML = "";
+    const shown = (s.substeps || []).filter((x) => !x.copy);
+    (s.substeps || []).forEach((x, i) => {
+      if (x.copy) return;  // the same again: shown once, with ×N
+      const li = document.createElement("li");
+      li.dataset.i = i;
+      li.innerHTML = `<span class="n">${shown.indexOf(x) + 1}/${shown.length}</span><span></span>`;
+      li.lastChild.textContent = x.text;
+      if (x.len) {  // life size: one stud is 8 mm (as the booklet's 1:1 boxes; on screen as near as CSS mm allows)
+        const bar = document.createElement("span");
+        bar.className = "len"; bar.style.width = `${x.len * 8}mm`;
+        bar.title = `${x.len} studs long, shown 1:1`;
+        bar.textContent = `${x.len} · 1:1`;
+        li.lastChild.appendChild(bar);
+      }
+      li.onclick = () => play(step, [i]);
+      list.appendChild(li);
+    });
+    $("prev").disabled = step === 0; $("next").disabled = step === steps.length - 1;
+    $("hint").disabled = now.length === 0 && !s.attach;
+    if (animate && now.length) play(step, (s.substeps || []).map((_, i) => i).filter((i) => !s.substeps[i].copy));
+    else if (animate && s.attach && side[s.attach]) attach(s.attach, step);
+  }
+  function attach(name, step) {  // the finished block is lined up with its place, then pushed on along its joins
+    const ids = Object.keys(subOf).filter((id) => owner(id, step - 1) === name), off = side[name];
+    const to = steps[step].subassembly ? side[steps[step].subassembly] : new THREE.Vector3();  // the model, or a bigger sub-assembly
+    const d = new THREE.Vector3(...(steps[step].attach_dir || [0, -1, 0])), push = radius * 0.3;
+    ids.forEach((id) => { meshes[id].visible = true; meshes[id].material.emissive.setHex(0x5a4600); });
+    if (reduce) { ids.forEach((id) => { meshes[id].position.copy(home[id]).add(to); meshes[id].material.emissive.setHex(0); }); return; }
+    const t0 = performance.now(), dur = 2200, ease = (u) => u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+    anim = (t) => {
+      const u = Math.min(1, (t - t0) / dur);
+      ids.forEach((id) => {
+        const ready = home[id].clone().add(to).addScaledVector(d, -push);  // lined up, just short of its place
+        if (u < 0.55) {  // from the table to the lined-up spot
+          const e = ease(u / 0.55);
+          meshes[id].position.copy(home[id]).add(off).lerp(ready, e).add(new THREE.Vector3(0, Math.sin(Math.PI * e) * radius * 0.2, 0));
+        } else {  // pushed on along the joins
+          meshes[id].position.copy(ready).addScaledVector(d, push * ease((u - 0.55) / 0.45));
+        }
+      });
+      if (u >= 1) { anim = null; ids.forEach((id) => meshes[id].material.emissive.setHex(0)); }
+    };
+  }
+  function mark(i, cls) { const li = $("pieces").querySelector(`li[data-i="${i}"]`); if (li) { li.className = cls; if (cls === "on") li.scrollIntoView({ block: "nearest" }); } }
+  function play(step, order) {  // one piece after another, each from the side it really goes on
+    const subs = steps[step].substeps || [];
+    const copies = subs.filter((x) => x.copy).map((x) => x.piece);
+    order.forEach((i) => { (subs[i].group || [subs[i].piece]).forEach((id) => { if (!subs.some((y, j) => j < i && y.piece === id)) meshes[id].visible = false; }); mark(i, ""); });
+    copies.forEach((id) => { meshes[id].visible = false; });
+    queue = order.slice(); next();
+    function next() {
+      if (playing >= 0) { mark(playing, "done"); (subs[playing].group || [subs[playing].piece]).forEach((id) => meshes[id].material.emissive.setHex(0x000000)); }
+      if (!queue.length) {  // the copies: the same again, all at once
+        playing = -1; anim = null;
+        copies.forEach((id) => { meshes[id].visible = true; meshes[id].material.emissive.setHex(0x5a4600); });
+        if (copies.length) setTimeout(() => copies.forEach((id) => meshes[id].material.emissive.setHex(0)), 900);
+        return;
+      }
+      playing = queue.shift();
+      const x = subs[playing], m = meshes[x.piece], d = new THREE.Vector3(...x.dir), lift = radius * 0.3;
+      const away = (h) => new THREE.Vector3(...h).multiplyScalar(-radius * 0.45);  // held in the hand, back along its way in
+      const group = x.group ? x.group.map((id) => meshes[id]) : [m];
+      group.forEach((g) => { g.visible = true; g.material.emissive.setHex(0x5a4600); });
+      mark(playing, "on");
+      if (reduce) { group.forEach((g, j) => g.position.copy(base((x.group || [x.piece])[j], step))); setTimeout(next, 700); return; }
+      const t0 = performance.now(), arms = x.swing || [], dur = x.group ? 1400 : (arms.length ? 2600 : 900);
+      const turns = arms.map((a) => aside(a, x.piece));
+      arms.forEach((a) => { meshes[a.piece].material.emissive.setHex(0x003a5a); });
+      anim = (t) => {
+        let u = Math.min(1, (t - t0) / dur);
+        if (arms.length) {  // swing out (first third), piece in (middle), swing back (last part)
+          const ease = (v) => 0.5 - 0.5 * Math.cos(Math.PI * Math.max(0, Math.min(1, v)));
+          const open = u < 0.3 ? ease(u / 0.3) : (u < 0.7 ? 1 : 1 - ease((u - 0.7) / 0.25));
+          arms.forEach((a, j) => turn(a, step, turns[j] * open));
+          if (u >= 1) arms.forEach((a) => { meshes[a.piece].quaternion.identity(); meshes[a.piece].position.copy(base(a.piece, step)); meshes[a.piece].material.emissive.setHex(0); });
+          u = Math.max(0, Math.min(1, (u - 0.3) / 0.4));
+        }
+        const e = 1 - Math.pow(1 - u, 3);
+        if (x.group) {  // the block made in the hand goes on as one
+          x.group.forEach((id) => meshes[id].position.copy(base(id, step)).addScaledVector(d, -radius * 0.45 * (1 - e)));
+        } else {
+          const at = base(x.piece, step);
+          if (x.hand) at.add(away(x.hand));
+          m.position.copy(at).addScaledVector(d, -lift * 0.6 * (1 - e));  // start back along its direction
+        }
+        if ((t - t0) >= dur) { anim = null; setTimeout(() => { group.forEach((g) => g.material.emissive.setHex(0)); next(); }, 250); }
+      };
+    }
+  }
+  // skip to any step: a list of every step (its section and the start of its instruction)
+  steps.forEach((s, i) => {
+    const o = document.createElement("option");
+    const where = s.subassembly ? `${s.subassembly}: ` : (s.attach ? `attach ${s.attach}: ` : (s.bag ? `bag ${s.bag}: ` : ""));
+    const words = (s.instruction || "").split(/\s+/).slice(0, 9).join(" ");
+    o.value = i; o.textContent = `${i + 1}. ${where}${words}${(s.instruction || "").split(/\s+/).length > 9 ? "…" : ""}`;
+    $("jump").appendChild(o);
+  });
+  $("jump").onchange = () => { k = +$("jump").value; show(k, true); };
+  addEventListener("keydown", (e) => {
+    if (e.target.closest && e.target.closest("select, input, textarea")) return;
+    if (e.key === "ArrowRight") $("next").click();
+    if (e.key === "ArrowLeft") $("prev").click();
+  });
+  $("prev").onclick = () => { k = Math.max(0, k - 1); show(k, true); };
+  $("next").onclick = () => { k = Math.min(steps.length - 1, k + 1); show(k, true); };
+  $("hint").onclick = () => show(k, true);
+
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / Math.max(1, h); camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+  (function loop(t) { if (anim) anim(t); controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop); })(0);
+  const m = /^#s(\d+)$/.exec(location.hash);  // a link to a step: ...#s48
+  let startAt = m ? +m[1] - 1 : 0;
+  if (!m) { try { startAt = +(localStorage.getItem("step:" + document.title) || 0); } catch (e) {} }
+  k = Math.min(Math.max(0, startAt || 0), steps.length - 1);
+  show(k, true);
+})();
+</script>

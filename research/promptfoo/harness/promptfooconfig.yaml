@@ -1,0 +1,41 @@
+# The 3D LEGO lesson prompt (v8, the product's) across models, on the 10 sets of the repeat test. Each case runs the
+# product's whole 3D flow (provider.py -> run_one.py); checks.py scores it with our own checks. RESEARCH R28.
+# The rounds it ran are beside it (../round1-4; v9 and v10 were switched on by LEGO_PROMPT, since removed: their
+# text is in ../prompt_versions.py, the switch in ../../removed_code/).
+#   cd research/promptfoo/harness
+#   PROMPTFOO_PYTHON=../../../.venv-research/bin/python npx -y promptfoo@0.124.1 eval --repeat 2 --no-cache -o results.json
+#   npx -y promptfoo@0.124.1 view
+description: 3D LEGO lesson prompt v8 across models
+prompts:
+  - "{{set}}"  # provider.py builds the real prompt from the set, as the product does
+providers:
+  - id: file://provider.py
+    label: opus
+    config: {model: opus, effort: high}
+  - id: file://provider.py
+    label: sonnet
+    config: {model: sonnet, effort: high}
+  - id: file://provider.py
+    label: haiku
+    config: {model: haiku, effort: high}
+defaultTest:
+  assert:
+    - type: python
+      value: file://checks.py:final_clean
+      metric: final_clean
+    - type: python
+      value: file://checks.py:first_shot
+      metric: first_shot
+tests:
+  - vars: {set: 4904-1}
+  - vars: {set: 8658-1}
+  - vars: {set: 7603-1}
+  - vars: {set: 7268-1}
+  - vars: {set: 7613-1}
+  - vars: {set: 4991-1}
+  - vars: {set: 7803-1}
+  - vars: {set: 30161-1}
+  - vars: {set: 31028-1}
+  - vars: {set: 5761-1}
+evaluateOptions:
+  maxConcurrency: 3

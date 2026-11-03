@@ -1,0 +1,60 @@
+# The WHOLE flow of every lesson route, with one model for every Claude call (PINPOINT_MODEL): which model works
+# across all three? The cases are batch two's (the repeat test, tests/experiments/repeat_20261028): 10 sets as booklet
+# lessons and as 3D lessons, 10 Arduino links. Each case: make the lesson, build it into a private copy of the store,
+# validate it (provider.py -> run_flow.sh); checks.py judges it by the repeat test's rules.
+#   cd tests/experiments/promptfoo_flow
+#   PROMPTFOO_PYTHON=../../../.venv-research/bin/python promptfoo eval --no-cache -j 4 -o results.json
+description: Whole lesson flow (booklet, 3D, Arduino) with one model throughout
+prompts:
+  - "{{route}} {{case}}"  # provider.py runs the route's flow; the prompts are the product's own
+providers:
+  - id: file://provider.py
+    label: opus
+    config: {model: opus}
+  - id: file://provider.py
+    label: sonnet
+    config: {model: sonnet}
+  - id: file://provider.py
+    label: haiku
+    config: {model: haiku}
+defaultTest:
+  assert:
+    - type: python
+      value: file://checks.py:clear
+      metric: clear
+    - type: python
+      value: file://checks.py:one_model
+      metric: one_model
+tests:
+  - vars: {route: booklet, case: "4904-1"}
+  - vars: {route: booklet, case: "8658-1"}
+  - vars: {route: booklet, case: "7603-1"}
+  - vars: {route: booklet, case: "7268-1"}
+  - vars: {route: booklet, case: "7613-1"}
+  - vars: {route: booklet, case: "4991-1"}
+  - vars: {route: booklet, case: "7803-1"}
+  - vars: {route: booklet, case: "30161-1"}
+  - vars: {route: booklet, case: "31028-1"}
+  - vars: {route: booklet, case: "5761-1"}
+  - vars: {route: lego3d, case: "4904-1"}
+  - vars: {route: lego3d, case: "8658-1"}
+  - vars: {route: lego3d, case: "7603-1"}
+  - vars: {route: lego3d, case: "7268-1"}
+  - vars: {route: lego3d, case: "7613-1"}
+  - vars: {route: lego3d, case: "4991-1"}
+  - vars: {route: lego3d, case: "7803-1"}
+  - vars: {route: lego3d, case: "30161-1"}
+  - vars: {route: lego3d, case: "31028-1"}
+  - vars: {route: lego3d, case: "5761-1"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/knight-rider/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/multiple-blinks/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/tilt-sensor/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/two-switches-one-pin/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/interfacing-a-joystick/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/capacitance-meter/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/unipolar-stepper-motor/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/clap-detector/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/generic/secrets-of-arduino-pwm/"}
+  - vars: {route: arduino, case: "https://docs.arduino.cc/tutorials/uno-r4-minima/opamp/"}
+evaluateOptions:
+  maxConcurrency: 4

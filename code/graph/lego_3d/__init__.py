@@ -1,0 +1,1 @@
+"""Lessons from a LEGO set's 3D model: lesson.py is the recipe (Claude plans, code checks; big sets bag by bag), assembly.py says how each piece goes on and draws the 3D hint viewer, graphs.py stores the lesson as its graphs."""

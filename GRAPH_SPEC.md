@@ -1,10 +1,38 @@
 # Pinpoint — Build Graph Specification
 
-> **Version:** 0.1 (draft) · **Date:** 1 October 2026
+> **Version:** 0.2 · **Date:** 15 October 2026 (0.1: 1 October 2026)
 >
-> How one manual becomes **one graph**: what the nodes and edges are, how everything is named, which connection types exist, and the rules that decide whether a build is correct. Scope: **Arduino / robotics** and **LEGO** (implemented first), **Sauder furniture** (design only).
+> How one manual becomes **one graph**: how it is made, what the nodes and edges are, how everything is named,
+> which connection types exist, and the rules that decide whether a build is correct. Scope: **Arduino / robotics**
+> and **LEGO** (implemented), **Sauder furniture** (design only).
 >
-> Every connection type and rule here is backed by the manual survey in [`research/`](./research/) and the decisions in [`RESEARCH.md`](./RESEARCH.md) (R1–R20).
+> Every connection type and rule here is backed by the manual survey in [`research/`](./research/) and the decisions
+> in [`RESEARCH.md`](./RESEARCH.md) (R1–R24). Results: [`GRAPHGEN_RESULTS.md`](./GRAPHGEN_RESULTS.md). Plain-language
+> walk-through: [`HOW_IT_WORKS.md`](./HOW_IT_WORKS.md).
+
+---
+
+## 0. How a graph is made
+
+### The generic pipeline (one for every domain: `pipeline.run_case`)
+
+1. **Parts:** collect the parts list and each part's card (its ports, inside behaviour, size, voltages).
+2. **Build:** make the graph. Code builds it from an exact source (a 3D model), or Claude reads the instructions.
+3. **Check:** code tests the graph against the domain's laws (physical or electrical; §9).
+4. **Repair:** problems go back to Claude, in the same conversation, to fix.
+5. **Save:** the flat graph (repeats expanded, §8), with its time, cost and the checks.
+
+A domain plugs in only a **recipe** (`code/tests/research/domains.py`): where the parts come from, which builder runs, which
+prompt, and which laws.
+
+### How each case differs
+
+| Case | Parts | Build | Check / repair |
+|---|---|---|---|
+| **LEGO, official 3D model** (1,306 sets) | The set's 3D model (LDraw) | **Code only.** Each piece's connection points from LEGO's parts library (studs, sockets, pin holes, pins, axles) are matched by position; name rules add the joins the library does not mark (§5.3); LEGO's official steps and sub-builds are read from the file | Not needed: the source is exact. Physical laws (§9 V6) run as a sanity check |
+| **LEGO, booklet PDF with step numbers** | The official inventory (Rebrickable), one id per piece | Code cuts out each step and boxes its new pieces; **Claude places each piece** (position, what it rests on); **code** puts the real shapes there and finds the joins | No two pieces in one space, nothing floating, one stud in one socket; repair by Claude |
+| **LEGO, booklet without step numbers** | As above | Claude reads the whole booklet at once; code finds the joins | As above |
+| **Arduino, tutorial link** | A catalogue of known part cards; Claude can look up any part it lacks | **Claude reads the tutorial page** (with a browser tool) and writes every part and connection | Electrical laws E1–E11, including "every pin the program reads is wired"; repair by Claude. Code then adds a stacked shield's connections (§5.3) and finds the program |
 
 ---
 
@@ -16,7 +44,7 @@
 | **LEGO** | LDraw models of **official sets** (OMR), all parts looked up in the LDraw parts library | **30 sets, 22,423 pieces** (Classic, City, Creator, Technic; 1980s–2010s) |
 | **Arduino** | CircuitQuest's Wokwi lessons, **48 of 53 based on official docs.arduino.cc tutorials**, plus its 95-card part library | **53 lessons, 1,090 connections** |
 
-Reproduce with the scripts in [`research/scrape/`](./research/scrape/); summaries are in [`research/data/`](./research/data/).
+Reproduce with the scripts in [`tests/research/scrape/`](./research/scrape/); summaries are in [`data/reference/`](./research/data/).
 
 ---
 
@@ -44,13 +72,27 @@ flowchart LR
 
 | Thing | Pattern | Examples |
 |---|---|---|
-| **Part type** | `<domain>-<official id>[-<variant>]` | `resistor-220`, `arduino-uno`, `jumper-wire` · `lego-3001`, `lego-2780` · `sauder-430628-end`, `hw-cam-lock` |
+| **Part type** | `<domain>-<official id>[-<variant>]` | `resistor` (value 220 on the instance), `arduino-uno`, `jumper-wire` · `lego-3001`, `lego-2780` · `sauder-430628-end`, `hw-cam-lock` |
 | **Part instance** (node id) | short name + number | `r1`, `led2`, `uno`, `wire3` · `b12`, `pin4`, `axle2` · `end1`, `screw7`, `cam3` |
 | **Repeated copy** | `<group><copy>.<id>` | `wheel1.tyre`, `wheel4.rim`, `drawer2.front` |
 | **Port** | `<instance>:<port>`, sub-parts joined by `.` | `uno:13`, `r1:1`, `led1:A`, `bb1:18t.d` · `b7:stud.2.1`, `b7:anti.1.1`, `beam1:hole.3`, `axle2:end.a` · `end1:hole.t1`, `end1:face.more-holes` |
 | **Edge** | `e<number>` | `e1`, `e42` |
 | **Source label** | attribute, never an id | `{"id": "end1", "label": "B"}`, `{"id": "screw1", "label": "3S"}` |
 | **Computed group** | `net:<lowest port>` · `body:<lowest instance>` | `net:uno:13`, `body:end1` |
+
+**New part types (electronics) follow strict rules** (`code/graph/parts/naming.py`). Claude gets them in every builder
+prompt, and code checks every new type before it is stored; a failure goes back to Claude as a repair:
+**N1** lowercase letters, digits and hyphens; **N2** nothing that varies between copies in the id (colour, a
+resistor's or capacitor's value, a length, packaging or revision): those are instance props; **N3** the maker's
+model first, no category word in front (`dht11`, not `temp-dht11`); **N4** not a part the catalogue already has; **N6** a generic name ("resistor", "a motor") is never a new part:
+it reuses the catalogue part of that kind the lessons use most; **N7** not a part the catalogue already has under its
+model number: a new id or name carrying a model that IS a card's short id (`dht11`, `hc-sr04`) or the maker's model of
+exactly one card is that card (`dht11-sensor`, `dht-11` → `dht11`; a chip or family several products share, such as
+`ws2812` or `nano33`, and revisions are not one part), and not a card from a shop page another card was made from (one product page is one part, whatever its packaging: `arduino-mkr1000-headers` was `arduino-mkr1000`). An id merged into another (`code/graph/parts/merge.py`) is kept in `code/graph/parts/redirects.json`, so graphs from earlier runs still find their part. Every new card passes these rules before it is stored
+(`ingest._store`: a card that breaks them is quarantined with its reason), from a shop or drafted by Claude.
+A lookalike differs only by packaging, maker word or a copy's value (a revision such as r4 or rev2 is other hardware), and has the same polarity, so
+`red-led` → `led` and `resistor-330` → `resistor`, while `led-strip`, `dht22` and an electrolytic capacitor stay
+their own parts. `python graph.parts.naming` runs the rules over the catalogue.
 
 **Domain prefixes:** plain names for electronics (as in the CircuitQuest library), `lego-<LDraw/BrickLink design number>` for LEGO, `sauder-<model>-<part>` for Sauder panels, `hw-<family>` for hardware shared across products.
 
@@ -133,6 +175,37 @@ A connection that is both mechanical and electrical (a jumper wire in a breadboa
 | `adhesive` | `surface` | stick | material | rigid | Sauder appliques, LEGO stickers (12) |
 
 **Rule:** an edge is valid only if its two ports are a compatible pair in this table (or in the catalogue's own list).
+
+### 5.3 How the joins are found in practice (implemented)
+
+**LEGO from a 3D model** (`lego_model.py`, `assembly.py`):
+
+| Join (edge `method`) | How code finds it |
+|---|---|
+| **clutch** (stud ↔ anti-stud) | A stud of one piece points into another piece's socket. Sockets are taken from the piece's grid; then from the cells under its own top studs (a part with a clip or handle sticking out); then the cell under a top stud inside an arch or curved piece; then the centre of a round part; then, for an odd shape, the one piece over the stud. A part "with Stud Hole" the stud passes through is held too |
+| **pin** (pin, axle ↔ hole) | A pin or axle of one piece runs along another piece's hole. Axles reach holes along their whole length. A connector's "… with Axle/Pin" end counts as a pin |
+| **clip** (clip ↔ bar) | By name: a bar-like piece touching a piece with a clip ("Clip", "2 Clips", "Holder") |
+| **bar** (bar ↔ hole) | By name: a bar or antenna pushed into a hole, or through a round plate or cone |
+| **ball** (ball ↔ socket) | By name: a ball or towball in a socket |
+| **tyre** / **wheel** | By name: a tyre on a rim; a rim pushed onto a car base's or wheel holder's built-in pin |
+| **hinge** / **turn** | By name: two hinge halves pressed together; a turntable top on its base |
+| **fig** | By name: minifigure parts on their pegs (legs on hips, head on torso, hat on head …) |
+| **hose** | By name: a flexible hose's ends on what they touch |
+| **contact** | Pieces whose shapes meet but do not join (resting beside) |
+
+Also read from the 3D model:
+- **Official steps:** which official booklet step adds each piece.
+- **Sub-builds:** which pieces LEGO builds separately (a sub-model file; nested sub-builds as "drivemotor > block 42").
+- **The main model:** the biggest top-level model when a set holds several (a truck, a street lamp, cones). Models
+  that touch nothing of the main one are separate models.
+
+**Arduino from a link** (`pipeline.py`, `circuit_lesson.py`, `circuit_graph.py`):
+
+| Join | How it is found |
+|---|---|
+| **joined + electrical** (leg ↔ breadboard hole, wire end ↔ pin) | Claude reads it from the tutorial; code checks it |
+| **stacked** (shield pin ↔ board pin) | Code, from a datasheet table (`code/graph/parts/arduino/stack_pins.json`); pages never list these |
+| **internal conducts** (breadboard strips, a jumper wire's two ends, a board's GND pins) | Code, from the part cards (§6) |
 
 ---
 
@@ -217,7 +290,9 @@ After expansion the stored graph is flat: overrides only exist in the extraction
 | V4 | **Ports exist** on the part type, and each single-use port (one LEGO stud, one header socket, one screw hole) is used at most once |
 | V5 | **Order is possible**: `blocks` edges form no cycle |
 | V6 | **Laws hold**: circuit solver passes (Arduino); stud geometry and stability (LEGO, when LDraw is available) |
-| V7 | **One connected whole at the end** (unless the manual builds separate objects, e.g. several small LEGO models in one booklet) |
+| V7 | **One connected whole at the end** (unless the manual builds separate objects, e.g. several small LEGO models in one booklet: separate models are set beside the main one) |
+| V8 | **The program and the circuit agree** (Arduino): every board pin the sketch reads is wired (E11). Where the page's text and its sketch disagree, the sketch wins, because the lesson must run |
+| V9 | **Physical laws on the 3D model** (LEGO): a stud fits one socket (a stud through a stud hole into the piece above is the one exception); nothing clutches itself; no more clutches than studs; nothing floats |
 
 ### Equivalence (different, but correct)
 
@@ -252,8 +327,11 @@ After expansion the stored graph is flat: overrides only exist in the extraction
 
 ## 10. Open questions (to settle while building)
 
-1. LEGO: one `joined` edge per stud, or one per brick pair listing all studs in `ports`?
-2. Should `blocks` edges come from the manual (LLM) or from geometry (LDraw)?
-3. Is `contact` needed in v1?
-4. Keep the `repeat` template in the stored file, or only the expanded graph?
-5. How are LDraw's community-only parts (3.9% of pieces in the survey, 868 of 22,423, were not in the official library) handled?
+| # | Question | Status (15 October 2026) |
+|---|---|---|
+| 1 | LEGO: one `joined` edge per stud, or one per brick pair listing all studs in `ports`? | **Settled: one per piece pair**, with the first matching stud or hole as its port |
+| 2 | Should `blocks` edges come from the manual (LLM) or from geometry (LDraw)? | **Settled: geometry.** Blocking is computed when a lesson is planned (each piece slid in along its way, as small cubes), not stored in the graph |
+| 3 | Is `contact` needed in v1? | **Settled: yes.** It tells "only resting" from "fastened", which the lesson checks need |
+| 4 | Keep the `repeat` template in the stored file, or only the expanded graph? | Only the expanded graph is stored |
+| 5 | How are LDraw's community-only parts (3.9% of pieces in the survey) handled? | A model's own copy of a library part is read as the library part when their shapes agree; custom parts count as one piece each |
+| 6 | Joins that no rule can see | Open: a part only wedged in place, cardboard with no holes in the 3D file. Rare; flagged, not fixed |
