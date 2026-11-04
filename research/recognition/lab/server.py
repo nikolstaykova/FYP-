@@ -319,6 +319,15 @@ def main():
         if not https:
             print('Without --https a phone can only take photos through its camera app, not the live preview.')
     threading.Thread(target=srv.serve_forever, daemon=True).start()
+
+    def warm():  # the lessons and the parts catalogue into memory, so the first page load is quick too
+        try:
+            t0 = time.perf_counter()
+            lessons()
+            print(f'lessons ready in {time.perf_counter() - t0:.1f} s', flush=True)
+        except Exception as e:
+            print(f'warm-up failed: {e}', flush=True)
+    threading.Thread(target=warm, daemon=True).start()
     try:
         while True:
             time.sleep(3600)

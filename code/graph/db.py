@@ -482,11 +482,15 @@ def lesson(lesson_id):
 
 
 def prefetch():
-    """Every lesson into this process's cache in one go (the validator and other whole-store runs): three queries
-    instead of three per lesson."""
+    """Every lesson into this process's cache (the validator, the parts lab and other whole-store runs): only the
+    ones not cached yet, in three queries. Returns how many were fetched (0 once everything is cached)."""
     if not enabled():
         return 0
-    got = _safely("read the lessons", read_lessons) or {}
+    rows = index() or []
+    missing = [r["lesson_id"] for r in rows if r["lesson_id"] not in _STATE["lessons"]]
+    if not missing and rows:
+        return 0
+    got = _safely("read the lessons", lambda d: read_lessons(d, missing or None)) or {}
     for lid, one in got.items():
         _STATE["lessons"][lid] = json.dumps(one)
     return len(got)
