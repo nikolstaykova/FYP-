@@ -2114,6 +2114,8 @@ as from the files (the validator in about 5 s, fetching the store in three queri
 - [x] Prompt and model for 3D lessons: v8 + opus (R28)
 - [ ] 31028-1 floats: correct the model's positions or mark it a source fault (R28)
 - [ ] Part info and pin maps for AR (Arduino Uno, Nano, MKR; Raspberry Pi; LEGO)
+- [x] Parts recognition for the gather step: Haiku first, learner close-ups, Opus only when Haiku still cannot tell (RECOGNITION.md 6.10, 7)
+- [ ] *(Later, if the API cost grows or for an offline mode)* local VLMs: Qwen3-VL 4B / 8B through llama.cpp on the swap and kit tests (RECOGNITION.md 6.11)
 - [ ] Settle the R14 questions, then write one Arduino lesson and one small LEGO set in the chosen structure
 - [ ] Find a small LEGO set available both as an official PDF and in LDraw (R13)
 - [ ] Collect 3–5 more Sauder manuals (include drawers or doors) and write each in the draft form

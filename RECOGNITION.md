@@ -330,20 +330,72 @@ price ($0.30 / $2.50 per 1M tokens in / out for Flash-Lite); the runs themselves
 - **For real users:** the free tier lets Google use the requests to improve its products; learners' photos should
   go through the paid tier, where they are not.
 
-## 7. Decision (3 November, to confirm when the local VLMs finish)
+### 6.10 Claude through the API directly, and the flow it led to (3–4 November)
 
-- **The look: Claude Opus**, all photos in one call. Best at naming (84% of unknown parts named right), at reading
-  details and at saying what it cannot tell; 2–14¢ and 7–40 s a check, fine for a few uploaded photos once per
-  lesson. Haiku finds as much for a twentieth of the price but names less well: a fallback if cost matters.
-- **The cheap option: Gemini 3.5 Flash-Lite** (6.9): Haiku's accuracy at 2–3 s a photo and 0.1–1.3¢ a check. The
-  plan to test: Flash-Lite looks first, and only objects it is unsure of, or boards it cannot name exactly, go to
-  Opus. Most checks would then cost about 1¢.
+Haiku was first run through the `claude -p` command line (the subscription), which adds start-up time to every
+call (9.4 s a photo in 6.2). Called through the Anthropic API directly (`code/checker/gather_vlm.py`), Haiku takes
+**4–8 s a photo at about 0.1¢** (one first call took 57 s, a one-off). Flash-Lite on Gemini's free tier ranged from
+3 s to 99 s on the same photo (its queue). Haiku is as accurate as Flash-Lite (6.9), more careful (it says "check"
+more often, which is what the parts check needs) and keeps everything with one provider, so **Haiku is the first
+look**.
+
+The flow (`code/checker/gather_flow.py`, the parts lab's *Check flow* tab with the camera):
+1. Haiku looks at the learner's photos (about 0.1–0.2¢).
+2. For what can change a verdict for this lesson (at most 3 questions, boards first), the learner is asked for a
+   close-up, in Haiku's own words: "I can see some resistors, but I can't read their colour bands. Can you take a
+   close-up of them?", or "I can't see an LED: take a photo of it, or tap *I don't have it*".
+3. Haiku reads the close-up with that one question (about 0.05¢).
+4. **Only if Haiku still cannot tell**, Opus looks at that one close-up (about 1¢, once per question). Not a
+   button: it happens on its own.
+
+A test check came to 1.5¢ in all (Haiku, one close-up, one Opus look). Three fixes the tests found: questions about
+parts the lesson does not need (18 on a crowded photo, now only lesson parts, at most 3); a close-up's other
+objects counted twice (now only the part asked about is kept); and a vague name like "blue microcontroller board"
+matched to a random catalogue board (now flagged for a question).
+
+### 6.11 Local VLMs: not run, kept for later (4 November)
+
+A benchmark of local VLMs on r/LocalLLaMA (June 2026; Apple M2 Max with 96 GB, Q4 models, 20 images, the prompt
+"describe this image in detail", quality judged by its author) ranked **Qwen3-VL 8B** best overall (OCR and fine
+detail, mixed Chinese and Latin text read right, no timeouts) and **Qwen3-VL 4B** best for machines with 8–16 GB
+(close to 8B, about twice as fast). Also tested there: Qwen3.6 35B-A3B and Gemma 4 26B-A4B (excellent, but need
+32 GB+), GLM-4.6V-Flash 9B (best at multi-panel layouts), Gemma 4 12B (slowest, best at nothing), Qwen3.5 4B and 9B
+(timeouts), Gemma 4 E4B and InternVL3.5 8B (wrong on basic facts). Its tip: llama.cpp with `-b 4096 -ub 4096` was
+4–5× faster than Ollama.
+
+What they would mean for us:
+
+| | Qwen3-VL 4B / 8B on our Mac (M2, 16 GB) | Haiku (API) |
+|---|---|---|
+| Cost | free (open weights, Apache 2.0 as far as known; to confirm) | about 0.1¢ a photo |
+| Speed | the benchmark measured 32–46 s a long description on an M2 Max; the base M2 has about a quarter of its memory bandwidth, so an estimated 30–90 s a photo | 4–8 s |
+| Fits | 3.3 GB / 6.1 GB on disk | |
+| Photos leave the machine | no | yes |
+| On the phone | no (too big) | through our server |
+
+**Decision: not now.** The app aims for a check that feels close to real time, and a local model would be several
+times slower than Haiku for a saving of about 0.1¢ a photo; served to learners, a GPU server fast enough would also
+cost more than Haiku until there are many users. **When to come back to it:** if the API cost becomes a problem,
+for an offline or private mode, or for boxes around each object (Qwen3-VL can return them; Haiku's boxes are
+unreliable, 6.2). **How:** llama.cpp's server (OpenAI-compatible) with Qwen3-VL 4B and 8B, through the same swap
+test (6.8) and kit test (6.5), and added to the parts lab's model list. The benchmark tested general descriptions,
+not parts, so only our tests can say how they do on boards and resistors. Earlier local runs (Qwen3-VL 2B and 4B,
+Moondream2, 6.4) were started and stopped unfinished.
+
+## 7. Decision (updated 4 November)
+
+- **The look: Claude Haiku through the API** (6.10): 4–8 s and about 0.1¢ a photo, as accurate as the other cheap
+  models and careful (it says "check" rather than guess).
+- **What Haiku cannot settle, the learner settles with a close-up**, and only if Haiku still cannot tell from the
+  close-up does **Opus** look, at that one photo (6.10). A check costs about 0.2–1.5¢.
 - **Everything after the look is code** (match, compare, substitute), so the verdicts rest on the catalogue, the pin
-  tables and the lesson's own circuit, not on the model's opinion. `code/checker/gather.py`, 10 unit tests.
+  tables and the lesson's own circuit, not on the model's opinion (`code/checker/gather.py`).
+- **Kept for later:** Gemini 3.5 Flash-Lite (6.9; as accurate, but its free tier's speed varies a lot), local
+  Qwen3-VL 4B / 8B (6.11; free, but several times slower).
 - **Not used:** untrained detectors (do not know electronic parts), Florence-2 (finds but cannot name), the NVIDIA
   VLMs (find well, name poorly; Super VL calls other boards an Uno, 7/14 on the swap test).
-- **Swap test (6.8):** Opus read every board and gave every verdict right (14/14); Sonnet 13/14 and Haiku 12/14
-  after the matching fix.
+- **Swap test (6.8):** Opus 14/14, Sonnet 13/14, Haiku 12/14, Flash-Lite 12/14.
+- **LEGO has no whole-set check:** the learner is assumed to have the set; each step says what to gather.
 
 **Next:**
 1. Our own photos of a real kit (phone, normal light) as an independent test.
