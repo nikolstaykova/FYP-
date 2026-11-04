@@ -62,5 +62,6 @@ def test_every_node_has_a_readable_name_for_the_browser():
     assert [n["props"]["name"] for n in blink["nodes"]["Step"]] == \
         ["Gather parts", "Step 1", "Step 2", "Step 3", "Step 4", "Upload code"]
     assert db.caption({"id": "red-crab-body-3", "kind": "step", "number": "3"}) == "Step 3 · red crab body"
+    assert db.caption({"id": "heart-roof-5.1", "kind": "step"}) == "Step 5.1 · heart roof"  # a sub-build step
     parts, ports = db.part_rows({"led": {"display_name": "LED", "ports": [{"id": "A", "kind": "lead"}]}})
     assert parts[0]["props"]["name"] == "LED" and ports[0]["props"]["name"] == "A"

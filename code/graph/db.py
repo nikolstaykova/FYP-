@@ -132,7 +132,7 @@ def caption(n):
     m = re.fullmatch(r"step-(\d+)", n["id"])
     if m:
         return f"Step {m.group(1)}"
-    m = re.fullmatch(r"(.+?)-(\d+)", n["id"])
+    m = re.fullmatch(r"(.+?)-(\d+(?:\.\d+)*)", n["id"])  # a booklet step, or a sub-build step inside one (5.1)
     if m:
         return f"Step {n.get('number') or m.group(2)} · {m.group(1).replace('-', ' ')}"
     return n["id"]
