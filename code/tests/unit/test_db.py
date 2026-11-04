@@ -46,3 +46,13 @@ def test_a_booklet_lesson_starts_at_its_overview_and_steps_place_parts_list_item
 def test_a_sized_type_on_a_parts_list_is_its_family_with_the_value_kept():
     items = [n["props"] for n in db.lesson_rows("fade")["nodes"]["Item"] if n["props"]["listed_as"].startswith("resistor")]
     assert [(i["part"], i["value"], i["listed_as"]) for i in items] == [("resistor", "220", "resistor-220")]
+
+
+def test_every_node_has_a_readable_name_for_the_browser():
+    blink = db.lesson_rows("blink")
+    assert [n["props"]["name"] for n in blink["nodes"]["Step"]] == \
+        ["Gather parts", "Step 1", "Step 2", "Step 3", "Step 4", "Upload code"]
+    assert "2× Jumper wire" in [n["props"]["name"] for n in blink["nodes"]["Item"]]
+    assert db.caption({"id": "red-crab-body-3", "kind": "step", "number": "3"}) == "Step 3 · red crab body"
+    parts, ports = db.part_rows({"led": {"display_name": "LED", "ports": [{"id": "A", "kind": "lead"}]}})
+    assert parts[0]["props"]["name"] == "LED" and ports[0]["props"]["name"] == "A"

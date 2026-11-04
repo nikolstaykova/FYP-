@@ -111,10 +111,30 @@ def part_rows(parts):
         props.update(flat({"description": meta.get("description"), "status": meta.get("status"),
                            "domain": meta.get("domain")}))
         props["metadata"] = json.dumps(meta, ensure_ascii=False)
+        props["name"] = e.get("display_name") or t  # the caption the database browser shows
         nodes.append({"key": t, "props": props})
         for p in e.get("ports") or []:
-            ports.append({"part": t, "key": f"{t}:{p['id']}", "props": flat(p)})
+            ports.append({"part": t, "key": f"{t}:{p['id']}", "props": {**flat(p), "name": p["id"]}})
     return nodes, ports
+
+
+SPECIAL = {"gather": "Gather parts", "upload": "Upload code", "overview": "Overview"}
+
+
+def caption(n):
+    """A step's name as the lesson says it: "Gather parts", "Step 2" (step-2), "Step 1 · red crab body" (a booklet
+    step; its numbering starts again in every build); a build's own name."""
+    if n.get("kind") in SPECIAL:
+        return SPECIAL[n["kind"]]
+    if n.get("kind") in BUILD_KINDS:
+        return n.get("name") or n["id"]
+    m = re.fullmatch(r"step-(\d+)", n["id"])
+    if m:
+        return f"Step {m.group(1)}"
+    m = re.fullmatch(r"(.+?)-(\d+)", n["id"])
+    if m:
+        return f"Step {n.get('number') or m.group(2)} · {m.group(1).replace('-', ' ')}"
+    return n["id"]
 
 
 def lesson_rows(lesson_id, store=None):
@@ -141,6 +161,7 @@ def lesson_rows(lesson_id, store=None):
         props.update(flat({"picture": s.get("picture"), "page": s.get("page"), "booklet_label": s.get("booklet_label")}))
         if s:
             props["source"] = json.dumps(s, ensure_ascii=False)
+        props["name"] = caption(n)  # what the database browser shows on the node
         nodes[label].append({"key": uid(n["id"]), "props": {**props, "lesson_id": lesson_id}})
         labels[n["id"]] = label
     entered = {e["v"] for e in ins["edges"] if e["type"] in ("NEXT_STEP", "STARTS", "SHOWS")}
@@ -156,10 +177,15 @@ def lesson_rows(lesson_id, store=None):
             continue
         part = _resolve(r["part"])
         item = uid(f"parts_list/{i}")
+        count = r.get("count") or len(r.get("instances") or []) or None
+        title = r.get("name") or (_CAT.get(part) or {}).get("display_name") or part
+        value = _value(r["part"], part)
         nodes["Item"].append({"key": item, "props": flat({
-            "lesson_id": lesson_id, "row": i, "part": part, "name": r.get("name"), "listed_as": r["part"],
-            "count": r.get("count") or len(r.get("instances") or []) or None, "colour": r.get("colour"),
-            "print": r.get("print"), "value": _value(r["part"], part), "from": r.get("from")})})
+            "lesson_id": lesson_id, "row": i, "part": part, "listed_as": r["part"], "part_name": title,
+            "name": " ".join(x for x in (f"{count}×" if count else "", r.get("colour") or "", title,
+                                         value or "") if x),  # the caption: "2× Jumper wire", "1× Red Plate 2 x 6"
+            "count": count, "colour": r.get("colour"), "print": r.get("print"), "value": value,
+            "from": r.get("from")})})
         links.append(("LISTS", lesson_id, item, flat({"row": i}), "Lesson", "Item"))
         inst = [x for x in r.get("instances") or [] if x in in_physical]
         for x in inst:
@@ -169,6 +195,8 @@ def lesson_rows(lesson_id, store=None):
     # the physical graph: instances, each pointing at its catalogue part; joins are links between instances
     for n in phys["nodes"]:
         props = flat({"id": n["id"], "label": n.get("label"), "type": _resolve(n.get("type")), **(n.get("props") or {})})
+        props["name"] = " ".join(x for x in ((n.get("props") or {}).get("colour") or "", n.get("label") or n["id"],
+                                             f"({n['id']})") if x)  # the caption: "Yellow Plate 2 x 6 (b11)"
         nodes["Instance"].append({"key": uid(n["id"]), "props": {**props, "lesson_id": lesson_id}})
         labels[n["id"]] = "Instance"
         if n.get("type"):
