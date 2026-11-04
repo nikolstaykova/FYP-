@@ -1075,9 +1075,16 @@ scratch, rebuilds, the store validator, `parts.json` rebuilt unchanged).
 
 ## 10. The database: Neo4j (being integrated, November 2026)
 
-**Status:** chosen 3–4 November 2026 (RESEARCH.md R29). The instance is being set up; the loader is next. Until
-the code reads from the database, the JSON files in `data/lessons/store/` and `code/graph/parts/` stay the source,
-and the database is rebuilt from them.
+**Status (4 November 2026):** the instance is running (AuraDB Free, `bac9405c`, Belgium) and **everything is loaded**:
+the 77 lessons and the 1,254-part catalogue, 20,377 nodes and 38,871 links (about a tenth of the free tier), every
+lesson checked against its files (`./pinpoint db check`). Saving a lesson (`lesson_store.register`) now updates it in
+the database too. Still to do: the code *reading* from the database (§10.4 step 4) and the file store for pictures.
+Until then the JSON files in `data/lessons/store/` and `code/graph/parts/` stay the source, and the database is
+rebuilt from them.
+
+Commands: `./pinpoint db load` (everything; or `./pinpoint db load blink fade` for some lessons), `./pinpoint db
+check` (counts per lesson against the files), `./pinpoint db stats`. Code: `code/graph/db.py`; tests:
+`code/tests/unit/test_db.py`.
 
 **What:** Neo4j AuraDB Free (a property-graph database), region Belgium (EU). The lesson data is already a
 property graph (GRAPH_SPEC), so it goes in as it is: nodes and typed relationships, both with properties. Files
@@ -1107,7 +1114,7 @@ Nodes (label, key, main properties):
 | `Step` | `lesson_id` + `id` | n, kind (gather, build, step, upload…), text, description, what_changed, picture (file-store link) | `instruction.json` |
 | `Build` | `lesson_id` + `id` | name: a booklet build, a 3D model's sub-assembly | `instruction.json` (`build:…`, `sub:…`) |
 | `Instance` | `lesson_id` + `id` | colour, print, value, label; LEGO: ldraw position and rotation, anchor | `physical.json` nodes |
-| `Join` | `lesson_id` + `id` | method, holds_by, freedom, reversible; Arduino: wire colour, route | `physical.json` `joined` edges |
+| `Join` | `lesson_id` + `id` | kind (joined, contact, electrical), ports, method, holds_by, freedom, reversible; Arduino: wire colour, route | every `physical.json` edge |
 | `Part` | `part_type_id` | display_name, category, domain, aliases, intrinsic behaviour, electrical, metadata | `parts.json` |
 | `Port` | `part_type_id` + `id` | kind, gender, aliases | `parts.json` ports |
 | `Check` | id | lesson, time, models, cost, verdict per part | `checker.gather_flow` results |
@@ -1123,17 +1130,20 @@ Relationships:
 | `MAKES` | Step → Join | |
 | `ALIGNS_WITH` | Step → Step | ports |
 | `END` | Join → Instance | port (the port id on that instance), side (u / v) |
-| `JOINED` | Instance → Instance | a shortcut for walking, the same join's id and ports |
-| `CONTACT`, `ELECTRICAL` | Instance → Instance | method (rest), net |
+| `JOINED`, `CONTACT`, `ELECTRICAL` | Instance → Instance | a shortcut for walking: the join's id, ports, method |
+| `GATHERS`, `PROGRAMS` | Step → Lesson / Instance | an Arduino lesson's gather step; its upload step to the board |
 | `IS_A` | Instance → Part | |
 | `HAS_PORT` | Part → Port | |
-| `NEEDS` | Lesson → Part | count, colour, print (the lesson's parts list) |
+| `NEEDS` | Lesson → Part | count, colour, print, value, listed_as (the lesson's parts list) |
 | `CHECKED` | Check → Lesson | |
 
 Two decisions:
 - **A join is a node.** A step `MAKES` a join (`step-2 → e4`) and `DEPENDS_ON` other steps `via` joins; a relationship
-  cannot be pointed at, so each join is a `Join` node with an `END` to each of its two instances (carrying the port),
-  plus a `JOINED` shortcut between the instances.
+  cannot be pointed at, so every physical link (joined, contact, electrical) is a `Join` node with an `END` to each
+  of its two instances (carrying the port), plus a shortcut between the instances (`JOINED`, `CONTACT`, `ELECTRICAL`).
+- **A part is found by the lesson store's own rule** (`lesson_store.definition`): exact id, an old id (redirects), a
+  print's plain piece, a sized type's family. An Arduino parts list's `resistor-220` (CircuitQuest's name) is the part
+  `resistor`, with `value: "220"` and `listed_as: "resistor-220"` on its `NEEDS` link.
 - **Lesson ids scope everything but parts.** `b1` and `step-1` are in many lessons, so those nodes are keyed by
   `lesson_id` + `id`. A part is keyed by its `part_type_id` alone and shared by every lesson: one `lego-3626c` (the
   minifig head, any face) links all 11 lessons that use one; its print and colour are on each `Instance`.
@@ -1158,12 +1168,12 @@ MATCH (s:Step {lesson_id: "blink", id: "step-3"})-[:DEPENDS_ON*]->(before:Step) 
 
 ### 10.4 Integration plan
 
-1. **Instance:** AuraDB Free in Belgium; its URI, user and password in `.env` (`NEO4J_URI`, `NEO4J_USERNAME`,
+1. **Instance** (done): AuraDB Free in Belgium; its URI, user and password in `.env` (`NEO4J_URI`, `NEO4J_USERNAME`,
    `NEO4J_PASSWORD`; `.env` is not in git). Python driver `neo4j` (installed in `.venv-research`).
-2. **Loader** (`code/graph/db.py`, `./pinpoint db load`): constraints and indexes on the keys above, then every
+2. **Loader** (done; `code/graph/db.py`, `./pinpoint db load`): constraints and indexes on the keys above, then every
    part and every lesson from the JSON. Idempotent (`MERGE`), so it can be re-run any time; a lesson saved again
    (`lesson_store.register`) is reloaded on its own.
-3. **Checked against the JSON:** counts per lesson (steps, instances, joins, parts) and the example queries give
+3. **Checked against the JSON** (done; `./pinpoint db check`, and the queries in §10.3 run on the live data): counts per lesson (steps, instances, joins, parts) and the example queries give
    the same answers as reading the files.
 4. **Code reads from the database:** the lesson store's read path, the gather check's catalogue, the tutor tools
    (`tutor_mcp.py`); the JSON files stay as the export and backup.

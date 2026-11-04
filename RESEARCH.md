@@ -2014,7 +2014,9 @@ needs are in the same patch.
 
 ## R29. A database for the lessons: Neo4j
 
-**Date:** 3–4 November 2026 · **Status:** chosen; being integrated (instance being set up, loader next) · **Design:**
+**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 20,377
+nodes and 38,871 links, checked against the files; saving a lesson updates it); the code reading from it is next ·
+**Code:** `code/graph/db.py` · **Design:**
 [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) §10
 
 **Question:** where should the lessons and parts live once the phone app needs them, and so that the Mac does not
@@ -2073,9 +2075,14 @@ picture. Region: **Belgium** (in the EU like Ireland, about 10 ms more than Lond
   a card from another source (`ingest.same_source`). A rebuild of `parts.json` now changes nothing.
 - Validation: 77/77 lessons valid; 114 unit tests pass.
 
-**Next:** the instance (Belgium), the loader (`graph.db`: constraints, load from the store, idempotent), example
-queries checked against the JSON, then the code reading from the database (lesson store, gather check, tutor
-tools) and the file store for pictures.
+**Done 4 November:** the instance (Belgium), the loader (`./pinpoint db load`: constraints, the store loaded, a
+lesson replaced whole, re-runnable), the check against the files (`./pinpoint db check`: every lesson matches),
+the example queries on the live data, and saving a lesson updates the database. One thing the load found: Arduino
+parts lists name a resistor by its value (`resistor-220`, CircuitQuest's name); it is loaded as the part
+`resistor` with the value on the link, by the lesson store's own rule.
+
+**Next:** the code reading from the database (lesson store, gather check, tutor tools) and the file store for
+pictures.
 
 ## Next steps
 

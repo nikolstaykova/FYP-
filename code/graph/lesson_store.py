@@ -106,7 +106,27 @@ def register(entry, graphs, store=None):
         cat = catalogue(store)
         cat["lessons"] = [r for r in cat["lessons"] if r["lesson_id"] != entry["lesson_id"]] + [row]
         (store / "catalogue.json").write_text(json.dumps(cat, indent=1))
+    sync_db(entry["lesson_id"], store)
     return row
+
+
+def sync_db(lesson_id, store=None):
+    """The saved lesson into the database too (graph.db), when one is set up in .env. Never stops a save: no
+    database, or one that is paused or unreachable, only prints a note (`./pinpoint db load <id>` catches up).
+    Off with PINPOINT_DB_SYNC=0 (tests, and lessons saved to another store)."""
+    if os.environ.get("PINPOINT_DB_SYNC", "1") == "0" or (store and pathlib.Path(store) != STORE):
+        return None
+    try:
+        from graph import db
+        db.settings()
+    except Exception:
+        return None  # no database set up
+    try:
+        with db.driver() as d:
+            return db.load_lesson(d, lesson_id, store)
+    except Exception as e:  # paused, offline, wrong password
+        print(f"  database: {lesson_id} not updated ({type(e).__name__}); run ./pinpoint db load {lesson_id}")
+        return None
 
 
 STEP_KINDS = ("step", "gather", "build", "upload", "overview")  # the NEXT_STEP chain; other nodes hang off it
