@@ -2014,7 +2014,7 @@ needs are in the same patch.
 
 ## R29. A database for the lessons: Neo4j
 
-**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 18,624
+**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 16,624
 nodes and 25,669 links in the shape of the plan, checked against the files; saving a lesson updates it); the code reading from it is next ·
 **Code:** `code/graph/db.py` · **Design:**
 [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) §10

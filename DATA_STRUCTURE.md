@@ -1076,7 +1076,7 @@ scratch, rebuilds, the store validator, `parts.json` rebuilt unchanged).
 ## 10. The database: Neo4j (being integrated, November 2026)
 
 **Status (4 November 2026):** the instance is running (AuraDB Free, `bac9405c`, Belgium) and **everything is loaded**:
-the 77 lessons and the 1,254-part catalogue, 18,624 nodes and 25,669 links (under a tenth of the free tier), every
+the 77 lessons and the 1,254-part catalogue, 16,624 nodes and 25,669 links (under a tenth of the free tier), every
 lesson checked against its files (`./pinpoint db check`). Saving a lesson (`lesson_store.register`) now updates it in
 the database too. Still to do: the code *reading* from the database (§10.4 step 4) and the file store for pictures.
 Until then the JSON files in `data/lessons/store/` and `code/graph/parts/` stay the source, and the database is
@@ -1181,7 +1181,7 @@ Decisions:
   `lesson_id` + `id`; a part is keyed by its `part_type_id` alone and shared: one `lego-3626c` (the minifig head,
   any face) links every lesson that uses one; its print and colour are on each `Instance` or link.
 
-Loaded on 4 November 2026: 18,624 nodes (11,118 ports, 2,880 instances, 1,254 parts, 1,178 steps, 117 builds, 77
+Loaded on 4 November 2026: 16,624 nodes (11,118 ports, 2,880 instances, 1,254 parts, 1,178 steps, 117 builds, 77
 lessons) and 25,669 links. A set's 3D lesson and booklet lesson share a name ("Swamp Police Helicopter"):
 search by `lesson_id`.
 
