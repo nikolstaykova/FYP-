@@ -119,6 +119,7 @@ h1 { font-size: 26px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em
 .steptext { font-size: 19px; line-height: 1.45; margin: 8px 0 10px; }
 .stepgoal { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
 #b-pic { width: 100%; max-height: 300px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid var(--line); margin: 6px 0; }
+mark.col { background: var(--gold); color: #1c1b19; border-radius: 4px; padding: 0 3px; }
 .partchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
 .partchips span { font-size: 13px; padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); }
 details.more { margin-top: 8px; color: var(--muted); font-size: 14px; }
@@ -190,7 +191,7 @@ details.more summary { cursor: pointer; }
           <h1>Gather your parts</h1>
           <p class="lead">Put these on the table. Tap each one as you go.</p>
           <ul class="checklist" id="p-list"></ul>
-          <div class="row"><button class="btn" id="p-ready">They're on the table</button></div>
+          <div class="row"><button class="btn" id="p-ready">They're on the table</button><button class="btn ghost small" id="p-photos">📷 / 🖼 Add photos</button></div>
         </div>
         <!-- camera -->
         <div id="v-camera" class="hidden">
@@ -308,6 +309,7 @@ function stage(s) {
 }
 async function openLesson(id) {
   L = LESSONS.find(l => l.id === id); PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null; B = null;
+  COLS = store.get('quest.cols.' + id) || {};
   $('s-choose').classList.add('hidden'); $('s-session').classList.remove('hidden');
   $('h-kind').textContent = L.type === 'lego' ? `LEGO · from the ${L.kind}` : 'Electronics';
   $('h-title').textContent = L.name;
@@ -328,6 +330,7 @@ $('d-again').addEventListener('click', () => $('h-back').click());
 // parts list
 $('p-list').addEventListener('click', e => { const li = e.target.closest('li'); if (li) { li.classList.toggle('got'); li.setAttribute('aria-checked', li.classList.contains('got')); } });
 $('p-ready').addEventListener('click', () => { if (T.on) tell("(The learner tapped: everything is on the table.)"); else runTool('open_camera', {}); });
+$('p-photos').addEventListener('click', () => { runTool('open_camera', {}); if (T.on) tell(`(The learner opened the photo panel themselves; they give photos by ${MODE === 'upload' ? 'uploading' : 'the camera'}.)`); });
 
 // camera
 function canvasToPhoto(src, w, h) {
@@ -451,14 +454,21 @@ $('r-rescan').addEventListener('click', () => { PHOTOS = []; drawThumbs(); PENDI
 
 // build
 function drawDots() { if (!B) return; $('b-lesson').textContent = B.name; $('b-dots').innerHTML = B.steps.map(s => `<button data-n="${s.n}" aria-label="Step ${s.n}">${s.n}</button>`).join(''); }
+// the learner's breadboard columns: lesson column -> theirs (set by Pip's use_column), shown on every step card
+let COLS = {};
+function cols(text) {  // "column 10 and the other leg in column 14" -> the learner's numbers, marked
+  const mark = num => COLS[num] ? `<mark class="col" title="the lesson says ${num}">${COLS[num]}</mark>` : num;
+  return esc(text).replace(/\b(columns?)(\s+)(\d+(?:\s*(?:,|and|or|to)\s*\d+)*)/gi,
+    (m, word, space, nums) => word + space + nums.replace(/\d+/g, mark));
+}
 function showStep(n) {
   if (!B || !B.steps.length) return 0;
   n = Math.max(1, Math.min(B.steps.length, n | 0)); B.i = n - 1; const s = B.steps[B.i];
   if (STAGE !== 'build') stage('build');
-  $('b-count').textContent = `Step ${n} of ${B.steps.length}`; $('b-title').textContent = s.title; $('b-text').textContent = s.text;
-  $('b-goal').textContent = s.goal || ''; $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
+  $('b-count').textContent = `Step ${n} of ${B.steps.length}`; $('b-title').textContent = s.title; $('b-text').innerHTML = cols(s.text);
+  $('b-goal').innerHTML = cols(s.goal || ''); $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
   $('b-parts').innerHTML = s.parts.map(p => `<span>${p.count > 1 ? p.count + '× ' : ''}${esc(p.what)}</span>`).join('');
-  $('b-hints').hidden = !s.hints.length; $('b-hints').open = false; $('b-hintlist').innerHTML = s.hints.map(h => `<li>${esc(h)}</li>`).join('');
+  $('b-hints').hidden = !s.hints.length; $('b-hints').open = false; $('b-hintlist').innerHTML = s.hints.map(h => `<li>${cols(h)}</li>`).join('');
   $('b-prev').disabled = n === 1; $('b-next').textContent = n === B.steps.length ? 'Finish' : 'Done: next step';
   [...$('b-dots').children].forEach(d => { const k = +d.dataset.n; d.classList.toggle('on', k === n); d.classList.toggle('done', B.done.has(k) && k !== n); });
   return n;
@@ -516,6 +526,13 @@ async function runTool(name, args) {
     case 'skip_question': {
       try { const st = await post('/api/flow/dismiss', { upload: UPLOAD, key: args.key }); stage('result'); drawResult(st); return summary(st); }
       catch (e) { return { error: e.message }; }
+    }
+    case 'use_column': {
+      const a = String(parseInt(args.lesson)), b = String(parseInt(args.theirs));
+      if (a === 'NaN' || b === 'NaN') return { error: 'give two column numbers' };
+      if (a === b) delete COLS[a]; else COLS[a] = b;
+      store.set('quest.cols.' + L.id, COLS); if (STAGE === 'build') showStep(B.i + 1);
+      return { columns: COLS, note: 'the step cards now show their columns' };
     }
     case 'start_building': return { step: showStep(1), steps: B ? B.steps.length : 0 };
     case 'show_step': return { screen_shows_step: showStep(args.n) };

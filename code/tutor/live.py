@@ -31,7 +31,9 @@ PRICES = {"text_in": 0.75, "audio_in": 3.00, "text_out": 4.50, "audio_out": 12.0
 CAP_USD = 4.00  # about 3.70 euro: the page stops the voice here
 WARN_USD = 3.00
 
-RULES = """You are Pip, a warm, funny tutor who teaches a hands-on build by voice, like a good friend sitting next to the
+RULES = """RESPOND IN ENGLISH. YOU MUST RESPOND UNMISTAKABLY IN ENGLISH, whatever language you think you hear.
+
+You are Pip, a warm, funny tutor who teaches a hands-on build by voice, like a good friend sitting next to the
 learner. They have their hands full, so you speak everything; the screen only shows what you are talking about.
 
 Your personality:
@@ -65,6 +67,11 @@ BREADBOARD = """What matters on the breadboard, and what does not:
   the same legs share a column as in the lesson, and the two legs of one part are in different columns.
 - If the learner uses other columns, that is completely fine: say so, and from then on talk in their columns
   ("then the LED's long leg goes in your column 12, next to the resistor"). Never insist on the lesson's numbers.
+- Whenever you give them a column that differs from the lesson's, call use_column first with the lesson's number
+  and theirs (for example lesson 14, theirs 11), once for every column that changes, also later ones (if the
+  LED's short leg moves from the lesson's 15 to their 12, call use_column for 15 too), so the step cards on the
+  screen show their columns. Keep the
+  mapping consistent: a lesson column always becomes the same column of theirs.
 - What must share a column in this lesson (any column, as long as these are together):
 {strips}
 - What can change: {free}"""
@@ -82,8 +89,8 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
    take_photo. With many small parts, offer one more photo from another angle (at most 3). Then say "let me have a
    look" and call check_parts.
    Some learners upload photos instead of using the camera (a message tells you, and the camera tools say so too):
-   then never take a photo; ask them to upload one to three photos and tell you when they have, then call
-   check_parts. A close-up can be uploaded too: its result comes to you as a message, so do not take it again.
+   then never take a photo; call open_camera first (it shows the upload area), ask them to upload one to three
+   photos and to tell you when they have, then call check_parts. A close-up can be uploaded too: its result comes to you as a message, so do not take it again.
    The result says, part by part, what they have, what can be used instead (and why), what you are not sure of, and
    what is missing, and it may have questions. Tell them like a person would: first what is good, then what can
    stand in (with the reason, briefly), then each question in your own words with their name ("Mark, I can see the
@@ -107,8 +114,15 @@ TOOL_DEFS = {
                       "parameters": {"type": "OBJECT", "properties": {"name": {"type": "STRING"}}, "required": ["name"]}},
     "show_parts_list": {"description": "Show the lesson's parts list on the screen as a checklist.",
                         "parameters": {"type": "OBJECT", "properties": {}}},
-    "open_camera": {"description": "Open the camera on the screen so the learner can show their parts.",
+    "open_camera": {"description": "Open the photo panel on the screen: the camera, or the upload area if the learner "
+                                   "uploads photos. Always call it before asking for photos or a close-up.",
                     "parameters": {"type": "OBJECT", "properties": {}}},
+    "use_column": {"description": "The learner uses a different breadboard column from the lesson's: from now on the "
+                                  "screen shows their column wherever the steps say the lesson's.",
+                   "parameters": {"type": "OBJECT", "properties": {
+                       "lesson": {"type": "INTEGER", "description": "the column number the lesson's steps use"},
+                       "theirs": {"type": "INTEGER", "description": "the column the learner uses instead"}},
+                       "required": ["lesson", "theirs"]}},
     "take_photo": {"description": "Take a photo of the parts with the camera now. Returns how many photos there are.",
                    "parameters": {"type": "OBJECT", "properties": {}}},
     "check_parts": {"description": "Check the photos against the lesson's parts list (takes 5 to 15 seconds). Returns "
@@ -130,7 +144,7 @@ TOOL_DEFS = {
                                  "required": ["n"]}},
     "finish_lesson": {"description": "The learner has finished the last step.", "parameters": {"type": "OBJECT", "properties": {}}},
 }
-CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "take_closeup", "skip_question")
+CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "take_closeup", "skip_question", "use_column")
 
 
 def tools(lesson_type):

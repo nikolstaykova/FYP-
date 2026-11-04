@@ -31,7 +31,7 @@ def test_the_session_starts_with_the_name_and_checks_parts_only_for_electronics(
     assert "take_closeup" in new and "never take the close-up in the same breath" in new
     arduino = [d["name"] for d in live.tools("arduino")[0]["functionDeclarations"]]
     lego = [d["name"] for d in live.tools("lego")[0]["functionDeclarations"]]
-    assert {"open_camera", "take_photo", "check_parts", "take_closeup"} <= set(arduino)
+    assert {"open_camera", "take_photo", "check_parts", "take_closeup", "use_column"} <= set(arduino)
     assert not {"open_camera", "check_parts"} & set(lego) and "start_building" in lego
     assert "no parts check" in live.brief("7268-1-pdf")
 
@@ -42,4 +42,5 @@ def test_the_tutor_knows_columns_do_not_matter_only_what_shares_one():
     assert "resistor's other leg and the LED's long leg (+)" in b  # the column they must share, any column
     assert "never 0 or 1" in b  # the pin can move, but not to the serial pins
     brief = live.brief("blink")
-    assert "Always speak English" in brief and "roast" in brief and "the short, everyday way" in brief
+    assert brief.startswith("RESPOND IN ENGLISH") and "roast" in brief and "the short, everyday way" in brief
+    assert "call use_column first" in brief
