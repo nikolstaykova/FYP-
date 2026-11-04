@@ -1,6 +1,11 @@
 # Pinpoint — Research Log: Object Representation
 
-> **Focus:** one general **object representation** that works for all three target areas: **Arduino / robotics**, **furniture (Sauder only, for now)** and **LEGO**. How to create it from instructions, and how to test it.
+> **Focus:** one general **object representation** that works for all three target areas: **Database (R29)**
+- [Neo4j AuraDB quotas and limits](https://neo4j.com/docs/aura/quotas-and-limits/)
+- [Neo4j Aura provisioning (pause rules, third-party)](https://skillselion.com/skills/neo4j-contrib/neo4j-skills/neo4j-aura-provisioning-skill)
+- [Supabase free tier limits 2026](https://automationatlas.io/answers/supabase-free-tier-limits-2026/)
+
+**Arduino / robotics**, **furniture (Sauder only, for now)** and **LEGO**. How to create it from instructions, and how to test it.
 >
 > **Note:** a graph is the leading **candidate**, not a decision. This is an exploration: the goal is whatever representation fits all three cases, which may turn out to be a graph, a set of graphs, or something else.
 >
@@ -2007,6 +2012,71 @@ needs are in the same patch.
 
 ---
 
+## R29. A database for the lessons: Neo4j
+
+**Date:** 3–4 November 2026 · **Status:** chosen; being integrated (instance being set up, loader next) · **Design:**
+[`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) §10
+
+**Question:** where should the lessons and parts live once the phone app needs them, and so that the Mac does not
+hold everything? Two needs: a store for the data itself, which is a graph, and a store for files (step pictures,
+learners' photos).
+
+### What there is to store
+
+| | Size | Goes to |
+|---|---|---|
+| 77 lessons (28 booklet, 28 3D-model, 21 Arduino): steps, part instances, joins | 3,017 nodes, 11,654 edges | the database |
+| Parts catalogue: 1,254 parts, 11,118 ports | 3.8 MB (`parts.json`) | the database |
+| Booklet step pictures, overlays, parts sheets (linked from each booklet step) | ~190 MB | file storage |
+| Parts checks (gather results), later learners' photos | small; grows with use | database + file storage |
+| Old runs, benchmarks, datasets, booklet reading intermediates, model weights | ~2.9 GB | **neither**: kept local, or deleted when no longer needed |
+
+Everything that goes in, counted as a graph with every port a node too: about **15,000 nodes and 26,000
+relationships**. Only finished lessons and the catalogue go in, not test material.
+
+### Options compared
+
+| | Neo4j AuraDB Free | Supabase (Postgres) | Firebase (Firestore) |
+|---|---|---|---|
+| Data model | **property graph**: nodes and typed relationships, both with properties: our structure as it is | tables; the graph as `nodes` and `edges` tables, followed with recursive SQL | documents; links between documents by hand |
+| Following links ("every step that uses this part") | one Cypher pattern | joins / recursive queries | several reads in code |
+| Free tier | 200,000 nodes, 400,000 relationships, 1 GB | 500 MB data, 1 GB files, logins | 1 GB data, 5 GB files, logins |
+| Files | no | yes | yes |
+| Pauses when idle | reportedly after ~3 days (resume in the console) | after 7 days | no |
+
+**Decision: Neo4j**, because the lesson data is already a property graph (GRAPH_SPEC): steps, part instances and
+parts are nodes; `PLACES`, `NEXT_STEP`, `DEPENDS_ON`, `joined` (with `u_port`, `v_port`, `method`, `holds_by`) are
+typed links with properties. Nothing has to be flattened, and the questions the product asks are walks along those
+links (the parts of a step; which boards can stand in for the Uno and with which pin changes; every lesson that uses
+a minifig head). The data is about 13 times under the free limits. Neo4j holds no files, so the step pictures and
+photos go to a file store in the EU (Supabase Storage or Cloudflare R2, to be chosen); each step keeps a link to its
+picture. Region: **Belgium** (in the EU like Ireland, about 10 ms more than London).
+
+### Design points found while mapping the data
+
+- **A join is a node**, not only a relationship: a step `MAKES` a join (`step-2 → e4`) and `DEPENDS_ON` steps
+  `via` joins, and a relationship cannot be pointed at. So `(:Join)` with `[:END {port}]` to its two instances, and
+  a `[:JOINED]` shortcut between the two instances for walking.
+- **Ids are per lesson** (`b1`, `step-1` are in many lessons), so nodes are keyed by `lesson_id` + `id`; parts are
+  keyed by `part_type_id` alone and shared by every lesson, which is why "one card per design" (below: prints and colours are properties
+  of the copy) matters: one minifig head node links every lesson that uses one.
+- **The JSON files stay the source** while the database is integrated: the loader rebuilds the database from them
+  (same input, same graph), so a paused or deleted free instance loses nothing.
+
+### Before the database: the data cleaned (3 November)
+
+- **One card per LEGO design:** a printed piece was its own part (the minifig head once per face); now the print
+  is a property of the copy, like colour. 121 printed cards merged into 61 plain pieces, 33 lessons rewritten
+  (`lego_ids.unprinted`, applied on every save).
+- **Electronics cards and `parts.json` in sync:** the gather check's research step had overwritten four verified
+  cards (resistor, LED, pushbutton, slide switch) with shop products; restored, and research can no longer replace
+  a card from another source (`ingest.same_source`). A rebuild of `parts.json` now changes nothing.
+- Validation: 77/77 lessons valid; 114 unit tests pass.
+
+**Next:** the instance (Belgium), the loader (`graph.db`: constraints, load from the store, idempotent), example
+queries checked against the JSON, then the code reading from the database (lesson store, gather check, tutor
+tools) and the file store for pictures.
+
 ## Next steps
 
 - [x] Lessons from 3D models for LEGO (R23)
@@ -2014,7 +2084,9 @@ needs are in the same patch.
 - [x] Decide old vs new on bigger LEGO sets: the new way (R24)
 - [x] Compile-check every Arduino sketch (`arduino-cli`): 90 of 95 (R24)
 - [ ] Finish the full LEGO lesson run with the final method, then fix the kinds of leftovers it shows (R24)
-- [ ] Parts and lessons database; reusable builds table
+- [x] Choose the database: Neo4j AuraDB (graph) + an EU file store for pictures (R29)
+- [ ] Integrate the database: instance, loader, code reading from it, step pictures to file storage (R29)
+- [ ] Reusable builds table
 - [ ] The checker: VLM reads a photo of the build, code compares with the step's expected state, adaptive feedback; then AR
 - [ ] Regenerate the Audi, Cherry Picker and London lessons with all rules (R23)
 - [x] Batch tests: 25 sets and 20 Arduino links on all three routes, every error made a rule (R27)

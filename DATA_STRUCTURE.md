@@ -1,6 +1,7 @@
 # Pinpoint: Data Structure for Lessons
 
-> **Version:** 0.2 · **Date:** 22 October 2026 (0.1: 19 October)
+> **Version:** 0.3 · **Date:** 4 November 2026 (0.2: 22 October; 0.1: 19 October). 0.3 adds §10: the
+> database (Neo4j), being integrated.
 >
 > How a lesson is stored: one **lesson catalogue** that links each lesson to the graphs it actually has, a
 > **parts catalogue** of definitions (LEGO and Arduino in one, `code/graph/parts/parts.json`), and the graphs themselves. Piloted on one Arduino lesson (Blink) and one
@@ -9,7 +10,7 @@
 > [`GRAPH_SPEC.md`](./GRAPH_SPEC.md). How lessons are planned: [`LESSONS.md`](./LESSONS.md). The data as it is
 > stored, section by section as on the shared page *Pinpoint Lesson Data*: [`DATASTRUCTURE.md`](./DATASTRUCTURE.md)
 > (generated: `python tests/tools/datastructure_md.py`). The research behind it: [`RESEARCH.md`](./RESEARCH.md) R25, R26, R27
-> (batch tests, §8).
+> (batch tests, §8), R29 (the database, §10).
 
 ---
 
@@ -1070,3 +1071,104 @@ step, the v8 booklet builder's step pictures, an old booklet parts-page fallback
 `return` in `step_diff.tighten`. Checked after every step: the unit tests (81: 68 product, 13 research), pyflakes
 (no undefined names), and real lessons on every route (a booklet lesson from scratch, 3D and Arduino lessons from
 scratch, rebuilds, the store validator, `parts.json` rebuilt unchanged).
+
+
+## 10. The database: Neo4j (being integrated, November 2026)
+
+**Status:** chosen 3–4 November 2026 (RESEARCH.md R29). The instance is being set up; the loader is next. Until
+the code reads from the database, the JSON files in `data/lessons/store/` and `code/graph/parts/` stay the source,
+and the database is rebuilt from them.
+
+**What:** Neo4j AuraDB Free (a property-graph database), region Belgium (EU). The lesson data is already a
+property graph (GRAPH_SPEC), so it goes in as it is: nodes and typed relationships, both with properties. Files
+(step pictures, learners' photos) go to a file store in the EU (Supabase Storage or Cloudflare R2, to be chosen);
+the database keeps their links.
+
+**Why a graph database:** the questions the product asks are walks along links: the parts a step needs; the steps
+a step depends on; which boards can stand in for the Uno and with which pin changes; every lesson that uses a part.
+About 15,000 nodes and 26,000 relationships in all, well under the free tier (200,000 / 400,000).
+
+### 10.1 What goes in, and what does not
+
+| Goes in | Stays out (local, or deleted when no longer needed) |
+|---|---|
+| The 77 finished lessons: record, steps, builds, part instances, joins, electrical links | Old runs and batch tests (`tests/experiments/`), benchmark runs (`research/*/runs`, promptfoo rounds) |
+| The parts catalogue: 1,254 parts and their ports, metadata, substitutes | Datasets and downloaded sources (`data/sources/`: ElectroCom61, booklet PDFs, LDraw, Rebrickable) |
+| Parts checks (the gather flow's results) | Booklet reading intermediates (`reads.json`, layout checks, `before_reorg/`): ~540 MB, rebuildable |
+| Links to the step pictures and photos (the files themselves in file storage, ~190 MB now) | Model weights, caches |
+
+### 10.2 The graph in Neo4j
+
+Nodes (label, key, main properties):
+
+| Label | Key | Properties | From |
+|---|---|---|---|
+| `Lesson` | `lesson_id` | name, lesson_type (lego / arduino), kind (booklet-pdf, ldraw-model, tutorial-link), link | `lesson.json` |
+| `Step` | `lesson_id` + `id` | n, kind (gather, build, step, upload…), text, description, what_changed, picture (file-store link) | `instruction.json` |
+| `Build` | `lesson_id` + `id` | name: a booklet build, a 3D model's sub-assembly | `instruction.json` (`build:…`, `sub:…`) |
+| `Instance` | `lesson_id` + `id` | colour, print, value, label; LEGO: ldraw position and rotation, anchor | `physical.json` nodes |
+| `Join` | `lesson_id` + `id` | method, holds_by, freedom, reversible; Arduino: wire colour, route | `physical.json` `joined` edges |
+| `Part` | `part_type_id` | display_name, category, domain, aliases, intrinsic behaviour, electrical, metadata | `parts.json` |
+| `Port` | `part_type_id` + `id` | kind, gender, aliases | `parts.json` ports |
+| `Check` | id | lesson, time, models, cost, verdict per part | `checker.gather_flow` results |
+
+Relationships:
+
+| Relationship | From → to | Properties |
+|---|---|---|
+| `HAS_STEP` | Lesson → Step | |
+| `NEXT_STEP`, `DEPENDS_ON` | Step → Step | DEPENDS_ON: `via` (join ids) |
+| `STARTS`, `SHOWS`, `BUILDS`, `ATTACHES` | Build / overview / Step → Step / Build | order |
+| `PLACES` | Step → Instance (3D and Arduino) · Step → Part (booklet) | booklet: count, colour, print, where |
+| `MAKES` | Step → Join | |
+| `ALIGNS_WITH` | Step → Step | ports |
+| `END` | Join → Instance | port (the port id on that instance), side (u / v) |
+| `JOINED` | Instance → Instance | a shortcut for walking, the same join's id and ports |
+| `CONTACT`, `ELECTRICAL` | Instance → Instance | method (rest), net |
+| `IS_A` | Instance → Part | |
+| `HAS_PORT` | Part → Port | |
+| `NEEDS` | Lesson → Part | count, colour, print (the lesson's parts list) |
+| `CHECKED` | Check → Lesson | |
+
+Two decisions:
+- **A join is a node.** A step `MAKES` a join (`step-2 → e4`) and `DEPENDS_ON` other steps `via` joins; a relationship
+  cannot be pointed at, so each join is a `Join` node with an `END` to each of its two instances (carrying the port),
+  plus a `JOINED` shortcut between the instances.
+- **Lesson ids scope everything but parts.** `b1` and `step-1` are in many lessons, so those nodes are keyed by
+  `lesson_id` + `id`. A part is keyed by its `part_type_id` alone and shared by every lesson: one `lego-3626c` (the
+  minifig head, any face) links all 11 lessons that use one; its print and colour are on each `Instance`.
+
+Old part ids (`code/graph/parts/redirects.json`, e.g. a printed card merged into its plain piece) are resolved before
+loading, so the database has only current ids.
+
+### 10.3 Example queries
+
+```cypher
+// the parts a step needs (3D or Arduino lesson)
+MATCH (:Lesson {lesson_id: "30161-1"})-[:HAS_STEP]->(s:Step {id: "step-2"})-[:PLACES]->(i:Instance)-[:IS_A]->(p:Part)
+RETURN p.display_name, i.colour, i.print
+
+// every step, in every lesson, that uses a minifig head
+MATCH (l:Lesson)-[:HAS_STEP]->(s:Step)-[:PLACES]->(:Instance)-[:IS_A]->(:Part {part_type_id: "lego-3626c"})
+RETURN l.name, s.n ORDER BY l.name, s.n
+
+// what a step depends on, all the way back
+MATCH (s:Step {lesson_id: "blink", id: "step-3"})-[:DEPENDS_ON*]->(before:Step) RETURN before.id
+```
+
+### 10.4 Integration plan
+
+1. **Instance:** AuraDB Free in Belgium; its URI, user and password in `.env` (`NEO4J_URI`, `NEO4J_USERNAME`,
+   `NEO4J_PASSWORD`; `.env` is not in git). Python driver `neo4j` (installed in `.venv-research`).
+2. **Loader** (`code/graph/db.py`, `./pinpoint db load`): constraints and indexes on the keys above, then every
+   part and every lesson from the JSON. Idempotent (`MERGE`), so it can be re-run any time; a lesson saved again
+   (`lesson_store.register`) is reloaded on its own.
+3. **Checked against the JSON:** counts per lesson (steps, instances, joins, parts) and the example queries give
+   the same answers as reading the files.
+4. **Code reads from the database:** the lesson store's read path, the gather check's catalogue, the tutor tools
+   (`tutor_mcp.py`); the JSON files stay as the export and backup.
+5. **File storage** for the step pictures and learners' photos (EU region); `Step.picture` and `Check` hold the links.
+6. **The phone app** talks to our server, not to the database directly (the database password stays on the server).
+
+Free-tier caveats: the instance reportedly pauses after about three days unused (resumed in the Aura console) and
+may be deleted after a long pause; nothing is lost, because the loader rebuilds it from the files.
