@@ -68,23 +68,23 @@ def env_keys():
 
 
 def lessons():
-    """The saved electronics lessons (LEGO sets are named like 7613-1 and have no parts check yet), from the
-    database when it is set up (one query for all of them), else the files."""
-    from graph import db
+    """The Arduino lessons (the parts check is for electronics; LEGO lessons gather step by step), listed from the
+    lesson index and read through the lesson store: the database when it is set up (one query for all), else the
+    files."""
+    from graph import db, lesson_store
     db.prefetch()
     out = []
-    for d in sorted(STORE.iterdir()):
-        if re.fullmatch(r'\d+-\d+', d.name) or not all((d / f).exists() for f in
-                                                       ('lesson.json', 'assembled.json', 'physical.json')):
+    for row in lesson_store.catalogue()["lessons"]:
+        if row.get("lesson_type") != "arduino":
             continue
         try:
-            rec, phys = gather.lesson(d.name)
+            rec, phys = gather.lesson(row["lesson_id"])
             parts = [{'type': r['type'], 'name': r['name'], 'count': r['count'],
                       'values': sorted({str(v) for v in r.get('values', []) if v})} for r in gather.needs(rec, phys)]
         except Exception:
             continue
-        out.append({'id': d.name, 'name': rec.get('name') or d.name, 'parts': parts})
-    return out
+        out.append({'id': row["lesson_id"], 'name': rec.get('name') or row["lesson_id"], 'parts': parts})
+    return sorted(out, key=lambda x: x["name"].lower())
 
 
 def run_check(upload, lesson_id, model, research, repeat):
