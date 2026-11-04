@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parts Quest</title>
+<style>
+:root {
+  --bg: #f4f2ec; --card: #ffffff; --ink: #1c1b19; --muted: #6d6a62; --line: #e3e0d7;
+  --accent: #2f5bd3; --accent-ink: #fff; --accent-soft: #e7ecfb;
+  --good: #1f7a4a; --good-bg: #e2f3e9; --swap: #2f5bd3; --swap-bg: #e7ecfb;
+  --check: #9a6400; --check-bg: #fcf0d9; --miss: #b3261e; --miss-bg: #fbe5e3;
+  --gold: #e0a100;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141413; --card: #1e1e1c; --ink: #edebe5; --muted: #a29f97; --line: #33322e;
+    --accent: #7c9cf5; --accent-ink: #10131c; --accent-soft: #1c2440;
+    --good: #6fd39b; --good-bg: #16301f; --swap: #93aef7; --swap-bg: #1b2440;
+    --check: #f0bd5e; --check-bg: #352a12; --miss: #f28b82; --miss-bg: #3a1a18; --gold: #f5c542;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 860px; margin: 0 auto; padding: 18px 16px 80px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.brand { font-weight: 800; font-size: 20px; letter-spacing: -.01em; }
+.brand span { color: var(--accent); }
+.toplink { color: var(--muted); font-size: 13px; text-decoration: none; }
+.toplink:hover { color: var(--ink); }
+
+/* progress through the quest */
+.track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 18px; }
+.track div { font-size: 12px; color: var(--muted); text-align: center; }
+.track div::before { content: ""; display: block; height: 6px; border-radius: 99px; background: var(--line); margin-bottom: 6px; }
+.track div.done::before, .track div.on::before { background: var(--accent); }
+.track div.on { color: var(--ink); font-weight: 600; }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
+h1 { font-size: 26px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; }
+h2 { font-size: 18px; margin: 0 0 10px; }
+.lead { color: var(--muted); margin: 0 0 16px; }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 12px; padding: 13px 20px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 600; }
+.btn.small { padding: 8px 12px; font-size: 14px; border-radius: 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.note { color: var(--muted); font-size: 13px; }
+.hidden { display: none !important; }
+
+/* 1 · lessons */
+.search { width: 100%; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); margin-bottom: 12px; }
+.lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.lesson { text-align: left; font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; cursor: pointer; display: grid; gap: 6px; transition: transform .12s, border-color .12s; }
+.lesson:hover, .lesson:focus-visible { border-color: var(--accent); transform: translateY(-2px); outline: none; }
+.lesson b { font-size: 15px; line-height: 1.3; }
+.lesson .meta { color: var(--muted); font-size: 13px; }
+.lesson .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font-size: 11px; padding: 2px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+
+/* 2 · gather */
+.checklist { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
+.checklist li { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; user-select: none; }
+.checklist li .box { flex: 0 0 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: transparent; }
+.checklist li.got { background: var(--good-bg); border-color: transparent; }
+.checklist li.got .box { background: var(--good); border-color: var(--good); color: #fff; }
+.checklist li .what b { display: block; }
+.checklist li .what span { color: var(--muted); font-size: 13px; }
+.count { margin-left: auto; font-weight: 800; font-size: 18px; color: var(--muted); }
+.meter { height: 10px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 6px 0 14px; }
+.meter div { height: 100%; background: var(--good); width: 0; transition: width .3s; }
+
+/* 3 · scan */
+.cam { position: relative; background: #000; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; max-height: 58vh; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.cam video { width: 100%; height: 100%; object-fit: cover; }
+.cam .placeholder { color: #ccc; text-align: center; padding: 20px; }
+.shutter { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; border-radius: 50%; border: 4px solid #fff; background: rgba(255,255,255,.25); cursor: pointer; }
+.shutter:active { background: rgba(255,255,255,.7); }
+.camtool { position: absolute; top: 10px; right: 10px; border: 0; border-radius: 8px; padding: 6px 10px; background: rgba(0,0,0,.55); color: #fff; cursor: pointer; font-size: 13px; }
+.banner { position: absolute; top: 10px; left: 10px; right: 120px; background: rgba(0,0,0,.7); color: #fff; border-radius: 10px; padding: 8px 10px; font-size: 13px; }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity .25s; }
+.thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.thumb { position: relative; }
+.thumb img { width: 92px; height: 70px; object-fit: cover; border-radius: 8px; display: block; border: 1px solid var(--line); }
+.thumb button { position: absolute; top: 3px; right: 3px; border: 0; border-radius: 50%; width: 22px; height: 22px; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; padding: 0; line-height: 22px; }
+.drop.over { outline: 2px dashed var(--accent); outline-offset: 4px; }
+
+/* 4 · result */
+.score { display: flex; align-items: center; gap: 16px; }
+.ring { --p: 0; width: 86px; height: 86px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center;
+  background: conic-gradient(var(--good) calc(var(--p) * 1%), var(--line) 0); }
+.ring span { width: 68px; height: 68px; border-radius: 50%; background: var(--card); display: grid; place-items: center; font-weight: 800; font-size: 20px; }
+.results { display: grid; gap: 8px; margin-top: 14px; }
+.res { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); }
+.res .icon { flex: 0 0 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 800; }
+.res.have { background: var(--good-bg); border-color: transparent; } .res.have .icon { background: var(--good); color: #fff; }
+.res.swap { background: var(--swap-bg); border-color: transparent; } .res.swap .icon { background: var(--swap); color: #fff; }
+.res.check { background: var(--check-bg); border-color: transparent; } .res.check .icon { background: var(--check); color: #fff; }
+.res.missing { background: var(--miss-bg); border-color: transparent; } .res.missing .icon { background: var(--miss); color: #fff; }
+.res b { display: block; }
+.res .why { color: var(--muted); font-size: 13px; display: block; margin-top: 2px; }
+.res .tag { font-size: 12px; font-weight: 700; margin-left: 6px; }
+.quest { border: 2px solid var(--gold); border-radius: 14px; padding: 14px; margin-top: 12px; background: var(--card); }
+.quest .q { font-weight: 600; margin-bottom: 10px; }
+.quest .tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.thinking { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 12px; background: var(--accent-soft); margin-top: 12px; }
+.spin { width: 18px; height: 18px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; flex: 0 0 auto; }
+@keyframes s { to { transform: rotate(360deg); } }
+.err { color: var(--miss); }
+.win { text-align: center; padding: 26px 18px; }
+.win .big { font-size: 54px; line-height: 1; }
+.stats { color: var(--muted); font-size: 12px; margin-top: 10px; }
+details.more { margin-top: 10px; color: var(--muted); font-size: 13px; }
+details.more summary { cursor: pointer; }
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+@media (max-width: 520px) { h1 { font-size: 22px; } .ring { width: 72px; height: 72px; } .ring span { width: 56px; height: 56px; font-size: 17px; } }
+@media (prefers-reduced-motion: reduce) { .lesson, .meter div { transition: none; } .spin { animation-duration: 2s; } }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<main>
+  <header>
+    <div class="brand">Parts <span>Quest</span></div>
+    <a class="toplink" id="labLink" href="/lab">Lab tools →</a>
+  </header>
+  <nav class="track" aria-label="Progress">
+    <div data-s="choose">Choose</div><div data-s="gather">Gather</div><div data-s="scan">Scan</div><div data-s="check">Check</div>
+  </nav>
+
+  <!-- 1 · choose a lesson -->
+  <section id="s-choose">
+    <h1>Pick your build</h1>
+    <p class="lead">Choose a lesson. You'll gather its parts, show them to the camera, and find out if you have everything you need.</p>
+    <input class="search" id="search" type="search" placeholder="Search lessons, e.g. LED, servo, motor" aria-label="Search lessons">
+    <div class="lessons" id="lessons"><p class="note">Loading lessons…</p></div>
+  </section>
+
+  <!-- 2 · gather -->
+  <section id="s-gather" class="hidden">
+    <div class="card">
+      <h1 id="g-title"></h1>
+      <p class="lead">Mission 1: gather these parts. Tap each one as you put it on the table.</p>
+      <div class="note" id="g-progress"></div>
+      <div class="meter"><div id="g-meter"></div></div>
+      <ul class="checklist" id="g-list"></ul>
+      <div class="row">
+        <button class="btn" id="g-next">I've got them: scan my parts</button>
+        <button class="btn ghost small" id="g-back">Choose another lesson</button>
+      </div>
+      <p class="note" style="margin-top:10px">Missing something, or have a different board or resistor? Scan anyway: the check tells you what can stand in.</p>
+    </div>
+  </section>
+
+  <!-- 3 · scan -->
+  <section id="s-scan" class="hidden">
+    <div class="card drop" id="scanPanel">
+      <h1>Mission 2: show me your parts</h1>
+      <p class="lead">Spread the parts out on a plain surface. Take 1–3 photos from different angles, or upload them.</p>
+      <div class="cam" id="cam">
+        <div class="placeholder" id="camPlaceholder"><button class="btn" id="camStart">Start camera</button></div>
+        <video id="video" playsinline muted autoplay hidden></video>
+        <button class="camtool" id="camSwitch" hidden>Switch camera</button>
+        <button class="shutter" id="shutter" hidden aria-label="Take photo"></button>
+        <div class="flash" id="flash"></div>
+        <div class="banner" id="camBanner" hidden></div>
+      </div>
+      <div class="row">
+        <label class="btn ghost small" style="cursor:pointer"><input type="file" id="upload" accept="image/*" multiple hidden>Upload photos</label>
+        <label class="btn ghost small" style="cursor:pointer"><input type="file" id="camApp" accept="image/*" capture="environment" multiple hidden>Phone camera app</label>
+        <span class="note" id="camNote">or drop photos here</span>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="row">
+        <button class="btn" id="scanGo" disabled>Check my parts</button>
+        <button class="btn ghost small" id="scanBack">Back to the list</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · result -->
+  <section id="s-check" class="hidden">
+    <div class="card" id="resultCard">
+      <div class="score">
+        <div class="ring" id="ring"><span id="ringText">…</span></div>
+        <div>
+          <h1 id="r-title">Checking your parts…</h1>
+          <p class="lead" id="r-lead" style="margin:0"></p>
+        </div>
+      </div>
+      <div id="r-thinking"></div>
+      <div id="r-quests"></div>
+      <div class="results" id="r-list"></div>
+      <div class="row" style="margin-top:16px" id="r-actions"></div>
+      <details class="more" id="r-more"><summary>Also on the table, and the details</summary><div id="r-extra"></div><pre id="r-report" style="white-space:pre-wrap;font-size:12px"></pre></details>
+      <div class="stats" id="r-stats"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const KEY = new URLSearchParams(location.search).get('key');
+const api = (p) => p + (KEY ? (p.includes('?') ? '&' : '?') + 'key=' + encodeURIComponent(KEY) : '');
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const post = (path, body) => fetch(api(path), { method: 'POST', headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify(body) }).then(async r => { const j = await r.json(); if (j.error) throw new Error(j.error); return j; });
+const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+if (KEY) $('labLink').href = '/lab?key=' + encodeURIComponent(KEY);
+
+let LESSONS = [], L = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = null, stream = null, facing = 'environment';
+
+// ---- screens
+function go(s) {
+  ['choose', 'gather', 'scan', 'check'].forEach(x => $('s-' + x).classList.toggle('hidden', x !== s));
+  const order = ['choose', 'gather', 'scan', 'check'];
+  document.querySelectorAll('.track div').forEach(d => {
+    const i = order.indexOf(d.dataset.s), j = order.indexOf(s);
+    d.classList.toggle('on', i === j); d.classList.toggle('done', i < j);
+  });
+  if (s !== 'scan') stopCamera();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---- 1 · lessons
+async function init() {
+  try { LESSONS = await fetch(api('/api/lessons')).then(r => r.json()); }
+  catch (e) { $('lessons').innerHTML = `<p class="err">Could not load lessons: ${esc(e.message)}</p>`; return; }
+  if (LESSONS.error) { $('lessons').innerHTML = `<p class="err">${esc(LESSONS.error)}</p>`; return; }
+  drawLessons();
+}
+function drawLessons() {
+  const q = $('search').value.trim().toLowerCase();
+  const list = LESSONS.filter(l => !q || (l.name + ' ' + l.parts.map(p => p.name).join(' ')).toLowerCase().includes(q));
+  $('lessons').innerHTML = list.map(l => {
+    const n = l.parts.reduce((a, p) => a + (p.count || 1), 0);
+    return `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b>
+      <span class="meta">${n} part${n === 1 ? '' : 's'} to gather</span>
+      <span class="chips">${l.parts.slice(0, 4).map(p => `<span class="chip">${esc(p.name)}</span>`).join('')}${l.parts.length > 4 ? `<span class="chip">+${l.parts.length - 4}</span>` : ''}</span></button>`;
+  }).join('') || '<p class="note">No lesson matches that.</p>';
+}
+$('search').addEventListener('input', drawLessons);
+$('lessons').addEventListener('click', e => { const b = e.target.closest('.lesson'); if (b) startLesson(b.dataset.id); });
+
+// ---- 2 · gather: a checklist the learner ticks as they collect
+function startLesson(id) {
+  L = LESSONS.find(l => l.id === id); PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null;
+  const ticked = store.get('quest.' + id) || [];
+  $('g-title').textContent = L.name;
+  $('g-list').innerHTML = L.parts.map((p, i) => `<li data-i="${i}" class="${ticked.includes(i) ? 'got' : ''}" role="checkbox" aria-checked="${ticked.includes(i)}" tabindex="0">
+      <span class="box">✓</span><span class="what"><b>${esc(p.name)}</b>${p.values.length ? `<span>${esc(p.values.join(', '))}</span>` : ''}</span>
+      <span class="count">×${p.count || 1}</span></li>`).join('');
+  gatherProgress(); go('gather');
+}
+function gatherProgress() {
+  const all = $('g-list').children.length, got = $('g-list').querySelectorAll('.got').length;
+  $('g-progress').textContent = `${got} of ${all} gathered`;
+  $('g-meter').style.width = (all ? got / all * 100 : 0) + '%';
+  store.set('quest.' + L.id, [...$('g-list').querySelectorAll('.got')].map(li => +li.dataset.i));
+}
+function toggle(li) { li.classList.toggle('got'); li.setAttribute('aria-checked', li.classList.contains('got')); gatherProgress(); }
+$('g-list').addEventListener('click', e => { const li = e.target.closest('li'); if (li) toggle(li); });
+$('g-list').addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && e.target.matches('li')) { e.preventDefault(); toggle(e.target); } });
+$('g-back').addEventListener('click', () => go('choose'));
+$('g-next').addEventListener('click', () => { drawThumbs(); go('scan'); });
+
+// ---- 3 · scan: camera, upload or drop; photos shrunk to 1600 px
+function canvasToPhoto(src, w, h) {
+  const s = Math.min(1, 1600 / Math.max(w, h)), c = document.createElement('canvas');
+  c.width = Math.round(w * s); c.height = Math.round(h * s);
+  c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
+  return { data: c.toDataURL('image/jpeg', 0.88) };
+}
+function shrink(file) {
+  return new Promise((ok, bad) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); ok(canvasToPhoto(img, img.naturalWidth, img.naturalHeight)); };
+    img.onerror = () => { URL.revokeObjectURL(url); bad(new Error('Could not read ' + file.name)); };
+    img.src = url;
+  });
+}
+async function takeFiles(files) {
+  files = [...files].filter(f => f.type.startsWith('image/') || /\.(heic|jpe?g|png|webp)$/i.test(f.name));
+  if (!files.length) return;
+  if (PENDING) { sendCloseup(await shrink(files[0])); return; }
+  for (const f of files) { try { PHOTOS.push(await shrink(f)); } catch (e) { $('camNote').textContent = e.message; } }
+  drawThumbs();
+}
+function drawThumbs() {
+  $('thumbs').innerHTML = PHOTOS.map((p, i) => `<div class="thumb"><img src="${p.data}" alt="Photo ${i + 1}"><button data-i="${i}" aria-label="Remove photo ${i + 1}">×</button></div>`).join('');
+  $('scanGo').disabled = !PHOTOS.length;
+  $('camNote').textContent = PHOTOS.length ? `${PHOTOS.length} photo${PHOTOS.length > 1 ? 's' : ''} ready${PHOTOS.length < 3 ? ' · another angle helps' : ''}` : 'or drop photos here';
+}
+$('thumbs').addEventListener('click', e => { if (e.target.dataset.i) { PHOTOS.splice(+e.target.dataset.i, 1); drawThumbs(); } });
+['upload', 'camApp'].forEach(id => $(id).addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; takeFiles(f); }));
+const panel = $('scanPanel');
+['dragenter', 'dragover'].forEach(t => panel.addEventListener(t, e => { e.preventDefault(); panel.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => panel.addEventListener(t, e => { e.preventDefault(); panel.classList.remove('over'); }));
+panel.addEventListener('drop', e => takeFiles(e.dataTransfer.files));
+$('scanBack').addEventListener('click', () => go('gather'));
+
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    $('camNote').textContent = window.isSecureContext ? 'No camera here: use Upload photos.' : 'The live camera needs https on a phone: use the camera app or Upload photos.';
+    return;
+  }
+  if (stream) return;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: facing }, width: { ideal: 1920 }, height: { ideal: 1440 } } }); }
+  catch (e) { $('camNote').textContent = 'Camera not available: ' + e.message; return; }
+  const v = $('video'); v.srcObject = stream; v.hidden = false;
+  $('camPlaceholder').hidden = true; $('shutter').hidden = false;
+  const cams = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+  $('camSwitch').hidden = cams.length < 2;
+}
+function stopCamera() {
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  stream = null; $('video').hidden = true; $('shutter').hidden = true; $('camSwitch').hidden = true; $('camPlaceholder').hidden = false;
+}
+$('camStart').addEventListener('click', startCamera);
+$('camSwitch').addEventListener('click', () => { facing = facing === 'environment' ? 'user' : 'environment'; stopCamera(); startCamera(); });
+$('shutter').addEventListener('click', () => {
+  const v = $('video'); if (!v.videoWidth) return;
+  const photo = canvasToPhoto(v, v.videoWidth, v.videoHeight);
+  const f = $('flash'); f.style.opacity = .8; setTimeout(() => f.style.opacity = 0, 120);
+  if (PENDING) { sendCloseup(photo); return; }
+  PHOTOS.push(photo); drawThumbs();
+});
+
+// ---- 4 · check: Haiku looks, close-up quests, Opus only when Haiku still cannot tell
+const KIND = (s) => s.startsWith('have') ? 'have' : s.startsWith('use') ? 'swap' : s.startsWith('check') ? 'check' : 'missing';
+const ICON = { have: '✓', swap: '↔', check: '?', missing: '✗' };
+const SAY = { have: 'Got it', swap: 'Can use instead', check: 'Not sure yet', missing: 'Missing' };
+
+function thinking(text) { $('r-thinking').innerHTML = text ? `<div class="thinking"><div class="spin"></div><div>${text}</div></div>` : ''; }
+
+async function act(action, body, text) {
+  thinking(text);
+  try { show(await post('/api/flow/' + action, { upload: UPLOAD, ...body })); }
+  catch (e) { $('r-thinking').innerHTML = `<p class="err">Something went wrong: ${esc(e.message)}</p>`; return; }
+  thinking('');
+}
+
+$('scanGo').addEventListener('click', async () => {
+  $('scanGo').disabled = true; go('check');
+  $('r-title').textContent = 'Checking your parts…'; $('r-lead').textContent = ''; $('r-list').innerHTML = ''; $('r-quests').innerHTML = ''; $('r-actions').innerHTML = '';
+  $('ring').style.setProperty('--p', 0); $('ringText').textContent = '…';
+  try {
+    thinking('Uploading your photos…');
+    UPLOAD = (await post('/api/upload', { lesson: L.id, photos: PHOTOS.map((p, i) => ({ name: `photo-${i + 1}.jpg`, data: p.data })) })).upload;
+    await act('first', { lesson: L.id }, 'Looking at your parts…');
+  } catch (e) { $('r-thinking').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
+  $('scanGo').disabled = false;
+});
+
+function show(st) {
+  LAST = st;
+  const rows = st.parts.map(r => ({ r, k: KIND(r.status) }));
+  const ready = rows.filter(x => x.k === 'have' || x.k === 'swap').length, all = rows.length;
+  const done = !st.asks.length, complete = ready === all;
+  $('ring').style.setProperty('--p', all ? Math.round(ready / all * 100) : 0);
+  $('ringText').textContent = `${ready}/${all}`;
+  $('r-title').textContent = complete && done ? 'Mission complete!' : done ? 'Almost there' : 'A few questions';
+  $('r-lead').textContent = complete && done ? `You have everything for ${L.name}.`
+    : done ? `${all - ready} part${all - ready === 1 ? '' : 's'} still to find for ${L.name}.`
+    : 'Help me check a couple of things and we\'re done.';
+  $('r-list').innerHTML = rows.map(({ r, k }) => {
+    const u = r.use_instead.find(x => x.ok !== false), h = r.have[0];
+    const why = k === 'swap' && u ? `${esc(u.object)} works instead: ${esc(u.why)}` + (u.pin_moves && Object.keys(u.pin_moves).length ? ` (pins: ${Object.entries(u.pin_moves).map(([a, b]) => esc(a) + '→' + esc(b)).join(', ')})` : '')
+      : k === 'have' && h ? `${h.count}× ${esc(h.object)}${h.value ? ' (' + esc(h.value) + ')' : ''}`
+      : k === 'check' ? esc((h && h.why) || (u && u.why) || 'I need a better look')
+      : esc((r.use_instead.find(x => x.ok === false) || {}).why || (r.status.split(' ')[1] ? `I can see some, but ${r.status.split(' ')[1]} more needed` : 'I couldn\'t see this one'));
+    return `<div class="res ${k}"><span class="icon">${ICON[k]}</span><div><b>${esc(r.part)} ×${r.need}<span class="tag">${SAY[k]}</span></b><span class="why">${why}</span></div></div>`;
+  }).join('');
+  $('r-quests').innerHTML = st.asks.map(q => `<div class="quest"><span class="tag">Quest</span><div class="q">${esc(q.message)}</div>
+      <div class="row"><button class="btn small" data-close="${esc(q.key)}">Take a close-up</button>
+      <label class="btn ghost small" style="cursor:pointer"><input type="file" accept="image/*" data-up="${esc(q.key)}" hidden>Upload a photo</label>
+      <button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? 'I don\'t have it' : 'Skip'}</button></div></div>`).join('');
+  $('r-actions').innerHTML = (complete && done ? `<button class="btn" id="again">Choose the next build</button>` :
+    `<button class="btn ghost small" id="rescan">Scan again</button><button class="btn ghost small" id="again">Choose another build</button>`);
+  $('again').onclick = () => go('choose');
+  if ($('rescan')) $('rescan').onclick = () => { PHOTOS = []; drawThumbs(); go('scan'); };
+  $('r-extra').innerHTML = (st.not_needed || []).length ? '<p><b>Also on the table, not needed:</b> ' + st.not_needed.map(x => `${x.count}× ${esc(x.object)}`).join(', ') + '</p>' : '';
+  $('r-report').textContent = st.report || '';
+  $('r-stats').textContent = st.steps.map(x => `${x.model === 'claude-opus-5-5' ? 'Opus' : 'Haiku'} ${x.what} ${x.seconds} s`).join(' · ') + ` · ${(st.total_cost_usd * 100).toFixed(2)}¢`;
+  if (complete && done) cheer();
+}
+
+$('r-quests').addEventListener('click', e => {
+  const k = e.target.dataset.close, s = e.target.dataset.skip;
+  if (k) { PENDING = LAST.asks.find(q => q.key === k); go('scan'); banner(); startCamera(); }
+  if (s) act('dismiss', { key: s }, 'Noted…');
+});
+$('r-quests').addEventListener('change', async e => {
+  const k = e.target.dataset.up; if (!k || !e.target.files[0]) return;
+  PENDING = LAST.asks.find(q => q.key === k); sendCloseup(await shrink(e.target.files[0]));
+});
+function banner() {
+  $('camBanner').hidden = !PENDING;
+  if (PENDING) $('camBanner').innerHTML = `Close-up: <b>${esc(PENDING.object || PENDING.part)}</b>. Fill the frame with it, or use Upload photos. <a href="#" id="cancelCU" style="color:#fff">Cancel</a>`;
+  if ($('cancelCU')) $('cancelCU').onclick = (ev) => { ev.preventDefault(); PENDING = null; banner(); go('check'); };
+}
+async function sendCloseup(photo) {
+  const q = PENDING; PENDING = null; banner(); go('check');
+  await act('closeup', { key: q.key, photo: photo.data }, `Looking at your close-up of ${esc(q.object || q.part)}…`);
+}
+
+// a little celebration when everything is there
+function cheer() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = $('confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const cols = ['#2f5bd3', '#1f7a4a', '#e0a100', '#e8618c', '#7c9cf5'];
+  const bits = Array.from({ length: 140 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5,
+    r: 4 + Math.random() * 5, vy: 2 + Math.random() * 3, vx: -1.5 + Math.random() * 3, a: Math.random() * 6, col: cols[Math.floor(Math.random() * cols.length)] }));
+  let t = 0;
+  (function frame() {
+    x.clearRect(0, 0, c.width, c.height);
+    bits.forEach(b => { b.y += b.vy; b.x += b.vx; b.a += .1; x.fillStyle = b.col; x.save(); x.translate(b.x, b.y); x.rotate(b.a); x.fillRect(-b.r, -b.r / 2, b.r * 2, b.r); x.restore(); });
+    if (++t < 160) requestAnimationFrame(frame); else x.clearRect(0, 0, c.width, c.height);
+  })();
+}
+
+go('choose');
+init();
+</script>
+</body>
+</html>

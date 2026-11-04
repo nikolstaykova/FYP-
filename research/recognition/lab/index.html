@@ -143,11 +143,15 @@ pre { white-space: pre-wrap; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Men
           <div class="banner" id="camBanner" hidden></div>
         </div>
         <div class="row">
+          <label class="run" style="cursor:pointer">
+            <input type="file" id="flowUpload" accept="image/*" multiple hidden>
+            Upload photos
+          </label>
           <label class="ghost" style="cursor:pointer">
             <input type="file" id="flowFile" accept="image/*" capture="environment" multiple hidden>
-            Use the camera app or choose photos
+            Phone camera app
           </label>
-          <span class="note" id="camNote"></span>
+          <span class="note" id="camNote">or drop photos anywhere on this panel</span>
         </div>
         <div class="thumbs" id="flowThumbs"></div>
         <div class="row">
@@ -299,11 +303,19 @@ const FLOW = [];
 let stream = null, facing = 'environment', UPLOAD = null, PENDING = null, LAST = null;
 const drawFlow = () => thumbs($('flowThumbs'), FLOW);
 $('flowThumbs').addEventListener('click', e => { if (e.target.dataset.i) { FLOW.splice(+e.target.dataset.i, 1); drawFlow(); } });
-$('flowFile').addEventListener('change', async e => {
-  const files = [...e.target.files]; e.target.value = '';
-  if (PENDING) { if (files[0]) sendCloseup(await shrink(files[0])); return; }
-  addFiles(files, FLOW, drawFlow, $('camNote'));
-});
+// photos from a file (upload, the phone's camera app, or dropped): a close-up when one was asked for, else the set
+async function flowFiles(files) {
+  files = [...files].filter(f => f.type.startsWith('image/') || /\.(heic|jpe?g|png|webp)$/i.test(f.name));
+  if (!files.length) return;
+  if (PENDING) { sendCloseup(await shrink(files[0])); return; }
+  await addFiles(files, FLOW, drawFlow, $('camNote'));
+  $('camNote').textContent = `${FLOW.length} photo${FLOW.length > 1 ? 's' : ''} ready`;
+}
+['flowFile', 'flowUpload'].forEach(id => $(id).addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; flowFiles(f); }));
+const flowPanel = $('cam').closest('section');
+['dragenter', 'dragover'].forEach(t => flowPanel.addEventListener(t, e => { e.preventDefault(); flowPanel.style.outline = '2px dashed var(--accent)'; }));
+['dragleave', 'drop'].forEach(t => flowPanel.addEventListener(t, e => { e.preventDefault(); flowPanel.style.outline = ''; }));
+flowPanel.addEventListener('drop', e => flowFiles(e.dataTransfer.files));
 
 async function startCamera() {
   if (!navigator.mediaDevices?.getUserMedia) {
@@ -401,7 +413,7 @@ $('flowAsks').addEventListener('click', e => {
   if (k) {
     const q = LAST.asks.find(x => x.key === k); PENDING = q;
     $('camBanner').hidden = false;
-    $('camBanner').innerHTML = `Close-up: <b>${esc(q.object || q.part)}</b>. Fill the frame with it. <a href="#" id="cancelCloseup" style="color:#fff">Cancel</a>`;
+    $('camBanner').innerHTML = `Close-up: <b>${esc(q.object || q.part)}</b>. Fill the frame with it, or use <b>Upload photos</b>. <a href="#" id="cancelCloseup" style="color:#fff">Cancel</a>`;
     $('cancelCloseup').onclick = (ev) => { ev.preventDefault(); PENDING = null; $('camBanner').hidden = true; };
     $('cam').scrollIntoView({ behavior: 'smooth', block: 'center' });
     startCamera();

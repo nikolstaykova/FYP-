@@ -5,7 +5,9 @@ the same photos with the same instruction (kit_test.look_nvidia), the code (chec
 with the lesson's list, and the page shows each model's verdicts, time and cost side by side.
 API keys stay in .env on this Mac; the page only talks to this server.
 
-Two modes: "Check flow" (the product flow: camera -> Haiku looks -> the learner is asked for close-ups of what
+Pages: / is Parts Quest (game.html), the learner's flow as a game: choose a lesson, gather its parts (a checklist),
+scan them (camera or upload), and the check (what you have, what can stand in, close-up quests). /lab is the lab
+(index.html), in two modes: "Check flow" (the product flow: camera -> Haiku looks -> the learner is asked for close-ups of what
 Haiku could not settle -> Opus on a close-up only when Haiku still cannot tell; checker.gather_flow) and "Compare models" (every ticked model on the same photos).
 
 Run:  ./research/recognition/lab/run.sh                 then open http://127.0.0.1:8765 (camera works on this Mac)
@@ -189,7 +191,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         u = urlparse(self.path)
         q = parse_qs(u.query)
-        if u.path in ('/', '/index.html'):
+        if u.path in ('/', '/game', '/game.html'):  # the learner's flow, as a game: choose, gather, scan, check
+            return self.send(200, (HERE / 'game.html').read_bytes(), 'text/html; charset=utf-8')
+        if u.path in ('/lab', '/index.html'):  # the lab: the flow with every step shown, and models compared
             return self.send(200, (HERE / 'index.html').read_bytes(), 'text/html; charset=utf-8')
         if not self.allowed(q):
             return self.send(403, {'error': 'wrong or missing key in the link'})
