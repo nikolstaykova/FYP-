@@ -382,6 +382,10 @@ test (6.8) and kit test (6.5), and added to the parts lab's model list. The benc
 not parts, so only our tests can say how they do on boards and resistors. Earlier local runs (Qwen3-VL 2B and 4B,
 Moondream2, 6.4) were started and stopped unfinished.
 
+**Data note (4 November):** the ElectroCom61 photos and the YOLO-World / Florence weights were moved out of the
+project in the clean-up (DATA_STRUCTURE.md §9.1); the results above are kept in `research/recognition/runs/`. To
+re-run a benchmark, restore `data/sources/electrocom61` from the archive.
+
 ## 7. Decision (updated 4 November)
 
 - **The look: Claude Haiku through the API** (6.10): 4–8 s and about 0.1¢ a photo, as accurate as the other cheap

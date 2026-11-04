@@ -1073,6 +1073,25 @@ step, the v8 booklet builder's step pictures, an old booklet parts-page fallback
 scratch, rebuilds, the store validator, `parts.json` rebuilt unchanged).
 
 
+### 9.1 Clean-up, 4 November 2026: the database is where the lessons live
+
+With the lessons and parts in Neo4j (§10), what the project folder no longer needs was moved out (3.9 GB → 1.0 GB):
+
+| | Where it went |
+|---|---|
+| Booklet working copies of earlier runs (`redo*_prev`, `before_*`, `b2_first`, `run_v*`, `layout_v1`) and the page images of the layout check (`layout_check/`) | archive |
+| `data/sources/electrocom61` (the recognition benchmark dataset), the early research sources (`arduino_md`, `lego_text`, `pi`, `sauder`) | archive |
+| `tests/experiments/` (old runs and batch tests) | archive |
+| `data/sources/parts` (cached shop pages; refilled when research needs them), the recognition model weights (`*.pt`, `weights/`; downloaded again if a benchmark is re-run) | deleted |
+
+The archive is `~/Desktop/fyp-archive/pinpoint-archive-2026-11-04.tar.gz` (1.7 GB, checked: every file in it, the
+list beside it); to bring something back: `tar xzf <archive> <path>` from the project folder. Kept, because the code
+uses them: the lesson store's files (the database's backup), every booklet step picture, overlay and parts picture
+the lessons link to (741 files, checked), each booklet's reads and step files (so a rebuild costs no new reading),
+`sources/lego` (LDraw), `sources/lego_pdf`, `sources/rebrickable`, `reference`, `graph_runs` (an input of the
+Arduino route), `kit_photos` and the small run logs. The recognition benchmarks (`research/recognition`: bench,
+swap test, score) need `electrocom61` back from the archive to run again.
+
 ## 10. The database: Neo4j (being integrated, November 2026)
 
 **Status (4 November 2026): the code works on the database.** The instance is running (AuraDB Free, `bac9405c`,

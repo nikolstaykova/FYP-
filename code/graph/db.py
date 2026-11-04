@@ -533,8 +533,9 @@ def roundtrip(d, store=None):
     """Every lesson and the catalogue read back from the database against the files: [(what, difference)]."""
     bad = []
     s = pathlib.Path(store or ROOT / "data/lessons/store")
+    every = read_lessons(d)  # all of them in three queries
     for lid in lesson_ids(store):
-        got = read_lesson(d, lid) or {}
+        got = every.get(lid) or {}
         for kind in ("lesson", "instruction", "physical"):
             f = s / lid / f"{kind}.json"
             want = json.loads(f.read_text()) if f.exists() else None
