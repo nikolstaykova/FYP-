@@ -9,8 +9,8 @@
   --bg: #f4f2ec; --card: #ffffff; --ink: #1c1b19; --muted: #6d6a62; --line: #e3e0d7;
   --accent: #2f5bd3; --accent-ink: #fff; --accent-soft: #e7ecfb;
   --good: #1f7a4a; --good-bg: #e2f3e9; --swap: #2f5bd3; --swap-bg: #e7ecfb;
-  --check: #9a6400; --check-bg: #fcf0d9; --miss: #b3261e; --miss-bg: #fbe5e3;
-  --gold: #e0a100;
+  --check: #9a6400; --check-bg: #fcf0d9; --miss: #b3261e; --miss-bg: #fbe5e3; --gold: #e0a100;
+  --lego: #b4501f; --lego-bg: #fdeee6;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -18,29 +18,22 @@
     --accent: #7c9cf5; --accent-ink: #10131c; --accent-soft: #1c2440;
     --good: #6fd39b; --good-bg: #16301f; --swap: #93aef7; --swap-bg: #1b2440;
     --check: #f0bd5e; --check-bg: #352a12; --miss: #f28b82; --miss-bg: #3a1a18; --gold: #f5c542;
+    --lego: #f0a27a; --lego-bg: #3a2318;
   }
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-main { max-width: 860px; margin: 0 auto; padding: 18px 16px 80px; }
+main { max-width: 1080px; margin: 0 auto; padding: 18px 16px 80px; }
 header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .brand { font-weight: 800; font-size: 20px; letter-spacing: -.01em; }
 .brand span { color: var(--accent); }
-.toplink { color: var(--muted); font-size: 13px; text-decoration: none; }
+.toplinks { display: flex; gap: 14px; align-items: center; }
+.toplink { color: var(--muted); font-size: 13px; text-decoration: none; background: none; border: 0; cursor: pointer; font: inherit; font-size: 13px; padding: 0; }
 .toplink:hover { color: var(--ink); }
-
-/* progress through the quest */
-.track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 18px; }
-.track div { font-size: 12px; color: var(--muted); text-align: center; }
-.track div::before { content: ""; display: block; height: 6px; border-radius: 99px; background: var(--line); margin-bottom: 6px; }
-.track div.done::before, .track div.on::before { background: var(--accent); }
-.track div.on { color: var(--ink); font-weight: 600; }
-
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
 h1 { font-size: 26px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; }
-h2 { font-size: 18px; margin: 0 0 10px; }
 .lead { color: var(--muted); margin: 0 0 16px; }
-.btn { font: inherit; font-weight: 700; border: 0; border-radius: 12px; padding: 13px 20px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 12px; padding: 12px 18px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
 .btn:disabled { opacity: .45; cursor: default; }
 .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 600; }
 .btn.small { padding: 8px 12px; font-size: 14px; border-radius: 10px; }
@@ -48,51 +41,57 @@ h2 { font-size: 18px; margin: 0 0 10px; }
 .note { color: var(--muted); font-size: 13px; }
 .hidden { display: none !important; }
 
-/* 1 · lessons */
-.search { width: 100%; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); margin-bottom: 12px; }
+/* choose */
+.search { width: 100%; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); margin-bottom: 4px; }
+.group { margin: 18px 0 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 .lesson { text-align: left; font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; cursor: pointer; display: grid; gap: 6px; transition: transform .12s, border-color .12s; }
 .lesson:hover, .lesson:focus-visible { border-color: var(--accent); transform: translateY(-2px); outline: none; }
 .lesson b { font-size: 15px; line-height: 1.3; }
 .lesson .meta { color: var(--muted); font-size: 13px; }
-.lesson .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .chip { font-size: 11px; padding: 2px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.lego { background: var(--lego-bg); color: var(--lego); }
 
-/* 2 · gather */
-.checklist { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
-.checklist li { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; user-select: none; }
-.checklist li .box { flex: 0 0 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: transparent; }
+/* session */
+.track { display: flex; gap: 6px; margin-bottom: 14px; }
+.track div { flex: 1; font-size: 12px; color: var(--muted); text-align: center; }
+.track div::before { content: ""; display: block; height: 6px; border-radius: 99px; background: var(--line); margin-bottom: 6px; }
+.track div.done::before, .track div.on::before { background: var(--accent); }
+.track div.on { color: var(--ink); font-weight: 600; }
+.session { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 780px) { .session { grid-template-columns: minmax(0, 1fr); } .tutor { order: -1; } }
+
+/* stage: parts list */
+.checklist { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+.checklist li { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; user-select: none; }
+.checklist li .box { flex: 0 0 24px; height: 24px; border-radius: 7px; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: transparent; }
 .checklist li.got { background: var(--good-bg); border-color: transparent; }
 .checklist li.got .box { background: var(--good); border-color: var(--good); color: #fff; }
 .checklist li .what b { display: block; }
 .checklist li .what span { color: var(--muted); font-size: 13px; }
-.count { margin-left: auto; font-weight: 800; font-size: 18px; color: var(--muted); }
-.meter { height: 10px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 6px 0 14px; }
-.meter div { height: 100%; background: var(--good); width: 0; transition: width .3s; }
+.count { margin-left: auto; font-weight: 800; font-size: 17px; color: var(--muted); }
 
-/* 3 · scan */
-.cam { position: relative; background: #000; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; max-height: 58vh; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+/* stage: camera */
+.cam { position: relative; background: #000; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; max-height: 56vh; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
 .cam video { width: 100%; height: 100%; object-fit: cover; }
 .cam .placeholder { color: #ccc; text-align: center; padding: 20px; }
-.shutter { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; border-radius: 50%; border: 4px solid #fff; background: rgba(255,255,255,.25); cursor: pointer; }
+.shutter { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); width: 66px; height: 66px; border-radius: 50%; border: 4px solid #fff; background: rgba(255,255,255,.25); cursor: pointer; }
 .shutter:active { background: rgba(255,255,255,.7); }
-.camtool { position: absolute; top: 10px; right: 10px; border: 0; border-radius: 8px; padding: 6px 10px; background: rgba(0,0,0,.55); color: #fff; cursor: pointer; font-size: 13px; }
-.banner { position: absolute; top: 10px; left: 10px; right: 120px; background: rgba(0,0,0,.7); color: #fff; border-radius: 10px; padding: 8px 10px; font-size: 13px; }
+.banner { position: absolute; top: 10px; left: 10px; right: 10px; background: rgba(0,0,0,.7); color: #fff; border-radius: 10px; padding: 8px 10px; font-size: 13px; }
 .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity .25s; }
-.thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
 .thumb { position: relative; }
-.thumb img { width: 92px; height: 70px; object-fit: cover; border-radius: 8px; display: block; border: 1px solid var(--line); }
+.thumb img { width: 88px; height: 66px; object-fit: cover; border-radius: 8px; display: block; border: 1px solid var(--line); }
 .thumb button { position: absolute; top: 3px; right: 3px; border: 0; border-radius: 50%; width: 22px; height: 22px; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; padding: 0; line-height: 22px; }
-.drop.over { outline: 2px dashed var(--accent); outline-offset: 4px; }
 
-/* 4 · result */
-.score { display: flex; align-items: center; gap: 16px; }
-.ring { --p: 0; width: 86px; height: 86px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center;
-  background: conic-gradient(var(--good) calc(var(--p) * 1%), var(--line) 0); }
-.ring span { width: 68px; height: 68px; border-radius: 50%; background: var(--card); display: grid; place-items: center; font-weight: 800; font-size: 20px; }
-.results { display: grid; gap: 8px; margin-top: 14px; }
-.res { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); }
-.res .icon { flex: 0 0 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 800; }
+/* stage: result */
+.score { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+.ring { --p: 0; width: 76px; height: 76px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center; background: conic-gradient(var(--good) calc(var(--p) * 1%), var(--line) 0); }
+.ring span { width: 60px; height: 60px; border-radius: 50%; background: var(--card); display: grid; place-items: center; font-weight: 800; font-size: 18px; }
+.results { display: grid; gap: 8px; margin-top: 10px; }
+.res { display: flex; gap: 12px; align-items: flex-start; padding: 11px 13px; border-radius: 12px; border: 1px solid var(--line); }
+.res .icon { flex: 0 0 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-weight: 800; }
 .res.have { background: var(--good-bg); border-color: transparent; } .res.have .icon { background: var(--good); color: #fff; }
 .res.swap { background: var(--swap-bg); border-color: transparent; } .res.swap .icon { background: var(--swap); color: #fff; }
 .res.check { background: var(--check-bg); border-color: transparent; } .res.check .icon { background: var(--check); color: #fff; }
@@ -100,48 +99,40 @@ h2 { font-size: 18px; margin: 0 0 10px; }
 .res b { display: block; }
 .res .why { color: var(--muted); font-size: 13px; display: block; margin-top: 2px; }
 .res .tag { font-size: 12px; font-weight: 700; margin-left: 6px; }
-.quest { border: 2px solid var(--gold); border-radius: 14px; padding: 14px; margin-top: 12px; background: var(--card); }
-.quest .q { font-weight: 600; margin-bottom: 10px; }
-.quest .tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
-.thinking { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 12px; background: var(--accent-soft); margin-top: 12px; }
+.quest { border: 2px solid var(--gold); border-radius: 14px; padding: 12px; margin-top: 10px; }
+.quest .q { font-weight: 600; margin-bottom: 8px; }
+.working { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: var(--accent-soft); margin-top: 10px; }
 .spin { width: 18px; height: 18px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; flex: 0 0 auto; }
 @keyframes s { to { transform: rotate(360deg); } }
-.err { color: var(--miss); }
-.win { text-align: center; padding: 26px 18px; }
-.win .big { font-size: 54px; line-height: 1; }
-.stats { color: var(--muted); font-size: 12px; margin-top: 10px; }
-details.more { margin-top: 10px; color: var(--muted); font-size: 13px; }
-details.more summary { cursor: pointer; }
-#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
 
-/* 5 · build with Pip */
-.group { margin: 18px 0 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.chip.lego { background: #fdeee6; color: #b4501f; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chip.lego { background: #3a2318; color: #f0a27a; } }
-.build { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px; align-items: start; }
-@media (max-width: 760px) { .build { grid-template-columns: minmax(0, 1fr); } }
-.stephead { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
-.steptext { font-size: 19px; line-height: 1.45; margin: 8px 0 12px; }
+/* stage: build */
+.stephead { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+.steptext { font-size: 19px; line-height: 1.45; margin: 8px 0 10px; }
 .stepgoal { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
 #b-pic { width: 100%; max-height: 300px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid var(--line); margin: 6px 0; }
-.partchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
-.partchips span { font-size: 13px; padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--ink); }
-.dots { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+.partchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.partchips span { font-size: 13px; padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); }
+details.more { margin-top: 8px; color: var(--muted); font-size: 14px; }
+details.more summary { cursor: pointer; }
+.dots { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
 .dots button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--muted); font-size: 11px; cursor: pointer; padding: 0; }
 .dots button.done { background: var(--good-bg); color: var(--good); border-color: transparent; }
 .dots button.on { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.win { text-align: center; padding: 20px 8px; } .win .big { font-size: 52px; line-height: 1; }
+
+/* tutor */
 .tutor { position: sticky; top: 12px; }
 .pip { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.orb { width: 54px; height: 54px; border-radius: 50%; flex: 0 0 auto; background: radial-gradient(circle at 35% 35%, #9db4ff, var(--accent)); box-shadow: 0 0 0 0 rgba(47,91,211,.35); transition: transform .2s; }
+.orb { width: 54px; height: 54px; border-radius: 50%; flex: 0 0 auto; background: radial-gradient(circle at 35% 35%, #9db4ff, var(--accent)); }
 .orb.speaking { animation: talk 1s ease-in-out infinite; }
 .orb.listening { box-shadow: 0 0 0 6px rgba(31,122,74,.25); background: radial-gradient(circle at 35% 35%, #9fe0bb, var(--good)); }
 .orb.thinking { animation: think 1.4s linear infinite; }
 .orb.off { filter: grayscale(1); opacity: .6; }
-@keyframes talk { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(47,91,211,.35); } 50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(47,91,211,0); } }
+@keyframes talk { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 @keyframes think { to { filter: hue-rotate(360deg); } }
 .pip b { display: block; font-size: 17px; }
 .pip span { color: var(--muted); font-size: 13px; }
-.captions { max-height: 280px; overflow-y: auto; display: grid; gap: 6px; margin: 12px 0; font-size: 14px; }
+.captions { max-height: 300px; overflow-y: auto; display: grid; gap: 6px; margin: 12px 0; font-size: 14px; }
 .captions div { padding: 8px 10px; border-radius: 10px; }
 .captions .tutor-line { background: var(--accent-soft); }
 .captions .learner-line { background: var(--bg); justify-self: end; max-width: 90%; }
@@ -152,9 +143,9 @@ details.more summary { cursor: pointer; }
 .settings select { font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px; }
 .costbar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 4px; }
 .costbar div { height: 100%; width: 0; background: var(--good); }
-@media (prefers-reduced-motion: reduce) { .orb.speaking, .orb.thinking { animation: none; } }
-@media (max-width: 520px) { h1 { font-size: 22px; } .ring { width: 72px; height: 72px; } .ring span { width: 56px; height: 56px; font-size: 17px; } }
-@media (prefers-reduced-motion: reduce) { .lesson, .meter div { transition: none; } .spin { animation-duration: 2s; } }
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+@media (max-width: 520px) { h1 { font-size: 22px; } }
+@media (prefers-reduced-motion: reduce) { .lesson, .orb.speaking, .orb.thinking, .spin { animation: none; transition: none; } }
 </style>
 </head>
 <body>
@@ -162,108 +153,86 @@ details.more summary { cursor: pointer; }
 <main>
   <header>
     <div class="brand">Parts <span>Quest</span></div>
-    <a class="toplink" id="labLink" href="/lab">Lab tools →</a>
+    <div class="toplinks"><span class="note" id="hello"></span><a class="toplink" id="labLink" href="/lab">Lab tools →</a></div>
   </header>
-  <nav class="track" aria-label="Progress">
-    <div data-s="choose">Choose</div><div data-s="gather">Gather</div><div data-s="scan">Scan</div><div data-s="check">Check</div><div data-s="build">Build</div>
-  </nav>
 
-  <!-- 1 · choose a lesson -->
+  <!-- choose a lesson -->
   <section id="s-choose">
     <h1>Pick your build</h1>
-    <p class="lead">Choose a lesson. You'll gather its parts, show them to the camera, and find out if you have everything you need.</p>
-    <input class="search" id="search" type="search" placeholder="Search lessons, e.g. LED, servo, motor" aria-label="Search lessons">
+    <p class="lead">Choose a lesson. Pip, your tutor, will talk you through it: gathering the parts, checking them with the camera, and building it step by step.</p>
+    <input class="search" id="search" type="search" placeholder="Search lessons, e.g. LED, servo, helicopter" aria-label="Search lessons">
     <div class="lessons" id="lessons"><p class="note">Loading lessons…</p></div>
   </section>
 
-  <!-- 2 · gather -->
-  <section id="s-gather" class="hidden">
-    <div class="card">
-      <h1 id="g-title"></h1>
-      <p class="lead">Mission 1: gather these parts. Tap each one as you put it on the table.</p>
-      <div class="note" id="g-progress"></div>
-      <div class="meter"><div id="g-meter"></div></div>
-      <ul class="checklist" id="g-list"></ul>
-      <div class="row">
-        <button class="btn" id="g-next">I've got them: scan my parts</button>
-        <button class="btn ghost small" id="g-back">Choose another lesson</button>
-      </div>
-      <p class="note" style="margin-top:10px">Missing something, or have a different board or resistor? Scan anyway: the check tells you what can stand in.</p>
-    </div>
-  </section>
-
-  <!-- 3 · scan -->
-  <section id="s-scan" class="hidden">
-    <div class="card drop" id="scanPanel">
-      <h1>Mission 2: show me your parts</h1>
-      <p class="lead">Spread the parts out on a plain surface. Take 1–3 photos from different angles, or upload them.</p>
-      <div class="cam" id="cam">
-        <div class="placeholder" id="camPlaceholder"><button class="btn" id="camStart">Start camera</button></div>
-        <video id="video" playsinline muted autoplay hidden></video>
-        <button class="camtool" id="camSwitch" hidden>Switch camera</button>
-        <button class="shutter" id="shutter" hidden aria-label="Take photo"></button>
-        <div class="flash" id="flash"></div>
-        <div class="banner" id="camBanner" hidden></div>
-      </div>
-      <div class="row">
-        <label class="btn ghost small" style="cursor:pointer"><input type="file" id="upload" accept="image/*" multiple hidden>Upload photos</label>
-        <label class="btn ghost small" style="cursor:pointer"><input type="file" id="camApp" accept="image/*" capture="environment" multiple hidden>Phone camera app</label>
-        <span class="note" id="camNote">or drop photos here</span>
-      </div>
-      <div class="thumbs" id="thumbs"></div>
-      <div class="row">
-        <button class="btn" id="scanGo" disabled>Check my parts</button>
-        <button class="btn ghost small" id="scanBack">Back to the list</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4 · result -->
-  <section id="s-check" class="hidden">
-    <div class="card" id="resultCard">
-      <div class="score">
-        <div class="ring" id="ring"><span id="ringText">…</span></div>
-        <div>
-          <h1 id="r-title">Checking your parts…</h1>
-          <p class="lead" id="r-lead" style="margin:0"></p>
+  <!-- the session: the stage Pip talks about, and Pip -->
+  <section id="s-session" class="hidden">
+    <nav class="track" id="track" aria-label="Progress"></nav>
+    <div class="session">
+      <div class="card" id="stage">
+        <!-- hello -->
+        <div id="v-hello">
+          <span class="note" id="h-kind"></span>
+          <h1 id="h-title"></h1>
+          <p class="lead" id="h-lead"></p>
+          <div class="row"><button class="btn" id="h-start">Start with Pip</button><button class="btn ghost small" id="h-quiet">Tap through without voice</button><button class="btn ghost small" id="h-back">Choose another</button></div>
         </div>
-      </div>
-      <div id="r-thinking"></div>
-      <div id="r-quests"></div>
-      <div class="results" id="r-list"></div>
-      <div class="row" style="margin-top:16px" id="r-actions"></div>
-      <details class="more" id="r-more"><summary>Also on the table, and the details</summary><div id="r-extra"></div><pre id="r-report" style="white-space:pre-wrap;font-size:12px"></pre></details>
-      <div class="stats" id="r-stats"></div>
-    </div>
-  </section>
-  <!-- 5 · build, with Pip the voice tutor -->
-  <section id="s-build" class="hidden">
-    <div class="build">
-      <div class="card">
-        <div class="stephead"><span id="b-count"></span><span id="b-lesson"></span></div>
-        <h1 id="b-title"></h1>
-        <img id="b-pic" alt="The booklet's picture of this step" hidden>
-        <p class="steptext" id="b-text"></p>
-        <p class="stepgoal" id="b-goal"></p>
-        <div class="partchips" id="b-parts"></div>
-        <details id="b-hints" class="more"><summary>Stuck? Hints</summary><ul id="b-hintlist"></ul></details>
-        <div class="row" style="margin-top:12px">
-          <button class="btn ghost small" id="b-prev">Back</button>
-          <button class="btn" id="b-next">Done: next step</button>
+        <!-- parts list -->
+        <div id="v-parts" class="hidden">
+          <h1>Gather your parts</h1>
+          <p class="lead">Put these on the table. Tap each one as you go.</p>
+          <ul class="checklist" id="p-list"></ul>
+          <div class="row"><button class="btn" id="p-ready">They're on the table</button></div>
         </div>
-        <div class="dots" id="b-dots"></div>
+        <!-- camera -->
+        <div id="v-camera" class="hidden">
+          <h1 id="c-title">Show me your parts</h1>
+          <p class="lead" id="c-lead">Spread them out on a plain surface. Say "take it" or press the button.</p>
+          <div class="cam" id="cam">
+            <div class="placeholder" id="camPlaceholder"><button class="btn" id="camStart">Start camera</button></div>
+            <video id="video" playsinline muted autoplay hidden></video>
+            <button class="shutter" id="shutter" hidden aria-label="Take photo"></button>
+            <div class="flash" id="flash"></div>
+            <div class="banner" id="camBanner" hidden></div>
+          </div>
+          <div class="row">
+            <label class="btn ghost small" style="cursor:pointer"><input type="file" id="upload" accept="image/*" multiple hidden>Upload photos</label>
+            <button class="btn small" id="c-check" disabled>Check my parts</button>
+            <span class="note" id="camNote"></span>
+          </div>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+        <!-- result -->
+        <div id="v-result" class="hidden">
+          <div class="score"><div class="ring" id="ring"><span id="ringText">…</span></div><div><h1 id="r-title">Checking…</h1><p class="lead" id="r-lead" style="margin:0"></p></div></div>
+          <div id="r-working"></div>
+          <div id="r-quests"></div>
+          <div class="results" id="r-list"></div>
+          <div class="row" style="margin-top:14px"><button class="btn" id="r-build">Start building</button><button class="btn ghost small" id="r-rescan">Take new photos</button></div>
+        </div>
+        <!-- build -->
+        <div id="v-build" class="hidden">
+          <div class="stephead"><span id="b-count"></span><span id="b-lesson"></span></div>
+          <h1 id="b-title"></h1>
+          <img id="b-pic" alt="The booklet's picture of this step" hidden>
+          <p class="steptext" id="b-text"></p>
+          <p class="stepgoal" id="b-goal"></p>
+          <div class="partchips" id="b-parts"></div>
+          <details id="b-hints" class="more"><summary>Stuck? Hints</summary><ul id="b-hintlist"></ul></details>
+          <div class="row" style="margin-top:12px"><button class="btn ghost small" id="b-prev">Back</button><button class="btn" id="b-next">Done: next step</button></div>
+          <div class="dots" id="b-dots"></div>
+        </div>
+        <!-- done -->
+        <div id="v-done" class="hidden win"><div class="big">🎉</div><h1 id="d-title">Lesson complete!</h1><p class="lead" id="d-lead"></p><button class="btn" id="d-again">Choose the next build</button></div>
       </div>
+
       <div class="card tutor">
         <div class="pip"><div class="orb off" id="orb"></div><div><b>Pip</b><span id="t-state">Your tutor. Press start and just talk.</span></div></div>
-        <div class="row">
-          <button class="btn" id="t-start">Start lesson with Pip</button>
-          <button class="btn ghost small" id="t-mute" hidden>Mute mic</button>
-        </div>
+        <div class="row"><button class="btn" id="t-start">Start with Pip</button><button class="btn ghost small" id="t-mute" hidden>Mute mic</button></div>
         <div class="captions" id="t-caps" aria-live="polite"></div>
-        <form id="t-form"><input id="t-text" placeholder="Or type a question…" autocomplete="off"><button class="btn small">Send</button></form>
+        <form id="t-form"><input id="t-text" placeholder="Or type to Pip…" autocomplete="off"><button class="btn small">Send</button></form>
         <div class="settings">
           <label>Voice <select id="t-mode"><option value="live">Natural (Gemini Live)</option><option value="free">Free (browser voice + Haiku)</option></select></label>
-          <label><input type="checkbox" id="t-speakers"> I'm on speakers, not headphones (fewer false interruptions)</label>
+          <label><input type="checkbox" id="t-speakers"> I'm on speakers, not headphones</label>
           <div><span id="t-cost">0.0¢ so far</span> · limit €4 per lesson<div class="costbar"><div id="t-costbar"></div></div></div>
         </div>
       </div>
@@ -281,375 +250,312 @@ const post = (path, body) => fetch(api(path), { method: 'POST', headers: {'Conte
 const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
                 set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
 if (KEY) $('labLink').href = '/lab?key=' + encodeURIComponent(KEY);
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-let LESSONS = [], L = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = null, stream = null, facing = 'environment';
+let LESSONS = [], L = null, B = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = null, stream = null;
+let NAME = store.get('quest.name') || '';
+function greetName() { $('hello').textContent = NAME ? `Hi, ${NAME}` : ''; }
+greetName();
 
-// ---- screens
-function go(s) {
-  ['choose', 'gather', 'scan', 'check', 'build'].forEach(x => $('s-' + x).classList.toggle('hidden', x !== s));
-  const order = ['choose', 'gather', 'scan', 'check', 'build'];
-  if (s !== 'build' && typeof tutorStop === 'function') tutorStop();
-  document.querySelectorAll('.track div').forEach(d => {
-    const i = order.indexOf(d.dataset.s), j = order.indexOf(s);
-    d.classList.toggle('on', i === j); d.classList.toggle('done', i < j);
-  });
-  if (s !== 'scan') stopCamera();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ---- 1 · lessons
+// ===================== choose
 async function init() {
   try { LESSONS = await fetch(api('/api/lessons?all=1')).then(r => r.json()); }
-  catch (e) { $('lessons').innerHTML = `<p class="err">Could not load lessons: ${esc(e.message)}</p>`; return; }
-  if (LESSONS.error) { $('lessons').innerHTML = `<p class="err">${esc(LESSONS.error)}</p>`; return; }
+  catch (e) { $('lessons').innerHTML = `<p class="note">Could not load lessons: ${esc(e.message)}</p>`; return; }
+  if (LESSONS.error) { $('lessons').innerHTML = `<p class="note">${esc(LESSONS.error)}</p>`; return; }
   drawLessons();
 }
 function drawLessons() {
   const q = $('search').value.trim().toLowerCase();
   const list = LESSONS.filter(l => !q || (l.name + ' ' + l.type + ' ' + l.parts.map(p => p.name).join(' ')).toLowerCase().includes(q));
-  const card = l => {
-    if (l.type === 'lego') return `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b>
-      <span class="meta">LEGO · from the ${esc(l.kind)}</span><span class="chips"><span class="chip lego">you have the set: straight to building</span></span></button>`;
-    const n = l.parts.reduce((a, p) => a + (p.count || 1), 0);
-    return `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b>
-      <span class="meta">${n} part${n === 1 ? '' : 's'} to gather</span>
-      <span class="chips">${l.parts.slice(0, 4).map(p => `<span class="chip">${esc(p.name)}</span>`).join('')}${l.parts.length > 4 ? `<span class="chip">+${l.parts.length - 4}</span>` : ''}</span></button>`;
-  };
+  const card = l => l.type === 'lego'
+    ? `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b><span class="meta">LEGO · from the ${esc(l.kind)}</span><span class="chips"><span class="chip lego">you have the set</span></span></button>`
+    : `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b><span class="meta">${l.parts.reduce((a, p) => a + (p.count || 1), 0)} parts to gather</span>
+       <span class="chips">${l.parts.slice(0, 4).map(p => `<span class="chip">${esc(p.name)}</span>`).join('')}${l.parts.length > 4 ? `<span class="chip">+${l.parts.length - 4}</span>` : ''}</span></button>`;
   const ard = list.filter(l => l.type !== 'lego'), lego = list.filter(l => l.type === 'lego');
-  $('lessons').innerHTML = (ard.length ? `<div class="group" style="grid-column:1/-1">Electronics · gather, check, then build</div>` + ard.map(card).join('') : '')
+  $('lessons').innerHTML = (ard.length ? `<div class="group" style="grid-column:1/-1">Electronics · gather, check, build</div>` + ard.map(card).join('') : '')
     + (lego.length ? `<div class="group" style="grid-column:1/-1">LEGO · build step by step</div>` + lego.map(card).join('') : '')
     || '<p class="note">No lesson matches that.</p>';
 }
 $('search').addEventListener('input', drawLessons);
-$('lessons').addEventListener('click', e => {
-  const b = e.target.closest('.lesson'); if (!b) return;
-  const l = LESSONS.find(x => x.id === b.dataset.id);
-  if (l.type === 'lego') { L = l; startBuild(); } else startLesson(b.dataset.id);
-});
+$('lessons').addEventListener('click', e => { const b = e.target.closest('.lesson'); if (b) openLesson(b.dataset.id); });
 
-// ---- 2 · gather: a checklist the learner ticks as they collect
-function startLesson(id) {
-  L = LESSONS.find(l => l.id === id); PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null;
-  const ticked = store.get('quest.' + id) || [];
-  $('g-title').textContent = L.name;
-  $('g-list').innerHTML = L.parts.map((p, i) => `<li data-i="${i}" class="${ticked.includes(i) ? 'got' : ''}" role="checkbox" aria-checked="${ticked.includes(i)}" tabindex="0">
-      <span class="box">✓</span><span class="what"><b>${esc(p.name)}</b>${p.values.length ? `<span>${esc(p.values.join(', '))}</span>` : ''}</span>
-      <span class="count">×${p.count || 1}</span></li>`).join('');
-  gatherProgress(); go('gather');
+// ===================== the session
+const STAGES = () => L.type === 'lego' ? ['hello', 'build'] : ['hello', 'parts', 'camera', 'result', 'build'];
+const STAGE_NAME = { hello: 'Hello', parts: 'Gather', camera: 'Show me', result: 'Check', build: 'Build', done: 'Done' };
+let STAGE = 'hello';
+function stage(s) {
+  STAGE = s;
+  ['hello', 'parts', 'camera', 'result', 'build', 'done'].forEach(x => $('v-' + x).classList.toggle('hidden', x !== s));
+  const order = STAGES(), j = s === 'done' ? order.length : order.indexOf(s);
+  $('track').innerHTML = order.map((x, i) => `<div class="${i < j ? 'done' : i === j ? 'on' : ''}">${STAGE_NAME[x]}</div>`).join('');
+  if (s !== 'camera') stopCamera();
 }
-function gatherProgress() {
-  const all = $('g-list').children.length, got = $('g-list').querySelectorAll('.got').length;
-  $('g-progress').textContent = `${got} of ${all} gathered`;
-  $('g-meter').style.width = (all ? got / all * 100 : 0) + '%';
-  store.set('quest.' + L.id, [...$('g-list').querySelectorAll('.got')].map(li => +li.dataset.i));
+async function openLesson(id) {
+  L = LESSONS.find(l => l.id === id); PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null; B = null;
+  $('s-choose').classList.add('hidden'); $('s-session').classList.remove('hidden');
+  $('h-kind').textContent = L.type === 'lego' ? `LEGO · from the ${L.kind}` : 'Electronics';
+  $('h-title').textContent = L.name;
+  $('h-lead').textContent = L.type === 'lego'
+    ? 'Grab your set. Pip will tell you which pieces to find for each step, and how they go together.'
+    : `Pip will help you gather ${L.parts.reduce((a, p) => a + (p.count || 1), 0)} parts, check them with the camera, then build it with you step by step.`;
+  $('p-list').innerHTML = L.parts.map((p, i) => `<li data-i="${i}" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span>
+    <span class="what"><b>${esc(p.name)}</b>${p.values.length ? `<span>${esc(p.values.join(', '))}</span>` : ''}</span><span class="count">×${p.count || 1}</span></li>`).join('');
+  $('t-caps').innerHTML = ''; tutorReset(); stage('hello'); window.scrollTo({ top: 0 });
+  try { B = await fetch(api('/api/lesson?id=' + encodeURIComponent(id))).then(r => r.json()); B.i = 0; B.done = new Set(); drawDots(); }
+  catch (e) { caption('sys', 'Could not load the steps: ' + e.message); }
 }
-function toggle(li) { li.classList.toggle('got'); li.setAttribute('aria-checked', li.classList.contains('got')); gatherProgress(); }
-$('g-list').addEventListener('click', e => { const li = e.target.closest('li'); if (li) toggle(li); });
-$('g-list').addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && e.target.matches('li')) { e.preventDefault(); toggle(e.target); } });
-$('g-back').addEventListener('click', () => go('choose'));
-$('g-next').addEventListener('click', () => { drawThumbs(); go('scan'); });
+$('h-back').addEventListener('click', () => { tutorStop(); $('s-session').classList.add('hidden'); $('s-choose').classList.remove('hidden'); });
+$('h-start').addEventListener('click', () => tutorStart());
+$('h-quiet').addEventListener('click', () => L.type === 'lego' ? runTool('start_building', {}) : runTool('show_parts_list', {}));
+$('d-again').addEventListener('click', () => $('h-back').click());
 
-// ---- 3 · scan: camera, upload or drop; photos shrunk to 1600 px
+// parts list
+$('p-list').addEventListener('click', e => { const li = e.target.closest('li'); if (li) { li.classList.toggle('got'); li.setAttribute('aria-checked', li.classList.contains('got')); } });
+$('p-ready').addEventListener('click', () => { if (T.on) tell("(The learner tapped: everything is on the table.)"); else runTool('open_camera', {}); });
+
+// camera
 function canvasToPhoto(src, w, h) {
   const s = Math.min(1, 1600 / Math.max(w, h)), c = document.createElement('canvas');
-  c.width = Math.round(w * s); c.height = Math.round(h * s);
-  c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
+  c.width = Math.round(w * s); c.height = Math.round(h * s); c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
   return { data: c.toDataURL('image/jpeg', 0.88) };
 }
 function shrink(file) {
-  return new Promise((ok, bad) => {
-    const url = URL.createObjectURL(file), img = new Image();
+  return new Promise((ok, bad) => { const url = URL.createObjectURL(file), img = new Image();
     img.onload = () => { URL.revokeObjectURL(url); ok(canvasToPhoto(img, img.naturalWidth, img.naturalHeight)); };
-    img.onerror = () => { URL.revokeObjectURL(url); bad(new Error('Could not read ' + file.name)); };
-    img.src = url;
-  });
+    img.onerror = () => { URL.revokeObjectURL(url); bad(new Error('Could not read ' + file.name)); }; img.src = url; });
 }
-async function takeFiles(files) {
-  files = [...files].filter(f => f.type.startsWith('image/') || /\.(heic|jpe?g|png|webp)$/i.test(f.name));
-  if (!files.length) return;
-  if (PENDING) { sendCloseup(await shrink(files[0])); return; }
-  for (const f of files) { try { PHOTOS.push(await shrink(f)); } catch (e) { $('camNote').textContent = e.message; } }
-  drawThumbs();
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) { $('camNote').textContent = 'No camera here: use Upload photos.'; return false; }
+  if (stream) return true;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1440 } } }); }
+  catch (e) { $('camNote').textContent = 'Camera not available: ' + e.message + '. Use Upload photos.'; return false; }
+  const v = $('video'); v.srcObject = stream; v.hidden = false; $('camPlaceholder').hidden = true; $('shutter').hidden = false;
+  for (let i = 0; i < 30 && !v.videoWidth; i++) await sleep(100);
+  return true;
+}
+function stopCamera() { if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; $('video').hidden = true; $('shutter').hidden = true; $('camPlaceholder').hidden = false; }
+function snap() {
+  const v = $('video'); if (!v.videoWidth) return null;
+  const f = $('flash'); f.style.opacity = .8; setTimeout(() => f.style.opacity = 0, 120);
+  return canvasToPhoto(v, v.videoWidth, v.videoHeight);
 }
 function drawThumbs() {
   $('thumbs').innerHTML = PHOTOS.map((p, i) => `<div class="thumb"><img src="${p.data}" alt="Photo ${i + 1}"><button data-i="${i}" aria-label="Remove photo ${i + 1}">×</button></div>`).join('');
-  $('scanGo').disabled = !PHOTOS.length;
-  $('camNote').textContent = PHOTOS.length ? `${PHOTOS.length} photo${PHOTOS.length > 1 ? 's' : ''} ready${PHOTOS.length < 3 ? ' · another angle helps' : ''}` : 'or drop photos here';
+  $('c-check').disabled = !PHOTOS.length;
+  $('camNote').textContent = PHOTOS.length ? `${PHOTOS.length} photo${PHOTOS.length > 1 ? 's' : ''}` : '';
 }
 $('thumbs').addEventListener('click', e => { if (e.target.dataset.i) { PHOTOS.splice(+e.target.dataset.i, 1); drawThumbs(); } });
-['upload', 'camApp'].forEach(id => $(id).addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; takeFiles(f); }));
-const panel = $('scanPanel');
-['dragenter', 'dragover'].forEach(t => panel.addEventListener(t, e => { e.preventDefault(); panel.classList.add('over'); }));
-['dragleave', 'drop'].forEach(t => panel.addEventListener(t, e => { e.preventDefault(); panel.classList.remove('over'); }));
-panel.addEventListener('drop', e => takeFiles(e.dataTransfer.files));
-$('scanBack').addEventListener('click', () => go('gather'));
-
-async function startCamera() {
-  if (!navigator.mediaDevices?.getUserMedia) {
-    $('camNote').textContent = window.isSecureContext ? 'No camera here: use Upload photos.' : 'The live camera needs https on a phone: use the camera app or Upload photos.';
-    return;
-  }
-  if (stream) return;
-  try { stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: facing }, width: { ideal: 1920 }, height: { ideal: 1440 } } }); }
-  catch (e) { $('camNote').textContent = 'Camera not available: ' + e.message; return; }
-  const v = $('video'); v.srcObject = stream; v.hidden = false;
-  $('camPlaceholder').hidden = true; $('shutter').hidden = false;
-  const cams = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
-  $('camSwitch').hidden = cams.length < 2;
-}
-function stopCamera() {
-  if (stream) stream.getTracks().forEach(t => t.stop());
-  stream = null; $('video').hidden = true; $('shutter').hidden = true; $('camSwitch').hidden = true; $('camPlaceholder').hidden = false;
-}
 $('camStart').addEventListener('click', startCamera);
-$('camSwitch').addEventListener('click', () => { facing = facing === 'environment' ? 'user' : 'environment'; stopCamera(); startCamera(); });
-$('shutter').addEventListener('click', () => {
-  const v = $('video'); if (!v.videoWidth) return;
-  const photo = canvasToPhoto(v, v.videoWidth, v.videoHeight);
-  const f = $('flash'); f.style.opacity = .8; setTimeout(() => f.style.opacity = 0, 120);
-  if (PENDING) { sendCloseup(photo); return; }
-  PHOTOS.push(photo); drawThumbs();
+$('shutter').addEventListener('click', async () => {
+  if (PENDING) { const k = PENDING.key; if (T.on) tell(`(The learner pressed the button for the close-up: take it now with take_closeup, key ${k}.)`); else runTool('take_closeup', { key: k }); return; }
+  const p = snap(); if (!p) return; PHOTOS.push(p); drawThumbs(); if (T.on) tell(`(The learner took photo ${PHOTOS.length} with the button.)`);
 });
+$('upload').addEventListener('change', async e => {
+  const files = [...e.target.files]; e.target.value = '';
+  if (PENDING && files[0]) { const k = PENDING.key; await closeupWith(k, await shrink(files[0])); return; }
+  for (const f of files) { try { PHOTOS.push(await shrink(f)); } catch {} }
+  drawThumbs(); if (T.on && files.length) tell(`(The learner uploaded ${files.length} photo(s); there are ${PHOTOS.length}.)`);
+});
+$('c-check').addEventListener('click', () => { if (T.on) tell('(The learner pressed Check my parts: call check_parts.)'); else runTool('check_parts', {}); });
+function banner(text) { $('camBanner').hidden = !text; if (text) $('camBanner').textContent = text; }
 
-// ---- 4 · check: Haiku looks, close-up quests, Opus only when Haiku still cannot tell
+// result
 const KIND = (s) => s.startsWith('have') ? 'have' : s.startsWith('use') ? 'swap' : s.startsWith('check') ? 'check' : 'missing';
-const ICON = { have: '✓', swap: '↔', check: '?', missing: '✗' };
-const SAY = { have: 'Got it', swap: 'Can use instead', check: 'Not sure yet', missing: 'Missing' };
-
-function thinking(text) { $('r-thinking').innerHTML = text ? `<div class="thinking"><div class="spin"></div><div>${text}</div></div>` : ''; }
-
-async function act(action, body, text) {
-  thinking(text);
-  try { show(await post('/api/flow/' + action, { upload: UPLOAD, ...body })); }
-  catch (e) { $('r-thinking').innerHTML = `<p class="err">Something went wrong: ${esc(e.message)}</p>`; return; }
-  thinking('');
-}
-
-$('scanGo').addEventListener('click', async () => {
-  $('scanGo').disabled = true; go('check');
-  $('r-title').textContent = 'Checking your parts…'; $('r-lead').textContent = ''; $('r-list').innerHTML = ''; $('r-quests').innerHTML = ''; $('r-actions').innerHTML = '';
-  $('ring').style.setProperty('--p', 0); $('ringText').textContent = '…';
-  try {
-    thinking('Uploading your photos…');
-    UPLOAD = (await post('/api/upload', { lesson: L.id, photos: PHOTOS.map((p, i) => ({ name: `photo-${i + 1}.jpg`, data: p.data })) })).upload;
-    await act('first', { lesson: L.id }, 'Looking at your parts…');
-  } catch (e) { $('r-thinking').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
-  $('scanGo').disabled = false;
-});
-
-function show(st) {
+const ICON = { have: '✓', swap: '↔', check: '?', missing: '✗' }, SAY = { have: 'Got it', swap: 'Can use instead', check: 'Not sure yet', missing: 'Missing' };
+function working(text) { $('r-working').innerHTML = text ? `<div class="working"><div class="spin"></div><div>${esc(text)}</div></div>` : ''; }
+function drawResult(st) {
   LAST = st;
   const rows = st.parts.map(r => ({ r, k: KIND(r.status) }));
-  const ready = rows.filter(x => x.k === 'have' || x.k === 'swap').length, all = rows.length;
-  const done = !st.asks.length, complete = ready === all;
-  $('ring').style.setProperty('--p', all ? Math.round(ready / all * 100) : 0);
-  $('ringText').textContent = `${ready}/${all}`;
-  $('r-title').textContent = complete && done ? 'Mission complete!' : done ? 'Almost there' : 'A few questions';
-  $('r-lead').textContent = complete && done ? `You have everything for ${L.name}.`
-    : done ? `${all - ready} part${all - ready === 1 ? '' : 's'} still to find for ${L.name}.`
-    : 'Help me check a couple of things and we\'re done.';
+  const ready = rows.filter(x => x.k === 'have' || x.k === 'swap').length, all = rows.length, settled = !st.asks.length;
+  $('ring').style.setProperty('--p', all ? Math.round(ready / all * 100) : 0); $('ringText').textContent = `${ready}/${all}`;
+  $('r-title').textContent = ready === all && settled ? 'You have everything!' : settled ? 'Almost there' : 'A couple of questions';
+  $('r-lead').textContent = ready === all && settled ? `All set for ${L.name}.` : `${all - ready} part${all - ready === 1 ? '' : 's'} to sort out.`;
   $('r-list').innerHTML = rows.map(({ r, k }) => {
     const u = r.use_instead.find(x => x.ok !== false), h = r.have[0];
-    const why = k === 'swap' && u ? `${esc(u.object)} works instead: ${esc(u.why)}` + (u.pin_moves && Object.keys(u.pin_moves).length ? ` (pins: ${Object.entries(u.pin_moves).map(([a, b]) => esc(a) + '→' + esc(b)).join(', ')})` : '')
-      : k === 'have' && h ? `${h.count}× ${esc(h.object)}${h.value ? ' (' + esc(h.value) + ')' : ''}`
-      : k === 'check' ? esc((h && h.why) || (u && u.why) || 'I need a better look')
-      : esc((r.use_instead.find(x => x.ok === false) || {}).why || (r.status.split(' ')[1] ? `I can see some, but ${r.status.split(' ')[1]} more needed` : 'I couldn\'t see this one'));
+    const why = k === 'swap' && u ? `${esc(u.object)} works instead: ${esc(u.why)}` : k === 'have' && h ? `${h.count}× ${esc(h.object)}${h.value ? ' (' + esc(h.value) + ')' : ''}`
+      : k === 'check' ? esc((h && h.why) || (u && u.why) || 'needs a better look') : esc((r.use_instead.find(x => x.ok === false) || {}).why || "couldn't see this one");
     return `<div class="res ${k}"><span class="icon">${ICON[k]}</span><div><b>${esc(r.part)} ×${r.need}<span class="tag">${SAY[k]}</span></b><span class="why">${why}</span></div></div>`;
   }).join('');
-  $('r-quests').innerHTML = st.asks.map(q => `<div class="quest"><span class="tag">Quest</span><div class="q">${esc(q.message)}</div>
-      <div class="row"><button class="btn small" data-close="${esc(q.key)}">Take a close-up</button>
-      <label class="btn ghost small" style="cursor:pointer"><input type="file" accept="image/*" data-up="${esc(q.key)}" hidden>Upload a photo</label>
-      <button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? 'I don\'t have it' : 'Skip'}</button></div></div>`).join('');
-  $('r-actions').innerHTML = (complete && done ? `<button class="btn" id="build">Start building with Pip</button><button class="btn ghost small" id="again">Choose another build</button>` :
-    `<button class="btn ghost small" id="rescan">Scan again</button><button class="btn ghost small" id="build">Build anyway</button><button class="btn ghost small" id="again">Choose another build</button>`);
-  $('again').onclick = () => go('choose');
-  $('build').onclick = () => startBuild();
-  if ($('rescan')) $('rescan').onclick = () => { PHOTOS = []; drawThumbs(); go('scan'); };
-  $('r-extra').innerHTML = (st.not_needed || []).length ? '<p><b>Also on the table, not needed:</b> ' + st.not_needed.map(x => `${x.count}× ${esc(x.object)}`).join(', ') + '</p>' : '';
-  $('r-report').textContent = st.report || '';
-  $('r-stats').textContent = st.steps.map(x => `${x.model === 'claude-opus-5-5' ? 'Opus' : 'Haiku'} ${x.what} ${x.seconds} s`).join(' · ') + ` · ${(st.total_cost_usd * 100).toFixed(2)}¢`;
-  if (complete && done) cheer();
+  $('r-quests').innerHTML = st.asks.map(q => `<div class="quest"><div class="q">${esc(q.message)}</div><div class="row">
+      <button class="btn small" data-close="${esc(q.key)}">Take a close-up</button><button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? "I don't have it" : 'Skip'}</button></div></div>`).join('');
 }
-
+function summary(st) {  // what Pip is told: plain facts it can say in its own words
+  const out = { have: [], can_use_instead: [], not_sure: [], missing: [], questions: [], all_settled: !st.asks.length };
+  for (const r of st.parts) {
+    const k = KIND(r.status), u = r.use_instead.find(x => x.ok !== false), bad = r.use_instead.find(x => x.ok === false);
+    if (k === 'have') out.have.push(r.part);
+    else if (k === 'swap') out.can_use_instead.push({ part: r.part, use: u && u.object, why: u && u.why });
+    else if (k === 'check') out.not_sure.push({ part: r.part, why: (r.have[0] && r.have[0].why) || (u && u.why) || '' });
+    else out.missing.push({ part: r.part, need: r.need, status: r.status, why: bad ? bad.why : '' });
+  }
+  out.questions = st.asks.map(q => ({ key: q.key, ask: q.message }));
+  if ((st.not_needed || []).length) out.also_on_the_table = st.not_needed.slice(0, 8).map(x => x.object);
+  return out;
+}
 $('r-quests').addEventListener('click', e => {
   const k = e.target.dataset.close, s = e.target.dataset.skip;
-  if (k) { PENDING = LAST.asks.find(q => q.key === k); go('scan'); banner(); startCamera(); }
-  if (s) act('dismiss', { key: s }, 'Noted…');
+  if (k) { if (T.on) tell(`(The learner wants to take the close-up for key ${k}: open the camera with open_camera, then take_closeup when they are ready.)`); else { PENDING = LAST.asks.find(q => q.key === k); runTool('open_camera', {}); banner('Close-up: ' + PENDING.message); } }
+  if (s) { if (T.on) tell(`(The learner tapped "${e.target.textContent}" for key ${s}: call skip_question.)`); else runTool('skip_question', { key: s }); }
 });
-$('r-quests').addEventListener('change', async e => {
-  const k = e.target.dataset.up; if (!k || !e.target.files[0]) return;
-  PENDING = LAST.asks.find(q => q.key === k); sendCloseup(await shrink(e.target.files[0]));
-});
-function banner() {
-  $('camBanner').hidden = !PENDING;
-  if (PENDING) $('camBanner').innerHTML = `Close-up: <b>${esc(PENDING.object || PENDING.part)}</b>. Fill the frame with it, or use Upload photos. <a href="#" id="cancelCU" style="color:#fff">Cancel</a>`;
-  if ($('cancelCU')) $('cancelCU').onclick = (ev) => { ev.preventDefault(); PENDING = null; banner(); go('check'); };
-}
-async function sendCloseup(photo) {
-  const q = PENDING; PENDING = null; banner(); go('check');
-  await act('closeup', { key: q.key, photo: photo.data }, `Looking at your close-up of ${esc(q.object || q.part)}…`);
-}
+$('r-build').addEventListener('click', () => { if (T.on) tell('(The learner tapped Start building: call start_building.)'); else runTool('start_building', {}); });
+$('r-rescan').addEventListener('click', () => { PHOTOS = []; drawThumbs(); if (T.on) tell('(The learner wants to take new photos.)'); runTool('open_camera', {}); });
 
-// a little celebration when everything is there
-function cheer() {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const c = $('confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
-  const cols = ['#2f5bd3', '#1f7a4a', '#e0a100', '#e8618c', '#7c9cf5'];
-  const bits = Array.from({ length: 140 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5,
-    r: 4 + Math.random() * 5, vy: 2 + Math.random() * 3, vx: -1.5 + Math.random() * 3, a: Math.random() * 6, col: cols[Math.floor(Math.random() * cols.length)] }));
-  let t = 0;
-  (function frame() {
-    x.clearRect(0, 0, c.width, c.height);
-    bits.forEach(b => { b.y += b.vy; b.x += b.vx; b.a += .1; x.fillStyle = b.col; x.save(); x.translate(b.x, b.y); x.rotate(b.a); x.fillRect(-b.r, -b.r / 2, b.r * 2, b.r); x.restore(); });
-    if (++t < 160) requestAnimationFrame(frame); else x.clearRect(0, 0, c.width, c.height);
-  })();
-}
-
-// ===================== 5 · build with Pip
-let B = null;  // {id, name, type, steps, i, done:Set}
-async function startBuild() {
-  go('build');
-  $('b-title').textContent = 'Loading the lesson…'; $('b-text').textContent = ''; $('t-caps').innerHTML = '';
-  try { B = await fetch(api('/api/lesson?id=' + encodeURIComponent(L.id))).then(r => r.json()); }
-  catch (e) { $('b-title').textContent = 'Could not load the lesson'; $('b-text').textContent = e.message; return; }
-  B.i = 0; B.done = new Set(store.get('build.' + L.id) || []);
-  $('b-lesson').textContent = B.name;
-  $('b-dots').innerHTML = B.steps.map(s => `<button data-n="${s.n}" aria-label="Step ${s.n}">${s.n}</button>`).join('');
-  showStep(1, 'start');
-  tutorReset();
-}
-function showStep(n, by) {
-  if (!B || !B.steps.length) return;
-  n = Math.max(1, Math.min(B.steps.length, n | 0)); B.i = n - 1;
-  const s = B.steps[B.i];
-  $('b-count').textContent = `Step ${n} of ${B.steps.length}`;
-  $('b-title').textContent = s.title;
-  $('b-text').textContent = s.text;
-  $('b-goal').textContent = s.goal || '';
-  $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
+// build
+function drawDots() { if (!B) return; $('b-lesson').textContent = B.name; $('b-dots').innerHTML = B.steps.map(s => `<button data-n="${s.n}" aria-label="Step ${s.n}">${s.n}</button>`).join(''); }
+function showStep(n) {
+  if (!B || !B.steps.length) return 0;
+  n = Math.max(1, Math.min(B.steps.length, n | 0)); B.i = n - 1; const s = B.steps[B.i];
+  if (STAGE !== 'build') stage('build');
+  $('b-count').textContent = `Step ${n} of ${B.steps.length}`; $('b-title').textContent = s.title; $('b-text').textContent = s.text;
+  $('b-goal').textContent = s.goal || ''; $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
   $('b-parts').innerHTML = s.parts.map(p => `<span>${p.count > 1 ? p.count + '× ' : ''}${esc(p.what)}</span>`).join('');
-  $('b-hints').hidden = !s.hints.length; $('b-hints').open = false;
-  $('b-hintlist').innerHTML = s.hints.map(h => `<li>${esc(h)}</li>`).join('');
-  $('b-prev').disabled = n === 1;
-  $('b-next').textContent = n === B.steps.length ? 'Finish the lesson' : 'Done: next step';
+  $('b-hints').hidden = !s.hints.length; $('b-hints').open = false; $('b-hintlist').innerHTML = s.hints.map(h => `<li>${esc(h)}</li>`).join('');
+  $('b-prev').disabled = n === 1; $('b-next').textContent = n === B.steps.length ? 'Finish' : 'Done: next step';
   [...$('b-dots').children].forEach(d => { const k = +d.dataset.n; d.classList.toggle('on', k === n); d.classList.toggle('done', B.done.has(k) && k !== n); });
+  return n;
 }
-$('b-prev').addEventListener('click', () => { showStep(B.i, 'learner'); tutorTell(`(The learner tapped Back on the screen: it now shows step ${B.i + 1}.)`); });
+$('b-prev').addEventListener('click', () => { showStep(B.i); tell(`(The learner tapped Back: the screen shows step ${B.i + 1}.)`); });
 $('b-next').addEventListener('click', () => {
-  B.done.add(B.i + 1); store.set('build.' + L.id, [...B.done]);
-  if (B.i + 1 >= B.steps.length) { finishLesson('learner'); return; }
-  showStep(B.i + 2, 'learner'); tutorTell(`(The learner tapped Next on the screen: step ${B.i} is done and it now shows step ${B.i + 1}. Teach step ${B.i + 1}.)`);
+  B.done.add(B.i + 1);
+  if (B.i + 1 >= B.steps.length) { runTool('finish_lesson', {}); tell('(The learner tapped Finish: the lesson is complete.)'); return; }
+  showStep(B.i + 2); tell(`(The learner tapped Next: step ${B.i} is done and the screen shows step ${B.i + 1}. Teach it.)`);
 });
-$('b-dots').addEventListener('click', e => { const n = +e.target.dataset.n; if (n) { showStep(n, 'learner'); tutorTell(`(The learner opened step ${n} on the screen.)`); } });
-function finishLesson(by) {
-  B.steps.forEach(s => B.done.add(s.n)); store.set('build.' + L.id, [...B.done]); showStep(B.steps.length);
-  caption('sys', `🎉 ${B.name}: lesson complete!`); cheer();
-  if (by === 'learner') tutorTell('(The learner tapped Finish: the lesson is complete. Congratulate them briefly.)');
+$('b-dots').addEventListener('click', e => { const n = +e.target.dataset.n; if (n) { showStep(n); tell(`(The learner opened step ${n} on the screen.)`); } });
+
+// ===================== the tools: what Pip (or a tap) can do on the screen
+async function upload(list) { return (await post('/api/upload', { lesson: L.id, photos: list.map((p, i) => ({ name: `photo-${i + 1}.jpg`, data: p.data })) })).upload; }
+async function closeupWith(key, photo) {
+  PENDING = null; banner(''); stage('result'); working('Looking at your close-up…');
+  try { const st = await post('/api/flow/closeup', { upload: UPLOAD, key, photo: photo.data }); drawResult(st); working(''); return summary(st); }
+  catch (e) { working(''); return { error: e.message }; }
+}
+async function runTool(name, args) {
+  args = args || {};
+  switch (name) {
+    case 'remember_name': NAME = String(args.name || '').trim().split(/\s+/).slice(0, 3).join(' '); store.set('quest.name', NAME); greetName(); return { remembered: NAME };
+    case 'show_parts_list': stage('parts'); return { shown: true, parts: L.parts.map(p => `${p.count}x ${p.name}`) };
+    case 'open_camera': { stage('camera'); $('c-title').textContent = PENDING ? 'Close-up' : 'Show me your parts'; const ok = await startCamera(); return ok ? { camera: 'open' } : { camera: 'not available', tell_them: 'they can use the Upload photos button' }; }
+    case 'take_photo': {
+      if (STAGE !== 'camera') await runTool('open_camera', {});
+      if (!stream && !(await startCamera())) return { error: 'no camera: ask them to use Upload photos' };
+      const p = snap(); if (!p) return { error: 'the camera is not ready yet; try again in a second' };
+      PHOTOS.push(p); drawThumbs(); return { photos: PHOTOS.length };
+    }
+    case 'check_parts': {
+      if (!PHOTOS.length) return { error: 'no photos yet: take one first' };
+      stage('result'); $('r-list').innerHTML = ''; $('r-quests').innerHTML = ''; $('r-title').textContent = 'Checking…'; $('r-lead').textContent = ''; $('ringText').textContent = '…';
+      working('Looking at your parts…');
+      try { UPLOAD = await upload(PHOTOS); const st = await post('/api/flow/first', { upload: UPLOAD, lesson: L.id }); drawResult(st); working(''); return summary(st); }
+      catch (e) { working(''); return { error: e.message }; }
+    }
+    case 'take_closeup': {
+      const q = (LAST && LAST.asks.find(x => x.key === args.key)) || (LAST && LAST.asks[0]);
+      if (!q) return { error: 'no open question with that key', open_questions: LAST ? LAST.asks.map(x => x.key) : [] };
+      PENDING = q; if (STAGE !== 'camera') await runTool('open_camera', {}); banner('Close-up: ' + q.message);
+      if (!stream && !(await startCamera())) return { error: 'no camera: ask them to upload a close-up' };
+      await sleep(300); const p = snap(); if (!p) return { error: 'the camera is not ready; try again' };
+      return closeupWith(q.key, p);
+    }
+    case 'skip_question': {
+      try { const st = await post('/api/flow/dismiss', { upload: UPLOAD, key: args.key }); stage('result'); drawResult(st); return summary(st); }
+      catch (e) { return { error: e.message }; }
+    }
+    case 'start_building': return { step: showStep(1), steps: B ? B.steps.length : 0 };
+    case 'show_step': return { screen_shows_step: showStep(args.n) };
+    case 'finish_lesson': { if (B) B.steps.forEach(s => B.done.add(s.n)); stage('done'); $('d-title').textContent = NAME ? `Well done, ${NAME}!` : 'Lesson complete!'; $('d-lead').textContent = `You finished ${L.name}.`; cheer(); return { finished: true }; }
+  }
+  return { error: 'unknown tool ' + name };
 }
 
-// ---- the tutor: captions, state, cost
+// ===================== Pip: voice, captions, cost
 const T = { on: false, mode: 'live', ws: null, ctx: null, mic: null, node: null, muted: false, sources: [], next: 0,
             cost: 0, cap: 4, warn: 3, prices: null, handle: null, stopping: false, history: [], line: null, speaking: false };
 function state(cls, text) { $('orb').className = 'orb ' + cls; $('t-state').textContent = text; }
 function caption(who, text, append) {
   const box = $('t-caps');
-  if (append && T.line && T.line.dataset.who === who) { T.line.textContent += text; }
+  if (append && T.line && T.line.dataset.who === who) T.line.textContent += text;
   else { T.line = document.createElement('div'); T.line.dataset.who = who; T.line.className = who === 'sys' ? 'sys' : who + '-line'; T.line.textContent = text; box.appendChild(T.line); }
-  while (box.children.length > 40) box.removeChild(box.firstChild);
+  while (box.children.length > 50) box.removeChild(box.firstChild);
   box.scrollTop = box.scrollHeight;
 }
 function addCost(usd) {
-  T.cost += usd;
-  $('t-cost').textContent = `${(T.cost * 100).toFixed(1)}¢ so far`;
-  $('t-costbar').style.width = Math.min(100, T.cost / T.cap * 100) + '%';
-  $('t-costbar').style.background = T.cost >= T.warn ? 'var(--check)' : 'var(--good)';
-  if (T.cost >= T.cap) { caption('sys', 'This lesson reached its €4 limit: Pip stops here. You can keep going with the steps on the screen.'); tutorStop(); }
+  T.cost += usd; $('t-cost').textContent = `${(T.cost * 100).toFixed(1)}¢ so far`;
+  $('t-costbar').style.width = Math.min(100, T.cost / T.cap * 100) + '%'; $('t-costbar').style.background = T.cost >= T.warn ? 'var(--check)' : 'var(--good)';
+  if (T.cost >= T.cap) { caption('sys', 'This lesson reached its €4 limit: Pip stops here. Carry on with the buttons.'); tutorStop(); }
 }
-function tutorReset() { tutorStop(); T.cost = 0; T.history = []; T.handle = null; addCost(0); state('off', 'Your tutor. Press start and just talk.'); $('t-start').textContent = 'Start lesson with Pip'; }
+function tutorReset() { tutorStop(); T.cost = 0; T.history = []; T.handle = null; addCost(0); state('off', 'Your tutor. Press start and just talk.'); }
 $('t-mode').addEventListener('change', () => { tutorStop(); T.mode = $('t-mode').value; });
 $('t-start').addEventListener('click', () => T.on ? tutorStop() : tutorStart());
 $('t-mute').addEventListener('click', () => { T.muted = !T.muted; $('t-mute').textContent = T.muted ? 'Unmute mic' : 'Mute mic'; if (T.rec) { try { T.muted ? T.rec.stop() : T.rec.start(); } catch {} } });
-$('t-form').addEventListener('submit', e => { e.preventDefault(); const t = $('t-text').value.trim(); if (!t) return; $('t-text').value = '';
-  caption('learner', t); if (!T.on) { tutorStart(t); return; } tutorTell(t, true); });
+$('t-form').addEventListener('submit', e => { e.preventDefault(); const t = $('t-text').value.trim(); if (!t) return; $('t-text').value = ''; caption('learner', t); if (!T.on) tutorStart(t); else tell(t); });
 
 async function tutorStart(first) {
   T.mode = $('t-mode').value; T.on = true; T.stopping = false;
-  $('t-start').textContent = 'End the conversation'; $('t-mute').hidden = false;
+  $('t-start').textContent = 'End the conversation'; $('t-mute').hidden = false; $('h-start').disabled = true;
   try { T.mode === 'live' ? await liveStart(first) : await freeStart(first); }
   catch (e) { caption('sys', 'Pip could not start: ' + e.message + (T.mode === 'live' ? ' (try the free voice)' : '')); tutorStop(); }
 }
 function tutorStop() {
+  $('h-start').disabled = false;
   if (!T.on) return;
   T.on = false; T.stopping = true;
-  try { T.ws && T.ws.close(); } catch {} T.ws = null;
-  stopPlayback();
+  try { T.ws && T.ws.close(); } catch {} T.ws = null; stopPlayback();
   try { T.mic && T.mic.getTracks().forEach(t => t.stop()); } catch {} T.mic = null;
-  try { T.rec && T.rec.abort(); } catch {} T.rec = null;
-  try { speechSynthesis.cancel(); } catch {}
-  $('t-start').textContent = 'Start lesson with Pip'; $('t-mute').hidden = true;
-  state('off', 'Paused. Press start to carry on.');
+  try { T.rec && T.rec.abort(); } catch {} T.rec = null; try { speechSynthesis.cancel(); } catch {}
+  $('t-start').textContent = 'Start with Pip'; $('t-mute').hidden = true; state('off', 'Paused. Press start to carry on.');
 }
-// something the learner did on the screen, or typed: to whichever voice is running
-function tutorTell(text, typed) {
+function tell(text) {  // what the learner did on the screen, or typed
   if (!T.on) return;
   if (T.mode === 'live') { if (T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { text } })); }
-  else freeAsk(text, typed);
+  else freeAsk(text);
+}
+function situation() {
+  return `(Session ${NAME ? 'with ' + NAME : 'with a new learner'}. The screen shows: ${STAGE_NAME[STAGE]}${STAGE === 'build' && B ? ', step ' + (B.i + 1) : ''}.)`;
 }
 
-// ---- Gemini Live: mic in at 16 kHz, voice out at 24 kHz, interruptions by the server's voice detection
+// ---- Gemini Live
 const WORKLET = `class Pcm extends AudioWorkletProcessor {
   constructor() { super(); this.r = sampleRate / 16000; this.buf = []; this.acc = 0; this.sum = 0; this.k = 0; }
   process(inputs) { const ch = inputs[0][0]; if (!ch) return true;
     for (let i = 0; i < ch.length; i++) { this.sum += ch[i]; this.k++; this.acc += 1;
       if (this.acc >= this.r) { this.acc -= this.r; const v = Math.max(-1, Math.min(1, this.sum / this.k)); this.buf.push(v < 0 ? v * 32768 : v * 32767); this.sum = 0; this.k = 0; } }
-    if (this.buf.length >= 1600) { this.port.postMessage(Int16Array.from(this.buf).buffer, []); this.buf = []; }
+    if (this.buf.length >= 1600) { this.port.postMessage(Int16Array.from(this.buf).buffer); this.buf = []; }
     return true; } }
 registerProcessor('pcm16k', Pcm);`;
-async function audioUp() {
-  if (!T.ctx) T.ctx = new (window.AudioContext || window.webkitAudioContext)();
-  if (T.ctx.state === 'suspended') await T.ctx.resume();
-}
+async function audioUp() { if (!T.ctx) T.ctx = new (window.AudioContext || window.webkitAudioContext)(); if (T.ctx.state === 'suspended') await T.ctx.resume(); }
 async function micUp(onChunk) {
   T.mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } });
   if (!T.workletLoaded) { await T.ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' }))); T.workletLoaded = true; }
-  const src = T.ctx.createMediaStreamSource(T.mic);
-  T.node = new AudioWorkletNode(T.ctx, 'pcm16k');
-  T.node.port.onmessage = e => onChunk(e.data);
-  src.connect(T.node);
+  const src = T.ctx.createMediaStreamSource(T.mic); T.node = new AudioWorkletNode(T.ctx, 'pcm16k'); T.node.port.onmessage = e => onChunk(e.data); src.connect(T.node);
 }
 function b64(buf) { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
-function play(b64data) {
-  const bin = atob(b64data), n = bin.length >> 1, buf = T.ctx.createBuffer(1, n, 24000), d = buf.getChannelData(0);
+function play(data) {
+  const bin = atob(data), n = bin.length >> 1, buf = T.ctx.createBuffer(1, n, 24000), d = buf.getChannelData(0);
   for (let i = 0; i < n; i++) { let v = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8); if (v >= 32768) v -= 65536; d[i] = v / 32768; }
   const src = T.ctx.createBufferSource(); src.buffer = buf; src.connect(T.ctx.destination);
-  const t = Math.max(T.ctx.currentTime + 0.04, T.next); src.start(t); T.next = t + buf.duration;
-  T.sources.push(src); src.onended = () => { T.sources = T.sources.filter(x => x !== src); if (!T.sources.length && T.on) state('listening', 'Listening… just talk'); };
+  const t = Math.max(T.ctx.currentTime + 0.04, T.next); src.start(t); T.next = t + buf.duration; T.sources.push(src);
+  src.onended = () => { T.sources = T.sources.filter(x => x !== src); if (!T.sources.length && T.on) state('listening', 'Listening… just talk'); };
   state('speaking', 'Talking… (talk over me to interrupt)');
 }
 function stopPlayback() { T.sources.forEach(s => { try { s.stop(); } catch {} }); T.sources = []; T.next = 0; }
-
 async function liveStart(first) {
-  await audioUp();
-  state('thinking', 'Connecting…');
+  await audioUp(); state('thinking', 'Connecting…');
   await openLive(first, false);
   await micUp(chunk => { if (!T.muted && T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { audio: { data: b64(chunk), mimeType: 'audio/pcm;rate=16000' } } })); });
 }
 async function openLive(first, resumed) {
-  const s = await post('/api/tutor/session', { lesson: L.id, resume: T.handle, speakers: $('t-speakers').checked });
+  const s = await post('/api/tutor/session', { lesson: L.id, resume: T.handle, speakers: $('t-speakers').checked, name: NAME });
   T.cap = s.cap_usd; T.warn = s.warn_usd; T.prices = s.prices;
   const ws = new WebSocket(s.ws); T.ws = ws; ws.binaryType = 'arraybuffer';
   ws.onopen = () => ws.send(JSON.stringify(s.setup));
-  ws.onmessage = ev => { const m = JSON.parse(typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data)); onLive(m, first, resumed); };
-  ws.onerror = () => caption('sys', 'Connection problem…');
-  ws.onclose = ev => { if (T.on && !T.stopping && ws === T.ws) { caption('sys', 'Reconnecting…'); setTimeout(() => T.on && openLive(null, true).catch(e => { caption('sys', 'Could not reconnect: ' + e.message); tutorStop(); }), 400); } };
+  ws.onmessage = ev => onLive(JSON.parse(typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data)), first, resumed);
+  ws.onclose = () => { if (T.on && !T.stopping && ws === T.ws) { caption('sys', 'Reconnecting…'); setTimeout(() => T.on && openLive(null, true).catch(e => { caption('sys', 'Could not reconnect: ' + e.message); tutorStop(); }), 400); } };
 }
+const NON_BLOCKING = new Set(['check_parts', 'take_closeup']);
 function onLive(m, first, resumed) {
-  if (m.setupComplete) {
-    state('listening', 'Listening… just talk');
-    if (!resumed) T.ws.send(JSON.stringify({ realtimeInput: { text: first || `(The learner pressed Start. The screen shows step ${B.i + 1}. Greet them and begin.)` } }));
-  }
+  if (m.setupComplete) { state('listening', 'Listening… just talk'); if (!resumed) T.ws.send(JSON.stringify({ realtimeInput: { text: (first ? first + ' ' : '') + situation() + ' (Start the session.)' } })); }
   if (m.sessionResumptionUpdate && m.sessionResumptionUpdate.newHandle) T.handle = m.sessionResumptionUpdate.newHandle;
-  if (m.goAway) { caption('sys', 'Refreshing the connection…'); const old = T.ws; T.ws = null; openLive(null, true).then(() => { try { old.close(); } catch {} }); }
+  if (m.goAway) { const old = T.ws; T.ws = null; openLive(null, true).then(() => { try { old.close(); } catch {} }); }
   const sc = m.serverContent;
   if (sc) {
     if (sc.interrupted) { stopPlayback(); state('listening', 'Listening…'); }
@@ -658,13 +564,13 @@ function onLive(m, first, resumed) {
     if (sc.outputTranscription && sc.outputTranscription.text) caption('tutor', sc.outputTranscription.text, true);
     if (sc.turnComplete) T.line = null;
   }
-  if (m.toolCall) {
-    const responses = (m.toolCall.functionCalls || []).map(fc => {
-      if (fc.name === 'show_step') showStep((fc.args || {}).n, 'tutor');
-      if (fc.name === 'finish_lesson') finishLesson('tutor');
-      return { id: fc.id, name: fc.name, response: { result: 'ok', screen_shows_step: B.i + 1 } };
+  if (m.toolCall) for (const fc of m.toolCall.functionCalls || []) {
+    runTool(fc.name, fc.args).then(result => {
+      if (!T.ws || T.ws.readyState !== 1) return;
+      const r = { id: fc.id, name: fc.name, response: { result } };
+      if (NON_BLOCKING.has(fc.name)) r.scheduling = 'INTERRUPT';
+      T.ws.send(JSON.stringify({ toolResponse: { functionResponses: [r] } }));
     });
-    T.ws.send(JSON.stringify({ toolResponse: { functionResponses: responses } }));
   }
   if (m.usageMetadata) addCost(liveCost(m.usageMetadata));
 }
@@ -675,56 +581,56 @@ function liveCost(u) {
   return ((i.TEXT || 0) * P.text_in + (i.AUDIO || 0) * P.audio_in + (o.AUDIO || 0) * P.audio_out + (o.TEXT || 0) * P.text_out + (u.thoughtsTokenCount || 0) * P.text_out) / 1e6;
 }
 
-// ---- free mode: the browser hears, Haiku answers, the browser speaks
-let freeBusy = false;
-function bestVoice() {
-  const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
-  return vs.find(v => /premium|enhanced|natural|neural/i.test(v.name)) || vs.find(v => /google uk english female|samantha|serena|daniel/i.test(v.name)) || vs[0];
-}
+// ---- free mode: the browser hears, Haiku answers (and uses the same tools), the browser speaks
+let freeBusy = false, freeQueue = [];
+function bestVoice() { const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang)); return vs.find(v => /premium|enhanced|natural|neural/i.test(v.name)) || vs.find(v => /google uk english female|samantha|serena|daniel/i.test(v.name)) || vs[0]; }
 function speak(text) {
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text); const v = bestVoice(); if (v) u.voice = v; u.rate = 1.02;
-  u.onstart = () => { T.speaking = true; T.saying = text.toLowerCase(); state('speaking', 'Talking… (talk over me to interrupt)'); };
-  u.onend = u.onerror = () => { T.speaking = false; if (T.on) state('listening', 'Listening… just talk'); };
-  speechSynthesis.speak(u);
+  return new Promise(done => {
+    const u = new SpeechSynthesisUtterance(text); const v = bestVoice(); if (v) u.voice = v; u.rate = 1.02;
+    u.onstart = () => { T.speaking = true; T.saying = text.toLowerCase(); state('speaking', 'Talking… (talk over me to interrupt)'); };
+    u.onend = u.onerror = () => { T.speaking = false; if (T.on) state('listening', 'Listening… just talk'); done(); };
+    speechSynthesis.speak(u);
+  });
 }
-function soundsLikeMe(heard) {  // the speakers' echo of Pip's own words is not an interruption
-  const w = heard.toLowerCase().split(/\W+/).filter(x => x.length > 2);
-  return w.length && w.filter(x => (T.saying || '').includes(x)).length / w.length > 0.6;
-}
+function soundsLikeMe(heard) { const w = heard.toLowerCase().split(/\W+/).filter(x => x.length > 2); return w.length && w.filter(x => (T.saying || '').includes(x)).length / w.length > 0.6; }
 async function freeStart(first) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SR) {
     const rec = new SR(); T.rec = rec; rec.continuous = true; rec.interimResults = true; rec.lang = navigator.language || 'en-GB';
-    rec.onresult = e => {
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const r = e.results[i], text = r[0].transcript.trim(); if (!text) continue;
-        if (T.speaking && soundsLikeMe(text)) continue;
-        if (T.speaking) { speechSynthesis.cancel(); T.speaking = false; }  // barge-in
-        if (r.isFinal) { caption('learner', text); freeAsk(text); }
-      }
-    };
+    rec.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i], text = r[0].transcript.trim(); if (!text) continue;
+      if (T.speaking && soundsLikeMe(text)) continue; if (T.speaking) { speechSynthesis.cancel(); T.speaking = false; } if (r.isFinal) { caption('learner', text); freeAsk(text); } } };
     rec.onend = () => { if (T.on && !T.muted && T.rec === rec) { try { rec.start(); } catch {} } };
     rec.start();
   } else caption('sys', 'This browser has no speech recognition: type to Pip below (Chrome or Safari can listen).');
-  state('listening', 'Listening… just talk');
-  await freeAsk(first || '', !!first);
+  state('listening', 'Listening…');
+  freeAsk((first ? first + ' ' : '') + situation() + ' (Start the session.)');
 }
-async function freeAsk(text, typed) {
-  if (freeBusy) return; freeBusy = true; state('thinking', 'Thinking…');
+async function freeAsk(text) {
+  if (freeBusy) { freeQueue.push(text); return; }
+  freeBusy = true; state('thinking', 'Thinking…');
   try {
-    const r = await post('/api/tutor/reply', { lesson: L.id, history: T.history, text, step: B.i + 1 });
-    if (text) T.history.push({ who: 'learner', text });
-    T.history.push({ who: 'tutor', text: r.say });
-    if (r.show_step) showStep(r.show_step, 'tutor');
-    caption('tutor', r.say); addCost(r.cost_usd || 0);
-    if (r.finished) finishLesson('tutor');
-    if (T.on) speak(r.say);
+    let next = text;
+    for (let hops = 0; hops < 4 && next != null && T.on; hops++) {
+      const r = await post('/api/tutor/reply', { lesson: L.id, history: T.history, text: next, name: NAME });
+      T.history.push({ who: 'learner', text: next }); T.history.push({ who: 'tutor', text: r.say + (r.tool ? ` [${r.tool.name}]` : '') });
+      addCost(r.cost_usd || 0); caption('tutor', r.say); const said = T.on ? speak(r.say) : null;
+      next = null;
+      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'take_photo', 'check_parts', 'take_closeup', 'skip_question', 'start_building'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
+    }
   } catch (e) { caption('sys', 'Pip could not answer: ' + e.message); }
-  freeBusy = false;
+  freeBusy = false; if (T.on) state('listening', 'Listening… just talk');
+  if (freeQueue.length) freeAsk(freeQueue.shift());
 }
 
-go('choose');
+// a little celebration
+function cheer() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = $('confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const cols = ['#2f5bd3', '#1f7a4a', '#e0a100', '#e8618c', '#7c9cf5'];
+  const bits = Array.from({ length: 140 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5, r: 4 + Math.random() * 5, vy: 2 + Math.random() * 3, vx: -1.5 + Math.random() * 3, a: Math.random() * 6, col: cols[Math.floor(Math.random() * cols.length)] }));
+  let t = 0; (function frame() { x.clearRect(0, 0, c.width, c.height); bits.forEach(b => { b.y += b.vy; b.x += b.vx; b.a += .1; x.fillStyle = b.col; x.save(); x.translate(b.x, b.y); x.rotate(b.a); x.fillRect(-b.r, -b.r / 2, b.r * 2, b.r); x.restore(); }); if (++t < 160) requestAnimationFrame(frame); else x.clearRect(0, 0, c.width, c.height); })();
+}
+
 init();
 </script>
 </body>

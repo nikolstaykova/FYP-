@@ -22,3 +22,15 @@ def test_a_turn_is_priced_by_modality():
              "responseTokensDetails": [{"modality": "AUDIO", "tokenCount": 1_000_000}], "thoughtsTokenCount": 0}
     assert live.cost_usd(usage) == live.PRICES["text_in"] + live.PRICES["audio_out"]
     assert live.CAP_USD <= 4.3  # under 4 euro
+
+
+def test_the_session_starts_with_the_name_and_checks_parts_only_for_electronics():
+    new = live.brief("blink")
+    assert "ask their name" in new and "call no tool" in new and "remember_name" in new
+    assert "Greet Mark by name" in live.brief("blink", "Mark")
+    assert "take_closeup" in new and "never take the close-up in the same breath" in new
+    arduino = [d["name"] for d in live.tools("arduino")[0]["functionDeclarations"]]
+    lego = [d["name"] for d in live.tools("lego")[0]["functionDeclarations"]]
+    assert {"open_camera", "take_photo", "check_parts", "take_closeup"} <= set(arduino)
+    assert not {"open_camera", "check_parts"} & set(lego) and "start_building" in lego
+    assert "no parts check" in live.brief("7268-1-pdf")
