@@ -80,9 +80,18 @@ h1 { font-size: 26px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em
 .shutter:active { background: rgba(255,255,255,.7); }
 .banner { position: absolute; top: 10px; left: 10px; right: 10px; background: rgba(0,0,0,.7); color: #fff; border-radius: 10px; padding: 8px 10px; font-size: 13px; }
 .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity .25s; }
-.thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin: 10px 0; }
 .thumb { position: relative; }
-.thumb img { width: 88px; height: 66px; object-fit: cover; border-radius: 8px; display: block; border: 1px solid var(--line); }
+.thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; display: block; border: 1px solid var(--line); }
+.thumb span { position: absolute; left: 6px; bottom: 6px; background: rgba(0,0,0,.6); color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 6px; }
+.modes { display: inline-flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
+.modes button { font: inherit; font-weight: 600; border: 0; background: var(--card); color: var(--muted); padding: 9px 16px; cursor: pointer; }
+.modes button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.dropzone { display: grid; place-items: center; gap: 6px; text-align: center; border: 2px dashed var(--line); border-radius: 14px; padding: 34px 16px; cursor: pointer; color: var(--muted); background: var(--bg); }
+.dropzone b { color: var(--ink); font-size: 17px; }
+.dropzone .big { font-size: 34px; line-height: 1; }
+.dropzone.over { border-color: var(--accent); color: var(--accent); }
+.checkbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; }
 .thumb button { position: absolute; top: 3px; right: 3px; border: 0; border-radius: 50%; width: 22px; height: 22px; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; padding: 0; line-height: 22px; }
 
 /* stage: result */
@@ -186,20 +195,27 @@ details.more summary { cursor: pointer; }
         <!-- camera -->
         <div id="v-camera" class="hidden">
           <h1 id="c-title">Show me your parts</h1>
-          <p class="lead" id="c-lead">Spread them out on a plain surface. Say "take it" or press the button.</p>
-          <div class="cam" id="cam">
-            <div class="placeholder" id="camPlaceholder"><button class="btn" id="camStart">Start camera</button></div>
-            <video id="video" playsinline muted autoplay hidden></video>
-            <button class="shutter" id="shutter" hidden aria-label="Take photo"></button>
-            <div class="flash" id="flash"></div>
-            <div class="banner" id="camBanner" hidden></div>
+          <p class="lead" id="c-lead">Spread them out on a plain surface, then take or upload 1–3 photos.</p>
+          <div class="modes" role="group" aria-label="How to give photos">
+            <button type="button" data-mode="camera" aria-pressed="true">📷 Camera</button>
+            <button type="button" data-mode="upload" aria-pressed="false">🖼 Upload photos</button>
           </div>
-          <div class="row">
-            <label class="btn ghost small" style="cursor:pointer"><input type="file" id="upload" accept="image/*" multiple hidden>Upload photos</label>
-            <button class="btn small" id="c-check" disabled>Check my parts</button>
-            <span class="note" id="camNote"></span>
+          <div id="m-camera">
+            <div class="cam" id="cam">
+              <div class="placeholder" id="camPlaceholder"><button class="btn" id="camStart">Start camera</button></div>
+              <video id="video" playsinline muted autoplay hidden></video>
+              <button class="shutter" id="shutter" hidden aria-label="Take photo"></button>
+              <div class="flash" id="flash"></div>
+              <div class="banner" id="camBanner" hidden></div>
+            </div>
+            <p class="note" style="margin:0">Say "take it" to Pip, or press the white button.</p>
+          </div>
+          <div id="m-upload" class="hidden">
+            <label class="dropzone" id="drop"><input type="file" id="upload" accept="image/*" multiple hidden>
+              <span class="big">🖼</span><b id="dropTitle">Drop photos here, or tap to choose</b><span id="dropNote">1–3 photos of the parts, spread out on a plain surface</span></label>
           </div>
           <div class="thumbs" id="thumbs"></div>
+          <div class="checkbar"><button class="btn" id="c-check" disabled>Check my parts</button><span class="note" id="camNote"></span></div>
         </div>
         <!-- result -->
         <div id="v-result" class="hidden">
@@ -340,24 +356,53 @@ function snap() {
   return canvasToPhoto(v, v.videoWidth, v.videoHeight);
 }
 function drawThumbs() {
-  $('thumbs').innerHTML = PHOTOS.map((p, i) => `<div class="thumb"><img src="${p.data}" alt="Photo ${i + 1}"><button data-i="${i}" aria-label="Remove photo ${i + 1}">×</button></div>`).join('');
+  $('thumbs').innerHTML = PHOTOS.map((p, i) => `<div class="thumb"><img src="${p.data}" alt="Photo ${i + 1}"><span>${p.from === 'upload' ? 'uploaded' : 'camera'}</span><button data-i="${i}" aria-label="Remove photo ${i + 1}">×</button></div>`).join('');
   $('c-check').disabled = !PHOTOS.length;
-  $('camNote').textContent = PHOTOS.length ? `${PHOTOS.length} photo${PHOTOS.length > 1 ? 's' : ''}` : '';
+  $('c-check').textContent = PHOTOS.length ? `Check my parts (${PHOTOS.length} photo${PHOTOS.length > 1 ? 's' : ''})` : 'Check my parts';
+  $('camNote').textContent = PHOTOS.length && PHOTOS.length < 3 ? 'Another angle helps with small parts.' : '';
 }
+// how the learner gives photos: the camera, or uploads (remembered)
+let MODE = store.get('quest.photoMode') || 'camera';
+function setMode(m, quiet) {
+  MODE = m; store.set('quest.photoMode', m);
+  document.querySelectorAll('.modes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
+  $('m-camera').classList.toggle('hidden', m !== 'camera'); $('m-upload').classList.toggle('hidden', m !== 'upload');
+  if (m === 'camera' && STAGE === 'camera') startCamera(); else stopCamera();
+  $('dropTitle').textContent = PENDING ? 'Drop the close-up here, or tap to choose' : 'Drop photos here, or tap to choose';
+  $('dropNote').textContent = PENDING ? PENDING.message : '1–3 photos of the parts, spread out on a plain surface';
+  if (!quiet && T.on) tell(m === 'upload' ? '(The learner switched to uploading photos instead of the camera: do not take photos; wait until they say they have uploaded them, then call check_parts.)'
+                                          : '(The learner switched to the camera.)');
+}
+document.querySelector('.modes').addEventListener('click', e => { if (e.target.dataset.mode) setMode(e.target.dataset.mode); });
 $('thumbs').addEventListener('click', e => { if (e.target.dataset.i) { PHOTOS.splice(+e.target.dataset.i, 1); drawThumbs(); } });
 $('camStart').addEventListener('click', startCamera);
 $('shutter').addEventListener('click', async () => {
   if (PENDING) { const k = PENDING.key; if (T.on) tell(`(The learner pressed the button for the close-up: take it now with take_closeup, key ${k}.)`); else runTool('take_closeup', { key: k }); return; }
-  const p = snap(); if (!p) return; PHOTOS.push(p); drawThumbs(); if (T.on) tell(`(The learner took photo ${PHOTOS.length} with the button.)`);
+  const p = snap(); if (!p) return; PHOTOS.push({ ...p, from: 'camera' }); drawThumbs(); if (T.on) tell(`(The learner took photo ${PHOTOS.length} with the button.)`);
 });
-$('upload').addEventListener('change', async e => {
-  const files = [...e.target.files]; e.target.value = '';
-  if (PENDING && files[0]) { const k = PENDING.key; await closeupWith(k, await shrink(files[0])); return; }
-  for (const f of files) { try { PHOTOS.push(await shrink(f)); } catch {} }
-  drawThumbs(); if (T.on && files.length) tell(`(The learner uploaded ${files.length} photo(s); there are ${PHOTOS.length}.)`);
-});
+async function addUploads(files) {
+  files = [...files].filter(f => f.type.startsWith('image/') || /\.(heic|jpe?g|png|webp)$/i.test(f.name));
+  if (!files.length) return;
+  if (MODE !== 'upload') setMode('upload', true);
+  if (PENDING) { await uploadCloseup(PENDING.key, files[0]); return; }
+  for (const f of files) { try { PHOTOS.push({ ...(await shrink(f)), from: 'upload' }); } catch {} }
+  drawThumbs();
+  if (T.on) tell(`(The learner uploaded ${files.length} photo${files.length > 1 ? 's' : ''}; there are ${PHOTOS.length} now, all from uploads, none from the camera. Do not take photos. Ask if that's all; when they are ready call check_parts.)`);
+}
+$('upload').addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; addUploads(f); });
+const drop = $('drop');
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addUploads(e.dataTransfer.files));
 $('c-check').addEventListener('click', () => { if (T.on) tell('(The learner pressed Check my parts: call check_parts.)'); else runTool('check_parts', {}); });
-function banner(text) { $('camBanner').hidden = !text; if (text) $('camBanner').textContent = text; }
+// a close-up from a file: checked at once, and its result goes to Pip so Pip does not take it again
+const CLOSEUPS = {};
+async function uploadCloseup(key, file) {
+  const result = await closeupWith(key, await shrink(file)); CLOSEUPS[key] = result;
+  if (T.on) tell(`(The learner uploaded the close-up for key ${key}. Its result: ${JSON.stringify(result)}. Do not call take_closeup for it; tell them what it means.)`);
+  return result;
+}
+function banner(text) { $('camBanner').hidden = !text; if (text) $('camBanner').textContent = text; setMode(MODE, true); }
 
 // result
 const KIND = (s) => s.startsWith('have') ? 'have' : s.startsWith('use') ? 'swap' : s.startsWith('check') ? 'check' : 'missing';
@@ -377,7 +422,9 @@ function drawResult(st) {
     return `<div class="res ${k}"><span class="icon">${ICON[k]}</span><div><b>${esc(r.part)} ×${r.need}<span class="tag">${SAY[k]}</span></b><span class="why">${why}</span></div></div>`;
   }).join('');
   $('r-quests').innerHTML = st.asks.map(q => `<div class="quest"><div class="q">${esc(q.message)}</div><div class="row">
-      <button class="btn small" data-close="${esc(q.key)}">Take a close-up</button><button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? "I don't have it" : 'Skip'}</button></div></div>`).join('');
+      <label class="btn small" style="cursor:pointer"><input type="file" accept="image/*" data-up="${esc(q.key)}" hidden>🖼 Upload a ${q.kind === 'find' ? 'photo' : 'close-up'}</label>
+      <button class="btn ghost small" data-close="${esc(q.key)}">📷 Use the camera</button>
+      <button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? "I don't have it" : 'Skip'}</button></div></div>`).join('');
 }
 function summary(st) {  // what Pip is told: plain facts it can say in its own words
   const out = { have: [], can_use_instead: [], not_sure: [], missing: [], questions: [], all_settled: !st.asks.length };
@@ -392,13 +439,15 @@ function summary(st) {  // what Pip is told: plain facts it can say in its own w
   if ((st.not_needed || []).length) out.also_on_the_table = st.not_needed.slice(0, 8).map(x => x.object);
   return out;
 }
+$('r-quests').addEventListener('change', e => { const k = e.target.dataset.up; if (k && e.target.files[0]) uploadCloseup(k, e.target.files[0]); });
 $('r-quests').addEventListener('click', e => {
   const k = e.target.dataset.close, s = e.target.dataset.skip;
-  if (k) { if (T.on) tell(`(The learner wants to take the close-up for key ${k}: open the camera with open_camera, then take_closeup when they are ready.)`); else { PENDING = LAST.asks.find(q => q.key === k); runTool('open_camera', {}); banner('Close-up: ' + PENDING.message); } }
+  if (k) { PENDING = LAST.asks.find(q => q.key === k); setMode('camera', true); runTool('open_camera', {}); banner('Close-up: ' + PENDING.message);
+           if (T.on) tell(`(The learner opened the camera for the close-up, key ${k}: call take_closeup when they say they are holding it up.)`); }
   if (s) { if (T.on) tell(`(The learner tapped "${e.target.textContent}" for key ${s}: call skip_question.)`); else runTool('skip_question', { key: s }); }
 });
 $('r-build').addEventListener('click', () => { if (T.on) tell('(The learner tapped Start building: call start_building.)'); else runTool('start_building', {}); });
-$('r-rescan').addEventListener('click', () => { PHOTOS = []; drawThumbs(); if (T.on) tell('(The learner wants to take new photos.)'); runTool('open_camera', {}); });
+$('r-rescan').addEventListener('click', () => { PHOTOS = []; drawThumbs(); PENDING = null; if (T.on) tell('(The learner wants to give new photos.)'); runTool('open_camera', {}); });
 
 // build
 function drawDots() { if (!B) return; $('b-lesson').textContent = B.name; $('b-dots').innerHTML = B.steps.map(s => `<button data-n="${s.n}" aria-label="Step ${s.n}">${s.n}</button>`).join(''); }
@@ -425,7 +474,7 @@ $('b-dots').addEventListener('click', e => { const n = +e.target.dataset.n; if (
 // ===================== the tools: what Pip (or a tap) can do on the screen
 async function upload(list) { return (await post('/api/upload', { lesson: L.id, photos: list.map((p, i) => ({ name: `photo-${i + 1}.jpg`, data: p.data })) })).upload; }
 async function closeupWith(key, photo) {
-  PENDING = null; banner(''); stage('result'); working('Looking at your close-up…');
+  PENDING = null; banner(''); stage('result'); working('Looking at your close-up…'); $('r-quests').innerHTML = '';
   try { const st = await post('/api/flow/closeup', { upload: UPLOAD, key, photo: photo.data }); drawResult(st); working(''); return summary(st); }
   catch (e) { working(''); return { error: e.message }; }
 }
@@ -434,12 +483,18 @@ async function runTool(name, args) {
   switch (name) {
     case 'remember_name': NAME = String(args.name || '').trim().split(/\s+/).slice(0, 3).join(' '); store.set('quest.name', NAME); greetName(); return { remembered: NAME };
     case 'show_parts_list': stage('parts'); return { shown: true, parts: L.parts.map(p => `${p.count}x ${p.name}`) };
-    case 'open_camera': { stage('camera'); $('c-title').textContent = PENDING ? 'Close-up' : 'Show me your parts'; const ok = await startCamera(); return ok ? { camera: 'open' } : { camera: 'not available', tell_them: 'they can use the Upload photos button' }; }
+    case 'open_camera': {
+      stage('camera'); $('c-title').textContent = PENDING ? 'Close-up' : 'Show me your parts'; setMode(MODE, true);
+      if (MODE === 'upload') return { mode: 'upload', photos: PHOTOS.length, tell_them: 'they give photos by uploading them, not with the camera: ask them to upload 1 to 3 photos and to tell you when they have' };
+      const ok = await startCamera();
+      return ok ? { mode: 'camera', camera: 'open' } : { camera: 'not available', tell_them: 'they can switch to Upload photos' };
+    }
     case 'take_photo': {
       if (STAGE !== 'camera') await runTool('open_camera', {});
-      if (!stream && !(await startCamera())) return { error: 'no camera: ask them to use Upload photos' };
+      if (MODE === 'upload') return { mode: 'upload', photos: PHOTOS.length, note: 'the learner uploads photos instead of using the camera: no photo was taken. ' + (PHOTOS.length ? 'Ask if they want to add more, or call check_parts.' : 'Wait for them to upload.') };
+      if (!stream && !(await startCamera())) return { error: 'no camera: ask them to switch to Upload photos' };
       const p = snap(); if (!p) return { error: 'the camera is not ready yet; try again in a second' };
-      PHOTOS.push(p); drawThumbs(); return { photos: PHOTOS.length };
+      PHOTOS.push({ ...p, from: 'camera' }); drawThumbs(); return { photos: PHOTOS.length };
     }
     case 'check_parts': {
       if (!PHOTOS.length) return { error: 'no photos yet: take one first' };
@@ -449,9 +504,11 @@ async function runTool(name, args) {
       catch (e) { working(''); return { error: e.message }; }
     }
     case 'take_closeup': {
+      if (CLOSEUPS[args.key]) return CLOSEUPS[args.key];  // already uploaded: its result
       const q = (LAST && LAST.asks.find(x => x.key === args.key)) || (LAST && LAST.asks[0]);
       if (!q) return { error: 'no open question with that key', open_questions: LAST ? LAST.asks.map(x => x.key) : [] };
       PENDING = q; if (STAGE !== 'camera') await runTool('open_camera', {}); banner('Close-up: ' + q.message);
+      if (MODE === 'upload') return { mode: 'upload', waiting: 'the learner gives the close-up by uploading it; wait, its result will come to you' };
       if (!stream && !(await startCamera())) return { error: 'no camera: ask them to upload a close-up' };
       await sleep(300); const p = snap(); if (!p) return { error: 'the camera is not ready; try again' };
       return closeupWith(q.key, p);
@@ -510,7 +567,7 @@ function tell(text) {  // what the learner did on the screen, or typed
   else freeAsk(text);
 }
 function situation() {
-  return `(Session ${NAME ? 'with ' + NAME : 'with a new learner'}. The screen shows: ${STAGE_NAME[STAGE]}${STAGE === 'build' && B ? ', step ' + (B.i + 1) : ''}.)`;
+  return `(Session ${NAME ? 'with ' + NAME : 'with a new learner'}. The screen shows: ${STAGE_NAME[STAGE]}${STAGE === 'build' && B ? ', step ' + (B.i + 1) : ''}. They give photos by ${MODE === 'upload' ? 'uploading them' : 'the camera'}.)`;
 }
 
 // ---- Gemini Live

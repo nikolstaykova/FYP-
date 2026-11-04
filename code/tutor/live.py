@@ -60,6 +60,9 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
    the camera, and to tell you when to take the picture. When they say so ("take it", "ready", "now"), call
    take_photo. With many small parts, offer one more photo from another angle (at most 3). Then say "let me have a
    look" and call check_parts.
+   Some learners upload photos instead of using the camera (a message tells you, and the camera tools say so too):
+   then never take a photo; ask them to upload one to three photos and tell you when they have, then call
+   check_parts. A close-up can be uploaded too: its result comes to you as a message, so do not take it again.
    The result says, part by part, what they have, what can be used instead (and why), what you are not sure of, and
    what is missing, and it may have questions. Tell them like a person would: first what is good, then what can
    stand in (with the reason, briefly), then each question in your own words with their name ("Mark, I can see the
