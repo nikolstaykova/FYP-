@@ -11,27 +11,38 @@ def test_flat_keeps_what_neo4j_can_hold_and_writes_the_rest_as_json():
     assert "f" not in out
 
 
-def test_an_arduino_lesson_becomes_steps_instances_joins_and_parts():
+def test_an_arduino_lesson_is_record_steps_physical_and_parts_joined_through_the_parts():
     rows = db.lesson_rows("blink")
+    links = rows["links"]
+    types = {t for t, *_ in links}
     assert rows["lesson"]["lesson_id"] == "blink" and rows["lesson"]["lesson_type"] == "arduino"
-    assert {n["props"]["kind"] for n in rows["nodes"]["Step"]} >= {"gather", "build", "upload"}
-    assert any(n["key"] == "blink/uno" for n in rows["nodes"]["Instance"])
-    types = {t for t, *_ in rows["links"]}
-    assert {"HAS_STEP", "IS_A", "END", "JOINED", "NEXT_STEP", "NEEDS"} <= types
-    joins = {n["props"]["id"]: n["props"] for n in rows["nodes"]["Join"]}
-    assert joins["e1"]["kind"] == "joined" and joins["e1"]["u_port"] == "a"
+    # the record points at its first step only; the steps follow on
+    assert [(a, b) for t, a, b, *_ in links if t == "FIRST_STEP"] == [("blink", "blink/gather")]
+    assert "HAS_STEP" not in types and "HAS_INSTANCE" not in types
+    # the parts list: items that account for instances, which are their catalogue parts
+    assert ("ACCOUNTS_FOR", "blink/parts_list/0") in {(t, a) for t, a, *_ in links}
+    assert ("IS_A", "blink/uno", "arduino-uno") in {(t, a, b) for t, a, b, *_ in links}
+    # joins are links between instances, with ports and the step that makes them
+    j = next(p for t, a, b, p, *_ in links if t == "JOINED" and p["id"] == "e1")
+    assert j["u_port"] == "a" and j["v_port"] == "13" and j["made_in"]
+    assert "Join" not in rows["nodes"] and "MAKES" not in types
+    # the gather step gathers every item on the list
+    assert sum(t == "GATHERS" for t, *_ in links) == len(rows["nodes"]["Item"])
 
 
-def test_a_booklet_step_points_at_the_part_with_its_count_and_colour():
+def test_a_booklet_lesson_starts_at_its_overview_and_steps_place_parts_list_items():
     rows = db.lesson_rows("7268-1-pdf")
-    places = [(a, b, p) for t, a, b, p, la, lb in rows["links"] if t == "PLACES" and lb == "Part"]
-    assert places and all(b.startswith("lego-") and "count" in p for a, b, p in places)
+    links = rows["links"]
+    assert [b for t, a, b, *_ in links if t == "FIRST_STEP"] == ["7268-1-pdf/overview"]
+    places = [(a, b, p) for t, a, b, p, la, lb in links if t == "PLACES"]
+    assert places and all(lb == "Item" for t, a, b, p, la, lb in links if t == "PLACES")
+    items = {n["key"]: n["props"] for n in rows["nodes"]["Item"]}
+    assert all(items[b]["part"].startswith("lego-") and "count" in p for a, b, p in places)
+    assert all(t == "IS_A" for t, a, *_ in links if a in items and t != "LISTS")  # no 3D model: item -> part
     step = next(n for n in rows["nodes"]["Step"] if n["props"]["id"] == "red-crab-body-1")
     assert step["props"]["picture"].endswith("step1.png")
-    assert {n["props"]["kind"] for n in rows["nodes"]["Build"]} == {"product"}
 
 
 def test_a_sized_type_on_a_parts_list_is_its_family_with_the_value_kept():
-    rows = db.lesson_rows("fade")
-    needs = [(b, p) for t, a, b, p, la, lb in rows["links"] if t == "NEEDS" and p.get("listed_as", "").startswith("resistor")]
-    assert needs == [("resistor", {**needs[0][1], "value": "220"})] and needs[0][1]["listed_as"] == "resistor-220"
+    items = [n["props"] for n in db.lesson_rows("fade")["nodes"]["Item"] if n["props"]["listed_as"].startswith("resistor")]
+    assert [(i["part"], i["value"], i["listed_as"]) for i in items] == [("resistor", "220", "resistor-220")]

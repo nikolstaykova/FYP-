@@ -3,15 +3,14 @@
 The JSON files stay the source: this loads them into the database, the same way every time, so it can be re-run
 whenever a lesson or the catalogue changes (a lesson is replaced whole; parts are merged).
 
-The graph:
-  (:Lesson {lesson_id})-[:HAS_STEP]->(:Step)        steps of every kind (gather, build, step, upload, overview)
-  (:Lesson)-[:HAS_BUILD]->(:Build)                  a booklet build or a 3D model's sub-assembly
-  (:Lesson)-[:HAS_INSTANCE]->(:Instance)-[:IS_A]->(:Part {part_type_id})-[:HAS_PORT]->(:Port)
-  (:Join {kind: joined|contact|electrical})-[:END {side, port}]->(:Instance), plus a shortcut
-      (:Instance)-[:JOINED|CONTACT|ELECTRICAL {join, u_port, v_port}]->(:Instance)
-  (:Lesson)-[:NEEDS {count, colour, print, row}]->(:Part)       the lesson's parts list
-  the instruction graph's own links as they are: NEXT_STEP, DEPENDS_ON {via}, PLACES {count, where}, MAKES (-> Join),
-      GATHERS, PROGRAMS, ALIGNS_WITH, SHOWS, STARTS, BUILDS, ATTACHES, CHECK_NEEDS
+The graph (the plan in Pinpoint Lesson Data §1: record, steps, physical, parts, joined through the parts):
+  (:Lesson)-[:FIRST_STEP]->(:Step)-[:NEXT_STEP]->(:Step)...   the record starts the steps graph; builds hang off it
+      (SHOWS, STARTS, BUILDS, ATTACHES) and steps link back with DEPENDS_ON {via}, ALIGNS_WITH, CHECK_NEEDS
+  (:Lesson)-[:LISTS]->(:Item)                    the record's parts list, one item per row {count, colour, value}
+  (:Item)-[:ACCOUNTS_FOR]->(:Instance)           the instances a row stands for (no 3D model: (:Item)-[:IS_A]->(:Part))
+  (:Step)-[:PLACES|GATHERS|PROGRAMS]->(:Instance or :Item)   what a step puts in, gathers, uploads to
+  (:Instance)-[:JOINED|CONTACT|ELECTRICAL {u_port, v_port, method, made_in}]->(:Instance)   the physical graph
+  (:Instance)-[:IS_A]->(:Part {part_type_id})-[:HAS_PORT]->(:Port)                         the parts catalogue
 Nodes of a lesson are keyed by `uid` = "<lesson_id>/<id>" (ids like b1 or step-1 are in many lessons); a part by its
 part_type_id (old ids resolved through redirects.json first), a port by "<part_type_id>:<port id>".
 Neo4j properties are numbers, strings, booleans or flat lists of them: anything nested is stored as JSON text
@@ -119,8 +118,9 @@ def part_rows(parts):
 
 
 def lesson_rows(lesson_id, store=None):
-    """Everything one lesson puts in the database: {"lesson": props, "nodes": {label: [...]}, "links": [...]}.
-    A link is (type, from uid or part, to uid or part, props, from label, to label)."""
+    """Everything one lesson puts in the database, in the shape of the plan (Pinpoint Lesson Data §1: record, steps,
+    physical, parts, joined through the parts): {"lesson": props, "nodes": {label: [...]}, "links": [...]}.
+    A link is (type, from key, to key, props, from label, to label)."""
     d = pathlib.Path(store or ROOT / "data/lessons/store") / lesson_id
     rec = json.loads((d / "lesson.json").read_text())
     ins = json.loads((d / "instruction.json").read_text()) if (d / "instruction.json").exists() else {"nodes": [], "edges": []}
@@ -130,9 +130,10 @@ def lesson_rows(lesson_id, store=None):
     lesson = flat({"lesson_id": lesson_id, "name": rec.get("name"), "lesson_type": rec.get("lesson_type"),
                    "kind": src.get("kind"), "link": rec.get("link"), "set": src.get("set"),
                    "result": rec.get("result"), "stats": rec.get("stats")})
-    nodes = {"Step": [], "Build": [], "Instance": [], "Join": []}
+    nodes = {"Step": [], "Build": [], "Item": [], "Instance": []}
     links = []
     labels = {}
+    # the steps graph: the record points at the first step only; the rest hang off NEXT_STEP, STARTS, SHOWS, BUILDS
     for n in ins["nodes"]:
         label = "Build" if n.get("kind") in BUILD_KINDS else "Step"
         props = flat(n, drop=("source",))
@@ -142,58 +143,71 @@ def lesson_rows(lesson_id, store=None):
             props["source"] = json.dumps(s, ensure_ascii=False)
         nodes[label].append({"key": uid(n["id"]), "props": {**props, "lesson_id": lesson_id}})
         labels[n["id"]] = label
-        links.append(("HAS_STEP" if label == "Step" else "HAS_BUILD", lesson_id, uid(n["id"]), {}, "Lesson", label))
+    entered = {e["v"] for e in ins["edges"] if e["type"] in ("NEXT_STEP", "STARTS", "SHOWS")}
+    roots = [n["id"] for n in ins["nodes"] if n["id"] not in entered and n.get("kind") in STEP_KINDS]
+    for r in roots[:1]:
+        links.append(("FIRST_STEP", lesson_id, uid(r), {}, "Lesson", "Step"))
+    # the record's parts list: one item per row, pointing at the instances it accounts for (or, with no 3D model,
+    # straight at its part)
+    rows = (rec.get("parts_list") or {}).get("parts", [])
+    in_physical = {n["id"] for n in phys["nodes"]}
+    for i, r in enumerate(rows):
+        if not r.get("part"):
+            continue
+        part = _resolve(r["part"])
+        item = uid(f"parts_list/{i}")
+        nodes["Item"].append({"key": item, "props": flat({
+            "lesson_id": lesson_id, "row": i, "part": part, "name": r.get("name"), "listed_as": r["part"],
+            "count": r.get("count") or len(r.get("instances") or []) or None, "colour": r.get("colour"),
+            "print": r.get("print"), "value": _value(r["part"], part), "from": r.get("from")})})
+        links.append(("LISTS", lesson_id, item, flat({"row": i}), "Lesson", "Item"))
+        inst = [x for x in r.get("instances") or [] if x in in_physical]
+        for x in inst:
+            links.append(("ACCOUNTS_FOR", item, uid(x), {}, "Item", "Instance"))
+        if not inst:
+            links.append(("IS_A", item, part, {}, "Item", "Part"))
+    # the physical graph: instances, each pointing at its catalogue part; joins are links between instances
     for n in phys["nodes"]:
         props = flat({"id": n["id"], "label": n.get("label"), "type": _resolve(n.get("type")), **(n.get("props") or {})})
         nodes["Instance"].append({"key": uid(n["id"]), "props": {**props, "lesson_id": lesson_id}})
         labels[n["id"]] = "Instance"
-        links.append(("HAS_INSTANCE", lesson_id, uid(n["id"]), {}, "Lesson", "Instance"))
         if n.get("type"):
             links.append(("IS_A", uid(n["id"]), _resolve(n["type"]), {}, "Instance", "Part"))
+    made_in = {e["v"]: e["u"] for e in ins["edges"] if e["type"] == "MAKES"}
     for k, e in enumerate(phys["edges"]):
         jid = e.get("id") or f"link{k}"
-        kind = e["type"]
-        nodes["Join"].append({"key": uid(jid), "props": {**flat(e, drop=("u", "v", "type")), "id": jid, "kind": kind,
-                                                          "lesson_id": lesson_id}})
-        labels[jid] = "Join"
-        links.append(("END", uid(jid), uid(e["u"]), flat({"side": "u", "port": e.get("u_port")}), "Join", "Instance"))
-        links.append(("END", uid(jid), uid(e["v"]), flat({"side": "v", "port": e.get("v_port")}), "Join", "Instance"))
-        links.append((LINK_KINDS.get(kind, kind.upper()), uid(e["u"]), uid(e["v"]),
-                      flat({"join": jid, "u_port": e.get("u_port"), "v_port": e.get("v_port"), "method": e.get("method")}),
-                      "Instance", "Instance"))
-    rows = (rec.get("parts_list") or {}).get("parts", [])
-    for i, r in enumerate(rows):
-        if r.get("part"):
-            part = _resolve(r["part"])
-            links.append(("NEEDS", lesson_id, part,
-                          flat({"row": i, "count": r.get("count") or len(r.get("instances") or []) or None,
-                                "colour": r.get("colour"), "print": r.get("print"), "value": _value(r["part"], part),
-                                "name": r.get("name"), "from": r.get("from"), "listed_as": r["part"]}), "Lesson", "Part"))
+        links.append((LINK_KINDS.get(e["type"], e["type"].upper()), uid(e["u"]), uid(e["v"]),
+                      flat({**{f: v for f, v in e.items() if f not in ("u", "v", "type")}, "id": jid,
+                            "made_in": made_in.get(jid)}), "Instance", "Instance"))
+    # the steps' own links; a step that gathers or places points at the instances, or at the parts-list item
     for e in ins["edges"]:
         t, u, v = e["type"], e["u"], e["v"]
+        if t == "MAKES":
+            continue  # kept on the join itself (made_in): a join is a link, and a link cannot be pointed at
         props = flat(e, drop=("type", "u", "v"))
         ref = re.match(r"lesson:parts_list/(\d+)$", str(v))
-        if ref and int(ref.group(1)) < len(rows):  # a booklet step's part: the parts-list row's part
-            r = rows[int(ref.group(1))]
-            props.update(flat({"row": int(ref.group(1)), "colour": r.get("colour"), "print": r.get("print")}))
-            links.append((t, uid(u), _resolve(r["part"]), props, labels.get(u, "Step"), "Part"))
+        if ref and int(ref.group(1)) < len(rows):  # a booklet step's part: that parts-list item
+            links.append((t, uid(u), uid(f"parts_list/{ref.group(1)}"), props, labels.get(u, "Step"), "Item"))
+        elif v == "lesson:parts_list":  # an Arduino gather step: every item on the list
+            links += [(t, uid(u), uid(f"parts_list/{i}"), props, labels.get(u, "Step"), "Item")
+                      for i, r in enumerate(rows) if r.get("part")]
         elif u in labels and v in labels:
             links.append((t, uid(u), uid(v), props, labels[u], labels[v]))
-        elif u in labels and str(v).startswith("lesson"):
-            links.append((t, uid(u), lesson_id, props, labels[u], "Lesson"))
     return {"lesson": lesson, "nodes": nodes, "links": links}
 
 
 # ---- loading ------------------------------------------------------------------------------------------------------
-KEY = {"Lesson": "lesson_id", "Part": "part_type_id", "Port": "uid", "Step": "uid", "Build": "uid", "Instance": "uid",
-       "Join": "uid"}
+KEY = {"Lesson": "lesson_id", "Part": "part_type_id", "Port": "uid", "Step": "uid", "Build": "uid", "Item": "uid",
+       "Instance": "uid"}
 
 
 def setup(d):
     for label, key in KEY.items():
         run(d, f"CREATE CONSTRAINT {label.lower()}_key IF NOT EXISTS FOR (n:{label}) REQUIRE n.{key} IS UNIQUE")
-    for label in ("Step", "Build", "Instance", "Join"):
+    for label in ("Step", "Build", "Item", "Instance"):
         run(d, f"CREATE INDEX {label.lower()}_lesson IF NOT EXISTS FOR (n:{label}) ON (n.lesson_id)")
+    run(d, "DROP CONSTRAINT join_key IF EXISTS")  # joins were nodes before 4 Nov 2026; now links
+    run(d, "DROP INDEX join_lesson IF EXISTS")
 
 
 def _chunks(rows):
@@ -249,18 +263,20 @@ def stats(d):
 
 
 def check(d, store=None):
-    """Per lesson: steps, builds, instances and joins in the database against the JSON files."""
+    """Per lesson: steps, builds, parts-list items, instances and joins in the database against the JSON files."""
     bad = []
-    got = {r["id"]: r for r in run(d, """
-        MATCH (l:Lesson) OPTIONAL MATCH (l)-[:HAS_STEP]->(s) WITH l, count(s) AS steps
-        OPTIONAL MATCH (l)-[:HAS_BUILD]->(b) WITH l, steps, count(b) AS builds
-        OPTIONAL MATCH (l)-[:HAS_INSTANCE]->(i) WITH l, steps, builds, count(i) AS instances
-        OPTIONAL MATCH (j:Join {lesson_id: l.lesson_id}) RETURN l.lesson_id AS id, steps, builds, instances, count(j) AS joins""")}
+    got = {}
+    for label, name in (("Step", "steps"), ("Build", "builds"), ("Item", "items"), ("Instance", "instances")):
+        for r in run(d, f"MATCH (n:{label}) RETURN n.lesson_id AS id, count(n) AS n"):
+            got.setdefault(r["id"], {})[name] = r["n"]
+    for r in run(d, "MATCH (a:Instance)-[j:JOINED|CONTACT|ELECTRICAL]->(:Instance) RETURN a.lesson_id AS id, count(j) AS n"):
+        got.setdefault(r["id"], {})["joins"] = r["n"]
     for lid in lesson_ids(store):
         rows = lesson_rows(lid, store)
         want = {"steps": len(rows["nodes"]["Step"]), "builds": len(rows["nodes"]["Build"]),
-                "instances": len(rows["nodes"]["Instance"]), "joins": len(rows["nodes"]["Join"])}
-        have = {k: (got.get(lid) or {}).get(k) for k in want}
+                "items": len(rows["nodes"]["Item"]), "instances": len(rows["nodes"]["Instance"]),
+                "joins": sum(t in ("JOINED", "CONTACT", "ELECTRICAL") for t, *_ in rows["links"])}
+        have = {k: (got.get(lid) or {}).get(k, 0) for k in want}
         if have != want:
             bad.append((lid, want, have))
     return bad

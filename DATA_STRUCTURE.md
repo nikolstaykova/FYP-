@@ -1076,7 +1076,7 @@ scratch, rebuilds, the store validator, `parts.json` rebuilt unchanged).
 ## 10. The database: Neo4j (being integrated, November 2026)
 
 **Status (4 November 2026):** the instance is running (AuraDB Free, `bac9405c`, Belgium) and **everything is loaded**:
-the 77 lessons and the 1,254-part catalogue, 20,377 nodes and 38,871 links (about a tenth of the free tier), every
+the 77 lessons and the 1,254-part catalogue, 19,004 nodes and 24,642 links (under a tenth of the free tier), every
 lesson checked against its files (`./pinpoint db check`). Saving a lesson (`lesson_store.register`) now updates it in
 the database too. Still to do: the code *reading* from the database (§10.4 step 4) and the file store for pictures.
 Until then the JSON files in `data/lessons/store/` and `code/graph/parts/` stay the source, and the database is
@@ -1106,64 +1106,91 @@ About 15,000 nodes and 26,000 relationships in all, well under the free tier (20
 
 ### 10.2 The graph in Neo4j
 
+The shape of the plan on the shared page *Pinpoint Lesson Data* (§1): four subgraphs side by side, the **lesson
+record**, its **steps**, the **physical** part instances and the **parts catalogue**, joined to each other through
+the parts. Reshaped on 4 November 2026 from a first load that hung every step and instance off the lesson and made
+joins nodes; that one was harder to read and twice the size.
+
+```
+(:Lesson)-[:FIRST_STEP]->(:Step)-[:NEXT_STEP]->(:Step)-[:NEXT_STEP]->...        record -> steps graph
+(:Lesson)-[:LISTS]->(:Item)-[:ACCOUNTS_FOR]->(:Instance)                         record's parts list -> physical
+(:Step)-[:PLACES | GATHERS | PROGRAMS]->(:Instance | :Item)                       steps -> what they put in
+(:Instance)-[:JOINED | CONTACT | ELECTRICAL {u_port, v_port, method, made_in}]->(:Instance)   physical graph
+(:Instance)-[:IS_A]->(:Part)-[:HAS_PORT]->(:Port)                                 physical -> parts catalogue
+```
+
 Nodes (label, key, main properties):
 
 | Label | Key | Properties | From |
 |---|---|---|---|
-| `Lesson` | `lesson_id` | name, lesson_type (lego / arduino), kind (booklet-pdf, ldraw-model, tutorial-link), link | `lesson.json` |
-| `Step` | `lesson_id` + `id` | n, kind (gather, build, step, upload…), text, description, what_changed, picture (file-store link) | `instruction.json` |
-| `Build` | `lesson_id` + `id` | name: a booklet build, a 3D model's sub-assembly | `instruction.json` (`build:…`, `sub:…`) |
-| `Instance` | `lesson_id` + `id` | colour, print, value, label; LEGO: ldraw position and rotation, anchor | `physical.json` nodes |
-| `Join` | `lesson_id` + `id` | kind (joined, contact, electrical), ports, method, holds_by, freedom, reversible; Arduino: wire colour, route | every `physical.json` edge |
-| `Part` | `part_type_id` | display_name, category, domain, aliases, intrinsic behaviour, electrical, metadata | `parts.json` |
+| `Lesson` | `lesson_id` | name, lesson_type (lego / arduino), kind (booklet-pdf, ldraw-model, tutorial-link), link, result, stats | `lesson.json` |
+| `Item` | `lesson_id` + `parts_list/<row>` | part, name, count, colour, print, value, listed_as | `lesson.json` parts list, one per row |
+| `Step` | `lesson_id` + `id` | n, kind (gather, build, step, upload, overview), text, description, what_changed, picture | `instruction.json` |
+| `Build` | `lesson_id` + `id` | name: a booklet build (`product`) or a 3D model's sub-assembly | `instruction.json` |
+| `Instance` | `lesson_id` + `id` | type, label, colour, print, value; LEGO: ldraw position and rotation, anchor | `physical.json` nodes |
+| `Part` | `part_type_id` | display_name, category, domain, aliases, description, status, behaviour, electrical, metadata | `parts.json` |
 | `Port` | `part_type_id` + `id` | kind, gender, aliases | `parts.json` ports |
-| `Check` | id | lesson, time, models, cost, verdict per part | `checker.gather_flow` results |
 
 Relationships:
 
 | Relationship | From → to | Properties |
 |---|---|---|
-| `HAS_STEP` | Lesson → Step | |
-| `NEXT_STEP`, `DEPENDS_ON` | Step → Step | DEPENDS_ON: `via` (join ids) |
-| `STARTS`, `SHOWS`, `BUILDS`, `ATTACHES` | Build / overview / Step → Step / Build | order |
-| `PLACES` | Step → Instance (3D and Arduino) · Step → Part (booklet) | booklet: count, colour, print, where |
-| `MAKES` | Step → Join | |
-| `ALIGNS_WITH` | Step → Step | ports |
-| `END` | Join → Instance | port (the port id on that instance), side (u / v) |
-| `JOINED`, `CONTACT`, `ELECTRICAL` | Instance → Instance | a shortcut for walking: the join's id, ports, method |
-| `GATHERS`, `PROGRAMS` | Step → Lesson / Instance | an Arduino lesson's gather step; its upload step to the board |
-| `IS_A` | Instance → Part | |
+| `FIRST_STEP` | Lesson → Step | the chain's start: an Arduino lesson's gather step, a booklet's overview, a 3D model's step 1 |
+| `NEXT_STEP` | Step → Step | |
+| `DEPENDS_ON`, `ALIGNS_WITH`, `CHECK_NEEDS` | Step → Step | via (join ids), ports, parts |
+| `SHOWS`, `STARTS`, `BUILDS`, `ATTACHES` | overview → Build → Step; Step → Build | order, name, times, into |
+| `LISTS` | Lesson → Item | row |
+| `ACCOUNTS_FOR` | Item → Instance | (3D and Arduino lessons) |
+| `IS_A` | Instance → Part; Item → Part when the lesson has no 3D model (booklet) | |
+| `PLACES` | Step → Instance (3D, Arduino) · Step → Item (booklet) | count, where |
+| `GATHERS` | gather Step → every Item | |
+| `PROGRAMS` | upload Step → the board's Instance | |
+| `JOINED`, `CONTACT`, `ELECTRICAL` | Instance → Instance | id, u_port, v_port, method, holds_by, freedom, reversible, made_in (the step), wokwi |
 | `HAS_PORT` | Part → Port | |
-| `NEEDS` | Lesson → Part | count, colour, print, value, listed_as (the lesson's parts list) |
-| `CHECKED` | Check → Lesson | |
 
-Two decisions:
-- **A join is a node.** A step `MAKES` a join (`step-2 → e4`) and `DEPENDS_ON` other steps `via` joins; a relationship
-  cannot be pointed at, so every physical link (joined, contact, electrical) is a `Join` node with an `END` to each
-  of its two instances (carrying the port), plus a shortcut between the instances (`JOINED`, `CONTACT`, `ELECTRICAL`).
+Decisions:
+- **The record starts the chain.** The lesson links to its first step only; every other step is reached along
+  `NEXT_STEP` (and builds along `SHOWS`/`STARTS`/`BUILDS`). All of a lesson's nodes carry `lesson_id` (indexed), so
+  "every step of a lesson" needs no extra link.
+- **The subgraphs meet at the parts.** A parts-list item accounts for instances, a step places instances, an instance
+  is a catalogue part: the record, the steps and the physical graph all reach the catalogue through the instances.
+- **A join is a link between two instances**, with its ports and the step that makes it (`made_in`), not a node.
+  The steps graph's `MAKES` link becomes that property, and `DEPENDS_ON` keeps the joins it goes `via` as ids.
 - **A part is found by the lesson store's own rule** (`lesson_store.definition`): exact id, an old id (redirects), a
-  print's plain piece, a sized type's family. An Arduino parts list's `resistor-220` (CircuitQuest's name) is the part
-  `resistor`, with `value: "220"` and `listed_as: "resistor-220"` on its `NEEDS` link.
+  print's plain piece, a sized type's family. An Arduino parts list's `resistor-220` (CircuitQuest's name) is an
+  `Item` with `part: "resistor"`, `value: "220"`, `listed_as: "resistor-220"`.
 - **Lesson ids scope everything but parts.** `b1` and `step-1` are in many lessons, so those nodes are keyed by
-  `lesson_id` + `id`. A part is keyed by its `part_type_id` alone and shared by every lesson: one `lego-3626c` (the
-  minifig head, any face) links all 11 lessons that use one; its print and colour are on each `Instance`.
+  `lesson_id` + `id`; a part is keyed by its `part_type_id` alone and shared: one `lego-3626c` (the minifig head,
+  any face) links every lesson that uses one; its print and colour are on each `Instance`.
 
-Old part ids (`code/graph/parts/redirects.json`, e.g. a printed card merged into its plain piece) are resolved before
-loading, so the database has only current ids.
+Loaded on 4 November 2026: 19,004 nodes (11,118 ports, 1,722 instances, 1,538 items, 1,254 parts, 1,178 steps,
+117 builds, 77 lessons) and 24,642 links.
 
-### 10.3 Example queries
+### 10.3 Example queries (run in the Aura console's Query tab, which draws them as a graph)
 
 ```cypher
-// the parts a step needs (3D or Arduino lesson)
-MATCH (:Lesson {lesson_id: "30161-1"})-[:HAS_STEP]->(s:Step {id: "step-2"})-[:PLACES]->(i:Instance)-[:IS_A]->(p:Part)
-RETURN p.display_name, i.colour, i.print
+// a whole lesson: record, steps, parts list, instances, joins, catalogue parts
+MATCH p=(:Lesson {lesson_id:'blink'})-[:FIRST_STEP|LISTS]->() RETURN p
+UNION MATCH p=(:Step {lesson_id:'blink'})-->() RETURN p
+UNION MATCH p=(:Item {lesson_id:'blink'})-->() RETURN p
+UNION MATCH p=(:Instance {lesson_id:'blink'})-->() RETURN p
 
-// every step, in every lesson, that uses a minifig head
-MATCH (l:Lesson)-[:HAS_STEP]->(s:Step)-[:PLACES]->(:Instance)-[:IS_A]->(:Part {part_type_id: "lego-3626c"})
-RETURN l.name, s.n ORDER BY l.name, s.n
+// the steps graph: the chain from the record, and what each step depends on
+MATCH p=(:Lesson {lesson_id:'blink'})-[:FIRST_STEP]->(:Step)-[:NEXT_STEP*0..]->(:Step) RETURN p
+UNION MATCH p=(:Step {lesson_id:'blink'})-[:DEPENDS_ON]->(:Step) RETURN p
 
-// what a step depends on, all the way back
-MATCH (s:Step {lesson_id: "blink", id: "step-3"})-[:DEPENDS_ON*]->(before:Step) RETURN before.id
+// the physical graph: which instance is joined to which, and by which ports
+MATCH p=(:Instance {lesson_id:'blink'})-[:JOINED|ELECTRICAL]->(:Instance) RETURN p
+
+// the parts: list item -> instance -> catalogue part
+MATCH p=(:Lesson {lesson_id:'blink'})-[:LISTS]->(:Item)-[:ACCOUNTS_FOR]->(:Instance)-[:IS_A]->(:Part) RETURN p
+
+// a booklet lesson: overview -> builds -> steps, and the parts each step places
+MATCH p=(:Lesson {lesson_id:'7268-1-pdf'})-[:FIRST_STEP]->(:Step)-[:SHOWS]->(:Build)-[:STARTS]->(:Step)-[:NEXT_STEP*0..]->(:Step) RETURN p
+UNION MATCH p=(:Step {lesson_id:'7268-1-pdf'})-[:PLACES]->(:Item)-[:IS_A]->(:Part) RETURN p
+
+// every lesson that uses a minifig head
+MATCH (l:Lesson)-[:LISTS]->(:Item)-[:ACCOUNTS_FOR|IS_A*1..2]->(:Part {part_type_id:'lego-3626c'}) RETURN DISTINCT l.name
 ```
 
 ### 10.4 Integration plan
