@@ -31,22 +31,43 @@ PRICES = {"text_in": 0.75, "audio_in": 3.00, "text_out": 4.50, "audio_out": 12.0
 CAP_USD = 4.00  # about 3.70 euro: the page stops the voice here
 WARN_USD = 3.00
 
-RULES = """You are Pip, a warm, patient tutor who teaches a hands-on build by voice, like a friend sitting next to the
+RULES = """You are Pip, a warm, funny tutor who teaches a hands-on build by voice, like a good friend sitting next to the
 learner. They have their hands full, so you speak everything; the screen only shows what you are talking about.
 
+Your personality:
+- Relaxed, playful and human. Joke now and then (a light one, not every turn), react to what they say, and
+  celebrate the small wins ("There it is!"). Never robotic, never a lecture.
+- If they are taking ages, you may gently roast them, like a friend would ("Take your time, the LED's not going
+  anywhere. Well, it's not going to blink by itself either."). Keep it kind: tease the situation, never the
+  person, and offer help right after. Messages like "(It has been 2 minutes since they said anything)" tell you
+  how long it has been.
+
 How you talk:
-- Always speak English, unless the learner speaks to you in another language; then answer in theirs.
-- Short, natural spoken sentences, one or two at a time. No lists, no headings, no markdown, no ids or codes (never
-  say "step-3", "b11", "r1" or a question key; say "the resistor").
+- Always speak English. If what you hear sounds like another language or makes no sense, it is probably English
+  misheard: answer in English, and if you could not follow, ask them to say it again.
+- Short, natural spoken sentences, one or two at a time. No lists, no headings, no markdown, no ids or codes
+  (never say "step-3", "b11", "r1", "led1:A" or a question key).
+- Call parts the short, everyday way: "the resistor", "the LED", "the black wire", "the Arduino". Give the value
+  or colour only the first time, or when it matters to tell two apart. Do not repeat what you have just said, and
+  do not re-list parts they already have.
 - Use their name now and then, not in every sentence.
 - One thing at a time, then let them do it: end with a short check such as "Tell me when it's in."
 - If they interrupt you, stop and listen; answer what they said, not what you were about to say.
 - When they ask a question, answer briefly, then come back to where you were.
-- Be encouraging, never fussy. Celebrate the end.
 - Tool results come back as JSON: never read JSON aloud; say what it means.
 
-What you know: only this lesson (below). Never invent parts, colours, columns, pins or connections that are not in
-it. If they ask something the lesson does not cover, say so honestly and give general, safe advice."""
+What you know: only this lesson (below). Never invent parts, colours, pins or connections that are not in it. If
+they ask something the lesson does not cover, say so honestly and give general, safe advice."""
+
+BREADBOARD = """What matters on the breadboard, and what does not:
+- Column numbers in the steps are only suggestions. Each column on one half of the breadboard is one strip: the
+  holes in that column (on that half) are joined, and the two halves are separate. So any column works, as long as
+  the same legs share a column as in the lesson, and the two legs of one part are in different columns.
+- If the learner uses other columns, that is completely fine: say so, and from then on talk in their columns
+  ("then the LED's long leg goes in your column 12, next to the resistor"). Never insist on the lesson's numbers.
+- What must share a column in this lesson (any column, as long as these are together):
+{strips}
+- What can change: {free}"""
 
 FLOW_HELLO_NEW = """1. Hello. Introduce yourself in one sentence ("Hi, I'm Pip, I'll be your tutor today") and ask their name.
    Then wait for their answer: call no tool and start nothing else until they have told you. When they tell you,
@@ -75,8 +96,9 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
    when they say yes (or right away if they ask to carry on anyway)."""
 FLOW_LEGO = """2. Gather. They have the set, so there is no parts check. Say in one sentence what they will build, and that
    for every step you will tell them which pieces to find first. Then call start_building."""
-FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with its number. For each step, first say which parts
-   to pick up (from the step's parts), then what to do with them. When they say they are done, go on to the next
+FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with its number. If the lesson's first step is gathering
+   the parts and they were already checked, do not repeat it: show it and go straight on. For each step, say which
+   part to pick up (the short way), then what to do with it. When they say they are done, go on to the next
    step. When they seem stuck, give the step's hints, one at a time. After the last step, call finish_lesson and
    celebrate."""
 
@@ -147,6 +169,47 @@ def steps(lesson_id):
             "lesson_type": view.get("lesson_type"), "steps": out}
 
 
+LEG = {"A": "long leg (+)", "C": "short leg (-)", "1": "one leg", "2": "other leg", "a": "one end", "b": "other end"}
+
+
+def _who(node, port):
+    """A port the way a person says it: "the LED's long leg (+)", "the orange wire's other end", "the Arduino's pin 13"."""
+    label = re.sub(r"\s*\(.*?\)", "", node.get("label") or node["id"]).strip()
+    kind = (node.get("type") or "").split("-")[0]
+    if kind in ("arduino", "esp32") or "uno" in (node.get("type") or ""):
+        return f"the Arduino's {'GND' if port.upper().startswith('GND') else 'pin ' + port}"
+    return f"the {label}'s {LEG.get(port, port)}"
+
+
+def breadboard(lesson_id):
+    """The breadboard facts for the tutor: which legs share a column (any column will do), and what can change."""
+    from graph import lesson_store
+    _, g = lesson_store._load(lesson_id)
+    phys, rec = g.get("physical") or {"nodes": [], "edges": []}, g.get("lesson") or {}
+    nodes = {n["id"]: n for n in phys["nodes"]}
+    strips = {}
+    for e in phys["edges"]:
+        if e.get("type") != "joined":
+            continue
+        for a, pa, b, pb in ((e["u"], e.get("u_port"), e["v"], e.get("v_port")), (e["v"], e.get("v_port"), e["u"], e.get("u_port"))):
+            m = re.match(r"(\d+)([tb])\.", str(pb or ""))
+            if a in nodes and b in nodes and (nodes[b].get("type") or "").startswith("breadboard") and m:
+                strips.setdefault((m.group(1), m.group(2)), []).append(_who(nodes[a], str(pa)))
+    lines = [f"  - {' and '.join(sorted(set(v)))} (the lesson uses column {c} on the {'top' if h == 't' else 'bottom'} half)"
+             for (c, h), v in sorted(strips.items(), key=lambda kv: int(kv[0][0])) if len(set(v)) > 1]
+    sub = rec.get("substitutions") or {}
+    free = []
+    for pin, v in (sub.get("pins") or {}).items():
+        free.append(f"the Arduino's pin {pin.split(':')[1]} can be any of {', '.join(v.get('stand_ins', [])[:8])}... "
+                    f"(then the sketch must use that pin too), but never {' or '.join(v.get('refused', {}))}")
+    for inst, v in (sub.get("parts") or {}).items():
+        n = nodes.get(inst)
+        if n:
+            what = ", ".join(v.get("free") or []) or ("value" if v.get("value") else "")
+            free.append(f"the {re.sub(r'[(].*?[)]', '', n.get('label') or inst).strip()}'s {what} ({v.get('why', '')})")
+    return BREADBOARD.format(strips="\n".join(lines) or "  - (no breadboard in this lesson)", free="; ".join(free) or "nothing")
+
+
 def brief(lesson_id, name=None):
     """The tutor's instructions: how to talk, how the session goes (hello, gather, check, build), then the lesson."""
     les = steps(lesson_id)
@@ -161,6 +224,8 @@ def brief(lesson_id, name=None):
         lines.append("The parts to gather: " + "; ".join(
             f'{r["count"]}x {r["name"]}' + (f' ({", ".join(sorted({str(v) for v in r["values"] if v}))})'
                                              if any(r["values"]) else "") for r in gather.needs(rec, phys)))
+    if arduino:
+        lines += ["", breadboard(lesson_id)]
     lines.append("")
     for s in les["steps"]:
         lines.append(f'Step {s["n"]} ({s["kind"]}): {s["text"]}')

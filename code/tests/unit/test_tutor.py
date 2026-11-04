@@ -34,3 +34,12 @@ def test_the_session_starts_with_the_name_and_checks_parts_only_for_electronics(
     assert {"open_camera", "take_photo", "check_parts", "take_closeup"} <= set(arduino)
     assert not {"open_camera", "check_parts"} & set(lego) and "start_building" in lego
     assert "no parts check" in live.brief("7268-1-pdf")
+
+
+def test_the_tutor_knows_columns_do_not_matter_only_what_shares_one():
+    b = live.breadboard("blink")
+    assert "Never insist on the lesson's numbers" in b
+    assert "resistor's other leg and the LED's long leg (+)" in b  # the column they must share, any column
+    assert "never 0 or 1" in b  # the pin can move, but not to the serial pins
+    brief = live.brief("blink")
+    assert "Always speak English" in brief and "roast" in brief and "the short, everyday way" in brief

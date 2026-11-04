@@ -561,7 +561,23 @@ function tutorStop() {
   try { T.rec && T.rec.abort(); } catch {} T.rec = null; try { speechSynthesis.cancel(); } catch {}
   $('t-start').textContent = 'Start with Pip'; $('t-mute').hidden = true; state('off', 'Paused. Press start to carry on.');
 }
+// long silences go to Pip, so it can check in, tease a little, or offer a break
+const NUDGES = [[90, '(It has been about 90 seconds since the learner said anything. Check in briefly, with a light joke if it fits.)'],
+                [180, '(It has been 3 minutes since they said anything. Gently tease them about taking their time, then offer a hint or help.)'],
+                [300, '(It has been 5 minutes. Ask, briefly, if they want a break or some help.)']];
+T.lastActive = Date.now(); T.nudged = 0;
+function active() { T.lastActive = Date.now(); T.nudged = 0; }
+setInterval(() => {
+  if (!T.on || STAGE === 'done' || T.sources.length || T.speaking || freeBusy || $('r-working').innerHTML) return;
+  const idle = (Date.now() - T.lastActive) / 1000, next = NUDGES[T.nudged];
+  if (next && idle >= next[0]) { T.nudged++; send(next[1]); }
+}, 5000);
+function send(text) {
+  if (T.mode === 'live') { if (T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { text } })); }
+  else freeAsk(text);
+}
 function tell(text) {  // what the learner did on the screen, or typed
+  active();
   if (!T.on) return;
   if (T.mode === 'live') { if (T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { text } })); }
   else freeAsk(text);
@@ -617,9 +633,9 @@ function onLive(m, first, resumed) {
   if (sc) {
     if (sc.interrupted) { stopPlayback(); state('listening', 'Listening…'); }
     for (const p of (sc.modelTurn && sc.modelTurn.parts) || []) if (p.inlineData && p.inlineData.data) play(p.inlineData.data);
-    if (sc.inputTranscription && sc.inputTranscription.text) caption('learner', sc.inputTranscription.text, true);
+    if (sc.inputTranscription && sc.inputTranscription.text) { active(); caption('learner', sc.inputTranscription.text, true); }
     if (sc.outputTranscription && sc.outputTranscription.text) caption('tutor', sc.outputTranscription.text, true);
-    if (sc.turnComplete) T.line = null;
+    if (sc.turnComplete) { T.line = null; T.lastActive = Date.now(); }
   }
   if (m.toolCall) for (const fc of m.toolCall.functionCalls || []) {
     runTool(fc.name, fc.args).then(result => {
@@ -655,7 +671,7 @@ async function freeStart(first) {
   if (SR) {
     const rec = new SR(); T.rec = rec; rec.continuous = true; rec.interimResults = true; rec.lang = navigator.language || 'en-GB';
     rec.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i], text = r[0].transcript.trim(); if (!text) continue;
-      if (T.speaking && soundsLikeMe(text)) continue; if (T.speaking) { speechSynthesis.cancel(); T.speaking = false; } if (r.isFinal) { caption('learner', text); freeAsk(text); } } };
+      if (T.speaking && soundsLikeMe(text)) continue; if (T.speaking) { speechSynthesis.cancel(); T.speaking = false; } if (r.isFinal) { active(); caption('learner', text); freeAsk(text); } } };
     rec.onend = () => { if (T.on && !T.muted && T.rec === rec) { try { rec.start(); } catch {} } };
     rec.start();
   } else caption('sys', 'This browser has no speech recognition: type to Pip below (Chrome or Safari can listen).');
