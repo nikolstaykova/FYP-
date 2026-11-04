@@ -214,8 +214,11 @@ def breadboard(lesson_id):
     sub = rec.get("substitutions") or {}
     free = []
     for pin, v in (sub.get("pins") or {}).items():
-        free.append(f"the Arduino's pin {pin.split(':')[1]} can be any of {', '.join(v.get('stand_ins', [])[:8])}... "
-                    f"(then the sketch must use that pin too), but never {' or '.join(v.get('refused', {}))}")
+        if not isinstance(v, dict):
+            continue
+        never = " or ".join(v.get("refused") or {})
+        free.append(f"the Arduino's pin {str(pin).split(':')[-1]} can be any of {', '.join(map(str, (v.get('stand_ins') or [])[:8]))}... "
+                    f"(then the sketch must use that pin too)" + (f", but never {never}" if never else ""))
     for inst, v in (sub.get("parts") or {}).items():
         n = nodes.get(inst)
         if n:
@@ -239,7 +242,10 @@ def brief(lesson_id, name=None):
             f'{r["count"]}x {r["name"]}' + (f' ({", ".join(sorted({str(v) for v in r["values"] if v}))})'
                                              if any(r["values"]) else "") for r in gather.needs(rec, phys)))
     if arduino:
-        lines += ["", breadboard(lesson_id)]
+        try:
+            lines += ["", breadboard(lesson_id)]
+        except Exception:  # a lesson whose data has an unexpected shape still gets a tutor
+            lines += ["", BREADBOARD.split("- What must share")[0].rstrip()]
     lines.append("")
     for s in les["steps"]:
         lines.append(f'Step {s["n"]} ({s["kind"]}): {s["text"]}')

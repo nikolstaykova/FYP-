@@ -44,3 +44,15 @@ def test_the_tutor_knows_columns_do_not_matter_only_what_shares_one():
     brief = live.brief("blink")
     assert brief.startswith("RESPOND IN ENGLISH") and "roast" in brief and "the short, everyday way" in brief
     assert "call use_column first" in brief
+
+
+def test_every_lesson_gets_a_tutor_brief():
+    # Capacitance Meter and 10 other lessons once failed: their pin data is "13", not "uno:13"
+    from graph import lesson_store
+    failed = []
+    for row in lesson_store.catalogue()["lessons"]:
+        try:
+            assert "Step 1 (" in live.brief(row["lesson_id"])
+        except Exception as e:  # noqa: BLE001
+            failed.append((row["lesson_id"], repr(e)[:80]))
+    assert failed == []
