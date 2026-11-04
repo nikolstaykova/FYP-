@@ -1075,15 +1075,31 @@ scratch, rebuilds, the store validator, `parts.json` rebuilt unchanged).
 
 ## 10. The database: Neo4j (being integrated, November 2026)
 
-**Status (4 November 2026):** the instance is running (AuraDB Free, `bac9405c`, Belgium) and **everything is loaded**:
-the 77 lessons and the 1,254-part catalogue, 16,624 nodes and 25,669 links (under a tenth of the free tier), every
-lesson checked against its files (`./pinpoint db check`). Saving a lesson (`lesson_store.register`) now updates it in
-the database too. Still to do: the code *reading* from the database (§10.4 step 4) and the file store for pictures.
-Until then the JSON files in `data/lessons/store/` and `code/graph/parts/` stay the source, and the database is
-rebuilt from them.
+**Status (4 November 2026): the code works on the database.** The instance is running (AuraDB Free, `bac9405c`,
+Belgium) and holds the 77 lessons and the 1,254-part catalogue (16,624 nodes, 25,669 links, under a tenth of the free
+tier). Reading: the lesson store (`lesson_store._load`, `catalogue`, the assembler), the parts catalogue
+(`part_catalogue.load`), so every check (`lesson_store validate`), the gather parts check (the lesson's parts and
+instances, and the catalogue), the tutor tools and the parts lab read from the database. Writing: saving a lesson
+(`lesson_store.register`) and saving the catalogue (`part_catalogue.save`, so also a part found by research) go to
+the database as well as to the files. The files stay as the backup and for git. Checked: every lesson and part read
+back from the database is exactly as in the files (`./pinpoint db check`), and the validator, the assembler and the
+gather check give the same results from either. Still to do: the file store for pictures (§10.4 step 5).
 
-Commands: `./pinpoint db load` (everything; or `./pinpoint db load blink fade` for some lessons), `./pinpoint db
-check` (counts per lesson against the files), `./pinpoint db stats`. Code: `code/graph/db.py`; tests:
+How the code chooses: the database when `.env` has `NEO4J_URI`, `NEO4J_USERNAME` and `NEO4J_PASSWORD`; the files
+with `PINPOINT_DATA=files` (the tests set it, so they run offline) or when the database cannot be reached (one
+warning, then the files for the rest of that run). Reads are cached per run; a whole-store run (the validator, the
+parts lab) fetches every lesson in three queries.
+
+**Exactly the files' data:** every node and link also keeps the element it was made from (`src`) and its place in
+its file (`nseq`, `iseq`, `pseq`); the lesson keeps its record, its index row and each graph's own fields. So a
+lesson read back is the same `lesson.json`, `instruction.json` and `physical.json`, and the code built on those
+works unchanged. Elements the graph shape folds away are kept too: a step's `MAKES` link on the join it makes
+(`src_makes`), a booklet step's one `PLACES` edge on the first copy it places. Booklet copies made from the parts
+list are marked `derived` and are not part of what is read back.
+
+Commands: `./pinpoint db load` (everything from the files; or `./pinpoint db load blink fade` for some lessons),
+`./pinpoint db check` (counts per lesson, and every lesson and part read back, against the files), `./pinpoint db
+stats`. Code: `code/graph/db.py`; tests:
 `code/tests/unit/test_db.py`.
 
 **What:** Neo4j AuraDB Free (a property-graph database), region Belgium (EU). The lesson data is already a
@@ -1224,8 +1240,9 @@ MATCH (l:Lesson)-[:NEEDS]->(:Part {part_type_id:'lego-3626c'}) RETURN l.lesson_i
    (`lesson_store.register`) is reloaded on its own.
 3. **Checked against the JSON** (done; `./pinpoint db check`, and the queries in §10.3 run on the live data): counts per lesson (steps, instances, joins, parts) and the example queries give
    the same answers as reading the files.
-4. **Code reads from the database:** the lesson store's read path, the gather check's catalogue, the tutor tools
-   (`tutor_mcp.py`); the JSON files stay as the export and backup.
+4. **Code reads from the database** (done): the lesson store's read path (and so the assembler, the validator, the
+   tutor tools), the parts catalogue, the gather check's lesson, instances and catalogue, the parts lab; saving a
+   lesson or the catalogue writes to the database too. The JSON files stay as the backup.
 5. **File storage** for the step pictures and learners' photos (EU region); `Step.picture` and `Check` hold the links.
 6. **The phone app** talks to our server, not to the database directly (the database password stays on the server).
 

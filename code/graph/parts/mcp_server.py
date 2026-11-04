@@ -76,6 +76,9 @@ def lookup(name, type_id=None, store=None):
     if card is None:
         card, stats, trail = ingest.ingest_part(name, "electronics", store, wanted_id=type_id, label=name, max_llm_calls=3)
         source = "approved site (added to the database)"
+        if card is not None:  # the new card into the catalogue, and so into the database (graph.db)
+            from graph.parts import part_catalogue
+            part_catalogue.build()
     if card is None:
         return {"found": False, "searched": [f"{site}: {what}" for site, what in trail],
                 "advice": "Not in the database or on the approved sites: add it to new_part_types yourself."}

@@ -2086,8 +2086,13 @@ the example queries on the live data, and saving a lesson updates the database. 
 parts lists name a resistor by its value (`resistor-220`, CircuitQuest's name); it is loaded as the part
 `resistor` with the value on the link, by the lesson store's own rule.
 
-**Next:** the code reading from the database (lesson store, gather check, tutor tools) and the file store for
-pictures.
+**Done 4 November (later):** the code works on the database. Every node and link keeps the element it came from, so
+a lesson or part read back is exactly the files' (checked for all 77 lessons and 1,254 parts); the lesson store,
+the parts catalogue, the validator, the gather check and the parts lab read from it, and saving a lesson or the
+catalogue writes to it. The validator, the assembler and the gather check give the same results from the database
+as from the files (the validator in about 5 s, fetching the store in three queries).
+
+**Next:** the file store for the step pictures and learners' photos.
 
 ## Next steps
 

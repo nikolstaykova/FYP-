@@ -7,7 +7,8 @@ What it is   the learner uploads a few photos of their parts. 1 LOOK (Claude, al
              what changes (pins moved, sketch lines rewritten). 5 RESEARCH: an object the catalogue does not know is
              looked up on the approved sites and carded (parts/mcp_server.lookup), then tried as a substitute.
 Used for     the gather step before building; RECOGNITION.md section 2. The model choice is from the comparison there.
-Where        reads the lesson store (data/lessons/store/<id>/lesson.json, assembled.json, physical.json) and the parts catalogue;
+Where        reads the lesson (record, assembled parts list, physical graph) and the parts catalogue through the lesson store,
+             from the database when it is set up (graph.db), else the files;
              research adds cards to the electronics card store, as any new lesson's parts do.
 Run          ./pinpoint checker.gather blink photo1.jpg photo2.jpg [--model opus] [--no-research]
 """
@@ -66,11 +67,13 @@ class Looked(BaseModel):
 
 # ---- the lesson --------------------------------------------------------------------------------------------------
 def lesson(lesson_id):
-    """The lesson record, with the parts list from assembled.json (type, count, instances per part)."""
-    rec = json.loads((STORE / lesson_id / "lesson.json").read_text())
-    rec["parts_list"] = json.loads((STORE / lesson_id / "assembled.json").read_text())["parts_list"]
-    phys = json.loads((STORE / lesson_id / "physical.json").read_text())
-    return rec, phys
+    """The lesson record, with the assembled parts list (type, count, instances per part), and its physical graph
+    (the part instances): from the database when it is set up, through the lesson store."""
+    from graph import lesson_store
+    _, graphs = lesson_store._load(lesson_id)
+    rec = dict(graphs["lesson"])
+    rec["parts_list"] = lesson_store.assemble(lesson_id)["parts_list"]
+    return rec, graphs.get("physical") or {"nodes": [], "edges": []}
 
 
 def needs(rec, phys):

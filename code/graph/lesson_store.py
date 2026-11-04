@@ -79,6 +79,12 @@ def _read(path, default=None):
 
 
 def catalogue(store=None):
+    """The lesson index: from the database when it is set up (graph.db), else catalogue.json."""
+    if store is None or pathlib.Path(store) == STORE:
+        from graph import db
+        rows = db.index()
+        if rows is not None:
+            return {"lessons": rows}
     return _read((store or STORE) / "catalogue.json", {"lessons": []})
 
 
@@ -116,17 +122,12 @@ def sync_db(lesson_id, store=None):
     Off with PINPOINT_DB_SYNC=0 (tests, and lessons saved to another store)."""
     if os.environ.get("PINPOINT_DB_SYNC", "1") == "0" or (store and pathlib.Path(store) != STORE):
         return None
-    try:
-        from graph import db
-        db.settings()
-    except Exception:
-        return None  # no database set up
-    try:
-        with db.driver() as d:
-            return db.load_lesson(d, lesson_id, store)
-    except Exception as e:  # paused, offline, wrong password
-        print(f"  database: {lesson_id} not updated ({type(e).__name__}); run ./pinpoint db load {lesson_id}")
-        return None
+    from graph import db
+    done = db.save_lesson(lesson_id, store)
+    if done is None and db.enabled() is False and db._STATE["off"]:
+        print(f"  database: {lesson_id} not updated; run ./pinpoint db load {lesson_id}")
+    _CARDS.clear()
+    return done
 
 
 STEP_KINDS = ("step", "gather", "build", "upload", "overview")  # the NEXT_STEP chain; other nodes hang off it
@@ -226,6 +227,17 @@ def _load(lesson_id, store=None):
     """(the lesson's index row with its record's facts, {kind: graph}): index -> lesson record -> the graphs it lists.
     `representations` is put together here from the record's paths; it is not stored a second time."""
     store = store or STORE
+    if pathlib.Path(store) == STORE:  # the database, when it is set up (graph.db): the lesson exactly as the files
+        from graph import db
+        got = db.lesson(lesson_id)
+        if got is not None:
+            rec, row = got["lesson"], got["row"] or {"lesson_id": lesson_id, "name": got["lesson"].get("name"),
+                                                     "lesson_type": got["lesson"].get("lesson_type"),
+                                                     "lesson": f"{lesson_id}/lesson.json"}
+            reps = {"lesson": row.get("lesson"), **(rec.get("graphs") or {})}
+            info = {**row, "title": rec.get("name", row.get("name")), "source": rec.get("source"),
+                    "derived_from": rec.get("derived_from"), "representations": reps}
+            return info, {k: (rec if k == "lesson" else got.get(k)) if v else None for k, v in reps.items()}
     row = next((r for r in catalogue(store)["lessons"] if r["lesson_id"] == lesson_id), None)
     if row is None:
         raise KeyError(f"{lesson_id} is not in the lesson catalogue")
@@ -318,7 +330,11 @@ _CARDS = {}
 
 def _cards(rel):
     if rel not in _CARDS:
-        _CARDS[rel] = json.loads((ROOT / rel).read_text())
+        if rel == PARTS:  # the parts catalogue: from the database when it is set up
+            from graph.parts import part_catalogue
+            _CARDS[rel] = part_catalogue.load()
+        else:
+            _CARDS[rel] = json.loads((ROOT / rel).read_text())
     return _CARDS[rel]
 
 
@@ -962,7 +978,7 @@ def lesson(lid, row):
     if miss:
         out.append(("L1", f"the record lacks {', '.join(miss)}"))
     for k, p in (rec.get("graphs") or {}).items():
-        if p and not (lesson_store.STORE / p).exists():
+        if p and g.get(k) is None:  # not in the database, or its file is missing
             out.append(("L1", f"the {k} graph {p} is missing"))
     try:
         checks = lesson_store.assemble(lid)["checks"]
@@ -1013,8 +1029,10 @@ def lesson(lid, row):
 def run():
     from graph.parts import part_catalogue  # here: they import this module
     t0 = time.monotonic()
+    from graph import db
+    db.prefetch()  # the whole store from the database in one go, when it is set up
     lessons = {}
-    for row in json.loads((lesson_store.STORE / "catalogue.json").read_text())["lessons"]:
+    for row in lesson_store.catalogue()["lessons"]:
         lessons[row["lesson_id"]] = {"type": row.get("lesson_type"), "issues": lesson(row["lesson_id"], row)}
     parts = {}
     for t, v in part_catalogue.load().items():

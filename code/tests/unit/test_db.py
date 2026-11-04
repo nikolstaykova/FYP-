@@ -65,3 +65,15 @@ def test_every_node_has_a_readable_name_for_the_browser():
     assert db.caption({"id": "heart-roof-5.1", "kind": "step"}) == "Step 5.1 · heart roof"  # a sub-build step
     parts, ports = db.part_rows({"led": {"display_name": "LED", "ports": [{"id": "A", "kind": "lead"}]}})
     assert parts[0]["props"]["name"] == "LED" and ports[0]["props"]["name"] == "A"
+
+
+def test_the_files_are_used_when_the_database_is_switched_off(monkeypatch):
+    # the tests run with PINPOINT_DATA=files: nothing is read from or written to the database
+    monkeypatch.setenv("PINPOINT_DATA", "files")
+    from graph import lesson_store
+    from graph.parts import part_catalogue
+    assert db.enabled() is False and db.lesson("blink") is None and db.parts_text() is None and db.index() is None
+    assert db.save_lesson("blink") is None and db.save_parts({}, {}) is None
+    assert "led" in part_catalogue.load()
+    _, graphs = lesson_store._load("blink")
+    assert graphs["physical"]["nodes"] and graphs["lesson"]["lesson_id"] == "blink"

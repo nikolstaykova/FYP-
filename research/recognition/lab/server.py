@@ -66,7 +66,10 @@ def env_keys():
 
 
 def lessons():
-    """The saved electronics lessons (LEGO sets are named like 7613-1 and have no parts check yet)."""
+    """The saved electronics lessons (LEGO sets are named like 7613-1 and have no parts check yet), from the
+    database when it is set up (one query for all of them), else the files."""
+    from graph import db
+    db.prefetch()
     out = []
     for d in sorted(STORE.iterdir()):
         if re.fullmatch(r'\d+-\d+', d.name) or not all((d / f).exists() for f in

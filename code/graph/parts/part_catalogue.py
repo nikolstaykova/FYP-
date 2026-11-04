@@ -269,6 +269,12 @@ SUBSTITUTES = {
 
 
 def load(path=PATH):
+    """The catalogue: from the database when it is set up (graph.db), else parts.json. A fresh copy each time."""
+    if pathlib.Path(path) == PATH:
+        from graph import db
+        raw = db.parts_text()
+        if raw:
+            return json.loads(raw)
     return json.loads(path.read_text()) if path.exists() else {}
 
 
@@ -281,7 +287,12 @@ def swaps(part, port, parts=None):
 
 
 def save(parts, path=PATH):
+    """parts.json, and the parts that changed into the database (graph.db) when it is set up."""
+    old = json.loads(path.read_text()) if path.exists() else {}
     path.write_text(json.dumps(dict(sorted(parts.items())), indent=1))
+    if pathlib.Path(path) == PATH:
+        from graph import db
+        db.save_parts(json.loads(json.dumps(parts)), old)
 
 
 def of_domain(parts, domain):
