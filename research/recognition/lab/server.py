@@ -83,8 +83,18 @@ def lessons():
                       'values': sorted({str(v) for v in r.get('values', []) if v})} for r in gather.needs(rec, phys)]
         except Exception:
             continue
-        out.append({'id': row["lesson_id"], 'name': rec.get('name') or row["lesson_id"], 'parts': parts})
+        out.append({'id': row["lesson_id"], 'name': rec.get('name') or row["lesson_id"], 'type': 'arduino',
+                    'parts': parts})
     return sorted(out, key=lambda x: x["name"].lower())
+
+
+def lego_lessons():
+    """The LEGO lessons (3D model and booklet): no parts check (the learner has the set), straight to building."""
+    from graph import lesson_store
+    rows = [r for r in lesson_store.catalogue()["lessons"] if r.get("lesson_type") == "lego"]
+    return sorted(({"id": r["lesson_id"], "name": r.get("name") or r["lesson_id"], "type": "lego",
+                    "kind": "booklet" if r["lesson_id"].endswith("-pdf") else "3D model", "parts": []} for r in rows),
+                  key=lambda x: (x["name"].lower(), x["kind"]))
 
 
 def run_check(upload, lesson_id, model, research, repeat):
@@ -198,7 +208,20 @@ class Handler(BaseHTTPRequestHandler):
         if not self.allowed(q):
             return self.send(403, {'error': 'wrong or missing key in the link'})
         if u.path == '/api/lessons':
-            return self.send(200, lessons())
+            return self.send(200, lessons() + (lego_lessons() if q.get('all') else []))
+        if u.path == '/api/lesson':  # a lesson's steps for the build screen and the tutor
+            from tutor import live
+            out = live.steps(q.get('id', [''])[0])
+            for st in out['steps']:
+                st['picture'] = f"/files/{st['picture']}" if st['picture'] else None
+            return self.send(200, out)
+        if u.path.startswith('/files/'):  # booklet step pictures only
+            rel = u.path[len('/files/'):]
+            f = (ROOT / rel).resolve()
+            if not (rel.startswith('data/lessons/booklet/') and f.is_file() and f.suffix in ('.png', '.jpg')
+                    and str(f).startswith(str((ROOT / 'data/lessons/booklet').resolve()))):
+                return self.send(404, {'error': 'not found'})
+            return self.send(200, f.read_bytes(), 'image/png' if f.suffix == '.png' else 'image/jpeg')
         if u.path == '/api/models':
             have = env_keys()
             return self.send(200, [{'id': m, 'label': lab, 'price': p, 'ready': k in have, 'key': k}
@@ -234,6 +257,13 @@ class Handler(BaseHTTPRequestHandler):
                 (RUNS / up / 'upload.json').write_text(json.dumps({'names': [p.get('name') for p in body['photos']],
                                                                    'lesson': body.get('lesson')}))
                 return self.send(200, {'upload': up})
+            if u.path == '/api/tutor/session':  # a Gemini Live session for the voice tutor (single-use token)
+                from tutor import live
+                return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers'))))
+            if u.path == '/api/tutor/reply':  # the free-voices mode: Haiku writes the tutor's next words
+                from tutor import live
+                return self.send(200, live.reply(body['lesson'], body.get('history') or [], body.get('text') or '',
+                                                 body.get('step')))
             if u.path.startswith('/api/flow/'):
                 action = u.path.rsplit('/', 1)[1]
                 if action not in ('first', 'closeup', 'dismiss', 'state') or \

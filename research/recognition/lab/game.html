@@ -30,7 +30,7 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .toplink:hover { color: var(--ink); }
 
 /* progress through the quest */
-.track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 18px; }
+.track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 18px; }
 .track div { font-size: 12px; color: var(--muted); text-align: center; }
 .track div::before { content: ""; display: block; height: 6px; border-radius: 99px; background: var(--line); margin-bottom: 6px; }
 .track div.done::before, .track div.on::before { background: var(--accent); }
@@ -113,6 +113,46 @@ h2 { font-size: 18px; margin: 0 0 10px; }
 details.more { margin-top: 10px; color: var(--muted); font-size: 13px; }
 details.more summary { cursor: pointer; }
 #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+
+/* 5 · build with Pip */
+.group { margin: 18px 0 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.chip.lego { background: #fdeee6; color: #b4501f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chip.lego { background: #3a2318; color: #f0a27a; } }
+.build { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 760px) { .build { grid-template-columns: minmax(0, 1fr); } }
+.stephead { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.steptext { font-size: 19px; line-height: 1.45; margin: 8px 0 12px; }
+.stepgoal { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
+#b-pic { width: 100%; max-height: 300px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid var(--line); margin: 6px 0; }
+.partchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
+.partchips span { font-size: 13px; padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--ink); }
+.dots { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+.dots button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--muted); font-size: 11px; cursor: pointer; padding: 0; }
+.dots button.done { background: var(--good-bg); color: var(--good); border-color: transparent; }
+.dots button.on { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.tutor { position: sticky; top: 12px; }
+.pip { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.orb { width: 54px; height: 54px; border-radius: 50%; flex: 0 0 auto; background: radial-gradient(circle at 35% 35%, #9db4ff, var(--accent)); box-shadow: 0 0 0 0 rgba(47,91,211,.35); transition: transform .2s; }
+.orb.speaking { animation: talk 1s ease-in-out infinite; }
+.orb.listening { box-shadow: 0 0 0 6px rgba(31,122,74,.25); background: radial-gradient(circle at 35% 35%, #9fe0bb, var(--good)); }
+.orb.thinking { animation: think 1.4s linear infinite; }
+.orb.off { filter: grayscale(1); opacity: .6; }
+@keyframes talk { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(47,91,211,.35); } 50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(47,91,211,0); } }
+@keyframes think { to { filter: hue-rotate(360deg); } }
+.pip b { display: block; font-size: 17px; }
+.pip span { color: var(--muted); font-size: 13px; }
+.captions { max-height: 280px; overflow-y: auto; display: grid; gap: 6px; margin: 12px 0; font-size: 14px; }
+.captions div { padding: 8px 10px; border-radius: 10px; }
+.captions .tutor-line { background: var(--accent-soft); }
+.captions .learner-line { background: var(--bg); justify-self: end; max-width: 90%; }
+.captions .sys { color: var(--muted); font-size: 12px; text-align: center; padding: 2px; }
+#t-form { display: flex; gap: 8px; }
+#t-text { flex: 1; min-width: 0; font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.settings { display: grid; gap: 6px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.settings select { font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px; }
+.costbar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 4px; }
+.costbar div { height: 100%; width: 0; background: var(--good); }
+@media (prefers-reduced-motion: reduce) { .orb.speaking, .orb.thinking { animation: none; } }
 @media (max-width: 520px) { h1 { font-size: 22px; } .ring { width: 72px; height: 72px; } .ring span { width: 56px; height: 56px; font-size: 17px; } }
 @media (prefers-reduced-motion: reduce) { .lesson, .meter div { transition: none; } .spin { animation-duration: 2s; } }
 </style>
@@ -125,7 +165,7 @@ details.more summary { cursor: pointer; }
     <a class="toplink" id="labLink" href="/lab">Lab tools →</a>
   </header>
   <nav class="track" aria-label="Progress">
-    <div data-s="choose">Choose</div><div data-s="gather">Gather</div><div data-s="scan">Scan</div><div data-s="check">Check</div>
+    <div data-s="choose">Choose</div><div data-s="gather">Gather</div><div data-s="scan">Scan</div><div data-s="check">Check</div><div data-s="build">Build</div>
   </nav>
 
   <!-- 1 · choose a lesson -->
@@ -196,6 +236,39 @@ details.more summary { cursor: pointer; }
       <div class="stats" id="r-stats"></div>
     </div>
   </section>
+  <!-- 5 · build, with Pip the voice tutor -->
+  <section id="s-build" class="hidden">
+    <div class="build">
+      <div class="card">
+        <div class="stephead"><span id="b-count"></span><span id="b-lesson"></span></div>
+        <h1 id="b-title"></h1>
+        <img id="b-pic" alt="The booklet's picture of this step" hidden>
+        <p class="steptext" id="b-text"></p>
+        <p class="stepgoal" id="b-goal"></p>
+        <div class="partchips" id="b-parts"></div>
+        <details id="b-hints" class="more"><summary>Stuck? Hints</summary><ul id="b-hintlist"></ul></details>
+        <div class="row" style="margin-top:12px">
+          <button class="btn ghost small" id="b-prev">Back</button>
+          <button class="btn" id="b-next">Done: next step</button>
+        </div>
+        <div class="dots" id="b-dots"></div>
+      </div>
+      <div class="card tutor">
+        <div class="pip"><div class="orb off" id="orb"></div><div><b>Pip</b><span id="t-state">Your tutor. Press start and just talk.</span></div></div>
+        <div class="row">
+          <button class="btn" id="t-start">Start lesson with Pip</button>
+          <button class="btn ghost small" id="t-mute" hidden>Mute mic</button>
+        </div>
+        <div class="captions" id="t-caps" aria-live="polite"></div>
+        <form id="t-form"><input id="t-text" placeholder="Or type a question…" autocomplete="off"><button class="btn small">Send</button></form>
+        <div class="settings">
+          <label>Voice <select id="t-mode"><option value="live">Natural (Gemini Live)</option><option value="free">Free (browser voice + Haiku)</option></select></label>
+          <label><input type="checkbox" id="t-speakers"> I'm on speakers, not headphones (fewer false interruptions)</label>
+          <div><span id="t-cost">0.0¢ so far</span> · limit €4 per lesson<div class="costbar"><div id="t-costbar"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <script>
@@ -213,8 +286,9 @@ let LESSONS = [], L = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = n
 
 // ---- screens
 function go(s) {
-  ['choose', 'gather', 'scan', 'check'].forEach(x => $('s-' + x).classList.toggle('hidden', x !== s));
-  const order = ['choose', 'gather', 'scan', 'check'];
+  ['choose', 'gather', 'scan', 'check', 'build'].forEach(x => $('s-' + x).classList.toggle('hidden', x !== s));
+  const order = ['choose', 'gather', 'scan', 'check', 'build'];
+  if (s !== 'build' && typeof tutorStop === 'function') tutorStop();
   document.querySelectorAll('.track div').forEach(d => {
     const i = order.indexOf(d.dataset.s), j = order.indexOf(s);
     d.classList.toggle('on', i === j); d.classList.toggle('done', i < j);
@@ -225,23 +299,33 @@ function go(s) {
 
 // ---- 1 · lessons
 async function init() {
-  try { LESSONS = await fetch(api('/api/lessons')).then(r => r.json()); }
+  try { LESSONS = await fetch(api('/api/lessons?all=1')).then(r => r.json()); }
   catch (e) { $('lessons').innerHTML = `<p class="err">Could not load lessons: ${esc(e.message)}</p>`; return; }
   if (LESSONS.error) { $('lessons').innerHTML = `<p class="err">${esc(LESSONS.error)}</p>`; return; }
   drawLessons();
 }
 function drawLessons() {
   const q = $('search').value.trim().toLowerCase();
-  const list = LESSONS.filter(l => !q || (l.name + ' ' + l.parts.map(p => p.name).join(' ')).toLowerCase().includes(q));
-  $('lessons').innerHTML = list.map(l => {
+  const list = LESSONS.filter(l => !q || (l.name + ' ' + l.type + ' ' + l.parts.map(p => p.name).join(' ')).toLowerCase().includes(q));
+  const card = l => {
+    if (l.type === 'lego') return `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b>
+      <span class="meta">LEGO · from the ${esc(l.kind)}</span><span class="chips"><span class="chip lego">you have the set: straight to building</span></span></button>`;
     const n = l.parts.reduce((a, p) => a + (p.count || 1), 0);
     return `<button class="lesson" data-id="${esc(l.id)}"><b>${esc(l.name)}</b>
       <span class="meta">${n} part${n === 1 ? '' : 's'} to gather</span>
       <span class="chips">${l.parts.slice(0, 4).map(p => `<span class="chip">${esc(p.name)}</span>`).join('')}${l.parts.length > 4 ? `<span class="chip">+${l.parts.length - 4}</span>` : ''}</span></button>`;
-  }).join('') || '<p class="note">No lesson matches that.</p>';
+  };
+  const ard = list.filter(l => l.type !== 'lego'), lego = list.filter(l => l.type === 'lego');
+  $('lessons').innerHTML = (ard.length ? `<div class="group" style="grid-column:1/-1">Electronics · gather, check, then build</div>` + ard.map(card).join('') : '')
+    + (lego.length ? `<div class="group" style="grid-column:1/-1">LEGO · build step by step</div>` + lego.map(card).join('') : '')
+    || '<p class="note">No lesson matches that.</p>';
 }
 $('search').addEventListener('input', drawLessons);
-$('lessons').addEventListener('click', e => { const b = e.target.closest('.lesson'); if (b) startLesson(b.dataset.id); });
+$('lessons').addEventListener('click', e => {
+  const b = e.target.closest('.lesson'); if (!b) return;
+  const l = LESSONS.find(x => x.id === b.dataset.id);
+  if (l.type === 'lego') { L = l; startBuild(); } else startLesson(b.dataset.id);
+});
 
 // ---- 2 · gather: a checklist the learner ticks as they collect
 function startLesson(id) {
@@ -376,9 +460,10 @@ function show(st) {
       <div class="row"><button class="btn small" data-close="${esc(q.key)}">Take a close-up</button>
       <label class="btn ghost small" style="cursor:pointer"><input type="file" accept="image/*" data-up="${esc(q.key)}" hidden>Upload a photo</label>
       <button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? 'I don\'t have it' : 'Skip'}</button></div></div>`).join('');
-  $('r-actions').innerHTML = (complete && done ? `<button class="btn" id="again">Choose the next build</button>` :
-    `<button class="btn ghost small" id="rescan">Scan again</button><button class="btn ghost small" id="again">Choose another build</button>`);
+  $('r-actions').innerHTML = (complete && done ? `<button class="btn" id="build">Start building with Pip</button><button class="btn ghost small" id="again">Choose another build</button>` :
+    `<button class="btn ghost small" id="rescan">Scan again</button><button class="btn ghost small" id="build">Build anyway</button><button class="btn ghost small" id="again">Choose another build</button>`);
   $('again').onclick = () => go('choose');
+  $('build').onclick = () => startBuild();
   if ($('rescan')) $('rescan').onclick = () => { PHOTOS = []; drawThumbs(); go('scan'); };
   $('r-extra').innerHTML = (st.not_needed || []).length ? '<p><b>Also on the table, not needed:</b> ' + st.not_needed.map(x => `${x.count}× ${esc(x.object)}`).join(', ') + '</p>' : '';
   $('r-report').textContent = st.report || '';
@@ -418,6 +503,225 @@ function cheer() {
     bits.forEach(b => { b.y += b.vy; b.x += b.vx; b.a += .1; x.fillStyle = b.col; x.save(); x.translate(b.x, b.y); x.rotate(b.a); x.fillRect(-b.r, -b.r / 2, b.r * 2, b.r); x.restore(); });
     if (++t < 160) requestAnimationFrame(frame); else x.clearRect(0, 0, c.width, c.height);
   })();
+}
+
+// ===================== 5 · build with Pip
+let B = null;  // {id, name, type, steps, i, done:Set}
+async function startBuild() {
+  go('build');
+  $('b-title').textContent = 'Loading the lesson…'; $('b-text').textContent = ''; $('t-caps').innerHTML = '';
+  try { B = await fetch(api('/api/lesson?id=' + encodeURIComponent(L.id))).then(r => r.json()); }
+  catch (e) { $('b-title').textContent = 'Could not load the lesson'; $('b-text').textContent = e.message; return; }
+  B.i = 0; B.done = new Set(store.get('build.' + L.id) || []);
+  $('b-lesson').textContent = B.name;
+  $('b-dots').innerHTML = B.steps.map(s => `<button data-n="${s.n}" aria-label="Step ${s.n}">${s.n}</button>`).join('');
+  showStep(1, 'start');
+  tutorReset();
+}
+function showStep(n, by) {
+  if (!B || !B.steps.length) return;
+  n = Math.max(1, Math.min(B.steps.length, n | 0)); B.i = n - 1;
+  const s = B.steps[B.i];
+  $('b-count').textContent = `Step ${n} of ${B.steps.length}`;
+  $('b-title').textContent = s.title;
+  $('b-text').textContent = s.text;
+  $('b-goal').textContent = s.goal || '';
+  $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
+  $('b-parts').innerHTML = s.parts.map(p => `<span>${p.count > 1 ? p.count + '× ' : ''}${esc(p.what)}</span>`).join('');
+  $('b-hints').hidden = !s.hints.length; $('b-hints').open = false;
+  $('b-hintlist').innerHTML = s.hints.map(h => `<li>${esc(h)}</li>`).join('');
+  $('b-prev').disabled = n === 1;
+  $('b-next').textContent = n === B.steps.length ? 'Finish the lesson' : 'Done: next step';
+  [...$('b-dots').children].forEach(d => { const k = +d.dataset.n; d.classList.toggle('on', k === n); d.classList.toggle('done', B.done.has(k) && k !== n); });
+}
+$('b-prev').addEventListener('click', () => { showStep(B.i, 'learner'); tutorTell(`(The learner tapped Back on the screen: it now shows step ${B.i + 1}.)`); });
+$('b-next').addEventListener('click', () => {
+  B.done.add(B.i + 1); store.set('build.' + L.id, [...B.done]);
+  if (B.i + 1 >= B.steps.length) { finishLesson('learner'); return; }
+  showStep(B.i + 2, 'learner'); tutorTell(`(The learner tapped Next on the screen: step ${B.i} is done and it now shows step ${B.i + 1}. Teach step ${B.i + 1}.)`);
+});
+$('b-dots').addEventListener('click', e => { const n = +e.target.dataset.n; if (n) { showStep(n, 'learner'); tutorTell(`(The learner opened step ${n} on the screen.)`); } });
+function finishLesson(by) {
+  B.steps.forEach(s => B.done.add(s.n)); store.set('build.' + L.id, [...B.done]); showStep(B.steps.length);
+  caption('sys', `🎉 ${B.name}: lesson complete!`); cheer();
+  if (by === 'learner') tutorTell('(The learner tapped Finish: the lesson is complete. Congratulate them briefly.)');
+}
+
+// ---- the tutor: captions, state, cost
+const T = { on: false, mode: 'live', ws: null, ctx: null, mic: null, node: null, muted: false, sources: [], next: 0,
+            cost: 0, cap: 4, warn: 3, prices: null, handle: null, stopping: false, history: [], line: null, speaking: false };
+function state(cls, text) { $('orb').className = 'orb ' + cls; $('t-state').textContent = text; }
+function caption(who, text, append) {
+  const box = $('t-caps');
+  if (append && T.line && T.line.dataset.who === who) { T.line.textContent += text; }
+  else { T.line = document.createElement('div'); T.line.dataset.who = who; T.line.className = who === 'sys' ? 'sys' : who + '-line'; T.line.textContent = text; box.appendChild(T.line); }
+  while (box.children.length > 40) box.removeChild(box.firstChild);
+  box.scrollTop = box.scrollHeight;
+}
+function addCost(usd) {
+  T.cost += usd;
+  $('t-cost').textContent = `${(T.cost * 100).toFixed(1)}¢ so far`;
+  $('t-costbar').style.width = Math.min(100, T.cost / T.cap * 100) + '%';
+  $('t-costbar').style.background = T.cost >= T.warn ? 'var(--check)' : 'var(--good)';
+  if (T.cost >= T.cap) { caption('sys', 'This lesson reached its €4 limit: Pip stops here. You can keep going with the steps on the screen.'); tutorStop(); }
+}
+function tutorReset() { tutorStop(); T.cost = 0; T.history = []; T.handle = null; addCost(0); state('off', 'Your tutor. Press start and just talk.'); $('t-start').textContent = 'Start lesson with Pip'; }
+$('t-mode').addEventListener('change', () => { tutorStop(); T.mode = $('t-mode').value; });
+$('t-start').addEventListener('click', () => T.on ? tutorStop() : tutorStart());
+$('t-mute').addEventListener('click', () => { T.muted = !T.muted; $('t-mute').textContent = T.muted ? 'Unmute mic' : 'Mute mic'; if (T.rec) { try { T.muted ? T.rec.stop() : T.rec.start(); } catch {} } });
+$('t-form').addEventListener('submit', e => { e.preventDefault(); const t = $('t-text').value.trim(); if (!t) return; $('t-text').value = '';
+  caption('learner', t); if (!T.on) { tutorStart(t); return; } tutorTell(t, true); });
+
+async function tutorStart(first) {
+  T.mode = $('t-mode').value; T.on = true; T.stopping = false;
+  $('t-start').textContent = 'End the conversation'; $('t-mute').hidden = false;
+  try { T.mode === 'live' ? await liveStart(first) : await freeStart(first); }
+  catch (e) { caption('sys', 'Pip could not start: ' + e.message + (T.mode === 'live' ? ' (try the free voice)' : '')); tutorStop(); }
+}
+function tutorStop() {
+  if (!T.on) return;
+  T.on = false; T.stopping = true;
+  try { T.ws && T.ws.close(); } catch {} T.ws = null;
+  stopPlayback();
+  try { T.mic && T.mic.getTracks().forEach(t => t.stop()); } catch {} T.mic = null;
+  try { T.rec && T.rec.abort(); } catch {} T.rec = null;
+  try { speechSynthesis.cancel(); } catch {}
+  $('t-start').textContent = 'Start lesson with Pip'; $('t-mute').hidden = true;
+  state('off', 'Paused. Press start to carry on.');
+}
+// something the learner did on the screen, or typed: to whichever voice is running
+function tutorTell(text, typed) {
+  if (!T.on) return;
+  if (T.mode === 'live') { if (T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { text } })); }
+  else freeAsk(text, typed);
+}
+
+// ---- Gemini Live: mic in at 16 kHz, voice out at 24 kHz, interruptions by the server's voice detection
+const WORKLET = `class Pcm extends AudioWorkletProcessor {
+  constructor() { super(); this.r = sampleRate / 16000; this.buf = []; this.acc = 0; this.sum = 0; this.k = 0; }
+  process(inputs) { const ch = inputs[0][0]; if (!ch) return true;
+    for (let i = 0; i < ch.length; i++) { this.sum += ch[i]; this.k++; this.acc += 1;
+      if (this.acc >= this.r) { this.acc -= this.r; const v = Math.max(-1, Math.min(1, this.sum / this.k)); this.buf.push(v < 0 ? v * 32768 : v * 32767); this.sum = 0; this.k = 0; } }
+    if (this.buf.length >= 1600) { this.port.postMessage(Int16Array.from(this.buf).buffer, []); this.buf = []; }
+    return true; } }
+registerProcessor('pcm16k', Pcm);`;
+async function audioUp() {
+  if (!T.ctx) T.ctx = new (window.AudioContext || window.webkitAudioContext)();
+  if (T.ctx.state === 'suspended') await T.ctx.resume();
+}
+async function micUp(onChunk) {
+  T.mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } });
+  if (!T.workletLoaded) { await T.ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' }))); T.workletLoaded = true; }
+  const src = T.ctx.createMediaStreamSource(T.mic);
+  T.node = new AudioWorkletNode(T.ctx, 'pcm16k');
+  T.node.port.onmessage = e => onChunk(e.data);
+  src.connect(T.node);
+}
+function b64(buf) { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
+function play(b64data) {
+  const bin = atob(b64data), n = bin.length >> 1, buf = T.ctx.createBuffer(1, n, 24000), d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) { let v = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8); if (v >= 32768) v -= 65536; d[i] = v / 32768; }
+  const src = T.ctx.createBufferSource(); src.buffer = buf; src.connect(T.ctx.destination);
+  const t = Math.max(T.ctx.currentTime + 0.04, T.next); src.start(t); T.next = t + buf.duration;
+  T.sources.push(src); src.onended = () => { T.sources = T.sources.filter(x => x !== src); if (!T.sources.length && T.on) state('listening', 'Listening… just talk'); };
+  state('speaking', 'Talking… (talk over me to interrupt)');
+}
+function stopPlayback() { T.sources.forEach(s => { try { s.stop(); } catch {} }); T.sources = []; T.next = 0; }
+
+async function liveStart(first) {
+  await audioUp();
+  state('thinking', 'Connecting…');
+  await openLive(first, false);
+  await micUp(chunk => { if (!T.muted && T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { audio: { data: b64(chunk), mimeType: 'audio/pcm;rate=16000' } } })); });
+}
+async function openLive(first, resumed) {
+  const s = await post('/api/tutor/session', { lesson: L.id, resume: T.handle, speakers: $('t-speakers').checked });
+  T.cap = s.cap_usd; T.warn = s.warn_usd; T.prices = s.prices;
+  const ws = new WebSocket(s.ws); T.ws = ws; ws.binaryType = 'arraybuffer';
+  ws.onopen = () => ws.send(JSON.stringify(s.setup));
+  ws.onmessage = ev => { const m = JSON.parse(typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data)); onLive(m, first, resumed); };
+  ws.onerror = () => caption('sys', 'Connection problem…');
+  ws.onclose = ev => { if (T.on && !T.stopping && ws === T.ws) { caption('sys', 'Reconnecting…'); setTimeout(() => T.on && openLive(null, true).catch(e => { caption('sys', 'Could not reconnect: ' + e.message); tutorStop(); }), 400); } };
+}
+function onLive(m, first, resumed) {
+  if (m.setupComplete) {
+    state('listening', 'Listening… just talk');
+    if (!resumed) T.ws.send(JSON.stringify({ realtimeInput: { text: first || `(The learner pressed Start. The screen shows step ${B.i + 1}. Greet them and begin.)` } }));
+  }
+  if (m.sessionResumptionUpdate && m.sessionResumptionUpdate.newHandle) T.handle = m.sessionResumptionUpdate.newHandle;
+  if (m.goAway) { caption('sys', 'Refreshing the connection…'); const old = T.ws; T.ws = null; openLive(null, true).then(() => { try { old.close(); } catch {} }); }
+  const sc = m.serverContent;
+  if (sc) {
+    if (sc.interrupted) { stopPlayback(); state('listening', 'Listening…'); }
+    for (const p of (sc.modelTurn && sc.modelTurn.parts) || []) if (p.inlineData && p.inlineData.data) play(p.inlineData.data);
+    if (sc.inputTranscription && sc.inputTranscription.text) caption('learner', sc.inputTranscription.text, true);
+    if (sc.outputTranscription && sc.outputTranscription.text) caption('tutor', sc.outputTranscription.text, true);
+    if (sc.turnComplete) T.line = null;
+  }
+  if (m.toolCall) {
+    const responses = (m.toolCall.functionCalls || []).map(fc => {
+      if (fc.name === 'show_step') showStep((fc.args || {}).n, 'tutor');
+      if (fc.name === 'finish_lesson') finishLesson('tutor');
+      return { id: fc.id, name: fc.name, response: { result: 'ok', screen_shows_step: B.i + 1 } };
+    });
+    T.ws.send(JSON.stringify({ toolResponse: { functionResponses: responses } }));
+  }
+  if (m.usageMetadata) addCost(liveCost(m.usageMetadata));
+}
+function liveCost(u) {
+  const P = T.prices || { text_in: .75, audio_in: 3, text_out: 4.5, audio_out: 12 };
+  const by = (list) => Object.fromEntries((list || []).map(d => [d.modality, d.tokenCount || 0]));
+  const i = by(u.promptTokensDetails), o = by(u.responseTokensDetails);
+  return ((i.TEXT || 0) * P.text_in + (i.AUDIO || 0) * P.audio_in + (o.AUDIO || 0) * P.audio_out + (o.TEXT || 0) * P.text_out + (u.thoughtsTokenCount || 0) * P.text_out) / 1e6;
+}
+
+// ---- free mode: the browser hears, Haiku answers, the browser speaks
+let freeBusy = false;
+function bestVoice() {
+  const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+  return vs.find(v => /premium|enhanced|natural|neural/i.test(v.name)) || vs.find(v => /google uk english female|samantha|serena|daniel/i.test(v.name)) || vs[0];
+}
+function speak(text) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); const v = bestVoice(); if (v) u.voice = v; u.rate = 1.02;
+  u.onstart = () => { T.speaking = true; T.saying = text.toLowerCase(); state('speaking', 'Talking… (talk over me to interrupt)'); };
+  u.onend = u.onerror = () => { T.speaking = false; if (T.on) state('listening', 'Listening… just talk'); };
+  speechSynthesis.speak(u);
+}
+function soundsLikeMe(heard) {  // the speakers' echo of Pip's own words is not an interruption
+  const w = heard.toLowerCase().split(/\W+/).filter(x => x.length > 2);
+  return w.length && w.filter(x => (T.saying || '').includes(x)).length / w.length > 0.6;
+}
+async function freeStart(first) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SR) {
+    const rec = new SR(); T.rec = rec; rec.continuous = true; rec.interimResults = true; rec.lang = navigator.language || 'en-GB';
+    rec.onresult = e => {
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i], text = r[0].transcript.trim(); if (!text) continue;
+        if (T.speaking && soundsLikeMe(text)) continue;
+        if (T.speaking) { speechSynthesis.cancel(); T.speaking = false; }  // barge-in
+        if (r.isFinal) { caption('learner', text); freeAsk(text); }
+      }
+    };
+    rec.onend = () => { if (T.on && !T.muted && T.rec === rec) { try { rec.start(); } catch {} } };
+    rec.start();
+  } else caption('sys', 'This browser has no speech recognition: type to Pip below (Chrome or Safari can listen).');
+  state('listening', 'Listening… just talk');
+  await freeAsk(first || '', !!first);
+}
+async function freeAsk(text, typed) {
+  if (freeBusy) return; freeBusy = true; state('thinking', 'Thinking…');
+  try {
+    const r = await post('/api/tutor/reply', { lesson: L.id, history: T.history, text, step: B.i + 1 });
+    if (text) T.history.push({ who: 'learner', text });
+    T.history.push({ who: 'tutor', text: r.say });
+    if (r.show_step) showStep(r.show_step, 'tutor');
+    caption('tutor', r.say); addCost(r.cost_usd || 0);
+    if (r.finished) finishLesson('tutor');
+    if (T.on) speak(r.say);
+  } catch (e) { caption('sys', 'Pip could not answer: ' + e.message); }
+  freeBusy = false;
 }
 
 go('choose');
