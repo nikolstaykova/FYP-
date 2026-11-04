@@ -141,7 +141,7 @@ def _substitutions(physical, cards, program, derived):
         rule = dict((card.get("metadata") or {}).get("substitutes") or {})
         if not rule:
             continue
-        if rule.get("value") == "by role" and card.get("category") == "resistor":
+        if rule.get("value") in ("by role", "by-role") and card.get("category") == "resistor":  # metadata stores codes
             led = next((m.split(":")[0] for net in derived for m in net if m.startswith(n["id"] + ":")
                         for m in net if (definition(cards, types.get(m.split(":")[0], ""))[0] or {}).get("category") == "led"), None)
             led_card = definition(cards, types.get(led, ""))[0] or {} if led else {}

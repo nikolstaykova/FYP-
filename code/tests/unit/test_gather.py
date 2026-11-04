@@ -74,3 +74,28 @@ def test_board_known_only_to_the_wider_store_is_offered_to_check():
     # "Seeeduino" matched seeeduino-lotus, a store part with no catalogue card, and was once refused as "not a board"
     st, res = status([S("Seeeduino microcontroller board", "none", "Seeeduino", might_replace="arduino-uno")])
     assert st["arduino-uno"] == "check", res["parts"][0]["use_instead"]
+
+
+def test_two_resistors_each_take_their_own_value():
+    # capacitance meter: a 10k and a 220 (neither drives an LED). The 220 was once taken by the 10k row (the LED rule
+    # said any 150-600 Ω would do), so the 220 row came out missing though the learner had shown it.
+    seen = [S("Arduino Uno R3", "arduino-uno"), S("breadboard", "breadboard", "half"),
+            S("resistor", "resistor", "220"), S("resistor", "resistor", "10k"),
+            S("ceramic capacitor", "capacitor-100nf", "104"), S("jumper wire", "jumper-wire", "", 4)]
+    st, res = status(seen, "capacitance-meter")
+    rows = {r["part"]: r for r in res["parts"]}
+    assert rows["Resistor 220"]["status"] == "have" and rows["Resistor 220"]["have"][0]["value"] == "220"
+    assert rows["Resistor 10000"]["status"] == "have" and rows["Resistor 10000"]["have"][0]["value"] == "10k"
+    assert st["capacitor-100nf"] == "have"  # 104 is 100 nF
+
+
+def test_a_resistor_that_is_not_for_an_led_must_have_its_value():
+    st, res = status([S("resistor", "resistor", "220"), S("resistor", "resistor", "220")], "capacitance-meter")
+    ten_k = next(r for r in res["parts"] if r["part"] == "Resistor 10000")
+    assert ten_k["status"].startswith("missing") and "10000 Ω" in ten_k["use_instead"][0]["why"]
+
+
+def test_a_capacitor_of_another_value_is_refused():
+    st, res = status([S("electrolytic capacitor", "capacitor-100nf", "2200uF 16V")], "capacitance-meter")
+    cap = next(r for r in res["parts"] if r["type"] == "capacitor-100nf")
+    assert cap["status"] == "missing" and "2200 µF" in cap["use_instead"][0]["why"]

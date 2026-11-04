@@ -119,6 +119,7 @@ h1 { font-size: 26px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em
 .steptext { font-size: 19px; line-height: 1.45; margin: 8px 0 10px; }
 .stepgoal { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
 #b-pic { width: 100%; max-height: 300px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid var(--line); margin: 6px 0; }
+.codebox { max-height: 340px; overflow: auto; background: #111; color: #e6e6e6; border-radius: 10px; padding: 12px; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; margin: 0 0 10px; }
 mark.col { background: var(--gold); color: #1c1b19; border-radius: 4px; padding: 0 3px; }
 .partchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
 .partchips span { font-size: 13px; padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); }
@@ -234,6 +235,10 @@ details.more summary { cursor: pointer; }
           <p class="steptext" id="b-text"></p>
           <p class="stepgoal" id="b-goal"></p>
           <div class="partchips" id="b-parts"></div>
+          <div id="b-code" hidden>
+            <div class="row" style="margin:6px 0"><b>The sketch</b><button class="btn small" id="b-copy">Copy the code</button><button class="btn ghost small" id="b-dl">Download .ino</button><span class="note" id="b-codenote"></span></div>
+            <pre id="b-codetext" class="codebox"></pre>
+          </div>
           <details id="b-hints" class="more"><summary>Stuck? Hints</summary><ul id="b-hintlist"></ul></details>
           <div class="row" style="margin-top:12px"><button class="btn ghost small" id="b-prev">Back</button><button class="btn" id="b-next">Done: next step</button></div>
           <div class="dots" id="b-dots"></div>
@@ -380,6 +385,7 @@ document.querySelector('.modes').addEventListener('click', e => { if (e.target.d
 $('thumbs').addEventListener('click', e => { if (e.target.dataset.i) { PHOTOS.splice(+e.target.dataset.i, 1); drawThumbs(); } });
 $('camStart').addEventListener('click', startCamera);
 $('shutter').addEventListener('click', async () => {
+  if (PENDING && PENDING.key === '*') { if (T.on) tell('(The learner pressed the button for the close-up of all: take it now with take_closeup_all.)'); else runTool('take_closeup_all', {}); return; }
   if (PENDING) { const k = PENDING.key; if (T.on) tell(`(The learner pressed the button for the close-up: take it now with take_closeup, key ${k}.)`); else runTool('take_closeup', { key: k }); return; }
   const p = snap(); if (!p) return; PHOTOS.push({ ...p, from: 'camera' }); drawThumbs(); if (T.on) tell(`(The learner took photo ${PHOTOS.length} with the button.)`);
 });
@@ -387,6 +393,7 @@ async function addUploads(files) {
   files = [...files].filter(f => f.type.startsWith('image/') || /\.(heic|jpe?g|png|webp)$/i.test(f.name));
   if (!files.length) return;
   if (MODE !== 'upload') setMode('upload', true);
+  if (PENDING && PENDING.key === '*') { await uploadCloseupAll(files[0]); return; }
   if (PENDING) { await uploadCloseup(PENDING.key, files[0]); return; }
   for (const f of files) { try { PHOTOS.push({ ...(await shrink(f)), from: 'upload' }); } catch {} }
   drawThumbs();
@@ -398,6 +405,18 @@ const drop = $('drop');
 ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
 drop.addEventListener('drop', e => addUploads(e.dataTransfer.files));
 $('c-check').addEventListener('click', () => { if (T.on) tell('(The learner pressed Check my parts: call check_parts.)'); else runTool('check_parts', {}); });
+// one photo for every open question
+let CLOSEUP_ALL = null;
+async function closeupAll(photo) {
+  PENDING = null; banner(''); stage('result'); working(`Looking at your close-up for all ${LAST ? LAST.asks.length : ''} questions…`); $('r-quests').innerHTML = '';
+  try { const st = await post('/api/flow/closeup_all', { upload: UPLOAD, photo: photo.data }); drawResult(st); working(''); return summary(st); }
+  catch (e) { working(''); return { error: e.message }; }
+}
+async function uploadCloseupAll(file) {
+  const result = await closeupAll(await shrink(file)); CLOSEUP_ALL = result;
+  if (T.on) tell(`(The learner uploaded one close-up for all the questions. The new result: ${JSON.stringify(result)}. Do not call take_closeup_all or take_closeup for these; tell them what it means.)`);
+  return result;
+}
 // a close-up from a file: checked at once, and its result goes to Pip so Pip does not take it again
 const CLOSEUPS = {};
 async function uploadCloseup(key, file) {
@@ -424,7 +443,10 @@ function drawResult(st) {
       : k === 'check' ? esc((h && h.why) || (u && u.why) || 'needs a better look') : esc((r.use_instead.find(x => x.ok === false) || {}).why || "couldn't see this one");
     return `<div class="res ${k}"><span class="icon">${ICON[k]}</span><div><b>${esc(r.part)} ×${r.need}<span class="tag">${SAY[k]}</span></b><span class="why">${why}</span></div></div>`;
   }).join('');
-  $('r-quests').innerHTML = st.asks.map(q => `<div class="quest"><div class="q">${esc(q.message)}</div><div class="row">
+  const closeups = st.asks.filter(q => q.kind === 'closeup');
+  $('r-quests').innerHTML = (st.asks.length >= 2 ? `<div class="quest" style="border-style:dashed"><div class="q">${st.asks.length} things to check: put them together and give me one photo of all of them.</div>
+      <div class="row"><label class="btn small" style="cursor:pointer"><input type="file" accept="image/*" data-upall="1" hidden>🖼 Upload one photo for all</label>
+      <button class="btn ghost small" data-closeall="1">📷 One close-up for all</button></div></div>` : '') + st.asks.map(q => `<div class="quest"><div class="q">${esc(q.message)}</div><div class="row">
       <label class="btn small" style="cursor:pointer"><input type="file" accept="image/*" data-up="${esc(q.key)}" hidden>🖼 Upload a ${q.kind === 'find' ? 'photo' : 'close-up'}</label>
       <button class="btn ghost small" data-close="${esc(q.key)}">📷 Use the camera</button>
       <button class="btn ghost small" data-skip="${esc(q.key)}">${q.kind === 'find' ? "I don't have it" : 'Skip'}</button></div></div>`).join('');
@@ -442,8 +464,13 @@ function summary(st) {  // what Pip is told: plain facts it can say in its own w
   if ((st.not_needed || []).length) out.also_on_the_table = st.not_needed.slice(0, 8).map(x => x.object);
   return out;
 }
-$('r-quests').addEventListener('change', e => { const k = e.target.dataset.up; if (k && e.target.files[0]) uploadCloseup(k, e.target.files[0]); });
+$('r-quests').addEventListener('change', e => {
+  const k = e.target.dataset.up; if (k && e.target.files[0]) uploadCloseup(k, e.target.files[0]);
+  if (e.target.dataset.upall && e.target.files[0]) uploadCloseupAll(e.target.files[0]);
+});
 $('r-quests').addEventListener('click', e => {
+  if (e.target.dataset.closeall) { PENDING = { key: '*', message: `All ${LAST.asks.length} together: hold them up close in one photo` }; setMode('camera', true); runTool('open_camera', {}); banner('Close-up: ' + PENDING.message);
+    if (T.on) tell('(The learner opened the camera for one close-up of all the parts asked about: call take_closeup_all when they say they are ready.)'); return; }
   const k = e.target.dataset.close, s = e.target.dataset.skip;
   if (k) { PENDING = LAST.asks.find(q => q.key === k); setMode('camera', true); runTool('open_camera', {}); banner('Close-up: ' + PENDING.message);
            if (T.on) tell(`(The learner opened the camera for the close-up, key ${k}: call take_closeup when they say they are holding it up.)`); }
@@ -468,11 +495,24 @@ function showStep(n) {
   $('b-count').textContent = `Step ${n} of ${B.steps.length}`; $('b-title').textContent = s.title; $('b-text').innerHTML = cols(s.text);
   $('b-goal').innerHTML = cols(s.goal || ''); $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
   $('b-parts').innerHTML = s.parts.map(p => `<span>${p.count > 1 ? p.count + '× ' : ''}${esc(p.what)}</span>`).join('');
+  $('b-code').hidden = !s.code; $('b-codetext').textContent = s.code || ''; $('b-codenote').textContent = '';
   $('b-hints').hidden = !s.hints.length; $('b-hints').open = false; $('b-hintlist').innerHTML = s.hints.map(h => `<li>${cols(h)}</li>`).join('');
   $('b-prev').disabled = n === 1; $('b-next').textContent = n === B.steps.length ? 'Finish' : 'Done: next step';
   [...$('b-dots').children].forEach(d => { const k = +d.dataset.n; d.classList.toggle('on', k === n); d.classList.toggle('done', B.done.has(k) && k !== n); });
   return n;
 }
+$('b-copy').addEventListener('click', async () => {
+  const s = B.steps[B.i]; try { await navigator.clipboard.writeText(s.code); $('b-codenote').textContent = 'Copied: paste it into the Arduino IDE.'; }
+  catch { const r = document.createRange(); r.selectNodeContents($('b-codetext')); getSelection().removeAllRanges(); getSelection().addRange(r); $('b-codenote').textContent = 'Selected: press Cmd/Ctrl+C.'; }
+  tell('(The learner copied the sketch.)');
+});
+$('b-dl').addEventListener('click', () => {
+  const s = B.steps[B.i], name = (L.id || 'sketch').replace(/[^a-z0-9-]/gi, '_');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([s.code], { type: 'text/plain' }));
+  a.download = `${name}/${name}.ino`.split('/').pop(); a.click(); URL.revokeObjectURL(a.href);
+  $('b-codenote').textContent = 'Downloaded: open it in the Arduino IDE (it may ask to put it in a folder of the same name: say yes).';
+  tell('(The learner downloaded the sketch.)');
+});
 $('b-prev').addEventListener('click', () => { showStep(B.i); tell(`(The learner tapped Back: the screen shows step ${B.i + 1}.)`); });
 $('b-next').addEventListener('click', () => {
   B.done.add(B.i + 1);
@@ -522,6 +562,16 @@ async function runTool(name, args) {
       if (!stream && !(await startCamera())) return { error: 'no camera: ask them to upload a close-up' };
       await sleep(300); const p = snap(); if (!p) return { error: 'the camera is not ready; try again' };
       return closeupWith(q.key, p);
+    }
+    case 'take_closeup_all': {
+      if (CLOSEUP_ALL) { const r = CLOSEUP_ALL; CLOSEUP_ALL = null; return r; }  // already uploaded: its result
+      if (!LAST || LAST.asks.length < 1) return { error: 'no open questions' };
+      PENDING = { key: '*', message: `All ${LAST.asks.length} together: hold them up close in one photo` };
+      if (STAGE !== 'camera') await runTool('open_camera', {}); banner('Close-up: ' + PENDING.message);
+      if (MODE === 'upload') return { mode: 'upload', waiting: 'the learner gives the close-up by uploading one photo of all of them; wait, its result will come to you' };
+      if (!stream && !(await startCamera())) return { error: 'no camera: ask them to upload one photo of all of them' };
+      await sleep(300); const p = snap(); if (!p) return { error: 'the camera is not ready; try again' };
+      return closeupAll(p);
     }
     case 'skip_question': {
       try { const st = await post('/api/flow/dismiss', { upload: UPLOAD, key: args.key }); stage('result'); drawResult(st); return summary(st); }
@@ -641,7 +691,7 @@ async function openLive(first, resumed) {
   ws.onmessage = ev => onLive(JSON.parse(typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data)), first, resumed);
   ws.onclose = () => { if (T.on && !T.stopping && ws === T.ws) { caption('sys', 'Reconnecting…'); setTimeout(() => T.on && openLive(null, true).catch(e => { caption('sys', 'Could not reconnect: ' + e.message); tutorStop(); }), 400); } };
 }
-const NON_BLOCKING = new Set(['check_parts', 'take_closeup']);
+const NON_BLOCKING = new Set(['check_parts', 'take_closeup', 'take_closeup_all']);
 function onLive(m, first, resumed) {
   if (m.setupComplete) { state('listening', 'Listening… just talk'); if (!resumed) T.ws.send(JSON.stringify({ realtimeInput: { text: (first ? first + ' ' : '') + situation() + ' (Start the session.)' } })); }
   if (m.sessionResumptionUpdate && m.sessionResumptionUpdate.newHandle) T.handle = m.sessionResumptionUpdate.newHandle;
@@ -705,7 +755,7 @@ async function freeAsk(text) {
       T.history.push({ who: 'learner', text: next }); T.history.push({ who: 'tutor', text: r.say + (r.tool ? ` [${r.tool.name}]` : '') });
       addCost(r.cost_usd || 0); caption('tutor', r.say); const said = T.on ? speak(r.say) : null;
       next = null;
-      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'take_photo', 'check_parts', 'take_closeup', 'skip_question', 'start_building'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
+      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
     }
   } catch (e) { caption('sys', 'Pip could not answer: ' + e.message); }
   freeBusy = false; if (T.on) state('listening', 'Listening… just talk');

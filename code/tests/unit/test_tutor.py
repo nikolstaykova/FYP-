@@ -56,3 +56,10 @@ def test_every_lesson_gets_a_tutor_brief():
         except Exception as e:  # noqa: BLE001
             failed.append((row["lesson_id"], repr(e)[:80]))
     assert failed == []
+
+
+def test_the_upload_step_carries_its_sketch_and_pip_knows_it_is_on_screen():
+    up = [s for s in live.steps("capacitance-meter")["steps"] if s["kind"] == "upload"][0]
+    assert up["code"].startswith("/*  RCTiming_capacitance_meter") and "\n\n\n" not in up["code"]
+    b = live.brief("capacitance-meter")
+    assert "ON THE SCREEN" in b and "Never say the lesson has no code" in b and "RCTiming" in b

@@ -194,6 +194,17 @@ def apply_closeup(seen, question, answers):
     return seen + keep
 
 
+def apply_many(seen, answered):
+    """Several questions answered from one photo: [(question, answers)]. The answers for objects are applied from the
+    last object to the first, so the place of each one asked about is still right when its turn comes (an answer
+    can replace one object with two); parts that were missing are added at the end."""
+    for q, got in sorted((x for x in answered if x[0]["kind"] == "closeup"), key=lambda x: -x[0]["ref"]):
+        seen = apply_closeup(seen, q, got)
+    for q, got in (x for x in answered if x[0]["kind"] != "closeup"):
+        seen = apply_closeup(seen, q, got)
+    return seen
+
+
 def second_look(photos, rec, seen, objects, parts, model=SECOND):
     """Opus on the same photos, asked only about the flagged objects and parts."""
     if not objects and not parts:

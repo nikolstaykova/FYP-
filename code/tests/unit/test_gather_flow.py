@@ -134,3 +134,18 @@ def test_opus_is_needed_only_when_the_closeup_did_not_settle_it():
     assert c.still_open([])  # nothing about the part in the close-up
     assert c.still_open([S("resistor", "resistor", "", unsure="still blurred")])
     assert not c.still_open([S("resistor", "resistor", "220")])
+
+
+def test_one_photo_answers_several_questions_without_mixing_them_up():
+    seen = [S("blue microcontroller board", might_replace="arduino-uno"), KIT[1],
+            S("resistor", "resistor", "", unsure="bands too small"), KIT[4]]
+    q_board = {"kind": "closeup", "ref": 0, "key": "o:board"}
+    q_res = {"kind": "closeup", "ref": 2, "key": "o:res"}
+    q_led = {"kind": "find", "type": "led", "key": "p:led"}
+    merged = c.apply_many(seen, [
+        (q_board, [S("Arduino Nano", "none", "Nano", might_replace="arduino-uno")]),
+        (q_res, [S("resistor", "resistor", "220"), S("resistor", "resistor", "10k")]),  # one object becomes two
+        (q_led, [S("red LED", "led", "red")])])
+    names = [(m["name"], m["value"]) for m in merged]
+    assert names == [("Arduino Nano", "Nano"), ("breadboard", "half"), ("resistor", "220"), ("resistor", "10k"),
+                     ("jumper wire", ""), ("red LED", "red")]

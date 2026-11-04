@@ -122,6 +122,26 @@ def run_check(upload, lesson_id, model, research, repeat):
     return out
 
 
+def answer_closeup(st, q, res, rec, f):
+    """One question answered from a close-up: Haiku, and Opus once if Haiku still cannot tell. Returns
+    (question, answers, steps for the log)."""
+    item = res['seen'][q['ref']] if q['kind'] == 'closeup' else None
+    got, stats = gather_flow.closeup_look(str(f), q['message'], rec, item)
+    kept = gather_flow.pick(st['seen'], q, got)
+    name = q.get('object') or q.get('part')
+    steps = [{'what': f'close-up: {name}', 'answer': [g['name'] + (f" ({g['value']})" if g['value'] else '') for g in kept],
+              **{k: stats.get(k) for k in ('model', 'seconds', 'cost_usd')}}]
+    if gather_flow.still_open(kept) and q['key'] not in st.setdefault('opus_keys', []):
+        st['opus_keys'].append(q['key'])
+        got2, stats2 = gather_flow.closeup_look(str(f), q['message'], rec, item, model=gather_flow.SECOND, effort='medium')
+        kept2 = gather_flow.pick(st['seen'], q, got2)
+        steps.append({'what': f'close-up again: {name}', 'answer': [g['name'] + (f" ({g['value']})" if g['value'] else '') for g in kept2],
+                      **{k: stats2.get(k) for k in ('model', 'seconds', 'cost_usd')}})
+        if kept2:
+            got = got2
+    return q, got, steps
+
+
 def flow(action, upload, body):
     """The check as the learner gets it. State lives in runs/lab/<upload>/flow_state.json:
     first   Haiku looks at the photos                                     ~0.1 cents
@@ -143,36 +163,26 @@ def flow(action, upload, body):
         st = json.loads(sf.read_text())
         rec, _ = gather.lesson(st['lesson'])
         photos = sorted(str(p) for p in d.glob('photo_*.jpg'))
-        if action in ('closeup', 'dismiss'):
+        if action in ('closeup', 'closeup_all', 'dismiss'):
             res = gather.check(st['lesson'], photos, research=False, seen=st['seen'])
             objects, parts = gather_flow.flags(res, {r['type'] for r in res['parts']}, done=('closeup', 'opus'))
             open_qs = {q['key']: q for q in gather_flow.asks(res, objects, parts, st['dismissed'])}
         if action == 'dismiss':
             st['dismissed'].append(body['key'])
-        elif action == 'closeup':
-            q = open_qs.get(body['key'])
-            if not q:
+        elif action in ('closeup', 'closeup_all'):
+            qs_ = list(open_qs.values()) if action == 'closeup_all' else [open_qs.get(body['key'])]
+            if not qs_ or qs_[0] is None:
                 raise ValueError('that question is no longer open')
             n = len(st['closeups']) + 1
             f = d / f'closeup_{n}.jpg'
             f.write_bytes(base64.b64decode(body['photo'].split(',', 1)[-1]))
-            item = res['seen'][q['ref']] if q['kind'] == 'closeup' else None
-            got, stats = gather_flow.closeup_look(str(f), q['message'], rec, item)
-            kept = gather_flow.pick(st['seen'], q, got)
-            name = q.get('object') or q.get('part')
-            st['steps'].append({'what': f'close-up: {name}', 'answer': [g['name'] + (f" ({g['value']})" if g['value'] else '') for g in kept],
-                                **{k: stats.get(k) for k in ('model', 'seconds', 'cost_usd')}})
-            # Haiku still cannot tell from the close-up: Opus looks at that close-up, once per question
-            if gather_flow.still_open(kept) and q['key'] not in st.setdefault('opus_keys', []):
-                st['opus_keys'].append(q['key'])
-                got2, stats2 = gather_flow.closeup_look(str(f), q['message'], rec, item, model=gather_flow.SECOND, effort='medium')
-                kept2 = gather_flow.pick(st['seen'], q, got2)
-                st['steps'].append({'what': f'close-up again: {name}', 'answer': [g['name'] + (f" ({g['value']})" if g['value'] else '') for g in kept2],
-                                    **{k: stats2.get(k) for k in ('model', 'seconds', 'cost_usd')}})
-                if kept2:
-                    got = got2
-            st['seen'] = gather_flow.apply_closeup(st['seen'], q, got)
-            st['closeups'].append({'key': q['key'], 'photo': f.name})
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(max(1, len(qs_))) as pool:  # one look per question, all at once
+                answered = list(pool.map(lambda q: answer_closeup(st, q, res, rec, f), qs_))
+            for q, got, steps in answered:
+                st['steps'] += steps
+                st['closeups'].append({'key': q['key'], 'photo': f.name})
+            st['seen'] = gather_flow.apply_many(st['seen'], [(q, got) for q, got, _ in answered])
     sf.write_text(json.dumps(st, indent=1))
     res = gather.check(st['lesson'], photos, research=False, seen=st['seen'])
     objects, parts = gather_flow.flags(res, {r['type'] for r in res['parts']}, done=('closeup', 'opus'))
@@ -267,7 +277,7 @@ class Handler(BaseHTTPRequestHandler):
                                                  body.get('name') or None))
             if u.path.startswith('/api/flow/'):
                 action = u.path.rsplit('/', 1)[1]
-                if action not in ('first', 'closeup', 'dismiss', 'state') or \
+                if action not in ('first', 'closeup', 'closeup_all', 'dismiss', 'state') or \
                         not re.fullmatch(r'[\w-]+', body['upload']):
                     return self.send(400, {'error': 'unknown action or upload'})
                 return self.send(200, flow(action, body['upload'], body))

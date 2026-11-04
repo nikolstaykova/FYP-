@@ -97,7 +97,9 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
    resistors, but I can't read their colour bands. Can you hold one up close to the camera?"). Then stop and wait:
    never take the close-up in the same breath as asking for it. Only when they say they are holding it up (or say
    "take it", "ready"), call take_closeup with that question's key: it takes the photo, checks it and gives you the
-   new result. If they say they don't have a part, call skip_question with its key, and tell them what they can do
+   new result. When two or more parts need a closer look, offer to do them in one go: they hold them all up
+   together (or upload one photo of them together), and you call take_closeup_all when they are ready. If they
+   say they don't have a part, call skip_question with its key, and tell them what they can do
    instead (find one, or what could stand in).
    When everything is settled, say well done and ask if they are ready to start building; call start_building
    when they say yes (or right away if they ask to carry on anyway)."""
@@ -134,6 +136,10 @@ TOOL_DEFS = {
                      "behavior": "NON_BLOCKING",
                      "parameters": {"type": "OBJECT", "properties": {"key": {"type": "STRING", "description": "the question's key"}},
                                     "required": ["key"]}},
+    "take_closeup_all": {"description": "When there are two or more questions: take ONE close-up photo of all those parts "
+                                        "held together, and check it for every question at once (takes 5 to 15 seconds). "
+                                        "Returns the new result.",
+                         "behavior": "NON_BLOCKING", "parameters": {"type": "OBJECT", "properties": {}}},
     "skip_question": {"description": "The learner does not have that part, or wants to skip the question. Returns the "
                                      "new result.",
                       "parameters": {"type": "OBJECT", "properties": {"key": {"type": "STRING"}}, "required": ["key"]}},
@@ -144,7 +150,8 @@ TOOL_DEFS = {
                                  "required": ["n"]}},
     "finish_lesson": {"description": "The learner has finished the last step.", "parameters": {"type": "OBJECT", "properties": {}}},
 }
-CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "take_closeup", "skip_question", "use_column")
+CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "take_closeup", "take_closeup_all",
+               "skip_question", "use_column")
 
 
 def tools(lesson_type):
@@ -172,13 +179,19 @@ def steps(lesson_id):
             w = _part_words({k: v for k, v in p.items() if k != "where"})
             counted[w] = counted.get(w, 0) + 1
         picture = ((s.get("source") or {}).get("picture") or "")
+        prog = s.get("program") if isinstance(s.get("program"), dict) else {}
+        code = prog.get("text") or ""
+        if code.count("\n\n") > 0.4 * max(1, code.count("\n")):  # some sketches were saved double-spaced
+            code = code.replace("\n\n", "\n")
         out.append({"n": len(out) + 1, "id": s["id"], "kind": s.get("kind"),
                     "title": {"gather": "Gather the parts", "upload": "Upload the code"}.get(s.get("kind"))
                     or f"Step {len(out) + 1}",
                     "text": s.get("text") or "", "goal": s.get("goal"), "hints": s.get("hints") or [],
                     "why": s.get("why"), "what_changed": s.get("what_changed"),
                     "parts": [{"what": w, "count": c} for w, c in counted.items()],
-                    "picture": picture if picture.startswith("data/lessons/booklet/") else None})
+                    "picture": picture if picture.startswith("data/lessons/booklet/") else None,
+                    "code": code or None, "code_file": prog.get("file") if code else None,
+                    "expected": s.get("expected")})
     return {"lesson_id": lesson_id, "name": (view.get("lesson") or {}).get("name") or view.get("title") or lesson_id,
             "lesson_type": view.get("lesson_type"), "steps": out}
 
@@ -258,6 +271,14 @@ def brief(lesson_id, name=None):
             lines.append(f"  Hint: {h}")
         if s["why"]:
             lines.append(f'  Why: {s["why"]}')
+        if s.get("code"):
+            lines.append("  The sketch for this step is ON THE SCREEN, with Copy and Download buttons: tell them to open "
+                         "the Arduino IDE, paste it in (or open the downloaded file), choose the board (Tools > Board) and "
+                         "the port (Tools > Port), and press Upload. Never say the lesson has no code. The sketch, so you "
+                         "can explain any line they ask about:")
+            lines.append("  " + s["code"][:6000].replace("\n", "\n  "))
+            if s.get("expected"):
+                lines.append(f'  What should happen: {s["expected"] if isinstance(s["expected"], str) else json.dumps(s["expected"])[:400]}')
     return "\n".join(lines)
 
 

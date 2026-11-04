@@ -151,14 +151,62 @@ def _ohms(text):
     return round(float(m.group(1)) * {"": 1, "k": 1e3, "K": 1e3, "m": 1e6, "M": 1e6}[m.group(2)])
 
 
+def _farads(text):
+    """A capacitor's value in farads: "0.1uF", "100nF", "22 pF", "2200µF 16V", or the 3-digit code "104" (10 x 10^4
+    pF = 100 nF); None if there is none."""
+    t = str(text or "").replace("µ", "u").replace("μ", "u")
+    m = re.search(r"([\d.]+)\s*([pnum])\s*f", t, re.I)
+    if m:
+        return float(m.group(1)) * {"p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3}[m.group(2).lower()]
+    m = re.fullmatch(r"\s*(\d)(\d)(\d)\s*", t)
+    if m:
+        return int(m.group(1) + m.group(2)) * 10 ** int(m.group(3)) * 1e-12
+    return None
+
+
+def _say_farads(f):
+    for unit, k in (("µF", 1e-6), ("nF", 1e-9), ("pF", 1e-12)):
+        if f >= k:
+            return f"{f / k:g} {unit}"
+    return f"{f:g} F"
+
+
+def capacitor_ok(want, have):
+    """A capacitor's value against the lesson's: within 20% (they are made to wide tolerances)."""
+    w, h = _farads(want), _farads(have)
+    if w is None:
+        return True, ""
+    if h is None:
+        return None, "its value could not be read: a close-up of the printing on it will tell (104 means 100 nF)"
+    if abs(h - w) / w <= 0.20:
+        return True, f"{_say_farads(h)} is the lesson's {_say_farads(w)}"
+    return False, f"this is {_say_farads(h)}; the lesson needs {_say_farads(w)}, and the circuit would not work the same"
+
+
+def value_match(kind, want, have):
+    """Does a value read off a part match the lesson's (resistors within 10%, capacitors within 20%, else the text)?"""
+    if not want or not have:
+        return False
+    if kind == "resistor":
+        w, h = _ohms(want), _ohms(have)
+        return bool(w and h and abs(h - w) / w <= 0.10)
+    if kind.startswith("capacitor"):
+        w, h = _farads(want), _farads(have)
+        return bool(w and h and abs(h - w) / w <= 0.20)
+    return str(want).lower() in str(have).lower()
+
+
 def resistor_ok(rec, cat, inst, want, have, board=None):
-    """A resistor of another value: in series with an LED, any value keeping its current 5-20 mA (at the voltage of
-    the board in use: the lesson's, or the one standing in for it); else within 10%."""
+    """A resistor of another value: in series with an LED (the lesson's substitutions say so: value_ohms), any value
+    keeping its current 5-20 mA (at the voltage of the board in use: the lesson's, or the one standing in for it);
+    any other resistor (a timer, a divider, a pull-up) within 10% of the lesson's value."""
     sub = (rec.get("substitutions") or {}).get("parts", {}).get(inst, {})
     w, h = _ohms(want), _ohms(have)
     if h is None:
         return None, "its value could not be read: a close-up of its colour bands will tell"
-    if sub.get("value") == "by-role" and "LED" in sub.get("why", ""):
+    led = isinstance(sub.get("value_ohms"), list) or (sub.get("value") in ("by-role", "by role")
+                                                       and "LED" in sub.get("why", "") and "value_ohms" not in sub)
+    if led:
         board = cat.get(board or rec.get("board"), {})
         v = ((board.get("metadata") or {}).get("specs") or {}).get("logic_v") or 5.0
         vf = (cat.get("led", {}).get("electrical") or {}).get("forward_v") or 2.0
@@ -271,8 +319,13 @@ def check(lesson_id, photos, model="opus", research=True, seen=None):
     for r in rows:
         line = {"part": r["name"], "type": r["type"], "need": r["count"], "have": [], "use_instead": [], "status": ""}
         left = r["count"]
-        # same type first; values checked per instance
-        for o in objs:
+        # same type first, the ones whose value matches this row before the rest, and the ones that match another
+        # row of the same type (a lesson needing a 10k and a 220) last; values checked per instance
+        others = [x["values"][0] for x in rows if x is not r and x["type"] == r["type"] and x["values"]]
+        mine = r["values"][0] if r["values"] else None
+        order = sorted(objs, key=lambda o: (0 if value_match(r["type"], mine, o["value"]) else
+                                            2 if any(value_match(r["type"], v, o["value"]) for v in others) else 1))
+        for o in order:
             if left == 0 or o["type"] != r["type"] or o["left"] == 0:
                 continue
             take = min(left, o["left"])
@@ -281,6 +334,8 @@ def check(lesson_id, photos, model="opus", research=True, seen=None):
                 ok, why = resistor_ok(rec, cat, r["instances"][0], r["values"][0], o["value"], board_in_use)
             elif r["type"] == "breadboard":
                 ok, why = breadboard_ok(phys, o["value"])
+            elif r["type"].startswith("capacitor") or (cat.get(r["type"]) or {}).get("category") == "capacitor":
+                ok, why = capacitor_ok(r["values"][0], o["value"])
             elif r["values"][0] and o["value"] and str(r["values"][0]).lower() not in o["value"].lower():
                 free = (rec.get("substitutions") or {}).get("parts", {}).get(r["instances"][0], {})
                 if "colour" in free.get("free", []):
