@@ -3,12 +3,12 @@
 The JSON files stay the source: this loads them into the database, the same way every time, so it can be re-run
 whenever a lesson or the catalogue changes (a lesson is replaced whole; parts are merged).
 
-The graph (the plan in Pinpoint Lesson Data §1: record, steps, physical, parts, joined through the parts):
+The graph (the plan in Pinpoint Lesson Data §1, simplified 4 Nov 2026: the parts list is links, not nodes):
   (:Lesson)-[:FIRST_STEP]->(:Step)-[:NEXT_STEP]->(:Step)...   the record starts the steps graph; builds hang off it
       (SHOWS, STARTS, BUILDS, ATTACHES) and steps link back with DEPENDS_ON {via}, ALIGNS_WITH, CHECK_NEEDS
-  (:Lesson)-[:LISTS]->(:Item)                    the record's parts list, one item per row {count, colour, value}
-  (:Item)-[:ACCOUNTS_FOR]->(:Instance)           the instances a row stands for (no 3D model: (:Item)-[:IS_A]->(:Part))
-  (:Step)-[:PLACES|GATHERS|PROGRAMS]->(:Instance or :Item)   what a step puts in, gathers, uploads to
+  (:Lesson)-[:NEEDS {count, colour, value, instances}]->(:Part)     the record's parts list, one link per row
+  (:Step)-[:PLACES|PROGRAMS]->(:Instance)        what a step puts in (3D and Arduino lessons)
+  (:Step)-[:PLACES|GATHERS {count, colour}]->(:Part)   a booklet step's parts; an Arduino gather step's list
   (:Instance)-[:JOINED|CONTACT|ELECTRICAL {u_port, v_port, method, made_in}]->(:Instance)   the physical graph
   (:Instance)-[:IS_A]->(:Part {part_type_id})-[:HAS_PORT]->(:Port)                         the parts catalogue
 Nodes of a lesson are keyed by `uid` = "<lesson_id>/<id>" (ids like b1 or step-1 are in many lessons); a part by its
@@ -150,7 +150,7 @@ def lesson_rows(lesson_id, store=None):
     lesson = flat({"lesson_id": lesson_id, "name": rec.get("name"), "lesson_type": rec.get("lesson_type"),
                    "kind": src.get("kind"), "link": rec.get("link"), "set": src.get("set"),
                    "result": rec.get("result"), "stats": rec.get("stats")})
-    nodes = {"Step": [], "Build": [], "Item": [], "Instance": []}
+    nodes = {"Step": [], "Build": [], "Instance": []}
     links = []
     labels = {}
     # the steps graph: the record points at the first step only; the rest hang off NEXT_STEP, STARTS, SHOWS, BUILDS
@@ -168,30 +168,21 @@ def lesson_rows(lesson_id, store=None):
     roots = [n["id"] for n in ins["nodes"] if n["id"] not in entered and n.get("kind") in STEP_KINDS]
     for r in roots[:1]:
         links.append(("FIRST_STEP", lesson_id, uid(r), {}, "Lesson", "Step"))
-    # the record's parts list: one item per row, pointing at the instances it accounts for (or, with no 3D model,
-    # straight at its part)
+    # the record's parts list: the lesson NEEDS each part, one link per row (count, colour, value); the instances a
+    # row stands for are kept on the link by id
     rows = (rec.get("parts_list") or {}).get("parts", [])
     in_physical = {n["id"] for n in phys["nodes"]}
+    row_props = {}
     for i, r in enumerate(rows):
         if not r.get("part"):
             continue
         part = _resolve(r["part"])
-        item = uid(f"parts_list/{i}")
-        count = r.get("count") or len(r.get("instances") or []) or None
-        title = r.get("name") or (_CAT.get(part) or {}).get("display_name") or part
-        value = _value(r["part"], part)
-        nodes["Item"].append({"key": item, "props": flat({
-            "lesson_id": lesson_id, "row": i, "part": part, "listed_as": r["part"], "part_name": title,
-            "name": " ".join(x for x in (f"{count}×" if count else "", r.get("colour") or "", title,
-                                         value or "") if x),  # the caption: "2× Jumper wire", "1× Red Plate 2 x 6"
-            "count": count, "colour": r.get("colour"), "print": r.get("print"), "value": value,
-            "from": r.get("from")})})
-        links.append(("LISTS", lesson_id, item, flat({"row": i}), "Lesson", "Item"))
-        inst = [x for x in r.get("instances") or [] if x in in_physical]
-        for x in inst:
-            links.append(("ACCOUNTS_FOR", item, uid(x), {}, "Item", "Instance"))
-        if not inst:
-            links.append(("IS_A", item, part, {}, "Item", "Part"))
+        props = flat({"row": i, "count": r.get("count") or len(r.get("instances") or []) or None,
+                      "colour": r.get("colour"), "print": r.get("print"), "value": _value(r["part"], part),
+                      "name": r.get("name"), "listed_as": r["part"], "from": r.get("from"),
+                      "instances": [x for x in r.get("instances") or [] if x in in_physical] or None})
+        row_props[i] = (part, props)
+        links.append(("NEEDS", lesson_id, part, props, "Lesson", "Part"))
     # the physical graph: instances, each pointing at its catalogue part; joins are links between instances
     for n in phys["nodes"]:
         props = flat({"id": n["id"], "label": n.get("label"), "type": _resolve(n.get("type")), **(n.get("props") or {})})
@@ -214,28 +205,30 @@ def lesson_rows(lesson_id, store=None):
             continue  # kept on the join itself (made_in): a join is a link, and a link cannot be pointed at
         props = flat(e, drop=("type", "u", "v"))
         ref = re.match(r"lesson:parts_list/(\d+)$", str(v))
-        if ref and int(ref.group(1)) < len(rows):  # a booklet step's part: that parts-list item
-            links.append((t, uid(u), uid(f"parts_list/{ref.group(1)}"), props, labels.get(u, "Step"), "Item"))
-        elif v == "lesson:parts_list":  # an Arduino gather step: every item on the list
-            links += [(t, uid(u), uid(f"parts_list/{i}"), props, labels.get(u, "Step"), "Item")
-                      for i, r in enumerate(rows) if r.get("part")]
+        if ref and int(ref.group(1)) in row_props:  # a booklet step's part: the part itself, with the row's colour
+            part, rp = row_props[int(ref.group(1))]
+            links.append((t, uid(u), part, {**flat({k: rp.get(k) for k in ("row", "colour", "print", "value")}), **props},
+                          labels.get(u, "Step"), "Part"))
+        elif v == "lesson:parts_list":  # an Arduino gather step: every part on the list, with its count
+            links += [(t, uid(u), part, {**flat({k: rp.get(k) for k in ("row", "count", "colour", "value")}), **props},
+                       labels.get(u, "Step"), "Part") for part, rp in row_props.values()]
         elif u in labels and v in labels:
             links.append((t, uid(u), uid(v), props, labels[u], labels[v]))
     return {"lesson": lesson, "nodes": nodes, "links": links}
 
 
 # ---- loading ------------------------------------------------------------------------------------------------------
-KEY = {"Lesson": "lesson_id", "Part": "part_type_id", "Port": "uid", "Step": "uid", "Build": "uid", "Item": "uid",
-       "Instance": "uid"}
+KEY = {"Lesson": "lesson_id", "Part": "part_type_id", "Port": "uid", "Step": "uid", "Build": "uid", "Instance": "uid"}
 
 
 def setup(d):
     for label, key in KEY.items():
         run(d, f"CREATE CONSTRAINT {label.lower()}_key IF NOT EXISTS FOR (n:{label}) REQUIRE n.{key} IS UNIQUE")
-    for label in ("Step", "Build", "Item", "Instance"):
+    for label in ("Step", "Build", "Instance"):
         run(d, f"CREATE INDEX {label.lower()}_lesson IF NOT EXISTS FOR (n:{label}) ON (n.lesson_id)")
-    run(d, "DROP CONSTRAINT join_key IF EXISTS")  # joins were nodes before 4 Nov 2026; now links
-    run(d, "DROP INDEX join_lesson IF EXISTS")
+    for old in ("join", "item"):  # joins and parts-list items were nodes in the first loads of 4 Nov 2026; now links
+        run(d, f"DROP CONSTRAINT {old}_key IF EXISTS")
+        run(d, f"DROP INDEX {old}_lesson IF EXISTS")
 
 
 def _chunks(rows):
@@ -291,18 +284,20 @@ def stats(d):
 
 
 def check(d, store=None):
-    """Per lesson: steps, builds, parts-list items, instances and joins in the database against the JSON files."""
+    """Per lesson: steps, builds, parts-list links, instances and joins in the database against the JSON files."""
     bad = []
     got = {}
-    for label, name in (("Step", "steps"), ("Build", "builds"), ("Item", "items"), ("Instance", "instances")):
+    for label, name in (("Step", "steps"), ("Build", "builds"), ("Instance", "instances")):
         for r in run(d, f"MATCH (n:{label}) RETURN n.lesson_id AS id, count(n) AS n"):
             got.setdefault(r["id"], {})[name] = r["n"]
     for r in run(d, "MATCH (a:Instance)-[j:JOINED|CONTACT|ELECTRICAL]->(:Instance) RETURN a.lesson_id AS id, count(j) AS n"):
         got.setdefault(r["id"], {})["joins"] = r["n"]
+    for r in run(d, "MATCH (l:Lesson)-[n:NEEDS]->(:Part) RETURN l.lesson_id AS id, count(n) AS n"):
+        got.setdefault(r["id"], {})["needs"] = r["n"]
     for lid in lesson_ids(store):
         rows = lesson_rows(lid, store)
         want = {"steps": len(rows["nodes"]["Step"]), "builds": len(rows["nodes"]["Build"]),
-                "items": len(rows["nodes"]["Item"]), "instances": len(rows["nodes"]["Instance"]),
+                "needs": sum(t == "NEEDS" for t, *_ in rows["links"]), "instances": len(rows["nodes"]["Instance"]),
                 "joins": sum(t in ("JOINED", "CONTACT", "ELECTRICAL") for t, *_ in rows["links"])}
         have = {k: (got.get(lid) or {}).get(k, 0) for k in want}
         if have != want:

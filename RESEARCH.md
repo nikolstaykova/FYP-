@@ -2014,8 +2014,8 @@ needs are in the same patch.
 
 ## R29. A database for the lessons: Neo4j
 
-**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 19,004
-nodes and 24,642 links in the shape of the plan, checked against the files; saving a lesson updates it); the code reading from it is next ·
+**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 17,466
+nodes and 24,161 links in the shape of the plan, checked against the files; saving a lesson updates it); the code reading from it is next ·
 **Code:** `code/graph/db.py` · **Design:**
 [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) §10
 
@@ -2056,11 +2056,12 @@ picture. Region: **Belgium** (in the EU like Ireland, about 10 ms more than Lond
 
 ### Design points found while mapping the data
 
-- **The shape of the plan** (*Pinpoint Lesson Data* §1): the record links to its first step only and the steps
-  follow on; the parts list is items in the record, each accounting for its instances; steps place instances;
-  instances are catalogue parts. The four subgraphs meet at the parts. A first load (every step and instance hung
-  off the lesson, joins as nodes so a step could point at the join it makes) was twice the size and hard to read;
-  a join is now a link between two instances carrying its ports and the step that makes it (`made_in`).
+- **The shape of the plan** (*Pinpoint Lesson Data* §1), kept as simple as it allows: the record links to its first
+  step only and the steps follow on; the lesson `NEEDS` its parts (one link per parts-list row, with count, colour,
+  value and the instances it stands for); steps place instances; instances are catalogue parts. The four subgraphs
+  meet at the parts. Only things are nodes; a row, a join, "this step places this" are links with properties. Two
+  earlier loads the same day were bigger and harder to read: every step and instance hung off the lesson and joins
+  were nodes (20,377 nodes), then a node per parts-list row (19,004); now 17,466.
 - **Ids are per lesson** (`b1`, `step-1` are in many lessons), so nodes are keyed by `lesson_id` + `id`; parts are
   keyed by `part_type_id` alone and shared by every lesson, which is why "one card per design" (below: prints and colours are properties
   of the copy) matters: one minifig head node links every lesson that uses one.
