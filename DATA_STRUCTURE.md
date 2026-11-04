@@ -1189,8 +1189,9 @@ MATCH p=(:Lesson {lesson_id:'blink'})-[:LISTS]->(:Item)-[:ACCOUNTS_FOR]->(:Insta
 MATCH p=(:Lesson {lesson_id:'7268-1-pdf'})-[:FIRST_STEP]->(:Step)-[:SHOWS]->(:Build)-[:STARTS]->(:Step)-[:NEXT_STEP*0..]->(:Step) RETURN p
 UNION MATCH p=(:Step {lesson_id:'7268-1-pdf'})-[:PLACES]->(:Item)-[:IS_A]->(:Part) RETURN p
 
-// every lesson that uses a minifig head
-MATCH (l:Lesson)-[:LISTS]->(:Item)-[:ACCOUNTS_FOR|IS_A*1..2]->(:Part {part_type_id:'lego-3626c'}) RETURN DISTINCT l.name
+// every lesson that uses a minifig head (a set's 3D and booklet lessons share a name: return the id too)
+MATCH (l:Lesson)-[:LISTS]->(:Item)-[:ACCOUNTS_FOR|IS_A*1..2]->(:Part {part_type_id:'lego-3626c'})
+RETURN DISTINCT l.lesson_id, l.name ORDER BY l.name
 ```
 
 ### 10.4 Integration plan
