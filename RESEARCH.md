@@ -2014,8 +2014,8 @@ needs are in the same patch.
 
 ## R29. A database for the lessons: Neo4j
 
-**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 17,466
-nodes and 24,161 links in the shape of the plan, checked against the files; saving a lesson updates it); the code reading from it is next ·
+**Date:** 3–4 November 2026 · **Status:** chosen and loaded (4 Nov: all 77 lessons and the catalogue, 18,624
+nodes and 25,669 links in the shape of the plan, checked against the files; saving a lesson updates it); the code reading from it is next ·
 **Code:** `code/graph/db.py` · **Design:**
 [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) §10
 
@@ -2061,7 +2061,9 @@ picture. Region: **Belgium** (in the EU like Ireland, about 10 ms more than Lond
   value and the instances it stands for); steps place instances; instances are catalogue parts. The four subgraphs
   meet at the parts. Only things are nodes; a row, a join, "this step places this" are links with properties. Two
   earlier loads the same day were bigger and harder to read: every step and instance hung off the lesson and joins
-  were nodes (20,377 nodes), then a node per parts-list row (19,004); now 17,466.
+  were nodes (20,377 nodes), then a node per parts-list row (19,004). Every lesson now has instances, booklet
+  lessons too (one per copy on the parts list, given to the step that places it; the booklets account for all
+  1,158 copies): a part is stored once and each copy carries its colour.
 - **Ids are per lesson** (`b1`, `step-1` are in many lessons), so nodes are keyed by `lesson_id` + `id`; parts are
   keyed by `part_type_id` alone and shared by every lesson, which is why "one card per design" (below: prints and colours are properties
   of the copy) matters: one minifig head node links every lesson that uses one.

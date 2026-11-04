@@ -7,8 +7,9 @@ The graph (the plan in Pinpoint Lesson Data §1, simplified 4 Nov 2026: the part
   (:Lesson)-[:FIRST_STEP]->(:Step)-[:NEXT_STEP]->(:Step)...   the record starts the steps graph; builds hang off it
       (SHOWS, STARTS, BUILDS, ATTACHES) and steps link back with DEPENDS_ON {via}, ALIGNS_WITH, CHECK_NEEDS
   (:Lesson)-[:NEEDS {count, colour, value, instances}]->(:Part)     the record's parts list, one link per row
-  (:Step)-[:PLACES|PROGRAMS]->(:Instance)        what a step puts in (3D and Arduino lessons)
-  (:Step)-[:PLACES|GATHERS {count, colour}]->(:Part)   a booklet step's parts; an Arduino gather step's list
+  (:Step)-[:PLACES|PROGRAMS]->(:Instance)        what a step puts in; a booklet lesson's instances are made from its
+      parts list, one per copy (r<row>.<n>, with its colour), and given to the steps that place them, in order
+  (:Step)-[:GATHERS {count, colour}]->(:Part)    an Arduino gather step's list
   (:Instance)-[:JOINED|CONTACT|ELECTRICAL {u_port, v_port, method, made_in}]->(:Instance)   the physical graph
   (:Instance)-[:IS_A]->(:Part {part_type_id})-[:HAS_PORT]->(:Port)                         the parts catalogue
 Nodes of a lesson are keyed by `uid` = "<lesson_id>/<id>" (ids like b1 or step-1 are in many lessons); a part by its
@@ -171,6 +172,18 @@ def lesson_rows(lesson_id, store=None):
     # the record's parts list: the lesson NEEDS each part, one link per row (count, colour, value); the instances a
     # row stands for are kept on the link by id
     rows = (rec.get("parts_list") or {}).get("parts", [])
+    copies = {}  # row -> the ids of its copies, when the instances come from the parts list (a booklet lesson)
+    if not phys["nodes"]:
+        phys = {"nodes": [], "edges": []}
+        for i, r in enumerate(rows):
+            if not r.get("part"):
+                continue
+            copies[i] = [f"r{i}.{c + 1}" for c in range(r.get("count") or 1)]
+            for x in copies[i]:
+                phys["nodes"].append({"id": x, "type": r["part"], "label": r.get("name"),
+                                      "props": {k: r[k] for k in ("colour", "print") if r.get(k)}})
+            r = {**r, "instances": copies[i]}
+            rows[i] = r
     in_physical = {n["id"] for n in phys["nodes"]}
     row_props = {}
     for i, r in enumerate(rows):
@@ -205,7 +218,12 @@ def lesson_rows(lesson_id, store=None):
             continue  # kept on the join itself (made_in): a join is a link, and a link cannot be pointed at
         props = flat(e, drop=("type", "u", "v"))
         ref = re.match(r"lesson:parts_list/(\d+)$", str(v))
-        if ref and int(ref.group(1)) in row_props:  # a booklet step's part: the part itself, with the row's colour
+        if ref and int(ref.group(1)) in copies:  # a booklet step: the next copies of that row, in step order
+            row = int(ref.group(1))
+            take = copies[row][:e.get("count") or 1]
+            copies[row] = copies[row][len(take):]
+            links += [(t, uid(u), uid(x), flat({"where": e.get("where")}), labels.get(u, "Step"), "Instance") for x in take]
+        elif ref and int(ref.group(1)) in row_props:  # a part on the list with no copies to place: the part itself
             part, rp = row_props[int(ref.group(1))]
             links.append((t, uid(u), part, {**flat({k: rp.get(k) for k in ("row", "colour", "print", "value")}), **props},
                           labels.get(u, "Step"), "Part"))

@@ -34,12 +34,20 @@ def test_an_arduino_lesson_is_record_steps_physical_and_parts_joined_through_the
     assert len(gathers) == sum(t == "NEEDS" for t, *_ in links) and ("jumper-wire", 2) in {(b, p["count"]) for b, p in gathers}
 
 
-def test_a_booklet_lesson_starts_at_its_overview_and_steps_place_parts():
+def test_a_booklet_lesson_has_one_instance_per_copy_placed_by_its_steps():
     rows = db.lesson_rows("7268-1-pdf")
     links = rows["links"]
     assert [b for t, a, b, *_ in links if t == "FIRST_STEP"] == ["7268-1-pdf/overview"]
-    places = [(b, p) for t, a, b, p, la, lb in links if t == "PLACES"]
-    assert places and all(b.startswith("lego-") and "count" in p and "colour" in p for b, p in places)
+    inst = {n["key"]: n["props"] for n in rows["nodes"]["Instance"]}
+    needs = [p for t, a, b, p, *_ in links if t == "NEEDS"]
+    assert len(inst) == sum(p["count"] for p in needs)  # one instance per copy on the parts list
+    placed = [b for t, a, b, p, la, lb in links if t == "PLACES"]
+    assert all(lb == "Instance" for t, a, b, p, la, lb in links if t == "PLACES")
+    assert sorted(placed) == sorted(inst)  # every copy placed once, by its step
+    # the part is stored once; the colour is on the copy
+    is_a = {a: b for t, a, b, *_ in links if t == "IS_A"}
+    plate = next(k for k, v in inst.items() if v.get("label") == "Plate 4 x 4")
+    assert is_a[plate] == "lego-3031" and inst[plate]["colour"] == "Black"
     step = next(n for n in rows["nodes"]["Step"] if n["props"]["id"] == "red-crab-body-1")
     assert step["props"]["picture"].endswith("step1.png")
 
