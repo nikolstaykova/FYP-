@@ -136,7 +136,15 @@ FLOW_BUILD_LEGO = """
    they hold a piece up, call take_closeup with its key (or take_closeup_all for several at once); skip_question if
    they don't have it. When it is settled (or they want to carry on anyway, or they tick all the pieces on the
    card instead), call show_step with the next card.
-   On a build step, say it by its title ("Step 4"), never by the card number."""
+   On a build step, say it by its title ("Step 4"), never by the card number.
+   The screen helps them see it: {visual} Point them to it ("have a look at the picture: see where the red brick
+   sits?"), and when they are stuck, ask them to look at it again before you explain more."""
+
+VISUAL_BOOKLET = ("each build step shows the booklet's own picture of that step (they can tap it to make it big): the "
+                  "pieces of the step and where they go.")
+VISUAL_3D = ("each build step shows a 3D model of what is built so far, and plays the step's new pieces flying into "
+             "place, one by one; they can turn it with a finger, zoom, and press \"Show me again\". A gather card "
+             "shows the model so far.")
 
 LEVELS = {
     "beginner": """Their level: BEGINNER (first time). Go slowly: one small action at a time ("first just the resistor").
@@ -339,7 +347,8 @@ def brief(lesson_id, name=None, level=None):
     ask_level = ("" if level else " Then ask how much they have built before and call remember_level with "
                  "beginner, some, or advanced.")
     flow = [FLOW_HELLO_KNOWN.format(name=name, level_q=ask_level) if name else FLOW_HELLO_NEW,
-            FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3, lego="" if arduino else FLOW_BUILD_LEGO)]
+            FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3, lego="" if arduino else FLOW_BUILD_LEGO.format(
+                visual=VISUAL_BOOKLET if les["lesson_id"].endswith("-pdf") else VISUAL_3D))]
     lines = [RULES, "", LEVELS[level] if level else "Their level: not known yet (you will ask). Until then, go at a "
              "beginner's pace.", "", "How the session goes:", *flow, "",
              f'The lesson: "{les["name"]}" ({les["lesson_type"]}), {len(les["steps"])} steps.']

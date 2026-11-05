@@ -194,6 +194,23 @@ def flow(action, upload, body):
             'total_cost_usd': round(sum(x.get('cost_usd') or 0 for x in st['steps']), 6)}
 
 
+VIEWER_LOCK = threading.Lock()
+
+
+def viewer(set_id):
+    """data/lessons/lego3d/<set>/viewer: the 3D step viewer (graph.lego_3d.assembly.export), rebuilt when the lesson
+    or the viewer page changed since it was made (5 to 10 seconds)."""
+    from graph.lego_3d import assembly
+    src = ROOT / 'data/lessons/lego3d' / set_id / 'lesson.json'
+    if not src.is_file():
+        raise FileNotFoundError('not a 3D lesson')
+    out = src.parent / 'viewer' / 'lesson.json'
+    with VIEWER_LOCK:
+        if not out.exists() or out.stat().st_mtime < max(src.stat().st_mtime, assembly.HTML.stat().st_mtime):
+            assembly.export(set_id)
+    return out.parent
+
+
 def _card(lesson, n):
     from tutor import live
     steps = live.steps(lesson)['steps']
@@ -273,6 +290,14 @@ class Handler(BaseHTTPRequestHandler):
             for st in out['steps']:
                 st['picture'] = f"/files/{st['picture']}" if st['picture'] else None
             return self.send(200, out)
+        m = re.fullmatch(r'/viewer/([\w-]+)/(index\.html|lesson\.json)', u.path)
+        if m:  # a 3D lesson's step viewer (built from its LDraw model the first time, then kept)
+            try:
+                v = viewer(m.group(1))
+            except Exception as e:
+                return self.send(404, {'error': f'no 3D viewer for {m.group(1)}: {e}'})
+            f = v / m.group(2)
+            return self.send(200, f.read_bytes(), 'text/html; charset=utf-8' if f.suffix == '.html' else 'application/json')
         if u.path.startswith('/files/'):  # booklet step pictures only
             rel = u.path[len('/files/'):]
             f = (ROOT / rel).resolve()

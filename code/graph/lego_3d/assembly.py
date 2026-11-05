@@ -930,13 +930,3 @@ if __name__ == "__main__":
     for s in args:
         v, n = export(s, src)
         print(f"{s}: {v} ({n / 1e6:.1f} MB of geometry)")
-
-
-if __name__ == "__main__":
-    args = sys.argv[1:]
-    src = pathlib.Path(args.pop(args.index("--from") + 1)) if "--from" in args else None
-    if "--from" in args:
-        args.remove("--from")
-    for s in args:
-        v, n = export(s, src)
-        print(f"{s}: {v} ({n / 1e6:.1f} MB of geometry)")
