@@ -7,7 +7,9 @@ def test_steps_are_numbered_from_one_with_their_parts_and_booklet_pictures():
     assert [s["n"] for s in blink["steps"]] == list(range(1, len(blink["steps"]) + 1))
     assert blink["steps"][0]["title"] == "Gather the parts" and blink["steps"][-1]["title"] == "Upload the code"
     crab = live.steps("7268-1-pdf")
-    assert crab["steps"][0]["picture"].endswith("step1.png")
+    first = next(s for s in crab["steps"] if s["kind"] != "gather")  # a LEGO lesson opens with a gather card
+    assert first["title"] == "Step 1" and first["picture"].endswith("step1.png")
+    assert any(p["what"] == "Black Plate 4 x 4" for p in first["parts"])
     assert any(p["what"] == "Black Plate 4 x 4" for p in crab["steps"][0]["parts"])
 
 

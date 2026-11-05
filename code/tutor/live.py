@@ -116,12 +116,21 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
    When everything is settled, say well done and ask if they are ready to start building; call start_building
    when they say yes (or right away if they ask to carry on anyway)."""
 FLOW_LEGO = """2. Gather. They have the set, so there is no parts check. Say in one sentence what they will build, and that
-   for every step you will tell them which pieces to find first. Then call start_building."""
+   they will not hunt for every piece at once: before each few steps (or each numbered bag) a card shows the pieces
+   to find first. Then call start_building."""
 FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with its number. If the lesson's first step is gathering
    the parts and they were already checked, do not repeat it: show it and go straight on. For each step, say which
    part to pick up (the short way), then what to do with it. When they say they are done, go on to the next
    step. When they seem stuck, give the step's hints, one at a time. After the last step, call finish_lesson and
-   celebrate."""
+   celebrate.{lego}"""
+FLOW_BUILD_LEGO = """
+   The LEGO lesson comes as cards: gather cards (kind gather: "Find the pieces", or "Bag 2: find the pieces") and
+   build steps. show_step takes the card number. On a gather card: if it says to open a bag, tell them to open that
+   bag first. Then say the pieces the short way (colour and shape: "two red 2 by 4 bricks, a black wheel"), a few
+   at a time for a beginner, all in one go for advanced; they can tap each piece on the screen when they have it.
+   Wait until they say they have them (or tap them all). If one is hard to find, help (colour, size, how many
+   studs, what it looks like), or let them carry on and find it when the step needs it. Then show the next card.
+   On a build step, say it by its title ("Step 4"), never by the card number."""
 
 LEVELS = {
     "beginner": """Their level: BEGINNER (first time). Go slowly: one small action at a time ("first just the resistor").
@@ -173,7 +182,7 @@ TOOL_DEFS = {
     "start_building": {"description": "Go to the building steps on the screen (step 1).",
                        "parameters": {"type": "OBJECT", "properties": {}}},
     "show_step": {"description": "Show a step of the lesson on the screen. Call it before you talk about that step.",
-                  "parameters": {"type": "OBJECT", "properties": {"n": {"type": "INTEGER", "description": "the step number, from 1"}},
+                  "parameters": {"type": "OBJECT", "properties": {"n": {"type": "INTEGER", "description": "the step number, from 1 (in a LEGO lesson: the card number, gather cards counted)"}},
                                  "required": ["n"]}},
     "finish_lesson": {"description": "The learner has finished the last step.", "parameters": {"type": "OBJECT", "properties": {}}},
 }
@@ -193,34 +202,74 @@ def _part_words(p):
     return " ".join(bits + [p.get("name") or p.get("type") or "part"]) + (f" ({p['where']})" if p.get("where") else "")
 
 
+def _count(p):
+    """How many of this piece: a booklet call-out says "2 x"; elsewhere each entry is one piece."""
+    m = re.match(r"\s*(\d+)\s*x\b", str(p.get("instance") or ""))
+    return int(m.group(1)) if m else 1
+
+
 def steps(lesson_id):
-    """The lesson's steps as the learner sees them and the tutor teaches them, in order, numbered from 1."""
+    """The lesson's steps as the learner sees them and the tutor teaches them, in order, numbered from 1. A LEGO lesson
+    also gets gather cards: before each group of steps (or numbered bag), the pieces to find (checker.lego_gather)."""
     from graph import lesson_store
     view = lesson_store.assemble(lesson_id)
+    lego = view.get("lesson_type") == "lego"
     out = []
     for s in view["steps"]:
         if s.get("kind") == "overview":
             continue
+        if lego and not s.get("parts") and re.match(r"open bag \d+\.?$", (s.get("text") or "").strip(), re.I):
+            continue  # the bag's gather card says to open it
         counted = {}
         for p in s.get("parts") or []:
             w = _part_words({k: v for k, v in p.items() if k != "where"})
-            counted[w] = counted.get(w, 0) + 1
+            counted[w] = counted.get(w, 0) + _count(p)
         picture = ((s.get("source") or {}).get("picture") or "")
         prog = s.get("program") if isinstance(s.get("program"), dict) else {}
         code = prog.get("text") or ""
         if code.count("\n\n") > 0.4 * max(1, code.count("\n")):  # some sketches were saved double-spaced
             code = code.replace("\n\n", "\n")
+        times = int(s.get("times") or 1) if str(s.get("times") or 1).isdigit() else 1
+        text = s.get("text") or ""
+        if times > 1 and str(times) not in text:
+            text += f" (Build this {times} times.)"
         out.append({"n": len(out) + 1, "id": s["id"], "kind": s.get("kind"),
                     "title": {"gather": "Gather the parts", "upload": "Upload the code"}.get(s.get("kind"))
                     or f"Step {len(out) + 1}",
-                    "text": s.get("text") or "", "goal": s.get("goal"), "hints": s.get("hints") or [],
+                    "text": text, "goal": s.get("goal"), "hints": s.get("hints") or [],
                     "why": s.get("why"), "what_changed": s.get("what_changed"),
                     "parts": [{"what": w, "count": c} for w, c in counted.items()],
                     "picture": picture if picture.startswith("data/lessons/booklet/") else None,
                     "code": code or None, "code_file": prog.get("file") if code else None,
-                    "expected": s.get("expected")})
+                    "expected": s.get("expected"),
+                    "number": str(s.get("number") or s.get("n") or ""), "bag": s.get("bag"), "times": times})
+    if lego:
+        out = _with_gather_cards(out)
     return {"lesson_id": lesson_id, "name": (view.get("lesson") or {}).get("name") or view.get("title") or lesson_id,
             "lesson_type": view.get("lesson_type"), "steps": out}
+
+
+def _with_gather_cards(build):
+    """The LEGO steps with a gather card before each group; cards are numbered in order, build steps keep 'Step k'."""
+    from checker import lego_gather
+    cards, at = [], {g["first"]: g for g in lego_gather.groups(build)}
+    for i, s in enumerate(build):
+        g = at.get(i)
+        if g:
+            span = f"step {i + 1}" if g["first"] == g["last"] else f"steps {g['first'] + 1} to {g['last'] + 1}"
+            lead = (f"Open bag {g['bag']} and find" if g["open_bag"] else
+                    f"From bag {g['bag']}, find" if g["bag"] is not None else "Find")
+            cards.append({"kind": "gather", "id": f"gather-{i + 1}",
+                          "title": f"Bag {g['bag']}: find the pieces" if g["bag"] is not None else "Find the pieces",
+                          "text": f"{lead} these pieces for {span} ({g['pieces']} pieces). Put them in front of you; "
+                                  "tap each one when you have it.",
+                          "goal": None, "hints": [], "why": None, "what_changed": None, "parts": g["parts"],
+                          "picture": None, "code": None, "code_file": None, "expected": None,
+                          "number": "", "bag": g["bag"], "times": 1, "covers": [g["first"] + 1, g["last"] + 1]})
+        cards.append(s)
+    for n, c in enumerate(cards, 1):
+        c["n"] = n
+    return cards
 
 
 LEG = {"A": "long leg (+)", "C": "short leg (-)", "1": "one leg", "2": "other leg", "a": "one end", "b": "other end"}
@@ -276,7 +325,7 @@ def brief(lesson_id, name=None, level=None):
     ask_level = ("" if level else " Then ask how much they have built before and call remember_level with "
                  "beginner, some, or advanced.")
     flow = [FLOW_HELLO_KNOWN.format(name=name, level_q=ask_level) if name else FLOW_HELLO_NEW,
-            FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3)]
+            FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3, lego="" if arduino else FLOW_BUILD_LEGO)]
     lines = [RULES, "", LEVELS[level] if level else "Their level: not known yet (you will ask). Until then, go at a "
              "beginner's pace.", "", "How the session goes:", *flow, "",
              f'The lesson: "{les["name"]}" ({les["lesson_type"]}), {len(les["steps"])} steps.']
@@ -293,7 +342,8 @@ def brief(lesson_id, name=None, level=None):
             lines += ["", BREADBOARD.split("- What must share")[0].rstrip()]
     lines.append("")
     for s in les["steps"]:
-        lines.append(f'Step {s["n"]} ({s["kind"]}): {s["text"]}')
+        lines.append(f'Step {s["n"]} ({s["kind"]}): {s["text"]}' if arduino else
+                     f'Card {s["n"]}, {s["title"]} ({s["kind"]}): {s["text"]}')
         if s["goal"]:
             lines.append(f'  Goal: {s["goal"]}')
         if s["parts"]:
