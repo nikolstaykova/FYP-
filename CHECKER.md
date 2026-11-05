@@ -95,10 +95,81 @@ rules) on two sets, at every input setting:
 ### 3.4 Still to test
 
 - **Repeats:** each setting three times, so differences smaller than the noise band can be read.
+- **Gemini again** when Google's service and our rate limit allow (3.5).
+- **The real flow's average price**: first look, Haiku close-ups, Opus only on unreadable close-ups, on photo sets
+  with their close-ups, so the price is measured instead of bounded.
 - **The answer trim** (3.3.1): same test, shorter output, check that the verdicts hold.
 - **Close-ups at lower sizes**, on resistor bands and board names.
 - **LEGO cards:** small pieces (1×1 plates, studs) may need more pixels than electronics; same test on gather-card
   photos once there are labelled ones.
+
+### 3.5 Across models, with the Opus fallback paid for (5 November 2026)
+
+`research/recognition/model_cost_test.py`: six models as the first look (Haiku, Sonnet and Opus 5.5; Gemini 3.5
+Flash-Lite and 3.8 Flash; NVIDIA Nemotron 3.5 VL) at 1600 / 1024 / 768 / 512 px, on the same 14 photo sets (10
+labelled kit cases, 4 of your Parts Quest photo sets). At full size and 768 px the **fallback** is paid for too:
+Opus looks again, on the same photos, at the questions the learner would be asked (at most 3, lesson parts only).
+That is the worst case: in the app the learner's close-up goes to Haiku first and Opus only when Haiku still cannot
+read it. "Your photos" are scored against Opus at full size (no labels). About $6.20 in total. Chart:
+`research/recognition/model_cost_plot.py`.
+
+![Price against quality per model with the Opus fallback, and where the money goes](research/recognition/figures/checker_models.png)
+
+| Model | Size | First look | + Opus fallback | Average per check | Fallback ran | Kit right: first → with fallback | Your photos same as Opus: first → with fallback | Seconds |
+|---|---|---|---|---|---|---|---|---|
+| Haiku 5.5 | full | 0.22¢ | 1.88¢ | 2.10¢ | 79% | 88% → 88% | 92% → 92% | 22 |
+| Haiku 5.5 | 1024 | 0.21¢ | – | 0.21¢ | – | 84% | 96% | 15 |
+| Haiku 5.5 | 768 | 0.20¢ | 1.69¢ | 1.89¢ | 79% | 80% → 90% | 96% → 96% | 20 |
+| Haiku 5.5 | 512 | 0.16¢ | – | 0.16¢ | – | 90% | 88% | 12 |
+| Sonnet 5.5 | full | 2.58¢ | 2.21¢ | 4.80¢ | 100% | 98% → 100% | 92% → 96% | 18 |
+| Sonnet 5.5 | 1024 | 2.45¢ | – | 2.45¢ | – | 86% | 96% | 12 |
+| Sonnet 5.5 | 768 | 2.21¢ | 1.82¢ | 4.03¢ | 93% | 84% → 90% | 88% → 92% | 17 |
+| Sonnet 5.5 | 512 | 2.09¢ | – | 2.09¢ | – | 86% | 84% | 11 |
+| Opus 5.5 | full | 5.43¢ | – | 5.43¢ | – | 100% | 100% | 16 |
+| Opus 5.5 | 1024 | 5.11¢ | – | 5.11¢ | – | 98% | 96% | 16 |
+| Opus 5.5 | 768 | 5.11¢ | – | 5.11¢ | – | 100% | 92% | 17 |
+| Opus 5.5 | 512 | 4.63¢ | – | 4.63¢ | – | 98% | 100% | 16 |
+| Gemini 3.5 Flash-Lite | full | 0.16¢ | 1.43¢ | 1.60¢ | 67% | 94% → 94% | 100% → 93% | 41 |
+| Gemini 3.5 Flash-Lite | 1024 | 0.16¢ | – | 0.16¢ | – | 88% | 70% | 40 |
+| Gemini 3.5 Flash-Lite | 768 | 0.12¢ | 1.22¢ | 1.34¢ | 80% | 93% → 93% | 90% → 80% | 83 |
+| Gemini 3.5 Flash-Lite | 512 | 0.18¢ | – | 0.18¢ | – | 100% | 80% | 41 |
+| Gemini 3.8 Flash | full | 0.73¢ | 2.58¢ | 3.31¢ | 100% | 91% → 95% | 60% → 80% | 110 |
+| Nemotron 3.5 VL (free credits) | full | 0.00¢ | 2.13¢ | 2.13¢ | 79% | 38% → 62% | 72% → 76% | 40 |
+| Nemotron 3.5 VL (free credits) | 1024 | 0.00¢ | – | 0.00¢ | – | 56% | 72% | 34 |
+| Nemotron 3.5 VL (free credits) | 768 | 0.00¢ | 1.74¢ | 1.74¢ | 79% | 44% → 66% | 84% → 84% | 31 |
+| Nemotron 3.5 VL (free credits) | 512 | 0.00¢ | – | 0.00¢ | – | 42% | 76% | 29 |
+
+Gemini was only partly measured: Google refused much of the run (HTTP 503 "high demand" and 429 rate limits on our
+key), so Flash-Lite has 4–7 of 14 photo sets per size and 3.8 Flash only 5 at full size. One run per setting: the
+noise from 3.2 (88–100% on the same photos) applies.
+
+**What it shows**
+
+1. **The fallback is the bill, not the first look.** With Haiku first, Opus was called in 79% of checks and the
+   average price went from **0.2¢ to 1.9¢**: the fallback is about 90% of it. It bought little: kit answers 88% →
+   88% at full size, 80% → 90% at 768 px.
+2. **Most of that money was wasted.** About two-thirds of the questions sent to Opus were about parts that were
+   simply not in the photo ("I can't see an LED"). No model can find a missing part in the same photo; only a new
+   photo from the learner can.
+3. **No first-look model is clearly cheaper than Haiku.** Gemini 3.5 Flash-Lite costs about the same (0.1–0.2¢)
+   and scored well on the cases it finished, but it was slow (40–80 s against Haiku's 12–22 s) and Google refused
+   a large part of the requests: not reliable enough for a learner waiting at the table. Sonnet costs 10× Haiku and
+   was not better. Nemotron is free (NVIDIA credits) but got 38–56% right, so Opus would be needed almost every time.
+4. **Opus alone is the most accurate (98–100%) at 4.6–5.4¢ a check.** That is 2.5× Haiku with the worst-case
+   fallback, for clearly better answers. Still far inside the €4 lesson limit.
+5. **Image size saves little for every model.** Opus 5.4¢ at full size against 4.6¢ at 512 px; Haiku 0.22¢ against
+   0.16¢.
+
+**What to do**
+
+1. **Call Opus only for a close-up Haiku could not read, never for a missing part.** This is what the app already
+   does (`server.flow`: a missing part asks the learner for a photo; Opus only after Haiku fails on a close-up),
+   and it should stay that way: it turns the 1.9¢ worst case into roughly 0.2¢ + 0.05¢ per close-up + about 1¢ only
+   on the rare unreadable close-up.
+2. **Keep Haiku as the first look.** Revisit Gemini Flash-Lite when its service is stable (it is the only model at
+   Haiku's price that matched it).
+3. **Keep "Opus only" as an option** for when certainty matters more than a few cents (about 5¢ a check).
+4. Then the answer trim from 3.3, which lowers every model's price.
 
 ## 4. Can the models be swapped without breaking anything?
 
