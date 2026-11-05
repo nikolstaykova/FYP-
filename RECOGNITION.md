@@ -3,7 +3,8 @@
 **Status:** 3 November 2026. Scenario fixed (section 1); the parts check is built (`code/checker/gather.py`)
 and tested on whole sets from the web (6.5); Claude Opus chosen for the look (section 7); small local VLMs still
 running.
-**Code:** `research/recognition/` (the comparison). **Data:** `data/sources/electrocom61/`.
+**Code:** `research/recognition/` (the comparison). **The checker built from it, its cost per check and how to
+lower it:** `CHECKER.md`. **Data:** `data/sources/electrocom61/`.
 
 ---
 
