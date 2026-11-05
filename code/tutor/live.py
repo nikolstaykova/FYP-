@@ -5,7 +5,7 @@ talks over it). It knows the lesson from `brief()`: the session plan (hello and 
 parts, the parts check with photos and close-ups, then the steps), every step with its words, goal, hints and parts,
 and the rules for talking. Its tools (`tools()`) drive the screen and the parts check: remember_name,
 show_parts_list, open_camera, take_photo, check_parts and take_closeup (non-blocking: it can keep talking while the
-check runs), skip_question, start_building, show_step, finish_lesson. LEGO lessons have no parts check.
+check runs), skip_question, start_building, show_step, finish_lesson. LEGO lessons check each gather card instead.
 
 The browser connects to Gemini itself (lowest delay for audio), with a short-lived token from `session()`, so the
 API key stays on the server. Without a voice service, `reply()` is the free fallback: Haiku writes the tutor's next
@@ -127,9 +127,15 @@ FLOW_BUILD_LEGO = """
    The LEGO lesson comes as cards: gather cards (kind gather: "Find the pieces", or "Bag 2: find the pieces") and
    build steps. show_step takes the card number. On a gather card: if it says to open a bag, tell them to open that
    bag first. Then say the pieces the short way (colour and shape: "two red 2 by 4 bricks, a black wheel"), a few
-   at a time for a beginner, all in one go for advanced; they can tap each piece on the screen when they have it.
-   Wait until they say they have them (or tap them all). If one is hard to find, help (colour, size, how many
-   studs, what it looks like), or let them carry on and find it when the step needs it. Then show the next card.
+   at a time for a beginner, all in one go for advanced. If one is hard to find, help (colour, size, how many studs,
+   what it looks like). When they say they have them, ask them to lay the pieces out flat on a plain table, a
+   little apart, and call open_camera; when they say "ready" (or "take it"), call take_photo, say "let me have a
+   look" and call check_parts: it checks the photo against this card. (In upload mode: ask them to upload the photo
+   and tell you, then call check_parts.) Tell the result like for any parts check: what is there, what is in
+   another colour (fine: the build just looks different), then each question in your own words, and wait; when
+   they hold a piece up, call take_closeup with its key (or take_closeup_all for several at once); skip_question if
+   they don't have it. When it is settled (or they want to carry on anyway, or they tick all the pieces on the
+   card instead), call show_step with the next card.
    On a build step, say it by its title ("Step 4"), never by the card number."""
 
 LEVELS = {
@@ -190,9 +196,13 @@ CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "t
                "skip_question", "use_column")
 
 
+LEGO_SKIP = ("show_parts_list", "use_column")  # a LEGO lesson checks each gather card, not a parts list or columns
+
+
 def tools(lesson_type):
-    """The tools for this lesson: the parts check only for electronics (a LEGO learner has the set)."""
-    names = [t for t in TOOL_DEFS if lesson_type == "arduino" or t not in CHECK_TOOLS]
+    """The tools for this lesson: electronics has the parts check and breadboard columns; LEGO checks each gather
+    card with the same photo tools."""
+    names = [t for t in TOOL_DEFS if lesson_type == "arduino" or t not in LEGO_SKIP]
     return [{"functionDeclarations": [{"name": n, **TOOL_DEFS[n]} for n in names]}]
 
 
@@ -220,10 +230,12 @@ def steps(lesson_id):
             continue
         if lego and not s.get("parts") and re.match(r"open bag \d+\.?$", (s.get("text") or "").strip(), re.I):
             continue  # the bag's gather card says to open it
-        counted = {}
+        counted, meta = {}, {}
         for p in s.get("parts") or []:
             w = _part_words({k: v for k, v in p.items() if k != "where"})
             counted[w] = counted.get(w, 0) + _count(p)
+            meta.setdefault(w, {"type": p.get("type"), "colour": (p.get("props") or {}).get("colour"),
+                                "about": ((p.get("about") or {}).get("description") or "")[:200]})
         picture = ((s.get("source") or {}).get("picture") or "")
         prog = s.get("program") if isinstance(s.get("program"), dict) else {}
         code = prog.get("text") or ""
@@ -238,7 +250,7 @@ def steps(lesson_id):
                     or f"Step {len(out) + 1}",
                     "text": text, "goal": s.get("goal"), "hints": s.get("hints") or [],
                     "why": s.get("why"), "what_changed": s.get("what_changed"),
-                    "parts": [{"what": w, "count": c} for w, c in counted.items()],
+                    "parts": [{"what": w, "count": c, **(meta[w] if lego else {})} for w, c in counted.items()],
                     "picture": picture if picture.startswith("data/lessons/booklet/") else None,
                     "code": code or None, "code_file": prog.get("file") if code else None,
                     "expected": s.get("expected"),
@@ -252,17 +264,19 @@ def steps(lesson_id):
 def _with_gather_cards(build):
     """The LEGO steps with a gather card before each group; cards are numbered in order, build steps keep 'Step k'."""
     from checker import lego_gather
-    cards, at = [], {g["first"]: g for g in lego_gather.groups(build)}
+    cards, at = [], {}
+    for g in lego_gather.groups(build):
+        at.setdefault(g["first"], []).append(g)
     for i, s in enumerate(build):
-        g = at.get(i)
-        if g:
+        for g in at.get(i, []):
             span = f"step {i + 1}" if g["first"] == g["last"] else f"steps {g['first'] + 1} to {g['last'] + 1}"
             lead = (f"Open bag {g['bag']} and find" if g["open_bag"] else
                     f"From bag {g['bag']}, find" if g["bag"] is not None else "Find")
-            cards.append({"kind": "gather", "id": f"gather-{i + 1}",
-                          "title": f"Bag {g['bag']}: find the pieces" if g["bag"] is not None else "Find the pieces",
-                          "text": f"{lead} these pieces for {span} ({g['pieces']} pieces). Put them in front of you; "
-                                  "tap each one when you have it.",
+            part = f" (part {g['part']} of {g['of']})" if g["of"] > 1 else ""
+            cards.append({"kind": "gather", "id": f"gather-{i + 1}" + (f"-{g['part']}" if g["of"] > 1 else ""),
+                          "title": (f"Bag {g['bag']}: find the pieces" if g["bag"] is not None else "Find the pieces") + part,
+                          "text": f"{lead} these pieces for {span}{part} ({g['pieces']} pieces). Lay them out flat on a "
+                                  "plain table, a little apart, and show them to the camera (or tap each one when you have it).",
                           "goal": None, "hints": [], "why": None, "what_changed": None, "parts": g["parts"],
                           "picture": None, "code": None, "code_file": None, "expected": None,
                           "number": "", "bag": g["bag"], "times": 1, "covers": [g["first"] + 1, g["last"] + 1]})

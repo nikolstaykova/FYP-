@@ -5,7 +5,7 @@ from tutor import live
 
 def _step(number, pieces, bag=None, times=1):
     return {"number": str(number), "bag": bag, "times": times,
-            "parts": [{"what": f"piece {number}-{k}", "count": 1} for k in range(pieces)]}
+            "parts": [{"what": f"piece {k}", "count": 1} for k in range(pieces)]}
 
 
 def test_small_lesson_one_card():
@@ -26,10 +26,10 @@ def test_long_lesson_split_and_balanced():
 
 
 def test_sub_build_kept_together_and_times_counted():
-    steps = [_step(1, 4), _step(2, 4), _step("3.1", 2, times=3), _step("3.2", 2, times=3), _step(3, 1), _step(4, 6)]
+    steps = [_step(1, 4), _step(2, 4), _step("3.1", 2, times=2), _step("3.2", 2, times=2), _step(3, 1), _step(4, 6)]
     g = lego_gather.groups(steps)
     assert not any(x["first"] in (3, 4) for x in g)  # never between 3.1 and 3
-    assert sum(x["pieces"] for x in g) == 4 + 4 + 6 + 6 + 1 + 6
+    assert sum(x["pieces"] for x in g) == 4 + 4 + 4 + 4 + 1 + 6
 
 
 def test_no_empty_card():
@@ -48,3 +48,30 @@ def test_every_lego_lesson_gets_cards():
         built = [s for s in st if s["kind"] != "gather"]
         assert [s["title"] for s in built] == [f"Step {k}" for k in range(1, len(built) + 1)]
         assert "Card 1, " in live.brief(lid)
+
+
+def test_cards_fit_one_photo():
+    from graph import lesson_store
+    for r in lesson_store.catalogue()["lessons"]:
+        if r.get("lesson_type") != "lego":
+            continue
+        for c in [s for s in live.steps(r["lesson_id"])["steps"] if s["kind"] == "gather"]:
+            assert len(c["parts"]) <= lego_gather.KINDS, (r["lesson_id"], c["id"])
+            assert sum(p["count"] for p in c["parts"]) <= 16 or len(c["parts"]) == 1, (r["lesson_id"], c["id"])
+
+
+def test_card_check_result():
+    from checker import lego_check
+    card = {"parts": [{"what": "Red Brick 2 x 4", "count": 1}, {"what": "Black Plate 1 x 1 Round", "count": 6},
+                      {"what": "Blue Plate 2 x 3", "count": 2}, {"what": "White Tile 1 x 2", "count": 1},
+                      {"what": "Yellow Minifig Head", "count": 1}]}
+    its = lego_check.items(card)
+    v = {"p1": {"status": "there", "seen": 1}, "p2": {"status": "there", "seen": 3},
+         "p3": {"status": "there", "seen": 1}, "p4": {"status": "unsure", "seen": 0, "ask": "Hold it up?"},
+         "p5": {"status": "other_colour", "colour_seen": "tan"}}
+    res = lego_check.result(its, v)
+    st = {r["type"]: r["status"] for r in res["parts"]}
+    assert st == {"p1": "have", "p2": "have", "p3": "check", "p4": "check", "p5": "use another colour"}
+    assert [q["key"] for q in res["asks"]] == ["p3", "p4"] and res["asks"][1]["message"] == "Hold it up?"
+    res = lego_check.result(its, {}, dismissed=["p1"])
+    assert res["parts"][0]["status"] == "skipped" and "p1" not in [q["key"] for q in res["asks"]]

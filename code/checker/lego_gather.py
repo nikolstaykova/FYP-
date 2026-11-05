@@ -1,29 +1,36 @@
-"""LEGO gathering in groups: the learner finds the pieces for the next few steps, builds them, then gathers again.
+"""LEGO gathering in groups: the learner finds the pieces for the next few steps, shows them to the camera, builds
+them, then gathers again.
 
 A LEGO learner has the set, so there is no whole-set check, and finding pieces before every single step is too slow
-on a big set. So the steps are split into groups, and a gather card goes before each group:
+on a big set. So the steps are split into groups, and a gather card goes before each group. Each card is checked
+from one photo of the pieces laid out (checker.lego_check), so a card must stay small enough for a model to see
+every piece: about PIECES pieces and at most KINDS different kinds.
 - A numbered bag (from the booklet) always starts a new group: "Open bag 2 and find these pieces".
-- Inside a bag, or in a lesson without bags, a group holds about PIECES pieces (more inside an open bag, where the
-  pile is small) and at most MAX_STEPS steps. The sizes are balanced, so the last group is not a leftover.
-- A booklet sub-build (7.1, 7.2, then 7 where it goes on) is gathered in one go, unless it is very big (over two
-  groups' worth): then it is split at its sub-steps.
-- A small lesson (up to SMALL pieces) has one gather card at the start.
+- A group holds at most MAX_STEPS steps. Sizes are balanced, so the last group is not a leftover, and a group with
+  very few pieces joins a neighbour when the two still fit on one card.
+- A booklet sub-build (7.1, 7.2, then 7 where it goes on) is gathered in one go, unless it is too big: then it is
+  split at its sub-steps.
+- A single step with more pieces than a card holds gets several cards in a row ("part 1 of 2").
 
 groups(steps) works on the tutor's step list (tutor.live.steps), where each step has `number`, `bag`, `times` and
-`parts` ([{what, count}]); it returns [{first, last, bag, open_bag, pieces, parts}] with first/last as indexes.
+`parts` ([{what, count, ...}]); it returns [{first, last, bag, open_bag, pieces, parts, part, of}] with first/last
+as step indexes (part/of number the cards of one group that had to be split).
 """
 import math
 
-PIECES = 12  # pieces per group in a lesson without bags
-PIECES_IN_BAG = 20  # inside an open bag the pile is small, so a group can hold more
-MAX_STEPS = 8  # never more steps than this between two gather cards (a tiny group may be merged past it)
-TINY = 0.5  # a group under this share of the target is merged into a neighbour
-SMALL = 15  # a lesson this small is gathered once
+PIECES = 10  # pieces per card, about
+KINDS = 8  # different pieces per card, at most
+MAX_STEPS = 8  # never more steps than this between two gather cards
+TINY = 0.5  # a group under this share of the target joins a neighbour (when the two still fit)
 
 
 def _pieces(step):
     """How many pieces the step uses (a sub-build made 4 times needs its pieces 4 times)."""
     return sum(p["count"] for p in step.get("parts") or []) * max(1, int(step.get("times") or 1))
+
+
+def _kinds(steps, idx):
+    return {p["what"] for i in idx for p in steps[i].get("parts") or []}
 
 
 def _units(steps):
@@ -50,75 +57,97 @@ def _segments(steps, units):
     return segs
 
 
-def _split(steps, units, limit):
-    """Units into groups of about `limit` pieces (balanced) and at most MAX_STEPS steps."""
-    big = 2 * limit  # a sub-build this big is split at its sub-steps after all
-    units = [x for u in units for x in
-             ([[i] for i in u] if sum(_pieces(steps[i]) for i in u) > big else [u])]
-    size = [sum(_pieces(steps[i]) for i in u) for u in units]
-    total = sum(size)
-    if total <= limit * 1.25:
-        return [units] if sum(len(u) for u in units) <= MAX_STEPS * 2 else _by_steps(units)
-    target = total / math.ceil(total / limit)
-    groups, cur, got = [], [], 0
-    for u, n in zip(units, size):
-        if cur and (got >= target or got + n > target * 1.25 or sum(map(len, cur)) + len(u) > MAX_STEPS):
-            groups.append(cur)
-            cur, got = [], 0
-        cur.append(u)
-        got += n
-    if cur:
-        groups.append(cur)
-    return _merge_tiny(groups, [sum(_pieces(steps[i]) for u in g for i in u) for g in groups], target)
+def _fits(steps, idx, limit):
+    return sum(_pieces(steps[i]) for i in idx) <= limit * 1.25 and len(_kinds(steps, idx)) <= KINDS
 
 
-def _merge_tiny(groups, size, target):
-    """A group with only a few pieces (or none: a step that attaches what was built) joins its smaller neighbour."""
-    while len(groups) > 1:
-        k = min(range(len(groups)), key=lambda j: size[j])
-        if size[k] >= target * TINY:
-            break
-        j = k - 1 if k == len(groups) - 1 or (k > 0 and size[k - 1] <= size[k + 1]) else k + 1
-        a, b = sorted((j, k))
-        groups[a:b + 1] = [groups[a] + groups[b]]
-        size[a:b + 1] = [size[a] + size[b]]
-    return groups
-
-
-def _by_steps(units):
+def _split(steps, units):
+    """Units into groups of about PIECES pieces (balanced), at most KINDS kinds and MAX_STEPS steps."""
+    units = [x for u in units for x in ([[i] for i in u] if not _fits(steps, u, PIECES) else [u])]
+    flat = [i for u in units for i in u]
+    total = sum(_pieces(steps[i]) for i in flat)
+    if _fits(steps, flat, PIECES) and len(flat) <= MAX_STEPS:
+        return [units]
+    target = total / max(1, math.ceil(total / PIECES))
     groups, cur = [], []
     for u in units:
-        if cur and sum(map(len, cur)) + len(u) > MAX_STEPS:
+        idx = [i for g in cur for i in g]
+        got = sum(_pieces(steps[i]) for i in idx)
+        n = sum(_pieces(steps[i]) for i in u)
+        if cur and (got >= target or got + n > target * 1.25 or len(idx) + len(u) > MAX_STEPS
+                    or len(_kinds(steps, idx + u)) > KINDS):
             groups.append(cur)
             cur = []
         cur.append(u)
-    return groups + ([cur] if cur else [])
+    if cur:
+        groups.append(cur)
+    return _merge_tiny(steps, groups, target)
+
+
+def _merge_tiny(steps, groups, target):
+    """A group with only a few pieces (or none: a step that attaches what was built) joins its smaller neighbour,
+    when the two still fit on one card (an empty group always joins)."""
+    def size(g):
+        return sum(_pieces(steps[i]) for u in g for i in u)
+    while len(groups) > 1:
+        order = sorted(range(len(groups)), key=lambda j: size(groups[j]))
+        for k in order:
+            if size(groups[k]) >= target * TINY:
+                return groups
+            for j in sorted({k - 1, k + 1} & set(range(len(groups))), key=lambda j: size(groups[j])):
+                a, b = sorted((j, k))
+                idx = [i for g in groups[a] + groups[b] for i in g]
+                if size(groups[k]) == 0 or _fits(steps, idx, PIECES):
+                    groups[a:b + 1] = [groups[a] + groups[b]]
+                    break
+            else:
+                continue
+            break
+        else:
+            return groups
+    return groups
 
 
 def _parts(steps, idx):
-    """The pieces of these steps, added up, in the order they are first used."""
+    """The pieces of these steps, added up, in the order they are first used (each keeps its other fields)."""
     got = {}
     for i in idx:
         times = max(1, int(steps[i].get("times") or 1))
         for p in steps[i].get("parts") or []:
-            got[p["what"]] = got.get(p["what"], 0) + p["count"] * times
-    return [{"what": w, "count": c} for w, c in got.items()]
+            if p["what"] in got:
+                got[p["what"]]["count"] += p["count"] * times
+            else:
+                got[p["what"]] = {**p, "count": p["count"] * times}
+    return list(got.values())
+
+
+def _chunks(parts):
+    """A list too long for one card, in cards of about PIECES pieces and at most KINDS kinds (a row is never split)."""
+    total = sum(p["count"] for p in parts)
+    n = max(math.ceil(total / (PIECES * 1.25)), math.ceil(len(parts) / KINDS))
+    target = total / n
+    out, cur = [], []
+    for p in parts:
+        got = sum(x["count"] for x in cur)
+        if cur and (got >= target or got + p["count"] > target * 1.25 or len(cur) >= KINDS):
+            out.append(cur)
+            cur = []
+        cur.append(p)
+    return out + ([cur] if cur else [])
 
 
 def groups(steps):
-    """The gather groups of a LEGO lesson's steps (see the module doc)."""
+    """The gather cards of a LEGO lesson's steps (see the module doc)."""
     if not steps:
         return []
-    total = sum(_pieces(s) for s in steps)
-    segs = _segments(steps, _units(steps))
     out = []
-    for bag, units in segs:
-        if total <= SMALL and len(segs) == 1:
-            parts_groups = [units]
-        else:
-            parts_groups = _split(steps, units, PIECES_IN_BAG if bag is not None else PIECES)
-        for k, g in enumerate(parts_groups):
+    for bag, units in _segments(steps, _units(steps)):
+        for k, g in enumerate(_split(steps, units)):
             idx = [i for u in g for i in u]
-            out.append({"first": idx[0], "last": idx[-1], "bag": bag, "open_bag": bag is not None and k == 0,
-                        "pieces": sum(_pieces(steps[i]) for i in idx), "parts": _parts(steps, idx)})
+            parts = _parts(steps, idx)
+            cards = [parts] if not parts or (sum(p["count"] for p in parts) <= PIECES * 1.25
+                                             and len(parts) <= KINDS) else _chunks(parts)
+            for c, chunk in enumerate(cards):
+                out.append({"first": idx[0], "last": idx[-1], "bag": bag, "open_bag": bag is not None and k == 0 and c == 0,
+                            "pieces": sum(p["count"] for p in chunk), "parts": chunk, "part": c + 1, "of": len(cards)})
     return out

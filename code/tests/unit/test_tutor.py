@@ -34,7 +34,8 @@ def test_the_session_starts_with_the_name_and_checks_parts_only_for_electronics(
     arduino = [d["name"] for d in live.tools("arduino")[0]["functionDeclarations"]]
     lego = [d["name"] for d in live.tools("lego")[0]["functionDeclarations"]]
     assert {"open_camera", "take_photo", "check_parts", "take_closeup", "use_column"} <= set(arduino)
-    assert not {"open_camera", "check_parts"} & set(lego) and "start_building" in lego
+    assert {"open_camera", "check_parts", "take_closeup"} <= set(lego) and "start_building" in lego
+    assert not {"show_parts_list", "use_column"} & set(lego)
     assert "no parts check" in live.brief("7268-1-pdf")
 
 

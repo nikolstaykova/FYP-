@@ -241,6 +241,7 @@ details.more summary { cursor: pointer; }
           <p class="steptext" id="b-text"></p>
           <p class="stepgoal" id="b-goal"></p>
           <div class="partchips" id="b-parts"></div>
+          <div class="row" id="b-checkrow" hidden style="margin:-2px 0 10px"><button class="btn small" id="b-check">📷 Check my pieces</button><span class="note">or tap each piece when you have it</span></div>
           <div id="b-code" hidden>
             <div class="row" style="margin:6px 0"><b>The sketch</b><button class="btn small" id="b-copy">Copy the code</button><button class="btn ghost small" id="b-dl">Download .ino</button><span class="note" id="b-codenote"></span></div>
             <pre id="b-codetext" class="codebox"></pre>
@@ -281,6 +282,7 @@ const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } cat
 if (KEY) $('labLink').href = '/lab?key=' + encodeURIComponent(KEY);
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+let GCARD = 0;  // the LEGO gather card being checked (its card number)
 let LESSONS = [], L = null, B = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = null, stream = null;
 let NAME = store.get('quest.name') || '', LEVEL = store.get('quest.level') || '';
 const LEVEL_NAME = { beginner: 'beginner', some: 'some experience', advanced: 'advanced' };
@@ -443,7 +445,8 @@ function drawResult(st) {
   const rows = st.parts.map(r => ({ r, k: KIND(r.status) }));
   const ready = rows.filter(x => x.k === 'have' || x.k === 'swap').length, all = rows.length, settled = !st.asks.length;
   $('ring').style.setProperty('--p', all ? Math.round(ready / all * 100) : 0); $('ringText').textContent = `${ready}/${all}`;
-  $('r-title').textContent = ready === all && settled ? 'You have everything!' : settled ? 'Almost there' : 'A couple of questions';
+  $('r-title').textContent = ready === all && settled ? (L.type === 'lego' ? 'You have every piece!' : 'You have everything!') : settled ? 'Almost there' : 'A couple of questions';
+  $('r-build').textContent = L.type === 'lego' ? 'Back to building' : 'Start building';
   $('r-lead').textContent = ready === all && settled ? `All set for ${L.name}.` : `${all - ready} part${all - ready === 1 ? '' : 's'} to sort out.`;
   $('r-list').innerHTML = rows.map(({ r, k }) => {
     const u = r.use_instead.find(x => x.ok !== false), h = r.have[0];
@@ -484,7 +487,10 @@ $('r-quests').addEventListener('click', e => {
            if (T.on) tell(`(The learner opened the camera for the close-up, key ${k}: call take_closeup when they say they are holding it up.)`); }
   if (s) { if (T.on) tell(`(The learner tapped "${e.target.textContent}" for key ${s}: call skip_question.)`); else runTool('skip_question', { key: s }); }
 });
-$('r-build').addEventListener('click', () => { if (T.on) tell('(The learner tapped Start building: call start_building.)'); else runTool('start_building', {}); });
+$('r-build').addEventListener('click', () => {
+  if (L.type === 'lego') { const n = Math.min(B.steps.length, GCARD + 1); showStep(n); tell(`(The learner tapped Back to building: the screen shows card ${n}. Teach it.)`); return; }
+  if (T.on) tell('(The learner tapped Start building: call start_building.)'); else runTool('start_building', {});
+});
 $('r-rescan').addEventListener('click', () => { PHOTOS = []; drawThumbs(); PENDING = null; if (T.on) tell('(The learner wants to give new photos.)'); runTool('open_camera', {}); });
 
 // build
@@ -504,6 +510,8 @@ function showStep(n) {
   n = Math.max(1, Math.min(B.steps.length, n | 0)); B.i = n - 1; const s = B.steps[B.i];
   if (STAGE !== 'build') stage('build');
   const lego = L.type === 'lego', find = lego && s.kind === 'gather';
+  if (find && GCARD !== n) { GCARD = n; PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null; drawThumbs(); }
+  $('b-checkrow').hidden = !find;
   $('b-count').textContent = lego ? `Card ${n} of ${B.steps.length}` : `Step ${n} of ${B.steps.length}`; $('b-title').textContent = s.title; $('b-text').innerHTML = cols(s.text);
   $('b-goal').innerHTML = cols(s.goal || ''); $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
   const got = (B.got = B.got || {})[n] = B.got[n] || new Set();
@@ -536,6 +544,10 @@ $('b-parts').addEventListener('click', e => {
   c.classList.toggle('got', got.has(i)); c.setAttribute('aria-checked', got.has(i));
   if (got.size === s.parts.length) tell(`(The learner ticked every piece on card ${B.i + 1}: they have them all.)`);
 });
+$('b-check').addEventListener('click', () => {
+  if (T.on) tell(`(The learner tapped Check my pieces on card ${GCARD}: ask them to lay the pieces out flat, open the camera, and check them.)`);
+  runTool('open_camera', {});
+});
 $('b-colreset').addEventListener('click', () => { COLS = {}; showStep(B.i + 1); tell("(The learner switched the screen back to the lesson's own columns.)"); });
 $('b-prev').addEventListener('click', () => { showStep(B.i); tell(`(The learner tapped Back: the screen shows step ${B.i + 1}.)`); });
 $('b-next').addEventListener('click', () => {
@@ -562,7 +574,7 @@ async function runTool(name, args) {
     }
     case 'show_parts_list': stage('parts'); return { shown: true, parts: L.parts.map(p => `${p.count}x ${p.name}`) };
     case 'open_camera': {
-      stage('camera'); $('c-title').textContent = PENDING ? 'Close-up' : 'Show me your parts'; setMode(MODE, true);
+      stage('camera'); $('c-title').textContent = PENDING ? 'Close-up' : L.type === 'lego' ? 'Show me your pieces' : 'Show me your parts'; setMode(MODE, true);
       if (MODE === 'upload') return { mode: 'upload', photos: PHOTOS.length, tell_them: 'they give photos by uploading them, not with the camera: ask them to upload 1 to 3 photos and to tell you when they have' };
       const ok = await startCamera();
       return ok ? { mode: 'camera', camera: 'open' } : { camera: 'not available', tell_them: 'they can switch to Upload photos' };
@@ -575,10 +587,11 @@ async function runTool(name, args) {
       PHOTOS.push({ ...p, from: 'camera' }); drawThumbs(); return { photos: PHOTOS.length };
     }
     case 'check_parts': {
+      if (L.type === 'lego' && !(B && B.steps[GCARD - 1] && B.steps[GCARD - 1].kind === 'gather')) return { error: 'show a gather card first (show_step)' };
       if (!PHOTOS.length) return { error: 'no photos yet: take one first' };
       stage('result'); $('r-list').innerHTML = ''; $('r-quests').innerHTML = ''; $('r-title').textContent = 'Checking…'; $('r-lead').textContent = ''; $('ringText').textContent = '…';
       working('Looking at your parts…');
-      try { UPLOAD = await upload(PHOTOS); const st = await post('/api/flow/first', { upload: UPLOAD, lesson: L.id }); drawResult(st); working(''); return summary(st); }
+      try { UPLOAD = await upload(PHOTOS); const st = await post('/api/flow/first', L.type === 'lego' ? { upload: UPLOAD, lesson: L.id, card: GCARD } : { upload: UPLOAD, lesson: L.id }); drawResult(st); working(''); return summary(st); }
       catch (e) { working(''); return { error: e.message }; }
     }
     case 'take_closeup': {
