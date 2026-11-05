@@ -230,6 +230,7 @@ details.more summary { cursor: pointer; }
         <!-- build -->
         <div id="v-build" class="hidden">
           <div class="stephead"><span id="b-count"></span><span id="b-lesson"></span></div>
+          <div class="note" id="b-cols" hidden>Showing your columns (<span id="b-colmap"></span>) · <button class="toplink" id="b-colreset" style="text-decoration:underline">use the lesson's</button></div>
           <h1 id="b-title"></h1>
           <img id="b-pic" alt="The booklet's picture of this step" hidden>
           <p class="steptext" id="b-text"></p>
@@ -316,7 +317,7 @@ function stage(s) {
 }
 async function openLesson(id) {
   L = LESSONS.find(l => l.id === id); PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null; B = null;
-  COLS = store.get('quest.cols.' + id) || {};
+  COLS = {};  // columns belong to this build: every session starts with the lesson's
   $('s-choose').classList.add('hidden'); $('s-session').classList.remove('hidden');
   $('h-kind').textContent = L.type === 'lego' ? `LEGO · from the ${L.kind}` : 'Electronics';
   $('h-title').textContent = L.name;
@@ -485,6 +486,7 @@ $('r-rescan').addEventListener('click', () => { PHOTOS = []; drawThumbs(); PENDI
 function drawDots() { if (!B) return; $('b-lesson').textContent = B.name; $('b-dots').innerHTML = B.steps.map(s => `<button data-n="${s.n}" aria-label="Step ${s.n}">${s.n}</button>`).join(''); }
 // the learner's breadboard columns: lesson column -> theirs (set by Pip's use_column), shown on every step card
 let COLS = {};
+try { Object.keys(localStorage).filter(k => k.startsWith('quest.cols.')).forEach(k => localStorage.removeItem(k)); } catch {}  // old saved maps
 function cols(text) {  // "column 10 and the other leg in column 14" -> the learner's numbers, marked
   const mark = num => COLS[num] ? `<mark class="col" title="the lesson says ${num}">${COLS[num]}</mark>` : num;
   return esc(text).replace(/\b(columns?)(\s+)(\d+(?:\s*(?:,|and|or|to)\s*\d+)*)/gi,
@@ -497,6 +499,8 @@ function showStep(n) {
   $('b-count').textContent = `Step ${n} of ${B.steps.length}`; $('b-title').textContent = s.title; $('b-text').innerHTML = cols(s.text);
   $('b-goal').innerHTML = cols(s.goal || ''); $('b-pic').hidden = !s.picture; if (s.picture) $('b-pic').src = api(s.picture);
   $('b-parts').innerHTML = s.parts.map(p => `<span>${p.count > 1 ? p.count + '× ' : ''}${esc(p.what)}</span>`).join('');
+  const map = Object.entries(COLS); $('b-cols').hidden = !map.length;
+  $('b-colmap').textContent = map.map(([a, b]) => `${a} → ${b}`).join(', ');
   $('b-code').hidden = !s.code; $('b-codetext').textContent = s.code || ''; $('b-codenote').textContent = '';
   $('b-hints').hidden = !s.hints.length; $('b-hints').open = false; $('b-hintlist').innerHTML = s.hints.map(h => `<li>${cols(h)}</li>`).join('');
   $('b-prev').disabled = n === 1; $('b-next').textContent = n === B.steps.length ? 'Finish' : 'Done: next step';
@@ -515,6 +519,7 @@ $('b-dl').addEventListener('click', () => {
   $('b-codenote').textContent = 'Downloaded: open it in the Arduino IDE (it may ask to put it in a folder of the same name: say yes).';
   tell('(The learner downloaded the sketch.)');
 });
+$('b-colreset').addEventListener('click', () => { COLS = {}; showStep(B.i + 1); tell("(The learner switched the screen back to the lesson's own columns.)"); });
 $('b-prev').addEventListener('click', () => { showStep(B.i); tell(`(The learner tapped Back: the screen shows step ${B.i + 1}.)`); });
 $('b-next').addEventListener('click', () => {
   B.done.add(B.i + 1);
@@ -587,7 +592,7 @@ async function runTool(name, args) {
       const a = String(parseInt(args.lesson)), b = String(parseInt(args.theirs));
       if (a === 'NaN' || b === 'NaN') return { error: 'give two column numbers' };
       if (a === b) delete COLS[a]; else COLS[a] = b;
-      store.set('quest.cols.' + L.id, COLS); if (STAGE === 'build') showStep(B.i + 1);
+      if (STAGE === 'build') showStep(B.i + 1);
       return { columns: COLS, note: 'the step cards now show their columns' };
     }
     case 'start_building': return { step: showStep(1), steps: B ? B.steps.length : 0 };
