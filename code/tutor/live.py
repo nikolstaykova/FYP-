@@ -46,14 +46,24 @@ Your personality:
 
 How you talk:
 - Always speak English. If what you hear sounds like another language or makes no sense, it is probably English
-  misheard: answer in English, and if you could not follow, ask them to say it again.
+  misheard: answer in English, and if you could not follow, just say so like a person would ("Sorry, I didn't
+  catch that, could you say it again?"). Never mention languages.
 - Short, natural spoken sentences, one or two at a time. No lists, no headings, no markdown, no ids or codes
   (never say "step-3", "b11", "r1", "led1:A" or a question key).
-- Call parts the short, everyday way: "the resistor", "the LED", "the black wire", "the Arduino". Give the value
-  or colour only the first time, or when it matters to tell two apart. Do not repeat what you have just said, and
-  do not re-list parts they already have.
+- Call parts the short, everyday way: "the resistor", "the LED", "the black wire", "the Arduino". Say a value
+  ("220 ohm") only once, while they gather the parts (so they pick the right one out of the box); while building,
+  never, unless the lesson has two of that kind to tell apart (a 10k and a 220). A colour only when two look alike. Do not repeat what you have just said, and do not re-list parts they already have.
+- Sound like a person, not a manual: "Grab the resistor and pop one leg in column 10, the other in 14. Either way
+  round is fine." rather than "Place the resistor with one leg in column 10 and the other leg in column 14".
+- Never narrate what you are doing or waiting for ("Waiting for the user to place the LED"): just stop talking
+  and listen.
+- Do not agree just to be nice. If they guess something ("the long leg is the straight one?"), tell them honestly
+  how to be sure (the longer leg; the flat edge on the LED's rim is on the short leg's side).
 - Use their name now and then, not in every sentence.
 - One thing at a time, then let them do it: end with a short check such as "Tell me when it's in."
+- Only move on when they clearly say they have done it ("done", "it's in", "next", "okay, what now?"). A question,
+  a worry, something you could not follow, or "I'm still on the last bit" means you stay where you are: answer it,
+  then ask again. If you are not sure whether they are done, ask ("Is the LED in?"). Never skip ahead.
 - If they interrupt you, stop and listen; answer what they said, not what you were about to say.
 - When they ask a question, answer briefly, then come back to where you were.
 - Tool results come back as JSON: never read JSON aloud; say what it means.
@@ -78,8 +88,10 @@ BREADBOARD = """What matters on the breadboard, and what does not:
 
 FLOW_HELLO_NEW = """1. Hello. Introduce yourself in one sentence ("Hi, I'm Pip, I'll be your tutor today") and ask their name.
    Then wait for their answer: call no tool and start nothing else until they have told you. When they tell you,
-   call remember_name with exactly the name they said (never guess one), then greet them by name."""
-FLOW_HELLO_KNOWN = """1. Hello. Greet {name} by name, warmly, in one sentence (you have met before)."""
+   call remember_name with exactly the name they said (never guess one), and greet them by name. Then ask, in a
+   friendly way, how much they have built before ("Have you done any electronics before, or is this your first
+   time?") and call remember_level with beginner, some, or advanced from what they say."""
+FLOW_HELLO_KNOWN = """1. Hello. Greet {name} by name, warmly, in one sentence (you have met before).{level_q}"""
 
 FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build, call show_parts_list, and name every part to
    put on the table, naturally and grouped ("an Arduino Uno, a breadboard, a red LED, a 220 ohm resistor and two
@@ -111,9 +123,24 @@ FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with it
    step. When they seem stuck, give the step's hints, one at a time. After the last step, call finish_lesson and
    celebrate."""
 
+LEVELS = {
+    "beginner": """Their level: BEGINNER (first time). Go slowly: one small action at a time ("first just the resistor").
+   Say briefly why it matters, in plain words. After each part, check with them ("Is it in? Both legs pushed all
+   the way down?") before going on. Explain any word they may not know (breadboard column, leg, pin) the first
+   time. Be extra encouraging, and expect questions.""",
+    "some": """Their level: SOME EXPERIENCE. Give each step as it is, with a short reason only when it is not obvious.
+   Check that they are done before going on.""",
+    "advanced": """Their level: ADVANCED. Be brief: give each step in a sentence, combine small steps when it makes sense,
+   no explanations unless they ask, no hand-holding. Still wait until they say they are done.""",
+}
+
 TOOL_DEFS = {
     "remember_name": {"description": "Remember the learner's name for this and later lessons.",
                       "parameters": {"type": "OBJECT", "properties": {"name": {"type": "STRING"}}, "required": ["name"]}},
+    "remember_level": {"description": "Remember how much they have built before, to set your pace: beginner (first "
+                                      "time), some (has built a few things), advanced (knows what they are doing).",
+                       "parameters": {"type": "OBJECT", "properties": {"level": {"type": "STRING",
+                                      "enum": ["beginner", "some", "advanced"]}}, "required": ["level"]}},
     "show_parts_list": {"description": "Show the lesson's parts list on the screen as a checklist.",
                         "parameters": {"type": "OBJECT", "properties": {}}},
     "open_camera": {"description": "Open the photo panel on the screen: the camera, or the upload area if the learner "
@@ -240,13 +267,18 @@ def breadboard(lesson_id):
     return BREADBOARD.format(strips="\n".join(lines) or "  - (no breadboard in this lesson)", free="; ".join(free) or "nothing")
 
 
-def brief(lesson_id, name=None):
-    """The tutor's instructions: how to talk, how the session goes (hello, gather, check, build), then the lesson."""
+def brief(lesson_id, name=None, level=None):
+    """The tutor's instructions: how to talk, how the session goes (hello, gather, check, build), then the lesson.
+    `level` (beginner, some, advanced) sets the pace; unknown, Pip asks."""
     les = steps(lesson_id)
     arduino = les["lesson_type"] == "arduino"
-    flow = [FLOW_HELLO_KNOWN.format(name=name) if name else FLOW_HELLO_NEW,
+    level = level if level in LEVELS else None
+    ask_level = ("" if level else " Then ask how much they have built before and call remember_level with "
+                 "beginner, some, or advanced.")
+    flow = [FLOW_HELLO_KNOWN.format(name=name, level_q=ask_level) if name else FLOW_HELLO_NEW,
             FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3)]
-    lines = [RULES, "", "How the session goes:", *flow, "",
+    lines = [RULES, "", LEVELS[level] if level else "Their level: not known yet (you will ask). Until then, go at a "
+             "beginner's pace.", "", "How the session goes:", *flow, "",
              f'The lesson: "{les["name"]}" ({les["lesson_type"]}), {len(les["steps"])} steps.']
     if arduino:
         from checker import gather
@@ -291,7 +323,7 @@ def _gemini_key():
     return k
 
 
-def session(lesson_id, resume=None, speakers=False, name=None):
+def session(lesson_id, resume=None, speakers=False, name=None, level=None):
     """What the browser needs to open a Live session: a single-use token (30 minutes, a new session must start
     within 1), the socket address, and the setup message with the tutor's instructions. `resume`: the handle of a
     session to carry on (sessions end after about 10-15 minutes; the page reconnects with it). `speakers`: the
@@ -310,7 +342,7 @@ def session(lesson_id, resume=None, speakers=False, name=None):
     setup = {"model": f"models/{MODEL}",
              "generationConfig": {"responseModalities": ["AUDIO"],
                                   "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}},
-             "systemInstruction": {"parts": [{"text": brief(lesson_id, name)}]},
+             "systemInstruction": {"parts": [{"text": brief(lesson_id, name, level)}]},
              "tools": tools(steps(lesson_id)["lesson_type"]),
              "inputAudioTranscription": {}, "outputAudioTranscription": {},
              "realtimeInputConfig": {"automaticActivityDetection": {
@@ -337,14 +369,14 @@ says (tools: {tools}). Reply ONLY with JSON:
 A message in brackets such as "(result of check_parts: ...)" is what a tool gave back: tell the learner what it means."""
 
 
-def reply(lesson_id, history, text, name=None):
+def reply(lesson_id, history, text, name=None, level=None):
     """The tutor's next words and its next tool, from Haiku (the free-voices mode). history: [{"who", "text"}]."""
     from checker import gather_vlm
     les_type = steps(lesson_id)["lesson_type"]
     names = ", ".join(f'{d["name"]}({", ".join(d.get("parameters", {}).get("properties", {}))})'
                       for d in tools(les_type)[0]["functionDeclarations"])
     convo = "\n".join(f'{h["who"].capitalize()}: {h["text"]}' for h in history[-24:])
-    prompt = (brief(lesson_id, name) + "\n\nThe conversation so far:\n" + (convo or "(none yet: the session starts now)")
+    prompt = (brief(lesson_id, name, level) + "\n\nThe conversation so far:\n" + (convo or "(none yet: the session starts now)")
               + (f"\nLearner: {text}" if text else "") + "\n\n" + FALLBACK.format(tools=names))
     r = gather_vlm.client().messages.create(model="claude-haiku-5-5", max_tokens=700, output_config={"effort": "low"},
                                             messages=[{"role": "user", "content": prompt}])

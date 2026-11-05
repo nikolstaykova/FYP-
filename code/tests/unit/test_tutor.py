@@ -63,3 +63,12 @@ def test_the_upload_step_carries_its_sketch_and_pip_knows_it_is_on_screen():
     assert up["code"].startswith("/*  RCTiming_capacitance_meter") and "\n\n\n" not in up["code"]
     b = live.brief("capacitance-meter")
     assert "ON THE SCREEN" in b and "Never say the lesson has no code" in b and "RCTiming" in b
+
+
+def test_pip_asks_the_level_and_paces_itself_by_it():
+    new = live.brief("blink")
+    assert "remember_level" in new and "beginner's pace" in new
+    assert "Their level: BEGINNER" in live.brief("blink", "Nicole", "beginner")
+    assert "Their level: ADVANCED" in live.brief("blink", "Nicole", "advanced")
+    assert "Never skip ahead" in new and "Never narrate" in new and "Do not agree just to be nice" in new
+    assert "remember_level" in [d["name"] for d in live.tools("lego")[0]["functionDeclarations"]]

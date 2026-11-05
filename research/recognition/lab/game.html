@@ -254,6 +254,7 @@ details.more summary { cursor: pointer; }
         <form id="t-form"><input id="t-text" placeholder="Or type to Pip…" autocomplete="off"><button class="btn small">Send</button></form>
         <div class="settings">
           <label>Voice <select id="t-mode"><option value="live">Natural (Gemini Live)</option><option value="free">Free (browser voice + Haiku)</option></select></label>
+          <label>Your level <select id="t-level"><option value="">ask me</option><option value="beginner">Beginner: go slowly</option><option value="some">Some experience</option><option value="advanced">Advanced: keep it short</option></select></label>
           <label><input type="checkbox" id="t-speakers"> I'm on speakers, not headphones</label>
           <div><span id="t-cost">0.0¢ so far</span> · limit €4 per lesson<div class="costbar"><div id="t-costbar"></div></div></div>
         </div>
@@ -275,8 +276,9 @@ if (KEY) $('labLink').href = '/lab?key=' + encodeURIComponent(KEY);
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 let LESSONS = [], L = null, B = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = null, stream = null;
-let NAME = store.get('quest.name') || '';
-function greetName() { $('hello').textContent = NAME ? `Hi, ${NAME}` : ''; }
+let NAME = store.get('quest.name') || '', LEVEL = store.get('quest.level') || '';
+const LEVEL_NAME = { beginner: 'beginner', some: 'some experience', advanced: 'advanced' };
+function greetName() { $('hello').textContent = NAME ? `Hi, ${NAME}${LEVEL ? ' · ' + LEVEL_NAME[LEVEL] : ''}` : ''; if ($('t-level')) $('t-level').value = LEVEL; }
 greetName();
 
 // ===================== choose
@@ -532,6 +534,10 @@ async function runTool(name, args) {
   args = args || {};
   switch (name) {
     case 'remember_name': NAME = String(args.name || '').trim().split(/\s+/).slice(0, 3).join(' '); store.set('quest.name', NAME); greetName(); return { remembered: NAME };
+    case 'remember_level': {
+      LEVEL = ['beginner', 'some', 'advanced'].includes(args.level) ? args.level : 'beginner'; store.set('quest.level', LEVEL); greetName();
+      return { remembered: LEVEL };
+    }
     case 'show_parts_list': stage('parts'); return { shown: true, parts: L.parts.map(p => `${p.count}x ${p.name}`) };
     case 'open_camera': {
       stage('camera'); $('c-title').textContent = PENDING ? 'Close-up' : 'Show me your parts'; setMode(MODE, true);
@@ -608,6 +614,10 @@ function addCost(usd) {
   if (T.cost >= T.cap) { caption('sys', 'This lesson reached its €4 limit: Pip stops here. Carry on with the buttons.'); tutorStop(); }
 }
 function tutorReset() { tutorStop(); T.cost = 0; T.history = []; T.handle = null; addCost(0); state('off', 'Your tutor. Press start and just talk.'); }
+$('t-level').addEventListener('change', () => {
+  LEVEL = $('t-level').value; store.set('quest.level', LEVEL); greetName();
+  if (T.on) tell(LEVEL ? `(The learner set their level to ${LEVEL_NAME[LEVEL]}: change your pace to suit it from now on.)` : '(The learner wants you to ask their level again.)');
+});
 $('t-mode').addEventListener('change', () => { tutorStop(); T.mode = $('t-mode').value; });
 $('t-start').addEventListener('click', () => T.on ? tutorStop() : tutorStart());
 $('t-mute').addEventListener('click', () => { T.muted = !T.muted; $('t-mute').textContent = T.muted ? 'Unmute mic' : 'Mute mic'; if (T.rec) { try { T.muted ? T.rec.stop() : T.rec.start(); } catch {} } });
@@ -684,7 +694,7 @@ async function liveStart(first) {
   await micUp(chunk => { if (!T.muted && T.ws && T.ws.readyState === 1) T.ws.send(JSON.stringify({ realtimeInput: { audio: { data: b64(chunk), mimeType: 'audio/pcm;rate=16000' } } })); });
 }
 async function openLive(first, resumed) {
-  const s = await post('/api/tutor/session', { lesson: L.id, resume: T.handle, speakers: $('t-speakers').checked, name: NAME });
+  const s = await post('/api/tutor/session', { lesson: L.id, resume: T.handle, speakers: $('t-speakers').checked, name: NAME, level: LEVEL });
   T.cap = s.cap_usd; T.warn = s.warn_usd; T.prices = s.prices;
   const ws = new WebSocket(s.ws); T.ws = ws; ws.binaryType = 'arraybuffer';
   ws.onopen = () => ws.send(JSON.stringify(s.setup));
@@ -751,11 +761,11 @@ async function freeAsk(text) {
   try {
     let next = text;
     for (let hops = 0; hops < 4 && next != null && T.on; hops++) {
-      const r = await post('/api/tutor/reply', { lesson: L.id, history: T.history, text: next, name: NAME });
+      const r = await post('/api/tutor/reply', { lesson: L.id, history: T.history, text: next, name: NAME, level: LEVEL });
       T.history.push({ who: 'learner', text: next }); T.history.push({ who: 'tutor', text: r.say + (r.tool ? ` [${r.tool.name}]` : '') });
       addCost(r.cost_usd || 0); caption('tutor', r.say); const said = T.on ? speak(r.say) : null;
       next = null;
-      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
+      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'remember_level', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
     }
   } catch (e) { caption('sys', 'Pip could not answer: ' + e.message); }
   freeBusy = false; if (T.on) state('listening', 'Listening… just talk');

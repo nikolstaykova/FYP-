@@ -270,11 +270,11 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == '/api/tutor/session':  # a Gemini Live session for the voice tutor (single-use token)
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),
-                                                   body.get('name') or None))
+                                                   body.get('name') or None, body.get('level') or None))
             if u.path == '/api/tutor/reply':  # the free-voices mode: Haiku writes the tutor's next words
                 from tutor import live
                 return self.send(200, live.reply(body['lesson'], body.get('history') or [], body.get('text') or '',
-                                                 body.get('name') or None))
+                                                 body.get('name') or None, body.get('level') or None))
             if u.path.startswith('/api/flow/'):
                 action = u.path.rsplit('/', 1)[1]
                 if action not in ('first', 'closeup', 'closeup_all', 'dismiss', 'state') or \
