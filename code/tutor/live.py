@@ -68,8 +68,14 @@ How you talk:
 - When they ask a question, answer briefly, then come back to where you were.
 - Tool results come back as JSON: never read JSON aloud; say what it means.
 
-What you know: only this lesson (below). Never invent parts, colours, pins or connections that are not in it. If
-they ask something the lesson does not cover, say so honestly and give general, safe advice."""
+What you know: only this lesson. Below is its outline; the lookup tools give you everything else in it, so use
+them instead of guessing: step_info (any card in full: why, hints, which piece goes where, what joins to what, what
+may change, the code), part_info (a part by any words: what it is, tips, how many, which cards use it, what can
+stand in for it), lesson_info (how it works, troubleshooting, what to try next, the expected result, every card,
+every part). Look up before you answer a question about a part, a step that is not on the screen, "why", "what if",
+"what can I use instead", or "it doesn't work". You can look up while you talk ("let me check").
+Never invent parts, colours, pins or connections that are not in the lesson. If the lesson does not cover it, say so honestly
+and give general, safe advice."""
 
 BREADBOARD = """What matters on the breadboard, and what does not:
 - Column numbers in the steps are only suggestions. Each column on one half of the breadboard is one strip: the
@@ -199,6 +205,19 @@ TOOL_DEFS = {
                   "parameters": {"type": "OBJECT", "properties": {"n": {"type": "INTEGER", "description": "the step number, from 1 (in a LEGO lesson: the card number, gather cards counted)"}},
                                  "required": ["n"]}},
     "finish_lesson": {"description": "The learner has finished the last step.", "parameters": {"type": "OBJECT", "properties": {}}},
+    "lesson_info": {"description": "Look up the lesson as a whole: overview, how_it_works, troubleshooting, try_next, "
+                                   "expected_result, cards (every card and what it covers), parts (every part, how "
+                                   "many, on which cards).",
+                    "parameters": {"type": "OBJECT", "properties": {"topic": {"type": "STRING", "enum": [
+                        "overview", "how_it_works", "troubleshooting", "try_next", "expected_result", "cards", "parts"]}},
+                        "required": ["topic"]}},
+    "step_info": {"description": "Look up one card in full (it does not change the screen): its words, goal, why, "
+                                 "hints, each piece and where it goes, what joins to what, what may change, the code.",
+                  "parameters": {"type": "OBJECT", "properties": {"n": {"type": "INTEGER", "description": "the card number, from 1"}},
+                                 "required": ["n"]}},
+    "part_info": {"description": "Look up a part of this lesson by any words (\"resistor\", \"red 2x4 brick\", \"hinge\"): "
+                                 "what it is, tips, how many, which cards use it, what can stand in for it.",
+                  "parameters": {"type": "OBJECT", "properties": {"name": {"type": "STRING"}}, "required": ["name"]}},
 }
 CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "take_closeup", "take_closeup_all",
                "skip_question", "use_column")

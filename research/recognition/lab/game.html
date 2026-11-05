@@ -199,6 +199,7 @@ details.more summary { cursor: pointer; }
           <span class="note" id="h-kind"></span>
           <h1 id="h-title"></h1>
           <p class="lead" id="h-lead"></p>
+          <p class="note" id="h-load" aria-live="polite"></p>
           <div class="row"><button class="btn" id="h-start">Start with Pip</button><button class="btn ghost small" id="h-quiet">Tap through without voice</button><button class="btn ghost small" id="h-back">Choose another</button></div>
         </div>
         <!-- parts list -->
@@ -294,14 +295,14 @@ const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } cat
 if (KEY) $('labLink').href = '/lab?key=' + encodeURIComponent(KEY);
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-let GCARD = 0;
+let GCARD = 0;  // the LEGO gather card being checked (its card number)
 const V3 = { on: false, ready: false, want: null, lesson: null, steps: 0 };  // the 3D viewer of a 3D LEGO lesson
 function v3Send(msg) { V3.want = msg; if (V3.ready) $('b-3dframe').contentWindow.postMessage(msg, '*'); }
-function v3Open() {  // load the lesson's viewer the first time a step needs it
+function v3Open() {  // load the lesson's viewer (once per lesson: when it is chosen)
   if (V3.lesson === L.id) return;
   V3.lesson = L.id; V3.ready = false; $('b-3dload').hidden = false; $('b-3dload').textContent = 'Building the 3D model…';
   $('b-3dframe').src = api(`/viewer/${encodeURIComponent(L.id)}/index.html?embed=1`);
-}  // the LEGO gather card being checked (its card number)
+}
 let LESSONS = [], L = null, B = null, PHOTOS = [], UPLOAD = null, LAST = null, PENDING = null, stream = null;
 let NAME = store.get('quest.name') || '', LEVEL = store.get('quest.level') || '';
 const LEVEL_NAME = { beginner: 'beginner', some: 'some experience', advanced: 'advanced' };
@@ -353,8 +354,26 @@ async function openLesson(id) {
   $('p-list').innerHTML = L.parts.map((p, i) => `<li data-i="${i}" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span>
     <span class="what"><b>${esc(p.name)}</b>${p.values.length ? `<span>${esc(p.values.join(', '))}</span>` : ''}</span><span class="count">×${p.count || 1}</span></li>`).join('');
   $('t-caps').innerHTML = ''; tutorReset(); stage('hello'); window.scrollTo({ top: 0 });
+  $('h-load').textContent = 'Loading the lesson…';
   try { B = await fetch(api('/api/lesson?id=' + encodeURIComponent(id))).then(r => r.json()); B.i = 0; B.done = new Set(); drawDots(); }
-  catch (e) { caption('sys', 'Could not load the steps: ' + e.message); }
+  catch (e) { caption('sys', 'Could not load the steps: ' + e.message); $('h-load').textContent = ''; return; }
+  if (L.id === id) preload(B);
+}
+// everything for the lesson, as soon as it is chosen: the booklet pictures and the 3D model, so no step waits
+const PRE = { pics: [], lesson: null };
+function preload(b) {
+  PRE.lesson = L.id; const want = { pics: b.pictures.length, picsDone: 0, model: !!b.viewer };
+  const say = () => {
+    if (PRE.lesson !== L.id) return;
+    const bits = [`${b.steps.length} ${L.type === 'lego' ? 'cards' : 'steps'}`];
+    if (want.pics) bits.push(want.picsDone < want.pics ? `pictures ${want.picsDone}/${want.pics}` : `${want.pics} booklet pictures`);
+    if (want.model) bits.push(V3.ready ? '3D model' : '3D model loading…');
+    const done = want.picsDone >= want.pics && (!want.model || V3.ready);
+    $('h-load').textContent = (done ? '✓ Ready: ' : 'Loading: ') + bits.join(' · ');
+  };
+  PRE.pics = b.pictures.map(src => { const im = new Image(); im.onload = im.onerror = () => { want.picsDone++; say(); }; im.src = api(src); return im; });
+  if (want.model) v3Open();
+  PRE.say = say; say();
 }
 $('h-back').addEventListener('click', () => { tutorStop(); $('s-session').classList.add('hidden'); $('s-choose').classList.remove('hidden'); });
 $('h-start').addEventListener('click', () => tutorStart());
@@ -574,7 +593,7 @@ $('b-parts').addEventListener('click', e => {
 });
 addEventListener('message', e => {  // the 3D viewer says it has loaded the model
   if (e.source !== $('b-3dframe').contentWindow || !e.data || e.data.viewer !== 'ready') return;
-  V3.ready = true; V3.steps = e.data.steps || 0; $('b-3dload').hidden = true;
+  V3.ready = true; V3.steps = e.data.steps || 0; $('b-3dload').hidden = true; if (PRE.say) PRE.say();
   if (V3.want) v3Send(V3.want.whole ? { ...V3.want, step: V3.steps } : V3.want);
 });
 $('b-3dframe').addEventListener('load', () => {  // an error page instead of the viewer
@@ -665,6 +684,8 @@ async function runTool(name, args) {
     }
     case 'start_building': return { step: showStep(1), steps: B ? B.steps.length : 0 };
     case 'show_step': return { screen_shows_step: showStep(args.n) };
+    case 'lesson_info': case 'step_info': case 'part_info':  // look it up in the lesson (nothing changes on the screen)
+      try { return await post('/api/tutor/lookup', { lesson: L.id, tool: name, args }); } catch (e) { return { error: e.message }; }
     case 'finish_lesson': { if (B) B.steps.forEach(s => B.done.add(s.n)); stage('done'); $('d-title').textContent = NAME ? `Well done, ${NAME}!` : 'Lesson complete!'; $('d-lead').textContent = `You finished ${L.name}.`; cheer(); return { finished: true }; }
   }
   return { error: 'unknown tool ' + name };
@@ -838,7 +859,7 @@ async function freeAsk(text) {
       T.history.push({ who: 'learner', text: next }); T.history.push({ who: 'tutor', text: r.say + (r.tool ? ` [${r.tool.name}]` : '') });
       addCost(r.cost_usd || 0); caption('tutor', r.say); const said = T.on ? speak(r.say) : null;
       next = null;
-      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'remember_level', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
+      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'remember_level', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building', 'lesson_info', 'step_info', 'part_info'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
     }
   } catch (e) { caption('sys', 'Pip could not answer: ' + e.message); }
   freeBusy = false; if (T.on) state('listening', 'Listening… just talk');

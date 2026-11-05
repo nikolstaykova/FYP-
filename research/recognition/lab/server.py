@@ -284,11 +284,25 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(403, {'error': 'wrong or missing key in the link'})
         if u.path == '/api/lessons':
             return self.send(200, lessons() + (lego_lessons() if q.get('all') else []))
-        if u.path == '/api/lesson':  # a lesson's steps for the build screen and the tutor
+        if u.path == '/api/lesson':  # everything a lesson needs, loaded when it is chosen
             from tutor import live
-            out = live.steps(q.get('id', [''])[0])
+            lid = q.get('id', [''])[0]
+            out = json.loads(json.dumps(live.steps(lid)))  # a copy: the steps are cached
             for st in out['steps']:
                 st['picture'] = f"/files/{st['picture']}" if st['picture'] else None
+            out['pictures'] = [st['picture'] for st in out['steps'] if st['picture']]
+            is3d = out['lesson_type'] == 'lego' and (ROOT / 'data/lessons/lego3d' / lid / 'lesson.json').is_file()
+            out['viewer'] = f'/viewer/{lid}/index.html?embed=1' if is3d else None
+            def warm():  # Pip's brief, and the 3D model if it must be (re)built, while the learner reads the screen
+                try:
+                    live.brief(lid)
+                    from tutor import lookup
+                    lookup.index(lid)
+                    if is3d:
+                        viewer(lid)
+                except Exception:
+                    traceback.print_exc()
+            threading.Thread(target=warm, daemon=True).start()
             return self.send(200, out)
         m = re.fullmatch(r'/viewer/([\w-]+)/(index\.html|lesson\.json)', u.path)
         if m:  # a 3D lesson's step viewer (built from its LDraw model the first time, then kept)
@@ -340,6 +354,17 @@ class Handler(BaseHTTPRequestHandler):
                 (RUNS / up / 'upload.json').write_text(json.dumps({'names': [p.get('name') for p in body['photos']],
                                                                    'lesson': body.get('lesson')}))
                 return self.send(200, {'upload': up})
+            if u.path == '/api/tutor/lookup':  # the tutor looks something up in the lesson (tutor.lookup)
+                from tutor import lookup
+                fn = {'lesson_info': lookup.lesson_info, 'step_info': lookup.step_info, 'part_info': lookup.part_info}.get(body.get('tool'))
+                if not fn:
+                    return self.send(400, {'error': 'unknown lookup'})
+                args = body.get('args') or {}
+                arg = args.get('topic') or args.get('n') or args.get('name') or ''
+                try:
+                    return self.send(200, fn(body['lesson'], arg))
+                except Exception as e:
+                    return self.send(200, {'error': f'could not look that up: {e}'})
             if u.path == '/api/tutor/session':  # a Gemini Live session for the voice tutor (single-use token)
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),
