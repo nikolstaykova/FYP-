@@ -171,6 +171,79 @@ noise from 3.2 (88–100% on the same photos) applies.
 3. **Keep "Opus only" as an option** for when certainty matters more than a few cents (about 5¢ a check).
 4. Then the answer trim from 3.3, which lowers every model's price.
 
+### 3.6 The whole matrix: photo setting x model (9 November 2026)
+
+Every measured cell of 3.1 and 3.5 in one place (`research/recognition/matrix.py`). JPEG 85 rows are from the model
+test (3.5); † marks Haiku cells from the image test (3.1), a separate run. (n/14) = Gemini cells where Google
+refused part of the run. "not run" cells were not measured. For Claude, the price of a JPEG 35 or 15 photo is the
+same as JPEG 85 at that size (pixels, not bytes, are paid for), so only the quality would change.
+
+**First look: price per check (US cents)**
+
+| Photo setting | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Gemini 3.5 Flash-Lite | Gemini 3.8 Flash | Nemotron 3.5 VL |
+|---|---|---|---|---|---|---|
+| 1600 px (full), JPEG 85 | 0.22¢ | 2.58¢ | 5.43¢ | 0.16¢ (6/14) | 0.73¢ (5/14) | free |
+| 1024 px, JPEG 85 | 0.21¢ | 2.45¢ | 5.11¢ | 0.16¢ (7/14) | not run | free |
+| 768 px, JPEG 85 | 0.20¢ | 2.21¢ | 5.11¢ | 0.12¢ (5/14) | not run | free |
+| 512 px, JPEG 85 | 0.16¢ | 2.09¢ | 4.63¢ | 0.18¢ (4/14) | not run | free |
+| 384 px, JPEG 85 | 0.14¢† | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 35 | 0.21¢† | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 15 | 0.21¢† | not run | not run | not run | not run | not run |
+
+**First look: kit photos right**
+
+| Photo setting | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Gemini 3.5 Flash-Lite | Gemini 3.8 Flash | Nemotron 3.5 VL |
+|---|---|---|---|---|---|---|
+| 1600 px (full), JPEG 85 | 88% | 98% | 100% | 94% (6/14) | 91% (5/14) | 38% |
+| 1024 px, JPEG 85 | 84% | 86% | 98% | 88% (7/14) | not run | 56% |
+| 768 px, JPEG 85 | 80% | 84% | 100% | 93% (5/14) | not run | 44% |
+| 512 px, JPEG 85 | 90% | 86% | 98% | 100% (4/14) | not run | 42% |
+| 384 px, JPEG 85 | 84%† | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 35 | 86%† | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 15 | 88%† | not run | not run | not run | not run | not run |
+
+**With the Opus fallback (worst case): average price · kit right · how often Opus was called**
+
+| Photo setting | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Gemini 3.5 Flash-Lite | Gemini 3.8 Flash | Nemotron 3.5 VL |
+|---|---|---|---|---|---|---|
+| 1600 px (full), JPEG 85 | 2.10¢ · 88% · Opus in 79% | 4.80¢ · 100% · Opus in 100% | no fallback (it is Opus) | 1.60¢ · 94% · Opus in 67% (6/14) | 3.31¢ · 95% · Opus in 100% (5/14) | 2.13¢ · 62% · Opus in 79% |
+| 1024 px, JPEG 85 | – | – | no fallback (it is Opus) | – | not run | – |
+| 768 px, JPEG 85 | 1.89¢ · 90% · Opus in 79% | 4.03¢ · 90% · Opus in 93% | no fallback (it is Opus) | 1.34¢ · 93% · Opus in 80% (5/14) | not run | 1.74¢ · 66% · Opus in 79% |
+| 512 px, JPEG 85 | – | – | no fallback (it is Opus) | – | not run | – |
+| 384 px, JPEG 85 | – | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 35 | – | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 15 | – | not run | not run | not run | not run | not run |
+
+**Answer length (output tokens, the main cost)**
+
+| Photo setting | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Gemini 3.5 Flash-Lite | Gemini 3.8 Flash | Nemotron 3.5 VL |
+|---|---|---|---|---|---|---|
+| 1600 px (full), JPEG 85 | 3819 | 1997 | 2128 | 357 | 1473 | 3551 |
+| 1024 px, JPEG 85 | 3798 | 1963 | 2068 | 377 | not run | 3294 |
+| 768 px, JPEG 85 | 3650 | 1840 | 2182 | 253 | not run | 3122 |
+| 512 px, JPEG 85 | 2944 | 1802 | 2026 | 479 | not run | 3342 |
+| 384 px, JPEG 85 | 2638 | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 35 | 3607 | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 15 | 3618 | not run | not run | not run | not run | not run |
+
+**Seconds per first look**
+
+| Photo setting | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Gemini 3.5 Flash-Lite | Gemini 3.8 Flash | Nemotron 3.5 VL |
+|---|---|---|---|---|---|---|
+| 1600 px (full), JPEG 85 | 16 s | 12 s | 16 s | 36 s | 103 s | 32 s |
+| 1024 px, JPEG 85 | 15 s | 11 s | 16 s | 40 s | not run | 33 s |
+| 768 px, JPEG 85 | 15 s | 11 s | 17 s | 79 s | not run | 25 s |
+| 512 px, JPEG 85 | 12 s | 11 s | 16 s | 41 s | not run | 29 s |
+| 384 px, JPEG 85 | 11 s | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 35 | 15 s | not run | not run | not run | not run | not run |
+| 1600 px, JPEG 15 | 15 s | not run | not run | not run | not run | not run |
+
+**Is Gemini cheaper?** Per first look, a little: Flash-Lite 0.12–0.18¢ against Haiku's 0.16–0.22¢. Not because its
+tokens are cheaper (they cost 3× Haiku's in and 5× out) but because its answer is about **10× shorter** (250–480
+tokens against Haiku's ~3,800). That points straight at 3.3.1: a Haiku answer as short as Gemini's would cost about
+0.05¢, cheaper than Gemini. With the fallback Flash-Lite averaged 1.34¢ against Haiku's 1.89¢ at 768 px, on only 5
+of the 14 photo sets, and it was 2–5× slower and often refused.
+
 ## 4. Can the models be swapped without breaking anything?
 
 **Within Claude: yes, mostly.** **To another provider: not yet, apart from the research scripts.**
