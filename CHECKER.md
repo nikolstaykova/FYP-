@@ -152,7 +152,7 @@ noise from 3.2 (88–100% on the same photos) applies.
    simply not in the photo ("I can't see an LED"). No model can find a missing part in the same photo; only a new
    photo from the learner can.
 3. **No first-look model is cheaper than Haiku.** Gemini 3.5 Flash-Lite looked about the same price here (0.1–0.2¢),
-   but 10 runs in 3.7 put it at 0.46–0.56¢, about 2.5× Haiku; but it was slow (40–80 s against Haiku's 12–22 s) and Google refused
+   but 10 runs in 3.7 put it at 0.46–0.56¢, about 2.5× Haiku. It was also slow (40–80 s against Haiku's 12–22 s) and Google refused
    a large part of the requests: not reliable enough for a learner waiting at the table. Sonnet costs 10× Haiku and
    was not better. Nemotron is free (NVIDIA credits) but got 38–56% right, so Opus would be needed almost every time.
 4. **Opus alone is the most accurate (98–100%) at 4.6–5.4¢ a check.** That is 2.5× Haiku with the worst-case
