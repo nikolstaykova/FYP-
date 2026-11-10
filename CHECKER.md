@@ -151,8 +151,8 @@ noise from 3.2 (88–100% on the same photos) applies.
 2. **Most of that money was wasted.** About two-thirds of the questions sent to Opus were about parts that were
    simply not in the photo ("I can't see an LED"). No model can find a missing part in the same photo; only a new
    photo from the learner can.
-3. **No first-look model is clearly cheaper than Haiku.** Gemini 3.5 Flash-Lite costs about the same (0.1–0.2¢)
-   and scored well on the cases it finished, but it was slow (40–80 s against Haiku's 12–22 s) and Google refused
+3. **No first-look model is cheaper than Haiku.** Gemini 3.5 Flash-Lite looked about the same price here (0.1–0.2¢),
+   but 10 runs in 3.7 put it at 0.46–0.56¢, about 2.5× Haiku; but it was slow (40–80 s against Haiku's 12–22 s) and Google refused
    a large part of the requests: not reliable enough for a learner waiting at the table. Sonnet costs 10× Haiku and
    was not better. Nemotron is free (NVIDIA credits) but got 38–56% right, so Opus would be needed almost every time.
 4. **Opus alone is the most accurate (98–100%) at 4.6–5.4¢ a check.** That is 2.5× Haiku with the worst-case
@@ -238,11 +238,56 @@ same as JPEG 85 at that size (pixels, not bytes, are paid for), so only the qual
 | 1600 px, JPEG 35 | 15 s | not run | not run | not run | not run | not run |
 | 1600 px, JPEG 15 | 15 s | not run | not run | not run | not run | not run |
 
-**Is Gemini cheaper?** Per first look, a little: Flash-Lite 0.12–0.18¢ against Haiku's 0.16–0.22¢. Not because its
-tokens are cheaper (they cost 3× Haiku's in and 5× out) but because its answer is about **10× shorter** (250–480
-tokens against Haiku's ~3,800). That points straight at 3.3.1: a Haiku answer as short as Gemini's would cost about
-0.05¢, cheaper than Gemini. With the fallback Flash-Lite averaged 1.34¢ against Haiku's 1.89¢ at 768 px, on only 5
-of the 14 photo sets, and it was 2–5× slower and often refused.
+**Is Gemini cheaper?** These one-run numbers said so (Flash-Lite 0.12–0.18¢, very short answers), but they came
+from the few checks Google let through. **With full runs it is not: see 3.7** (Flash-Lite averaged 0.46–0.56¢,
+about 2.5× Haiku).
+
+### 3.7 Ten runs: Haiku against Gemini Flash-Lite, every size x JPEG quality (9–10 November 2026)
+
+`research/recognition/repeat_matrix.py`: Haiku 5.5 and Gemini 3.5 Flash-Lite, photos at 1024 / 768 / 512 px x
+JPEG 85 / 35 / 15, first look only, 14 photo sets per run. Haiku: all 10 runs (1,260 checks). Gemini: 4 runs (496
+checks) before Google stopped it ("You exceeded your current quota", HTTP 429). About $4.90. Error bars and ± are
+the 95% confidence interval of the mean over the runs. Chart: `research/recognition/repeat_plot.py`.
+
+![Price, kit accuracy and your-photo accuracy for every size and JPEG quality, Haiku against Gemini](research/recognition/figures/checker_repeats.png)
+
+| Model | Size | JPEG | Runs | Price per check | Kit right (± 95% CI) | Your photos same as Opus (± 95% CI) | Answer tokens | Seconds |
+|---|---|---|---|---|---|---|---|---|
+| Haiku 5.5 | 1024 px | 85 | 10 | 0.205¢ | 94% ± 3 | 93% ± 3 | 3608 | 15 |
+| Haiku 5.5 | 1024 px | 35 | 10 | 0.207¢ | 87% ± 2 | 93% ± 2 | 3648 | 15 |
+| Haiku 5.5 | 1024 px | 15 | 10 | 0.203¢ | 87% ± 2 | 92% ± 3 | 3569 | 15 |
+| Haiku 5.5 | 768 px | 85 | 10 | 0.197¢ | 87% ± 2 | 93% ± 5 | 3556 | 15 |
+| Haiku 5.5 | 768 px | 35 | 10 | 0.189¢ | 93% ± 4 | 94% ± 4 | 3402 | 14 |
+| Haiku 5.5 | 768 px | 15 | 10 | 0.186¢ | 92% ± 4 | 91% ± 2 | 3349 | 19 |
+| Haiku 5.5 | 512 px | 85 | 10 | 0.164¢ | 93% ± 3 | 90% ± 3 | 2997 | 12 |
+| Haiku 5.5 | 512 px | 35 | 10 | 0.160¢ | 96% ± 2 | 90% ± 2 | 2918 | 12 |
+| Haiku 5.5 | 512 px | 15 | 10 | 0.158¢ | 96% ± 2 | 90% ± 2 | 2871 | 12 |
+| Gemini 3.5 Flash-Lite | 1024 px | 85 | 4 | 0.537¢ | 86% ± 7 | 83% ± 8 | 1882 | 9 |
+| Gemini 3.5 Flash-Lite | 1024 px | 35 | 4 | 0.547¢ | 98% ± 3 | 86% ± 10 | 1923 | 12 |
+| Gemini 3.5 Flash-Lite | 1024 px | 15 | 4 | 0.491¢ | 86% ± 2 | 86% ± 4 | 1698 | 6 |
+| Gemini 3.5 Flash-Lite | 768 px | 85 | 4 | 0.563¢ | 92% ± 4 | 92% ± 3 | 1987 | 13 |
+| Gemini 3.5 Flash-Lite | 768 px | 35 | 4 | 0.548¢ | 92% ± 2 | 95% ± 2 | 1925 | 11 |
+| Gemini 3.5 Flash-Lite | 768 px | 15 | 4 | 0.467¢ | 94% ± 2 | 88% ± 3 | 1603 | 14 |
+| Gemini 3.5 Flash-Lite | 512 px | 85 | 4 | 0.464¢ | 90% ± 4 | 88% ± 8 | 1588 | 10 |
+| Gemini 3.5 Flash-Lite | 512 px | 35 | 4 | 0.490¢ | 94% ± 3 | 83% ± 5 | 1692 | 9 |
+| Gemini 3.5 Flash-Lite | 512 px | 15 | 4 | 0.468¢ | 94% ± 3 | 85% ± 13 | 1613 | 17 |
+
+**What it shows**
+
+1. **Haiku is the cheaper model: 0.16–0.21¢ a check against Gemini's 0.46–0.56¢.** Gemini's tokens cost more (3× in,
+   5× out) and over full runs its answers were 1,600–2,000 tokens, not the 250–480 of the partial run. The earlier
+   "Gemini is a little cheaper" (3.6) was wrong: it came from too few, unrepresentative checks.
+2. **Gemini is not more accurate either.** On your photos Haiku is 90–94% at every setting with tight intervals;
+   Gemini 83–95% with wide ones (it is less consistent from run to run).
+3. **For Haiku, 512 px is the price winner: 0.16¢ (−20% on 1024 px) with 93–96% on the kit photos**, but 90% on
+   your photos against 92–94% at 768 and 1024 px. 768 px is the balance: 0.19–0.20¢, 93–94% on your photos.
+4. **JPEG quality hardly matters.** No consistent effect at any size, beyond the noise. It does not change the price
+   either (pixels are paid for, not bytes), so keep quality 85 for safety and smaller uploads only if the phone
+   connection is slow.
+5. **Ten runs were needed.** Single runs had swung 10–18 points; with ten, the intervals are ±2–5 points.
+
+**Choice:** Haiku, first look at **768 px** (best on your photos for 0.19¢), or **512 px** if the last 20% of the
+first-look price matters more than 3 points on real phone photos. Close-ups stay at full size.
 
 ## 4. Can the models be swapped without breaking anything?
 
