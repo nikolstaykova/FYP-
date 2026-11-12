@@ -26,6 +26,7 @@ class LessonSummary {
               what: _arduinoName(p as Map<String, dynamic>),
               count: _int(p['count'], 1),
               type: p['type'] as String?,
+              values: [for (final v in (p['values'] as List? ?? const [])) '$v'],
             ),
         ],
       );
@@ -39,9 +40,10 @@ class LessonSummary {
 
 /// A piece or part to find.
 class Piece {
-  Piece({required this.what, required this.count, this.type, this.colour, this.about});
+  Piece({required this.what, required this.count, this.type, this.colour, this.about, this.values = const []});
 
   final String what;
+  final List<String> values; // electronics: the lesson's values (wire colours, 220...)
   final int count;
   final String? type;
   final String? colour;

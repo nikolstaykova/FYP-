@@ -386,6 +386,13 @@ class Handler(BaseHTTPRequestHandler):
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),
                                                    body.get('name') or None, body.get('level') or None))
+            if u.path == '/api/tutor/look':  # Pip's look tool: a photo and a question, Haiku answers
+                from tutor import live
+                d = RUNS / ('look-' + time.strftime('%Y%m%d'))
+                d.mkdir(parents=True, exist_ok=True)
+                f = d / f"look-{time.strftime('%H%M%S')}-{secrets.token_hex(2)}.jpg"
+                f.write_bytes(base64.b64decode(body['photo'].split(',', 1)[-1]))
+                return self.send(200, live.look(body['lesson'], str(f), str(body.get('question') or 'What is this?')[:400]))
             if u.path == '/api/tutor/reply':  # the free-voices mode: Haiku writes the tutor's next words
                 from tutor import live
                 return self.send(200, live.reply(body['lesson'], body.get('history') or [], body.get('text') or '',

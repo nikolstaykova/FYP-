@@ -134,6 +134,11 @@ class Api {
         'level': level,
       })) as Map<String, dynamic>;
 
+  /// Pip's look tool: one photo, one question, answered by Haiku on the server.
+  Future<Map<String, dynamic>> look(String lesson, Uint8List photo, String question) async =>
+      (await _post('/api/tutor/look', {'lesson': lesson, 'photo': _dataUrl(photo), 'question': question}))
+          as Map<String, dynamic>;
+
   /// Pip looks something up in the lesson (lesson_info, step_info, part_info).
   Future<dynamic> lookup(String lesson, String tool, Map<String, dynamic> args) async =>
       _post('/api/tutor/lookup', {'lesson': lesson, 'tool': tool, 'args': args});

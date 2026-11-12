@@ -344,7 +344,7 @@ function stage(s) {
 }
 async function openLesson(id) {
   L = LESSONS.find(l => l.id === id); GCARD = 0; PHOTOS = []; UPLOAD = null; LAST = null; PENDING = null; B = null;
-  COLS = {};  // columns belong to this build: every session starts with the lesson's
+  COLS = {}; SWAPS = {};  // columns and swaps belong to this build: every session starts with the lesson's
   $('s-choose').classList.add('hidden'); $('s-session').classList.remove('hidden');
   $('h-kind').textContent = L.type === 'lego' ? `LEGO · from the ${L.kind}` : 'Electronics';
   $('h-title').textContent = L.name;
@@ -538,10 +538,17 @@ function drawDots() { if (!B) return; $('b-lesson').textContent = B.name; $('b-d
 // the learner's breadboard columns: lesson column -> theirs (set by Pip's use_column), shown on every step card
 let COLS = {};
 try { Object.keys(localStorage).filter(k => k.startsWith('quest.cols.')).forEach(k => localStorage.removeItem(k)); } catch {}  // old saved maps
-function cols(text) {  // "column 10 and the other leg in column 14" -> the learner's numbers, marked
+let SWAPS = {};  // their versions: "orange wire" -> "blue wire" (Pip's use_instead)
+function cols(text) {  // "column 10 and the other leg in column 14" -> the learner's numbers, marked; their wires/parts too
   const mark = num => COLS[num] ? `<mark class="col" title="the lesson says ${num}">${COLS[num]}</mark>` : num;
-  return esc(text).replace(/\b(columns?)(\s+)(\d+(?:\s*(?:,|and|or|to)\s*\d+)*)/gi,
+  let out = esc(text).replace(/\b(columns?)(\s+)(\d+(?:\s*(?:,|and|or|to)\s*\d+)*)/gi,
     (m, word, space, nums) => word + space + nums.replace(/\d+/g, mark));
+  for (const [a, b] of Object.entries(SWAPS)) {
+    const w = /^(\w+) wire$/.exec(a), t = /^(.+?) wire$/.exec(b);
+    const re = w && t ? new RegExp(`\\b${w[1]}(?=\\s+(?:jumper\\s+)?wires?\\b)`, 'gi') : new RegExp(`\\b${a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+    out = out.replace(re, `<mark class="col" title="the lesson says ${esc(a)}">${esc(w && t ? t[1] : b)}</mark>`);
+  }
+  return out;
 }
 function showStep(n) {
   if (!B || !B.steps.length) return 0;
@@ -682,6 +689,21 @@ async function runTool(name, args) {
       if (STAGE === 'build') showStep(B.i + 1);
       return { columns: COLS, note: 'the step cards now show their columns' };
     }
+    case 'use_instead': {
+      const a = String(args.lesson || '').trim().toLowerCase(), b = String(args.theirs || '').trim();
+      if (!a || !b) return { error: 'say what the lesson uses and what they use' };
+      if (a === b.toLowerCase()) delete SWAPS[a]; else SWAPS[a] = b;
+      if (STAGE === 'build') showStep(B.i + 1);
+      return { their_versions: SWAPS, note: 'the step cards now show theirs; call it their way from now on' };
+    }
+    case 'look': {
+      const back = STAGE; if (STAGE !== 'camera') await runTool('open_camera', {});
+      if (!stream && !(await startCamera())) return { error: 'no camera here: ask them to describe it instead' };
+      await sleep(600); const p = snap(); if (!p) return { error: 'the camera is not ready; try again' };
+      try { return await post('/api/tutor/look', { lesson: L.id, photo: p.data, question: String(args.question || 'What is this?') }); }
+      catch (e) { return { error: e.message }; }
+      finally { if (back !== 'camera') { if (back === 'build') showStep(B.i + 1); else stage(back); } }
+    }
     case 'start_building': return { step: showStep(1), steps: B ? B.steps.length : 0 };
     case 'show_step': return { screen_shows_step: showStep(args.n) };
     case 'lesson_info': case 'step_info': case 'part_info':  // look it up in the lesson (nothing changes on the screen)
@@ -795,7 +817,7 @@ async function openLive(first, resumed) {
   ws.onmessage = ev => onLive(JSON.parse(typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data)), first, resumed);
   ws.onclose = () => { if (T.on && !T.stopping && ws === T.ws) { caption('sys', 'Reconnecting…'); setTimeout(() => T.on && openLive(null, true).catch(e => { caption('sys', 'Could not reconnect: ' + e.message); tutorStop(); }), 400); } };
 }
-const NON_BLOCKING = new Set(['check_parts', 'take_closeup', 'take_closeup_all']);
+const NON_BLOCKING = new Set(['check_parts', 'take_closeup', 'take_closeup_all', 'look']);
 function onLive(m, first, resumed) {
   if (m.setupComplete) { state('listening', 'Listening… just talk'); if (!resumed) T.ws.send(JSON.stringify({ realtimeInput: { text: (first ? first + ' ' : '') + situation() + ' (Start the session.)' } })); }
   if (m.sessionResumptionUpdate && m.sessionResumptionUpdate.newHandle) T.handle = m.sessionResumptionUpdate.newHandle;
@@ -859,7 +881,7 @@ async function freeAsk(text) {
       T.history.push({ who: 'learner', text: next }); T.history.push({ who: 'tutor', text: r.say + (r.tool ? ` [${r.tool.name}]` : '') });
       addCost(r.cost_usd || 0); caption('tutor', r.say); const said = T.on ? speak(r.say) : null;
       next = null;
-      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'remember_level', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building', 'lesson_info', 'step_info', 'part_info'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
+      if (r.tool) { const result = await runTool(r.tool.name, r.tool.args); if (['remember_name', 'remember_level', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all', 'skip_question', 'start_building', 'lesson_info', 'step_info', 'part_info', 'look', 'use_instead'].includes(r.tool.name)) { await said; next = `(result of ${r.tool.name}: ${JSON.stringify(result)})`; } }
     }
   } catch (e) { caption('sys', 'Pip could not answer: ' + e.message); }
   freeBusy = false; if (T.on) state('listening', 'Listening… just talk');

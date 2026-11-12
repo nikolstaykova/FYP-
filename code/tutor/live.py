@@ -77,6 +77,23 @@ What you know. Two kinds of knowledge:
   breadboard works, how to hold or press things, safety, and why things work. When they ask "how do I find / tell /
   recognise / know which one", explain exactly how, concretely: the colours, the shape, the markings. Never brush a
   question off ("just pick the right one", "it's in your kit"): that is never an answer.
+Side questions are part of teaching. Answer them properly, briefly, then come back to where you were. Hands-on
+know-how you should give without looking anything up:
+- A leg into the breadboard: push it straight down, firmly, until it holds by itself, about 5 to 8 mm (most of the
+  bare leg; it should not wobble or pop up). Won't go in? The leg is bent or kinked (straighten it with a
+  fingernail), the leg is too thick or not lined up with the hole (wiggle it gently while pushing), or the hole is
+  damaged (move along to the next free hole in the same column, since only the column matters). Never force it
+  sideways. Long legs can be bent down flat or trimmed, as long as two bare legs never touch.
+- Jumper wires: push the pin in fully; a wire that sits loose gives a flickering or dead circuit.
+- The Arduino's header pins: the wire goes in the black strip, all the way down; the numbers are printed beside it.
+- LEGO: press until it clicks and sits flat with no gap; studs line up exactly. Stuck pieces come apart with a brick
+  separator or by twisting gently, never with teeth.
+- "Does this match / is this right?": if you can tell from what they say, answer; if you need to see it, ask them to
+  hold it up to the camera and use look.
+Their versions: when the check shows they have a different colour wire, or a stand-in part (a check result lists
+"their_versions"), or they tell you they are using another colour or part, call use_instead (once per thing) and
+from then on always call it THEIR way ("the blue wire", not "the orange wire"), in every step. Colour and length of
+a jumper wire never change the circuit, so say yes to any colour.
 The lookup tools: step_info (any card in full: why, hints, which piece goes where, what joins to what, what
 may change, the code), part_info (a part by any words: what it is, how to recognise it (a resistor's exact colour
 bands, worked out for its value: say those, not your own), tips, how many, which cards use it, what can stand in
@@ -209,6 +226,21 @@ TOOL_DEFS = {
     "skip_question": {"description": "The learner does not have that part, or wants to skip the question. Returns the "
                                      "new result.",
                       "parameters": {"type": "OBJECT", "properties": {"key": {"type": "STRING"}}, "required": ["key"]}},
+    "use_instead": {"description": "The learner uses their own version of something in the lesson: a different "
+                                   "colour wire (\"orange wire\" -> \"blue wire\"), brick colour, or a stand-in part. "
+                                   "From now on the step cards show theirs, and you must call it theirs too.",
+                    "parameters": {"type": "OBJECT", "properties": {
+                        "lesson": {"type": "STRING", "description": "the words the lesson uses, e.g. \"orange wire\""},
+                        "theirs": {"type": "STRING", "description": "what they use instead, e.g. \"blue wire\""}},
+                        "required": ["lesson", "theirs"]}},
+    "look": {"description": "Look through the camera to answer a question you cannot answer without seeing "
+                            "(\"does this colour match?\", \"is this the right resistor?\", \"is it in the right "
+                            "hole?\", \"what is this piece?\"). First ask them to hold it up to the camera; call it when "
+                            "they say it is there. Takes about 5 seconds. Returns what was seen, as the answer to your question.",
+             "behavior": "NON_BLOCKING",
+             "parameters": {"type": "OBJECT", "properties": {"question": {"type": "STRING",
+                            "description": "exactly what to find out, with what the lesson expects (\"Is this resistor "
+                                           "220 ohm: red, red, brown, gold?\")"}}, "required": ["question"]}},
     "start_building": {"description": "Go to the building steps on the screen (step 1).",
                        "parameters": {"type": "OBJECT", "properties": {}}},
     "show_step": {"description": "Show a step of the lesson on the screen. Call it before you talk about that step.",
@@ -462,6 +494,23 @@ def cost_usd(usage):
     return (inp.get("TEXT", 0) * PRICES["text_in"] + inp.get("AUDIO", 0) * PRICES["audio_in"]
             + out.get("AUDIO", 0) * PRICES["audio_out"] + out.get("TEXT", 0) * PRICES["text_out"]
             + usage.get("thoughtsTokenCount", 0) * PRICES["text_out"]) / 1e6
+
+
+LOOK = """You are helping a learner with this lesson: {lesson}.
+The parts it uses: {parts}.
+The learner holds something up to the camera. Answer this question about the photo, in at most two short spoken
+sentences, plainly and honestly (say if the photo does not show it clearly, and what would help): {question}"""
+
+
+def look(lesson_id, photo, question):
+    """Pip's look tool: one photo and one question, answered by Haiku (about 0.1 cents)."""
+    from checker import gather_vlm
+    st = steps(lesson_id)
+    parts = sorted({p["what"] for s in st["steps"] for p in s.get("parts") or []})[:40]
+    out, stats, _ = gather_vlm.ask("claude-haiku-5-5", [gather_vlm.shrink(photo, 1280, 80)],
+                                   LOOK.format(lesson=st.get("name") or lesson_id, parts=", ".join(parts) or "see the lesson",
+                                               question=question), max_tokens=600, effort="low")
+    return {"answer": out.strip(), "cost_usd": stats.get("cost_usd")}
 
 
 # ---- the free fallback: Haiku writes, the browser speaks ------------------------------------------------------------

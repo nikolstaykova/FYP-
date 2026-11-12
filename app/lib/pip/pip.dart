@@ -45,12 +45,12 @@ class PipLine {
   String text;
 }
 
-const _nonBlocking = {'check_parts', 'take_closeup', 'take_closeup_all'};
+const _nonBlocking = {'check_parts', 'take_closeup', 'take_closeup_all', 'look'};
 
 /// Tools whose result goes back to Pip in free mode (the others just change the screen).
 const _answerBack = {
   'remember_name', 'remember_level', 'take_photo', 'check_parts', 'take_closeup', 'take_closeup_all',
-  'skip_question', 'start_building', 'lesson_info', 'step_info', 'part_info',
+  'skip_question', 'start_building', 'lesson_info', 'step_info', 'part_info', 'look', 'use_instead',
 };
 
 /// Long silences go to Pip, so it can check in, tease a little, or offer a break.

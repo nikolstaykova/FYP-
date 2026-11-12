@@ -22,6 +22,7 @@ import '../screens/check.dart';
 import '../screens/gather.dart';
 import '../theme.dart';
 import '../widgets/bouncy.dart';
+import 'theirs.dart';
 import 'viewer.dart';
 
 enum Stage { hello, parts, camera, result, build, done }
@@ -73,6 +74,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   final Map<int, Set<int>> _got = {}; // ticked pieces per card
   final Set<int> _partsGot = {};
   final Map<String, String> _cols = {}; // breadboard columns: the lesson's → the learner's (use_column)
+  final Map<String, String> _swaps = {}; // their versions: "orange wire" → "blue wire" (use_instead, or the check)
 
   // the camera, inside the session so Pip can take the photo
   CameraController? _cam;
@@ -198,7 +200,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
           final st = await _api.flow('dismiss', {'upload': _upload, 'key': args['key']});
           _show(st);
           _go(Stage.result);
-          return summary(st);
+          return _told(st);
         } catch (e) {
           return {'error': '$e'};
         }
@@ -207,6 +209,28 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         if (a == null || b == null) return {'error': 'give two column numbers'};
         setState(() => a == b ? _cols.remove('$a') : _cols['$a'] = '$b');
         return {'columns': _cols, 'note': 'the step cards now show their columns'};
+      case 'use_instead':
+        final a = '${args['lesson'] ?? ''}'.trim(), b = '${args['theirs'] ?? ''}'.trim();
+        if (a.isEmpty || b.isEmpty) return {'error': 'say what the lesson uses and what they use'};
+        setState(() => a.toLowerCase() == b.toLowerCase() ? _swaps.remove(a.toLowerCase()) : _swaps[a.toLowerCase()] = b);
+        return {'their_versions': _swaps, 'note': 'the step cards now show theirs; call it their way from now on'};
+      case 'look':
+        final back = _stage;
+        if (_stage != Stage.camera) await _openCamera();
+        await Future<void>.delayed(const Duration(milliseconds: 600));
+        final p = await _snap();
+        if (p == null) return {'error': 'the camera is not ready; try again'};
+        setState(() => _working = 'Having a look…');
+        try {
+          return await _api.look(s.id, p, '${args['question'] ?? 'What is this?'}');
+        } catch (e) {
+          return {'error': e is ApiError ? e.message : '$e'};
+        } finally {
+          if (mounted) {
+            setState(() => _working = null);
+            if (back != Stage.camera) _go(back == Stage.result && _last == null ? Stage.build : back);
+          }
+        }
       case 'start_building':
         return {'step': _showStep(1), 'steps': _b?.steps.length ?? 0};
       case 'show_step':
@@ -223,6 +247,21 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return {'finished': true};
     }
     return {'error': 'unknown tool $name'};
+  }
+
+  /// A check result for Pip: the facts, and the learner's versions the check found (their wire colours).
+  Map<String, dynamic> _told(Map<String, dynamic> st) {
+    final wires = [for (final p in s.parts) if ((p.type ?? '').contains('wire')) ...p.values];
+    final found = wireSwaps(wires, st);
+    final added = {for (final e in found.entries) if (!_swaps.containsKey(e.key)) e.key: e.value};
+    if (added.isNotEmpty) setState(() => _swaps.addAll(added));
+    return {
+      ...summary(st),
+      if (_swaps.isNotEmpty) 'their_versions': _swaps,
+      if (added.isNotEmpty)
+        'note': 'Their wires are other colours: the step cards now say ${added.values.join(' and ')}. '
+            'Tell them any colour works, and call each wire their way from now on.',
+    };
   }
 
   List<Ask> get _asks => [for (final a in (_last?['asks'] as List? ?? const [])) Ask.fromJson(a as Map<String, dynamic>)];
@@ -258,7 +297,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       _upload = await _api.upload(s.id, _photos);
       final st = await _api.flow('first', {'upload': _upload, 'lesson': s.id, 'card': ?card});
       _show(st);
-      return summary(st);
+      return _told(st);
     } catch (e) {
       setState(() => _working = null);
       return {'error': e is ApiError ? e.message : '$e'};
@@ -275,7 +314,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       final st = await _api.flow(key == '*' ? 'closeup_all' : 'closeup',
           {'upload': _upload, 'photo': 'data:image/jpeg;base64,${base64Encode(photo)}', if (key != '*') 'key': key});
       _show(st);
-      return summary(st);
+      return _told(st);
     } catch (e) {
       setState(() => _working = null);
       return {'error': e is ApiError ? e.message : '$e'};
@@ -383,7 +422,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         _closeupDone[q.key] = r;
       }
       _tell('(The learner took the close-up${q.key == '*' ? ' of all of them' : ' for key ${q.key}'} themselves: '
-          'here is the new result: ${summary(_last ?? {})}. Tell them what it means.)');
+          'here is the new result: ${_told(_last ?? {})}. Tell them what it means.)');
       return;
     }
     setState(() => _photos.add(p));
@@ -755,7 +794,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         const SizedBox(height: 4),
         Text(st.title, style: t.headlineMedium),
         const SizedBox(height: 8),
-        _ColText(text: st.text, cols: _cols, style: t.bodyLarge?.copyWith(height: 1.4)),
+        _ColText(text: st.text, cols: _cols, swaps: _swaps, style: t.bodyLarge?.copyWith(height: 1.4)),
         if ((st.goal ?? '').isNotEmpty) ...[
           const SizedBox(height: 10),
           Container(
@@ -764,9 +803,27 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Icon(Icons.flag_rounded, color: c, size: 20),
               const SizedBox(width: 8),
-              Expanded(child: _ColText(text: st.goal!, cols: _cols, style: const TextStyle(fontWeight: FontWeight.w600))),
+              Expanded(child: _ColText(text: st.goal!, cols: _cols, swaps: _swaps, style: const TextStyle(fontWeight: FontWeight.w600))),
             ]),
           ),
+        ],
+        if (_swaps.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          Row(children: [
+            const Icon(Icons.swap_horiz_rounded, color: Pq.swap, size: 20),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text('Yours: ${_swaps.entries.map((e) => '${e.key} → ${e.value}').join(', ')}',
+                  style: const TextStyle(color: Pq.swap, fontWeight: FontWeight.w700)),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(_swaps.clear);
+                _tell("(The learner switched the screen back to the lesson's own colours and parts.)");
+              },
+              child: const Text("Use the lesson's"),
+            ),
+          ]),
         ],
         if (_cols.isNotEmpty) ...[
           const SizedBox(height: 10),
@@ -836,7 +893,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                 title: const Text('Stuck? Hints', style: TextStyle(fontWeight: FontWeight.w700)),
                 children: [
                   for (final h in st.hints)
-                    ListTile(dense: true, leading: const Text('•'), title: _ColText(text: h, cols: _cols)),
+                    ListTile(dense: true, leading: const Text('•'), title: _ColText(text: h, cols: _cols, swaps: _swaps)),
                 ],
               ),
             ),
@@ -933,36 +990,27 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
 // ---------------------------------------------------------------- small pieces
 
-/// The step text with the learner's breadboard columns in place of the lesson's (use_column), marked.
+/// The step text with the learner's versions in place of the lesson's (columns, wire colours, stand-ins), marked.
 class _ColText extends StatelessWidget {
-  const _ColText({required this.text, required this.cols, this.style});
+  const _ColText({required this.text, required this.cols, required this.swaps, this.style});
 
   final String text;
   final Map<String, String> cols;
+  final Map<String, String> swaps;
   final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
-    if (cols.isEmpty) return Text(text, style: style);
+    final edits = theirEdits(text, cols, swaps);
+    if (edits.isEmpty) return Text(text, style: style);
     final spans = <InlineSpan>[];
-    final re = RegExp(r'\b(columns?)(\s+)(\d+(?:\s*(?:,|and|or|to)\s*\d+)*)', caseSensitive: false);
     var at = 0;
-    for (final m in re.allMatches(text)) {
-      spans.add(TextSpan(text: text.substring(at, m.start)));
-      spans.add(TextSpan(text: '${m[1]}${m[2]}'));
-      m[3]!.splitMapJoin(RegExp(r'\d+'), onMatch: (d) {
-        final mine = cols[d[0]];
-        spans.add(mine == null
-            ? TextSpan(text: d[0])
-            : TextSpan(
-                text: mine,
-                style: const TextStyle(backgroundColor: Color(0x337D5BD6), color: Pq.swap, fontWeight: FontWeight.w800)));
-        return '';
-      }, onNonMatch: (x) {
-        spans.add(TextSpan(text: x));
-        return '';
-      });
-      at = m.end;
+    for (final e in edits) {
+      spans.add(TextSpan(text: text.substring(at, e.start)));
+      spans.add(TextSpan(
+          text: e.text,
+          style: const TextStyle(backgroundColor: Color(0x337D5BD6), color: Pq.swap, fontWeight: FontWeight.w800)));
+      at = e.end;
     }
     spans.add(TextSpan(text: text.substring(at)));
     return Text.rich(TextSpan(style: style, children: spans));
