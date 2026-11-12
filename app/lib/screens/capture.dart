@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../theme.dart';
 import '../widgets/bouncy.dart';
+import '../widgets/full_frame.dart';
 
 /// The camera, full screen: take up to `max` photos (or pick them), then send them back.
 /// With max 1 (a close-up) the photo goes back as soon as it is taken.
@@ -57,7 +58,7 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
     try {
       final cams = await availableCameras();
       if (cams.isEmpty) throw CameraException('none', 'No camera on this device');
-      final back = cams.firstWhere((c) => c.lensDirection == CameraLensDirection.back, orElse: () => cams.first);
+      final back = pickBackCamera(cams);
       // About 1920 px on the long edge: the server shrinks the first look to 768 px; close-ups keep the detail.
       final c = CameraController(back, ResolutionPreset.veryHigh, enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
       await c.initialize();
@@ -113,27 +114,7 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
     final full = _photos.length >= widget.max;
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(fit: StackFit.expand, children: [
-        if (c != null && c.value.isInitialized)
-          ClipRect(
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: c.value.previewSize?.height ?? 1080,
-                height: c.value.previewSize?.width ?? 1920,
-                child: CameraPreview(c),
-              ),
-            ),
-          )
-        else
-          _NoCamera(error: _camError, onPick: _pick),
-        const IgnorePointer(child: _Frame()),
-        AnimatedOpacity(
-          opacity: _flash ? 0.8 : 0,
-          duration: const Duration(milliseconds: 90),
-          child: const IgnorePointer(child: ColoredBox(color: Colors.white)),
-        ),
-        SafeArea(
+      body: SafeArea(
           child: Column(children: [
             Padding(
               padding: const EdgeInsets.all(12),
@@ -143,7 +124,7 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                    decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(30)),
+                    decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(30)),
                     child: Text(widget.prompt,
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
@@ -152,7 +133,27 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
                 const SizedBox(width: 56),
               ]),
             ),
-            const Spacer(),
+            // the whole frame the photo will have: nothing outside it, nothing cut off
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: c != null && c.value.isInitialized
+                    ? FullFramePreview(
+                        controller: c,
+                        overlay: Stack(fit: StackFit.expand, children: [
+                          const IgnorePointer(child: _Frame()),
+                          IgnorePointer(
+                            child: AnimatedOpacity(
+                              opacity: _flash ? 0.8 : 0,
+                              duration: const Duration(milliseconds: 90),
+                              child: const ColoredBox(color: Colors.white),
+                            ),
+                          ),
+                        ]),
+                      )
+                    : _NoCamera(error: _camError, onPick: _pick),
+              ),
+            ),
             if (widget.max > 1 && _photos.isNotEmpty)
               SizedBox(
                 height: 76,
@@ -210,7 +211,6 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
               ),
           ]),
         ),
-      ]),
     );
   }
 }
@@ -250,7 +250,7 @@ class _Round extends StatelessWidget {
             duration: const Duration(milliseconds: 250),
             width: 56,
             height: 56,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: color ?? Colors.black54),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: color ?? Colors.white24),
             child: Icon(icon, color: Colors.white),
           ),
           if (label != null) ...[
@@ -267,7 +267,7 @@ class _Frame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(28, 110, 28, 210),
+        padding: const EdgeInsets.all(14),
         child: CustomPaint(painter: _CornerPainter()),
       );
 }

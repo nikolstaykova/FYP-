@@ -22,6 +22,7 @@ import '../screens/check.dart';
 import '../screens/gather.dart';
 import '../theme.dart';
 import '../widgets/bouncy.dart';
+import '../widgets/full_frame.dart';
 import 'theirs.dart';
 import 'viewer.dart';
 
@@ -369,7 +370,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     try {
       final cams = await availableCameras();
       if (cams.isEmpty) throw CameraException('none', 'No camera on this device');
-      final back = cams.firstWhere((c) => c.lensDirection == CameraLensDirection.back, orElse: () => cams.first);
+      final back = pickBackCamera(cams);
       final c = CameraController(back, ResolutionPreset.veryHigh, enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
       await c.initialize();
       if (!mounted || _stage != Stage.camera) {
@@ -604,36 +605,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     final q = _pending;
     return Container(
       color: Colors.black,
-      child: Stack(fit: StackFit.expand, children: [
-        if (cam != null && cam.value.isInitialized)
-          ClipRect(
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: cam.value.previewSize?.height ?? 1080,
-                height: cam.value.previewSize?.width ?? 1920,
-                child: CameraPreview(cam),
-              ),
-            ),
-          )
-        else
-          Center(
-            child: _camError == null
-                ? const CircularProgressIndicator(color: Colors.white)
-                : Padding(
-                    padding: const EdgeInsets.all(28),
-                    child: Text("The camera isn't available here: $_camError\nPick photos from the gallery instead.",
-                        textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70)),
-                  ),
-          ),
-        IgnorePointer(child: AnimatedOpacity(opacity: _flash ? 0.8 : 0, duration: 90.ms, child: const ColoredBox(color: Colors.white))),
-        Positioned(
-          top: 12,
-          left: 12,
-          right: 12,
+      child: Column(children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
           child: Container(
+            width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(color: q != null ? Pq.check : Colors.black54, borderRadius: BorderRadius.circular(18)),
+            decoration: BoxDecoration(color: q != null ? Pq.check : Colors.white12, borderRadius: BorderRadius.circular(18)),
             child: Text(
               q != null ? 'Close-up: ${q.message}' : _lego ? 'Lay the pieces flat, a little apart' : 'Lay the parts out so I can see them all',
               textAlign: TextAlign.center,
@@ -641,51 +619,71 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             ),
           ),
         ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 14,
-          child: Column(children: [
-            if (_photos.isNotEmpty && q == null)
-              SizedBox(
-                height: 64,
-                child: ListView(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), children: [
-                  for (var i = 0; i < _photos.length; i++)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: GestureDetector(
-                        onTap: () => setState(() => _photos.removeAt(i)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.memory(_photos[i], width: 56, height: 56, fit: BoxFit.cover),
-                        ),
+        // the whole frame the photo will have: what you see is what Pip gets
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: cam != null && cam.value.isInitialized
+                ? FullFramePreview(
+                    controller: cam,
+                    overlay: IgnorePointer(
+                      child: AnimatedOpacity(opacity: _flash ? 0.8 : 0, duration: 90.ms, child: const ColoredBox(color: Colors.white)),
+                    ),
+                  )
+                : Center(
+                    child: _camError == null
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Padding(
+                            padding: const EdgeInsets.all(28),
+                            child: Text("The camera isn't available here: $_camError\nPick photos from the gallery instead.",
+                                textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70)),
+                          ),
+                  ),
+          ),
+        ),
+        if (_photos.isNotEmpty && q == null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SizedBox(
+              height: 56,
+              child: ListView(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), children: [
+                for (var i = 0; i < _photos.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: GestureDetector(
+                      onTap: () => setState(() => _photos.removeAt(i)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.memory(_photos[i], width: 56, height: 56, fit: BoxFit.cover),
                       ),
-                    ).animate().scale(curve: Curves.easeOutBack),
-                ]),
+                    ),
+                  ).animate().scale(curve: Curves.easeOutBack),
+              ]),
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 12),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            _RoundBtn(icon: Icons.photo_library_rounded, label: 'Photos', onTap: _gallery),
+            Bouncy(
+              onTap: cam == null ? null : _shutter,
+              scale: 0.88,
+              child: Container(
+                width: 74,
+                height: 74,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 5)),
+                child: const DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white)),
               ),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              _RoundBtn(icon: Icons.photo_library_rounded, label: 'Photos', onTap: _gallery),
-              Bouncy(
-                onTap: cam == null ? null : _shutter,
-                scale: 0.88,
-                child: Container(
-                  width: 78,
-                  height: 78,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 5)),
-                  child: const DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white)),
-                ),
-              ),
-              q == null
-                  ? _RoundBtn(
-                      icon: Icons.check_rounded,
-                      label: _photos.isEmpty ? 'Check' : 'Check (${_photos.length})',
-                      color: _photos.isEmpty ? null : Pq.have,
-                      onTap: _photos.isEmpty ? null : _checkTapped,
-                    )
-                  : _RoundBtn(icon: Icons.close_rounded, label: 'Cancel', onTap: () => setState(() => _pending = null)),
-            ]),
+            ),
+            q == null
+                ? _RoundBtn(
+                    icon: Icons.check_rounded,
+                    label: _photos.isEmpty ? 'Check' : 'Check (${_photos.length})',
+                    color: _photos.isEmpty ? null : Pq.have,
+                    onTap: _photos.isEmpty ? null : _checkTapped,
+                  )
+                : _RoundBtn(icon: Icons.close_rounded, label: 'Cancel', onTap: () => setState(() => _pending = null)),
           ]),
         ),
       ]),
@@ -1191,7 +1189,7 @@ class _RoundBtn extends StatelessWidget {
             height: 56,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: color ?? (dark ? Colors.black54 : Theme.of(context).cardTheme.color),
+              color: color ?? (dark ? Colors.white24 : Theme.of(context).cardTheme.color),
               boxShadow: dark ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 10)],
             ),
             child: Icon(icon, color: dark || color != null ? Colors.white : null),
