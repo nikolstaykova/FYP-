@@ -34,6 +34,30 @@ def client():
     return _client
 
 
+# The first look sends photos at this long edge and JPEG quality: the best setting for the learner's own photos in
+# the 10-run test (CHECKER.md §3.7: 94% the same as Opus, 0.19¢ a check, 7% cheaper than 1024 px). Close-ups and
+# Opus's second look keep the full photo.
+FIRST_EDGE, FIRST_QUALITY = 768, 35
+
+
+def shrink(path, edge=FIRST_EDGE, q=FIRST_QUALITY):
+    """The photo as (bytes, media type), long edge at most `edge` px (never enlarged), JPEG at quality q.
+    Falls back to the file as it is when Pillow is missing or the image cannot be read."""
+    raw = pathlib.Path(path).read_bytes()
+    try:
+        import io
+        from PIL import Image, ImageOps
+        im = ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert("RGB")
+    except Exception:
+        return raw, media_type(path)
+    if max(im.size) > edge:
+        s = edge / max(im.size)
+        im = im.resize((round(im.size[0] * s), round(im.size[1] * s)), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=q)
+    return buf.getvalue(), "image/jpeg"
+
+
 def media_type(path):
     p = str(path).lower()
     return "image/png" if p.endswith(".png") else "image/webp" if p.endswith(".webp") else "image/jpeg"

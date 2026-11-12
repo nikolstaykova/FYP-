@@ -84,7 +84,7 @@ def one(case, var):
     rec, _ = gather.lesson(case['lesson'])
     t0 = time.perf_counter()
     try:
-        seen, stats = gather_flow.first_look([str(m[0]) for m in made], rec)
+        seen, stats = gather_flow.first_look([str(m[0]) for m in made], rec, small=False)
         res = gather.check(case['lesson'], [str(m[0]) for m in made], research=False, seen=seen)
     except Exception as e:
         return {'case': case['name'], 'set': case['set'], 'variant': name, 'error': repr(e)[:200]}

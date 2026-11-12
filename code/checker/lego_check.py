@@ -64,13 +64,14 @@ def _answer(text):
     return pieces, [str(x) for x in d.get("extra") or [] if x][:8]
 
 
-def _images(photos):
-    return [(pathlib.Path(p).read_bytes(), vlm.media_type(p)) for p in photos]
+def _images(photos, small):
+    return [vlm.shrink(p) if small else (pathlib.Path(p).read_bytes(), vlm.media_type(p)) for p in photos]
 
 
-def look(photos, its, model=FIRST, effort="low"):
-    """One look at the photos with the list. Returns ({key: verdict}, extra pieces, stats)."""
-    out, stats, _ = vlm.ask(model, _images(photos), LOOK.format(items=_list(its)), max_tokens=4000, effort=effort)
+def look(photos, its, model=FIRST, effort="low", small=True):
+    """One look at the photos with the list. Returns ({key: verdict}, extra pieces, stats).
+    small: send the photos at 768 px, JPEG 35 (the first look, CHECKER.md §3.7); close-ups go at full size."""
+    out, stats, _ = vlm.ask(model, _images(photos, small), LOOK.format(items=_list(its)), max_tokens=4000, effort=effort)
     pieces, extra = _answer(out)
     known = {x["key"] for x in its}
     got = {p["key"]: {"status": p.get("status") or "unsure", "seen": int(p.get("seen") or 0) if str(p.get("seen") or 0).isdigit() else 0,
@@ -84,12 +85,12 @@ def look(photos, its, model=FIRST, effort="low"):
 def closeup(photo, its, state_verdicts):
     """A close-up for one or more open pieces: Haiku first; the pieces it still cannot tell go to Opus once.
     Returns (new verdicts for those keys, steps for the cost log)."""
-    got, _, st = look([photo], its, FIRST)
+    got, _, st = look([photo], its, FIRST, small=False)
     steps = [{"what": "close-up", **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     still = [x for x in its if got[x["key"]]["status"] == "unsure"
              and not any(v.get("by") == SECOND for k, v in state_verdicts.items() if k == x["key"])]
     if still:
-        more, _, st2 = look([photo], still, SECOND, effort="medium")
+        more, _, st2 = look([photo], still, SECOND, effort="medium", small=False)
         got.update(more)
         steps.append({"what": "close-up, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
     for k in got:

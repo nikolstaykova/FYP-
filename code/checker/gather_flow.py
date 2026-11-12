@@ -61,8 +61,10 @@ ASK_FIELD = ('- ask: only when `unsure` is not empty: one short, friendly questi
              'bands. Can you take a close-up of them?"). Otherwise "".')
 
 
-def first_look(photos, rec, model=FIRST):
-    images = [(pathlib.Path(p).read_bytes(), vlm.media_type(p)) for p in photos]
+def first_look(photos, rec, model=FIRST, small=True):
+    """small: send the photos at 768 px, JPEG 35 (CHECKER.md §3.7); False sends them as they are (the cost tests
+    make their own sizes)."""
+    images = [vlm.shrink(p) if small else (pathlib.Path(p).read_bytes(), vlm.media_type(p)) for p in photos]
     text = (gather.LOOK + "\n" + ASK_FIELD + "\n\nThe photos are numbered in the order given (Photo 1, Photo 2, ...). "
             + lesson_text(rec) + "\nList every object in the photos. " + ANSWER.replace('"unsure": ""', '"unsure": "", "ask": ""'))
     out, stats, _ = vlm.ask(model, images, text, effort="low")

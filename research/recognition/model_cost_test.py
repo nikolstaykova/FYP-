@@ -34,7 +34,7 @@ OPUS = 'claude-opus-5-5'
 def first(model, photos, rec, lesson):
     from checker import gather_flow
     if model.startswith('claude-'):
-        return gather_flow.first_look(photos, rec, model)
+        return gather_flow.first_look(photos, rec, model, small=False)  # the photos are already sized
     from kit_test import look_nvidia
     seen, st = look_nvidia(photos, lesson, model)
     return seen, {**st, 'model': model}

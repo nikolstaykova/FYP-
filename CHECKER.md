@@ -23,7 +23,9 @@ still cannot read.** Both return the same result shape, so the page and Pip use 
 
 1. The page (camera or upload) scales each photo to **at most 1600 px on the long edge** and saves it as JPEG at
    quality 0.88 (`canvasToPhoto` in `research/recognition/lab/game.html`): a phone photo becomes about 140 KB.
-2. The server sends those bytes to Claude unchanged (`gather_vlm.ask`).
+2. **The first look** (electronics `gather_flow.first_look`, LEGO cards `lego_check.look`) is sent at **768 px on the
+   long edge, JPEG quality 35** (`gather_vlm.shrink`, `FIRST_EDGE` / `FIRST_QUALITY`; since 12 November 2026, from
+   the test in 3.7, see 3.8). **Close-ups and Opus's second look** get the photo unchanged (`gather_vlm.ask`).
 3. Claude prices an image by its pixels, not its file size: **⌈width/28⌉ × ⌈height/28⌉ tokens**. Haiku 5.5 is in
    the high-resolution tier (up to 2576 px on the long edge and 4784 tokens per image; anything larger is scaled down
    by the API). A 1600×1200 photo is 58 × 43 = **2,494 tokens**; a 768×576 photo is 28 × 21 = 588.
@@ -86,16 +88,16 @@ rules) on two sets, at every input setting:
    table, the ones the lesson does not need included. Options: drop the fields the rules never use, list objects
    that are not in the lesson by name only, cap the list. Halving the answer would cut a check by about 40%,
    four times more than any image setting.
-2. **Send the first look at 768–1024 px on the long edge** (the server can scale it, so the page keeps 1600 px for
-   close-ups). Saves about 10–16% per first look. 1024 px is the cautious choice until the repeats in 3.4 are done.
+2. **Send the first look at 768 px on the long edge.** Done 12 November 2026 (3.8), after the ten-run test (3.7).
 3. **Keep close-ups at full size.** A close-up exists to read small things (resistor bands, a board's name, how many
    studs). It was not tested at lower sizes and should not be shrunk without a test.
-4. **Keep JPEG at quality 0.85–0.9.** Lower saves nothing.
+4. **JPEG quality saves no money**, only upload bytes. The first look now uses 35 (3.8); close-ups keep the page's 0.88.
 
 ### 3.4 Still to test
 
-- **Repeats:** each setting three times, so differences smaller than the noise band can be read.
-- **Gemini again** when Google's service and our rate limit allow (3.5).
+- ~~**Repeats**~~: done, ten runs (3.7).
+- **Gemini's last 6 runs** when Google's quota allows (3.7 has 4 of 10); it will not change the price ranking.
+- **768 px / JPEG 35 in the app**: check a few weeks of real checks (cost log) against the 0.19¢ and 94% expected.
 - **The real flow's average price**: first look, Haiku close-ups, Opus only on unreadable close-ups, on photo sets
   with their close-ups, so the price is measured instead of bounded.
 - **The answer trim** (3.3.1): same test, shorter output, check that the verdicts hold.
@@ -282,12 +284,51 @@ the 95% confidence interval of the mean over the runs. Chart: `research/recognit
 3. **For Haiku, 512 px is the price winner: 0.16¢ (−20% on 1024 px) with 93–96% on the kit photos**, but 90% on
    your photos against 92–94% at 768 and 1024 px. 768 px is the balance: 0.19–0.20¢, 93–94% on your photos.
 4. **JPEG quality hardly matters.** No consistent effect at any size, beyond the noise. It does not change the price
-   either (pixels are paid for, not bytes), so keep quality 85 for safety and smaller uploads only if the phone
-   connection is slow.
+   either (pixels are paid for, not bytes). The app uses 35 for the smaller upload (3.8).
 5. **Ten runs were needed.** Single runs had swung 10–18 points; with ten, the intervals are ±2–5 points.
 
 **Choice:** Haiku, first look at **768 px** (best on your photos for 0.19¢), or **512 px** if the last 20% of the
 first-look price matters more than 3 points on real phone photos. Close-ups stay at full size.
+
+### 3.8 What the app does now, and why (12 November 2026)
+
+**The first look sends every photo at 768 px on the long edge, JPEG quality 35, to Haiku 5.5.** Close-ups and the
+Opus second look are unchanged (full photo).
+
+| | Before | Now |
+|---|---|---|
+| Photo sent to the first look | page's photo, up to 1600 px, JPEG 0.88 | 768 px, JPEG 35 |
+| Image tokens, 4:3 photo | 2,494 (1600×1200) | 588 (768×576) |
+| Upload per photo (average, test photos) | about 140 KB | about 36 KB (87 KB at JPEG 85) |
+| Price of a first look | 0.22¢ (1600 px, 3.6) | **0.19¢** (3.7) |
+| Agreement with Opus on your photos (3.7) | not in the 10 runs (1024 px: 93% ± 3) | **94% ± 4** |
+| Kit photos right (3.7) | not in the 10 runs (1024 px: 94% ± 3) | 93% ± 4 |
+
+**Why this setting.** It scored best on your own phone photos, the ones the app will really see (94%, the highest
+of the 9 Haiku settings), for about 8% less than 1024 px. 512 px is 15% cheaper again (0.16¢) and better on the
+clean kit photos, but it is 4 points lower on your photos (90%); real photos are messier (lighting, clutter,
+angles), so they decide. The gap between JPEG 35 and 85 at 768 px (94% vs 93%, 93% vs 87% kit) is inside the
+noise, so quality 35 is not proven better; it is chosen because it is never worse and makes the upload about 2.4×
+smaller than JPEG 85, which helps on a slow phone connection. JPEG 15 was not picked because at 768 px it dipped to
+91% on your photos.
+
+**What it changes, per check.** About 0.03¢ (≈ 14%) cheaper per first look than the 1600 px photo sent before, with
+4× fewer image tokens. The answer (about 3,400 tokens) is still about 90% of the price, so the next
+saving is shortening it (3.3.1).
+
+**Where in the code.**
+
+- `code/checker/gather_vlm.py`: `FIRST_EDGE = 768`, `FIRST_QUALITY = 35`, `shrink(path)` (rotates by EXIF, never
+  enlarges, sends the file as it is if Pillow cannot read it).
+- `code/checker/gather_flow.py`: `first_look(..., small=True)`. The cost tests pass `small=False` because they size
+  the photos themselves (`res_test.py`, `model_cost_test.py`), so their results stay repeatable.
+- `code/checker/lego_check.py`: `look(..., small=True)` for the gather card's first look; `closeup` passes
+  `small=False`.
+- Tests: `code/tests/unit/test_shrink.py`.
+
+**Caveats.** The test's "your photos" are 4 photo sets of electronics; LEGO cards were not in it, and 1×1 plates or
+studs may need more pixels (3.4). If LEGO first looks come back "unsure" more often than before, raise `FIRST_EDGE`
+for LEGO only.
 
 ## 4. Can the models be swapped without breaking anything?
 
