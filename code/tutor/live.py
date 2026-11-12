@@ -291,7 +291,8 @@ def _count(p):
 
 def steps(lesson_id):
     """The lesson's steps as the learner sees them and the tutor teaches them, in order, numbered from 1. A LEGO lesson
-    also gets gather cards: before each group of steps (or numbered bag), the pieces to find (checker.lego_gather)."""
+    has its gather cards (stored with the lesson, graph/lego_gather.py): each card's pieces are those of the steps it
+    covers."""
     from graph import lesson_store
     view = lesson_store.assemble(lesson_id)
     lego = view.get("lesson_type") == "lego"
@@ -332,10 +333,8 @@ def steps(lesson_id):
                     "code": code or None, "code_file": prog.get("file") if code else None,
                     "expected": s.get("expected"),
                     "number": str(s.get("number") or s.get("n") or ""), "bag": s.get("bag"), "times": times})
-    if lego and any(s["kind"] == "gather" for s in out):
+    if lego:
         _fill_cards(out)
-    elif lego:  # a lesson stored before its cards were (python -m graph.lesson_store gather): worked out here
-        out = _with_gather_cards(out)
     return {"lesson_id": lesson_id, "name": (view.get("lesson") or {}).get("name") or view.get("title") or lesson_id,
             "lesson_type": view.get("lesson_type"), "steps": out}
 
@@ -366,31 +365,6 @@ def _fill_cards(steps):
         card["parts"] = list(got.values())
         if nums:
             card["covers"] = [min(nums), max(nums)]
-
-
-def _with_gather_cards(build):
-    """The LEGO steps with a gather card before each group; cards are numbered in order, build steps keep 'Step k'."""
-    from checker import lego_gather
-    cards, at = [], {}
-    for g in lego_gather.groups(build):
-        at.setdefault(g["first"], []).append(g)
-    for i, s in enumerate(build):
-        for g in at.get(i, []):
-            span = f"step {i + 1}" if g["first"] == g["last"] else f"steps {g['first'] + 1} to {g['last'] + 1}"
-            lead = (f"Open bag {g['bag']} and find" if g["open_bag"] else
-                    f"From bag {g['bag']}, find" if g["bag"] is not None else "Find")
-            part = f" (part {g['part']} of {g['of']})" if g["of"] > 1 else ""
-            cards.append({"kind": "gather", "id": f"gather-{i + 1}" + (f"-{g['part']}" if g["of"] > 1 else ""),
-                          "title": (f"Bag {g['bag']}: find the pieces" if g["bag"] is not None else "Find the pieces") + part,
-                          "text": f"{lead} these pieces for {span}{part} ({g['pieces']} pieces). Lay them out flat on a "
-                                  "plain table, a little apart, and show them to the camera (or tap each one when you have it).",
-                          "goal": None, "hints": [], "why": None, "what_changed": None, "parts": g["parts"],
-                          "picture": None, "code": None, "code_file": None, "expected": None,
-                          "number": "", "bag": g["bag"], "times": 1, "covers": [g["first"] + 1, g["last"] + 1]})
-        cards.append(s)
-    for n, c in enumerate(cards, 1):
-        c["n"] = n
-    return cards
 
 
 LEG = {"A": "long leg (+)", "C": "short leg (-)", "1": "one leg", "2": "other leg", "a": "one end", "b": "other end"}

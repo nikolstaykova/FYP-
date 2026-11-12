@@ -1,5 +1,5 @@
-"""LEGO gathering in groups (checker.lego_gather) and the gather cards in the tutor's steps."""
-from checker import lego_gather
+"""LEGO gather cards (graph.lego_gather): the planning, stored in the lesson, and read by the tutor."""
+from graph import lego_gather
 from tutor import live
 
 
@@ -80,7 +80,7 @@ def test_card_check_result():
 def test_cards_are_stored_in_the_lesson_graph():
     """add_cards puts each card in the step order with COVERS links; running it again changes nothing."""
     import copy
-    from checker import lego_gather
+    from graph import lego_gather
     phys = {"nodes": [{"id": f"b{i}", "type": "lego-3001", "label": "Brick 2 x 4", "props": {"colour": "Red"}}
                       for i in range(1, 25)]}
     steps = [{"id": f"step-{n}", "kind": "step", "n": n, "text": f"step {n}", "bag": None} for n in range(1, 7)]

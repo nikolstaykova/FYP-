@@ -1,6 +1,6 @@
 """The photo check of a LEGO gather card: are the card's pieces on the table?
 
-The card lists the pieces for the next few steps (checker.lego_gather, at most ~10 pieces and 8 kinds), so the
+The card lists the pieces for the next few steps (made with the lesson: graph/lego_gather.py, at most ~10 pieces and 8 kinds), so the
 model does not identify LEGO from scratch: it ticks off a known list, which is much easier.
 1. Haiku looks at the photos of the laid-out pieces with the list (`look`) and says, piece by piece: there (how
    many it can see), there in another colour, not sure (with a question for the learner), or not there.

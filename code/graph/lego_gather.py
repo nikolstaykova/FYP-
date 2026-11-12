@@ -1,5 +1,6 @@
-"""LEGO gathering in groups: the learner finds the pieces for the next few steps, shows them to the camera, builds
-them, then gathers again.
+"""The gather cards of a LEGO lesson: the learner finds the pieces for the next few steps, shows them to the camera,
+builds them, then gathers again. Part of making a LEGO lesson: lesson_store.register calls add_cards, and the cards
+are stored in the steps graph (and the database) like any other step.
 
 A LEGO learner has the set, so there is no whole-set check, and finding pieces before every single step is too slow
 on a big set. So the steps are split into groups, and a gather card goes before each group. Each card is checked
@@ -12,11 +13,17 @@ every piece: about PIECES pieces and at most KINDS different kinds.
   split at its sub-steps.
 - A single step with more pieces than a card holds gets several cards in a row ("part 1 of 2").
 
-groups(steps) works on the tutor's step list (tutor.live.steps), where each step has `number`, `bag`, `times` and
-`parts` ([{what, count, ...}]); it returns [{first, last, bag, open_bag, pieces, parts, part, of}] with first/last
-as step indexes (part/of number the cards of one group that had to be split).
+Stored as: a `gather` node in the steps graph, in the step order just before the first step it gathers for, with a
+COVERS link to each of those steps (DATA_STRUCTURE.md). Its pieces are not stored again: they are those steps'
+pieces. Only a card that splits a big group says which of them it holds (`pieces` on its COVERS links).
+
+  add_cards(graphs)    make the cards and put them in the lesson's steps graph (again: the same cards, not more)
+  groups(steps)        the planning: steps [{number, bag, times, parts: [{what, count, ...}]}] ->
+                       [{first, last, bag, open_bag, pieces, parts, part, of}] (first/last: step indexes)
+  python -m graph.lesson_store gather [ids]   remake the cards of stored lessons (and send them to the database)
 """
 import math
+import re
 
 PIECES = 10  # pieces per card, about
 KINDS = 8  # different pieces per card, at most
@@ -153,12 +160,8 @@ def groups(steps):
     return out
 
 
-# ---- stored in the lesson: the cards are made once, when the lesson is made (lesson_store.register) ---------------
-# A card is a `gather` node in the steps graph, put in the step order just before the first step it gathers for, with
-# a COVERS link to each step it gathers for. Its pieces are not stored again: they are those steps' pieces (rule 5
-# of DATA_STRUCTURE.md). Only a card that splits a big group ("part 1 of 2") says which of them it holds: `pieces`
-# on its COVERS links, as [{type, colour, count}].
-OPEN_BAG = __import__("re").compile(r"open bag \d+\.?$", __import__("re").I)
+# ---- in the lesson's steps graph --------------------------------------------------------------------------------
+OPEN_BAG = re.compile(r"open bag \d+\.?$", re.I)
 
 
 def plan_steps(graphs):
@@ -174,7 +177,7 @@ def plan_steps(graphs):
     for e in inst["edges"]:
         if e["type"] != "PLACES":
             continue
-        ref = __import__("re").match(r"lesson:parts_list/(\d+)$", str(e["v"]))
+        ref = re.match(r"lesson:parts_list/(\d+)$", str(e["v"]))
         if ref and int(ref.group(1)) < len(rows):
             r = rows[int(ref.group(1))]
             piece = (r.get("part"), r.get("colour"), r.get("name") or r.get("part"), e.get("count") or 1)

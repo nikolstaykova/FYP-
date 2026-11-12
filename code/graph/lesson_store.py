@@ -31,7 +31,7 @@ first step, a step's pins, which instances the learner gathers) is worked out wh
                           MAKES       step -> a join (physical `joined` edge) it makes; its `electrical` twin follows
                           GATHERS     the gather step -> the lesson's parts list (whose rows point at the instances)
                           COVERS      a LEGO gather card -> each step it gathers the pieces for (made once, when the
-                                      lesson is made: checker.lego_gather.add_cards; about 10 pieces a card, a new
+                                      lesson is made: graph/lego_gather.py; about 10 pieces a card, a new
                                       card at each numbered bag; `pieces` only on a card that splits a big group)
                           PROGRAMS    the upload step -> the board it loads the sketch onto (the pins: its code links)
   <id>/physical.json    the part instances of this one assembly and the connections between them (GRAPH_SPEC §4-5).
@@ -100,7 +100,7 @@ def register(entry, graphs, store=None):
     from graph.parts.lego import lego_ids
     lego_ids.unprint_graphs(graphs)  # a printed piece is its plain piece with a print (one card per design)
     if entry.get("lesson_type") == "lego" and graphs.get("instruction"):  # the gather cards, made once, stored
-        from checker import lego_gather
+        from graph import lego_gather
         lego_gather.add_cards(graphs)
     reps = {}
     for kind in KINDS:  # the graphs first, so the lesson record can point to them
@@ -734,7 +734,7 @@ def describe_parts(lesson_id, domain, store=None, call=None):
 def gather_cards(lesson_id, store=None):
     """(Re)make the gather cards of a stored LEGO lesson from its files, save them and send them to the database.
     Returns how many cards it has."""
-    from checker import lego_gather
+    from graph import lego_gather
     store = store or STORE
     d = store / lesson_id
     graphs = {k: _read(d / f"{k}.json") for k in KINDS}

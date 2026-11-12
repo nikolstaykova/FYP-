@@ -12,7 +12,7 @@ its models can be swapped (section 4). Choosing the model is in `RECOGNITION.md`
 |---|---|
 | `code/checker/gather.py` | The rules: match what was seen to the lesson's parts, compare (values, counts), substitutes (a resistor in a range, a board that can stand in), parts the catalogue does not know |
 | `code/checker/gather_flow.py` | The Arduino check as the learner gets it: Haiku's first look, close-ups for what it could not settle, Opus once only when Haiku still cannot tell |
-| `code/checker/lego_gather.py` | Splits a LEGO lesson into gather cards: by numbered bag, else about 10 pieces and at most 8 kinds per card, never splitting a sub-build |
+| `code/graph/lego_gather.py` (not the checker: part of making a lesson) | Splits a LEGO lesson into gather cards when the lesson is made, stored in the lesson and Neo4j (COVERS): by numbered bag, else about 10 pieces and at most 8 kinds per card, never splitting a sub-build |
 | `code/checker/lego_check.py` | The LEGO card check: Haiku ticks off the card's list (there / other colour / unsure / not there), close-ups, Opus once |
 | `code/checker/gather_vlm.py` | The one Claude call the checker uses (photos + text → JSON), with prices |
 
