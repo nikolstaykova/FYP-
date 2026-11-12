@@ -371,8 +371,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       final cams = await availableCameras();
       if (cams.isEmpty) throw CameraException('none', 'No camera on this device');
       final back = pickBackCamera(cams);
-      final c = CameraController(back, ResolutionPreset.veryHigh, enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
+      final c = CameraController(back, ResolutionPreset.max, enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
       await c.initialize();
+      try {
+        await c.setFocusMode(FocusMode.auto);
+      } catch (_) {}
       if (!mounted || _stage != Stage.camera) {
         await c.dispose();
         return;
@@ -428,6 +431,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     }
     setState(() => _photos.add(p));
     _tell('(The learner took a photo themselves: ${_photos.length} so far.)');
+  }
+
+  /// The phone's own camera app: its best focus and quality (when the live picture will not focus).
+  Future<void> _phoneCamera() async {
+    final f = await ImagePicker().pickImage(source: ImageSource.camera, maxWidth: 2400, maxHeight: 2400, imageQuality: 90);
+    if (f != null) await _gotPhoto(await f.readAsBytes());
   }
 
   Future<void> _gallery() async {
@@ -640,6 +649,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                           ),
                   ),
           ),
+        ),
+        TextButton.icon(
+          onPressed: _phoneCamera,
+          icon: const Icon(Icons.center_focus_strong_rounded, color: Colors.white70, size: 18),
+          label: const Text("Blurry? Tap the picture to focus, or use the phone's camera",
+              style: TextStyle(color: Colors.white70, fontSize: 12.5)),
         ),
         if (_photos.isNotEmpty && q == null)
           Padding(

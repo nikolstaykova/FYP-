@@ -59,9 +59,12 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
       final cams = await availableCameras();
       if (cams.isEmpty) throw CameraException('none', 'No camera on this device');
       final back = pickBackCamera(cams);
-      // About 1920 px on the long edge: the server shrinks the first look to 768 px; close-ups keep the detail.
-      final c = CameraController(back, ResolutionPreset.veryHigh, enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
+      // The camera's best resolution: the server shrinks the first look to 768 px; close-ups keep the detail.
+      final c = CameraController(back, ResolutionPreset.max, enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
       await c.initialize();
+      try {
+        await c.setFocusMode(FocusMode.auto);
+      } catch (_) {}
       if (!mounted) {
         await c.dispose();
         return;
@@ -98,6 +101,12 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
     for (final f in files.take(left)) {
       _add(await f.readAsBytes());
     }
+  }
+
+  /// The phone's own camera app: its best focus and quality (when the live picture will not focus).
+  Future<void> _phoneCamera() async {
+    final f = await ImagePicker().pickImage(source: ImageSource.camera, maxWidth: 2400, maxHeight: 2400, imageQuality: 90);
+    if (f != null) _add(await f.readAsBytes());
   }
 
   void _add(Uint8List b) {
@@ -153,6 +162,12 @@ class _CaptureScreenState extends State<CaptureScreen> with WidgetsBindingObserv
                       )
                     : _NoCamera(error: _camError, onPick: _pick),
               ),
+            ),
+            TextButton.icon(
+              onPressed: full ? null : _phoneCamera,
+              icon: const Icon(Icons.center_focus_strong_rounded, color: Colors.white70, size: 18),
+              label: const Text("Blurry? Tap the picture to focus, or use the phone's camera",
+                  style: TextStyle(color: Colors.white70, fontSize: 12.5)),
             ),
             if (widget.max > 1 && _photos.isNotEmpty)
               SizedBox(
