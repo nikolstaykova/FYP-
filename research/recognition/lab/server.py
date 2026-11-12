@@ -19,6 +19,7 @@ Runs are saved in research/recognition/runs/lab/<time>/ (photos, one JSON per mo
 """
 import base64
 import json
+import mimetypes
 import re
 import secrets
 import socket
@@ -270,6 +271,20 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def send_app(self, rel):
+        web = (ROOT / 'app/build/web').resolve()
+        f = (web / rel).resolve()
+        if not str(f).startswith(str(web)) or not f.is_file():
+            f = web / 'index.html'  # the app's own pages
+            if not f.is_file():
+                return self.send(404, {'error': 'the app is not built: cd app && flutter build web --base-href /app/'})
+        ctype = mimetypes.guess_type(f.name)[0] or 'application/octet-stream'
+        if f.suffix in ('.js', '.mjs'):
+            ctype = 'text/javascript'
+        elif f.suffix == '.wasm':
+            ctype = 'application/wasm'
+        return self.send(200, f.read_bytes(), ctype)
+
     def allowed(self, q):
         return TOKEN is None or q.get('key', [''])[0] == TOKEN
 
@@ -280,6 +295,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(200, (HERE / 'game.html').read_bytes(), 'text/html; charset=utf-8')
         if u.path in ('/lab', '/index.html'):  # the lab: the flow with every step shown, and models compared
             return self.send(200, (HERE / 'index.html').read_bytes(), 'text/html; charset=utf-8')
+        if u.path == '/app' or u.path.startswith('/app/'):  # the Flutter app's web build (app/, flutter build web)
+            return self.send_app(u.path[len('/app'):].lstrip('/') or 'index.html')
         if not self.allowed(q):
             return self.send(403, {'error': 'wrong or missing key in the link'})
         if u.path == '/api/lessons':
@@ -421,9 +438,12 @@ def main():
         srv.socket = ctx.wrap_socket(srv.socket, server_side=True)
     print(f'Parts lab: {scheme}://127.0.0.1:{port}', flush=True)
     if lan:
-        TOKEN = secrets.token_urlsafe(8)
+        kf = RUNS / 'lan_key.txt'  # the same key every start, so the app stays linked (git-ignored; delete it for a new key)
+        TOKEN = kf.read_text().strip() if kf.is_file() and kf.read_text().strip() else secrets.token_urlsafe(8)
+        kf.write_text(TOKEN)
         print(f'On your phone (same Wi-Fi): {scheme}://{ip}:{port}/?key={TOKEN}')
         print(f'This Mac: {scheme}://127.0.0.1:{port}/?key={TOKEN}', flush=True)
+        print(f'The Parts Quest app: paste the phone link above, or open {scheme}://{ip}:{port}/app/?key={TOKEN}', flush=True)
         if not https:
             print('Without --https a phone can only take photos through its camera app, not the live preview.')
     threading.Thread(target=srv.serve_forever, daemon=True).start()
