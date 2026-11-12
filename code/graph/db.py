@@ -14,6 +14,8 @@ The graph (the plan in Pinpoint Lesson Data §1, simplified 4 Nov 2026: the part
   (:Step)-[:PLACES|PROGRAMS]->(:Instance)        what a step puts in; a booklet lesson's instances are made from its
       parts list, one per copy (r<row>.<n>, with its colour), and given to the steps that place them, in order
   (:Step)-[:GATHERS {count, colour}]->(:Part)    an Arduino gather step's list
+  (:Step {kind: gather})-[:COVERS {pieces}]->(:Step)   a LEGO gather card -> the steps it gathers the pieces for
+      (about 10 pieces a card, made once with the lesson: checker.lego_gather.add_cards; its pieces are those steps')
   (:Instance)-[:JOINED|CONTACT|ELECTRICAL {u_port, v_port, method, made_in}]->(:Instance)   the physical graph
   (:Instance)-[:IS_A]->(:Part {part_type_id})-[:HAS_PORT]->(:Port)                         the parts catalogue
 Nodes of a lesson are keyed by `uid` = "<lesson_id>/<id>" (ids like b1 or step-1 are in many lessons); a part by its

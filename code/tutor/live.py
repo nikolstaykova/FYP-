@@ -299,6 +299,12 @@ def steps(lesson_id):
     for s in view["steps"]:
         if s.get("kind") == "overview":
             continue
+        if lego and s.get("kind") == "gather":  # a stored gather card: its pieces are the steps' it covers (below)
+            out.append({"n": len(out) + 1, "id": s["id"], "kind": "gather", "title": s.get("title") or "Find the pieces",
+                        "text": s.get("text") or "", "goal": None, "hints": [], "why": None, "what_changed": None,
+                        "parts": [], "picture": None, "code": None, "code_file": None, "expected": None, "number": "",
+                        "bag": s.get("bag"), "times": 1, "covers": s.get("covers") or []})
+            continue
         if lego and not s.get("parts") and re.match(r"open bag \d+\.?$", (s.get("text") or "").strip(), re.I):
             continue  # the bag's gather card says to open it
         counted, meta = {}, {}
@@ -318,7 +324,7 @@ def steps(lesson_id):
             text += f" (Build this {times} times.)"
         out.append({"n": len(out) + 1, "id": s["id"], "kind": s.get("kind"),
                     "title": {"gather": "Gather the parts", "upload": "Upload the code"}.get(s.get("kind"))
-                    or f"Step {len(out) + 1}",
+                    or f"Step {sum(1 for x in out if x['kind'] != 'gather' or not lego) + 1}",  # LEGO cards are not steps
                     "text": text, "goal": s.get("goal"), "hints": s.get("hints") or [],
                     "why": s.get("why"), "what_changed": s.get("what_changed"),
                     "parts": [{"what": w, "count": c, **(meta[w] if lego else {})} for w, c in counted.items()],
@@ -326,10 +332,40 @@ def steps(lesson_id):
                     "code": code or None, "code_file": prog.get("file") if code else None,
                     "expected": s.get("expected"),
                     "number": str(s.get("number") or s.get("n") or ""), "bag": s.get("bag"), "times": times})
-    if lego:
+    if lego and any(s["kind"] == "gather" for s in out):
+        _fill_cards(out)
+    elif lego:  # a lesson stored before its cards were (python -m graph.lesson_store gather): worked out here
         out = _with_gather_cards(out)
     return {"lesson_id": lesson_id, "name": (view.get("lesson") or {}).get("name") or view.get("title") or lesson_id,
             "lesson_type": view.get("lesson_type"), "steps": out}
+
+
+def _fill_cards(steps):
+    """The stored gather cards' pieces: those of the steps each covers (a split card: only the pieces it lists)."""
+    by_id = {s["id"]: s for s in steps}
+    build_no = {s["id"]: k for k, s in enumerate((x for x in steps if x["kind"] != "gather"), 1)}  # "steps 1 to 3"
+    for i, card in enumerate(steps):
+        if card["kind"] != "gather":
+            continue
+        got, nums = {}, []
+        for c in card.pop("covers", []):
+            st = by_id.get(c["step"])
+            if not st:
+                continue
+            nums.append(build_no[st["id"]])
+            want = {(x.get("type"), x.get("colour")): x["count"] for x in c.get("pieces") or []}
+            for p in st["parts"]:
+                k = (p.get("type"), p.get("colour"))
+                count = want.get(k) if want else p["count"] * max(1, st.get("times") or 1)
+                if not count:
+                    continue
+                if p["what"] in got:
+                    got[p["what"]]["count"] += count
+                else:
+                    got[p["what"]] = {**p, "count": count}
+        card["parts"] = list(got.values())
+        if nums:
+            card["covers"] = [min(nums), max(nums)]
 
 
 def _with_gather_cards(build):

@@ -30,6 +30,9 @@ first step, a step's pins, which instances the learner gathers) is worked out wh
                           PLACES      step -> a part instance it puts in place (ACTS_ON in the first design)
                           MAKES       step -> a join (physical `joined` edge) it makes; its `electrical` twin follows
                           GATHERS     the gather step -> the lesson's parts list (whose rows point at the instances)
+                          COVERS      a LEGO gather card -> each step it gathers the pieces for (made once, when the
+                                      lesson is made: checker.lego_gather.add_cards; about 10 pieces a card, a new
+                                      card at each numbered bag; `pieces` only on a card that splits a big group)
                           PROGRAMS    the upload step -> the board it loads the sketch onto (the pins: its code links)
   <id>/physical.json    the part instances of this one assembly and the connections between them (GRAPH_SPEC §4-5).
                         A node's `type` is a DEFINITION in the one parts catalogue (code/graph/parts/parts.json):
@@ -96,6 +99,9 @@ def register(entry, graphs, store=None):
     d.mkdir(parents=True, exist_ok=True)
     from graph.parts.lego import lego_ids
     lego_ids.unprint_graphs(graphs)  # a printed piece is its plain piece with a print (one card per design)
+    if entry.get("lesson_type") == "lego" and graphs.get("instruction"):  # the gather cards, made once, stored
+        from checker import lego_gather
+        lego_gather.add_cards(graphs)
     reps = {}
     for kind in KINDS:  # the graphs first, so the lesson record can point to them
         g = graphs.get(kind)
@@ -518,6 +524,8 @@ def assemble(lesson_id, store=None):
                               "gathers": [i for e in by[("GATHERS", sid)] for row_ in (graphs.get("lesson") or {})
                                           .get("parts_list", {}).get("parts", []) for i in row_.get("instances", [])],
                               "attaches": [e["v"] for e in by[("ATTACHES", sid)]],
+                              "covers": [{"step": e["v"], **({"pieces": e["pieces"]} if e.get("pieces") else {})}
+                                         for e in by[("COVERS", sid)]],
                               "depends_on": [{"step": d["v"], "via": d["via"]} for d in deps]})
         for e in inst["edges"]:
             if e["type"] in ("BUILDS", "ATTACHES"):
@@ -723,6 +731,21 @@ def describe_parts(lesson_id, domain, store=None, call=None):
     return part_metadata.describe_new(ids, domain, call=call, label=lesson_id)
 
 
+def gather_cards(lesson_id, store=None):
+    """(Re)make the gather cards of a stored LEGO lesson from its files, save them and send them to the database.
+    Returns how many cards it has."""
+    from checker import lego_gather
+    store = store or STORE
+    d = store / lesson_id
+    graphs = {k: _read(d / f"{k}.json") for k in KINDS}
+    if (graphs.get("lesson") or {}).get("lesson_type") != "lego" or not graphs.get("instruction"):
+        return 0
+    n = lego_gather.add_cards(graphs)
+    (d / "instruction.json").write_text(json.dumps(graphs["instruction"], indent=1))
+    sync_db(lesson_id, store)
+    return n
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -737,7 +760,14 @@ def main(argv=None):
     au = sub.add_parser("audit")
     au.add_argument("ids", nargs="+")
     sub.add_parser("validate", help="every stored lesson and every part against the data structure's rules")
+    ga = sub.add_parser("gather", help="(re)make the gather cards of stored LEGO lessons and send them to the database")
+    ga.add_argument("ids", nargs="*", help="lesson ids (default: every LEGO lesson)")
     a = ap.parse_args(argv)
+    if a.cmd == "gather":
+        ids = a.ids or [r["lesson_id"] for r in catalogue()["lessons"] if r.get("lesson_type") == "lego"]
+        for lid in ids:
+            print(f"{lid}: {gather_cards(lid)} gather cards", flush=True)
+        return
     if a.cmd == "validate":
         validate_main()
         return
@@ -876,7 +906,7 @@ NODE_KINDS = set(lesson_store.STEP_KINDS) | {"product", "subassembly", "lesson",
 
 INSTRUCTION_EDGES = {  # edge type -> the fields it must carry
     "NEXT_STEP": (), "PLACES": (), "MAKES": (), "DEPENDS_ON": (), "ALIGNS_WITH": (), "CHECK_NEEDS": (),
-    "GATHERS": (), "PROGRAMS": (), "BUILDS": (), "ATTACHES": (), "FIRST_STEP": (), "USES": (),
+    "GATHERS": (), "PROGRAMS": (), "BUILDS": (), "ATTACHES": (), "FIRST_STEP": (), "USES": (), "COVERS": (),
     "SHOWS": ("order",), "STARTS": ()}
 
 

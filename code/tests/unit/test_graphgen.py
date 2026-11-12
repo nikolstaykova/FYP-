@@ -196,7 +196,9 @@ def test_lesson_store_assembles_and_links(tmp_path):
     view = lg.assemble("toy", store=tmp_path)
     assert view["checks"]["problems"] == []
     assert [p["count"] for p in view["parts_list"]] == [1, 2]  # one definition, two instances
-    assert view["steps"][1]["depends_on"] == [{"step": "step-1", "via": ["e2"]}]
+    card, *build = view["steps"]  # a LEGO lesson is stored with its gather card, before the steps it gathers for
+    assert card["kind"] == "gather" and card["covers"] == [{"step": "step-1"}, {"step": "step-2"}]
+    assert build[1]["depends_on"] == [{"step": "step-1", "via": ["e2"]}]
 
 
 def test_lesson_store_catches_broken_links(tmp_path):
@@ -376,8 +378,9 @@ def test_steps_name_both_neighbours(tmp_path):
     """The step order is stored once, as NEXT_STEP; each step's previous step is its reverse, worked out on reading."""
     lg, inst = _lesson_store(tmp_path)
     assert not any(e["type"] == "PREVIOUS_STEP" for e in inst["edges"])
-    steps = lg.assemble("toy", store=tmp_path)["steps"]
-    assert (steps[0]["previous"], steps[0]["next"], steps[1]["previous"], steps[1]["next"]) == (None, "step-2", "step-1", None)
+    steps = lg.assemble("toy", store=tmp_path)["steps"]  # the gather card, then the two steps
+    assert [(s["id"], s["previous"], s["next"]) for s in steps] == [
+        ("gather-1", None, "step-1"), ("step-1", "gather-1", "step-2"), ("step-2", "step-1", None)]
 
 
 def test_progress_any_order(tmp_path):

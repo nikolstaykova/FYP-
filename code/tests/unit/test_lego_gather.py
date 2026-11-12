@@ -75,3 +75,27 @@ def test_card_check_result():
     assert [q["key"] for q in res["asks"]] == ["p3", "p4"] and res["asks"][1]["message"] == "Hold it up?"
     res = lego_check.result(its, {}, dismissed=["p1"])
     assert res["parts"][0]["status"] == "skipped" and "p1" not in [q["key"] for q in res["asks"]]
+
+
+def test_cards_are_stored_in_the_lesson_graph():
+    """add_cards puts each card in the step order with COVERS links; running it again changes nothing."""
+    import copy
+    from checker import lego_gather
+    phys = {"nodes": [{"id": f"b{i}", "type": "lego-3001", "label": "Brick 2 x 4", "props": {"colour": "Red"}}
+                      for i in range(1, 25)]}
+    steps = [{"id": f"step-{n}", "kind": "step", "n": n, "text": f"step {n}", "bag": None} for n in range(1, 7)]
+    edges = [{"type": "NEXT_STEP", "u": f"step-{n}", "v": f"step-{n + 1}"} for n in range(1, 6)]
+    edges += [{"type": "PLACES", "u": f"step-{(i - 1) // 4 + 1}", "v": f"b{i}"} for i in range(1, 25)]  # 4 a step
+    g = {"instruction": {"nodes": steps, "edges": edges}, "physical": phys, "lesson": {}}
+    n = lego_gather.add_cards(g)
+    assert n >= 2  # 24 pieces: more than one card of about 10
+    once = copy.deepcopy(g["instruction"])
+    lego_gather.add_cards(g)
+    assert g["instruction"] == once  # the same cards again, not more
+    from graph import lesson_store
+    order = lesson_store._order(g["instruction"])
+    assert order[0].startswith("gather-")  # a card first, then its steps
+    covers = [e for e in g["instruction"]["edges"] if e["type"] == "COVERS"]
+    assert sorted({e["v"] for e in covers}) == [f"step-{k}" for k in range(1, 7)]  # every step gathered for
+    for e in covers:  # each card comes before every step it covers
+        assert order.index(e["u"]) < order.index(e["v"])
