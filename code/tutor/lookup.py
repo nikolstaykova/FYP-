@@ -198,6 +198,78 @@ def _words(t):
     return set(re.findall(r"[a-z]+|\d+x\d+|\d+", t)) - {"the", "a", "an", "of", "with", "and", "piece", "part"}
 
 
+BANDS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"]
+
+
+def ohms(text):
+    """220 / "220 ohm" / "4.7k" / "10K" / "1M" / "4k7" in a part's name -> ohms, or None."""
+    m = re.search(r"(\d+(?:[.,]\d+)?)\s*([kKmM]?)(\d*)\s*(?:ohms?|Ω|R\b)?", text or "")
+    if not m:
+        return None
+    num = float(m.group(1).replace(",", "."))
+    if m.group(3) and m.group(2):  # 4k7
+        num = float(f"{m.group(1)}.{m.group(3)}")
+    return round(num * {"": 1, "k": 1e3, "K": 1e3, "m": 1e6, "M": 1e6}[m.group(2)])
+
+
+def resistor_bands(value):
+    """The colour bands of a resistor value: (4-band, 5-band), read from the end away from the gold/brown
+    tolerance band. 220 -> red red brown gold / red red black black brown; 4.7 -> yellow violet gold gold."""
+    if not value or value <= 0:
+        return None
+    mult = {-2: "silver", -1: "gold", **dict(enumerate(BANDS))}
+
+    def bands(n):  # n significant digits, then the multiplier
+        e = 0
+        v = float(value)
+        while v >= 10 ** n - 0.5:
+            v /= 10
+            e += 1
+        while v < 10 ** (n - 1) - 1e-9:
+            v *= 10
+            e -= 1
+        d = str(int(round(v))).zfill(n)[:n]
+        return [BANDS[int(c)] for c in d] + [mult.get(e, "?")]
+
+    return bands(2) + ["gold"], bands(3) + ["brown"]
+
+
+def recognise(name, key, category):
+    """How to pick this part out of a box: general knowledge, worked out here so Pip never guesses it."""
+    words = f"{name} {key or ''} {category or ''}".lower()
+    if "resistor" in words:
+        v = ohms(name)
+        b = resistor_bands(v) if v else None
+        if b:
+            return {"how_to_recognise": (
+                f"A small tube with coloured stripes. {name.split()[-1]} ohm reads {', '.join(b[0][:3])} then a gold band "
+                f"(4 stripes), or {', '.join(b[1][:4])} then a brown band (5 stripes, common in starter kits: the body "
+                "is often blue). Read from the end away from the gold or brown band. Kit resistors often come on a "
+                "paper strip labelled with the value. Not sure? A multimeter on ohms tells you for certain."),
+                "bands_4": b[0], "bands_5": b[1]}
+        return {"how_to_recognise": "A small tube with coloured stripes; the stripes give the value."}
+    if "led" in words.split() or "led" in (key or "") or "light emitting" in words:
+        return {"how_to_recognise": ("A small coloured dome with two legs. The longer leg is + (anode); the rim of the "
+                                     "dome has a flat edge on the - side (short leg). A clear LED shows its colour "
+                                     "only when lit.")}
+    if "potentiometer" in words or "pot " in words:
+        return {"how_to_recognise": ("A knob or dial with three legs. The value is printed on it as a code: 103 means "
+                                     "10k ohm (10 then 3 zeros), 102 is 1k, 104 is 100k.")}
+    if "capacitor" in words:
+        return {"how_to_recognise": ("Ceramic: a small flat disc, value as a 3-digit code: 104 = 100 nF (10 then 4 "
+                                     "zeros, in picofarads), 103 = 10 nF; either way round. Electrolytic: a little "
+                                     "can with the value printed on it and a stripe down the side on the - leg "
+                                     "(the shorter leg); it must go the right way round.")}
+    if "diode" in words:
+        return {"how_to_recognise": "A small black or glass tube; the stripe at one end marks the - side (cathode)."}
+    if "button" in words or "switch" in words:
+        return {"how_to_recognise": "A tactile button: a small square with a round plunger and four legs (two pairs "
+                                    "are joined inside: the pins on the same side as the bent legs face)."}
+    if "jumper" in words or "wire" in words:
+        return {"how_to_recognise": "Short wires with pins on both ends; the colour does not change the circuit."}
+    return {}
+
+
 def part_info(lesson_id, name):
     ix = index(lesson_id)
     want = _words(name)
@@ -224,6 +296,8 @@ def part_info(lesson_id, name):
             d["what_it_is"] = a["description"]
         if a.get("tips"):
             d["tips"] = a["tips"][:3]
+        if ix["type"] == "arduino":
+            d.update(recognise(r["name"], key, r.get("category")))
         if r.get("can_swap"):
             d["can_swap"] = r["can_swap"]
         out.append(d)
