@@ -88,13 +88,14 @@ button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 <script>
 (async function () {
   const $ = (id) => document.getElementById(id);
-  const EMBED = /[?&]embed=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search) || !!window.PIP_EMBED;  // PIP_EMBED: the phone app's web view
   if (EMBED) document.body.classList.add("embed");
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   let lesson, bin;
   try {
     const key = new URLSearchParams(location.search).get("key");  // the Parts Quest server asks for its link key
-    lesson = await (await fetch("lesson.json" + (key ? "?key=" + encodeURIComponent(key) : ""))).json();
+    lesson = window.PIP_LESSON  // the phone app hands the lesson in (its web view cannot fetch from the server)
+      || await (await fetch("lesson.json" + (key ? "?key=" + encodeURIComponent(key) : ""))).json();
     const raw = atob(lesson.geometry), bytes = new Uint8Array(raw.length);
     for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
     bin = bytes.buffer;
@@ -359,6 +360,7 @@ button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
     if (n >= 1 && n <= steps.length) { k = n - 1; show(k, e.data.play !== false); }
   });
   if (EMBED && parent !== window) parent.postMessage({ viewer: "ready", steps: steps.length }, "*");
+  if (EMBED && window.PipViewer) PipViewer.postMessage(JSON.stringify({ viewer: "ready", steps: steps.length }));  // the phone app's web view
   const m = /^#s(\d+)$/.exec(location.hash);  // a link to a step: ...#s48
   let startAt = m ? +m[1] - 1 : 0;
   if (!m && !EMBED) { try { startAt = +(localStorage.getItem("step:" + document.title) || 0); } catch (e) {} }

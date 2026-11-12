@@ -3,6 +3,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 import 'api.dart';
+import 'client_stub.dart' if (dart.library.io) 'client_io.dart';
+import 'pip/pip.dart';
 import 'screens/connect.dart';
 import 'screens/home.dart';
 import 'theme.dart';
@@ -10,7 +12,9 @@ import 'theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  trustLocalServer();
   await Api.instance.load();
+  await Pip.loadMe();
   runApp(const PartsQuestApp());
 }
 

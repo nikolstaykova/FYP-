@@ -113,8 +113,8 @@ class _CheckScreenState extends State<CheckScreen> {
           child: _error != null
               ? _Failed(key: const ValueKey('err'), error: _error!, retry: _run)
               : r == null
-                  ? _Scanning(key: const ValueKey('scan'), photo: widget.photos.first, lego: widget.lesson.isLego)
-                  : _Results(
+                  ? ScanningView(key: const ValueKey('scan'), photo: widget.photos.first, lego: widget.lesson.isLego)
+                  : ResultsView(
                       key: const ValueKey('res'),
                       result: r,
                       accent: Pq.forLesson(widget.lesson),
@@ -157,17 +157,17 @@ class _CheckScreenState extends State<CheckScreen> {
 }
 
 /// The photo, with a light sweeping across it and cheerful words while the checker looks.
-class _Scanning extends StatefulWidget {
-  const _Scanning({super.key, required this.photo, required this.lego});
+class ScanningView extends StatefulWidget {
+  const ScanningView({super.key, required this.photo, required this.lego});
 
   final Uint8List photo;
   final bool lego;
 
   @override
-  State<_Scanning> createState() => _ScanningState();
+  State<ScanningView> createState() => _ScanningViewState();
 }
 
-class _ScanningState extends State<_Scanning> with SingleTickerProviderStateMixin {
+class _ScanningViewState extends State<ScanningView> with SingleTickerProviderStateMixin {
   late final _sweep = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))..repeat(reverse: true);
   late final List<String> _lines = widget.lego
       ? ['Looking at your pieces…', 'Counting studs…', 'Checking the colours…', 'Telling plates from bricks…', 'Nearly there…']
@@ -242,14 +242,16 @@ class _ScanningState extends State<_Scanning> with SingleTickerProviderStateMixi
       );
 }
 
-class _Results extends StatelessWidget {
-  const _Results({
+class ResultsView extends StatelessWidget {
+  const ResultsView({
     super.key,
     required this.result,
     required this.accent,
     required this.busyAsk,
     required this.onCloseup,
     required this.onDismiss,
+    this.onCloseupAll,
+    this.bottom = 130,
   });
 
   final CheckResult result;
@@ -257,6 +259,8 @@ class _Results extends StatelessWidget {
   final String? busyAsk;
   final void Function(Ask) onCloseup;
   final void Function(Ask) onDismiss;
+  final VoidCallback? onCloseupAll; // two or more questions: one photo of all of them
+  final double bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -265,13 +269,23 @@ class _Results extends StatelessWidget {
     final order = [Verdict.check, Verdict.missing, Verdict.swap, Verdict.have, Verdict.skipped];
     final parts = [...r.parts]..sort((a, b) => order.indexOf(a.verdict).compareTo(order.indexOf(b.verdict)));
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 130),
+      padding: EdgeInsets.fromLTRB(16, 4, 16, bottom),
       children: [
         _Score(found: r.found, total: r.parts.length),
         if (r.asks.isNotEmpty) ...[
           const SizedBox(height: 20),
           Text('I need your help', style: t.titleLarge),
           const SizedBox(height: 8),
+          if (onCloseupAll != null && r.asks.length >= 2)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: SoftButton(
+                label: 'One close-up of all ${r.asks.length}',
+                icon: Icons.photo_camera_front_rounded,
+                color: Pq.electronics,
+                onTap: busyAsk == null ? onCloseupAll : null,
+              ),
+            ),
           for (final (i, a) in r.asks.indexed)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),

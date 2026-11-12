@@ -58,7 +58,19 @@ class Piece {
 
 /// One card of a lesson (/api/lesson): a gather card or a build step.
 class LessonStep {
-  LessonStep({required this.number, required this.kind, required this.title, required this.text, required this.parts, this.bag});
+  LessonStep({
+    required this.number,
+    required this.kind,
+    required this.title,
+    required this.text,
+    required this.parts,
+    this.bag,
+    this.id = '',
+    this.goal,
+    this.hints = const [],
+    this.picture,
+    this.code,
+  });
 
   final int number; // 1-based, the "card" the server checks
   final String kind; // gather, build, upload...
@@ -66,6 +78,14 @@ class LessonStep {
   final String text;
   final List<Piece> parts;
   final Object? bag;
+  final String id; // "step-3": a 3D lesson's own step number is the last part
+  final String? goal;
+  final List<String> hints;
+  final String? picture; // a booklet step's picture, a server path
+  final String? code; // an Arduino sketch
+
+  /// The lesson's own build step number (3D viewer), from the id.
+  int? get ownNumber => int.tryParse(id.split('-').last);
 
   bool get isGather => kind == 'gather';
   int get pieceCount => parts.fold(0, (a, p) => a + p.count);
@@ -81,6 +101,7 @@ class LessonDetail {
   final String? viewer;
 
   List<LessonStep> get gatherCards => steps.where((s) => s.isGather).toList();
+  List<String> get pictures => [for (final s in steps) if (s.picture != null) s.picture!];
 
   factory LessonDetail.fromJson(Map<String, dynamic> j) {
     final raw = (j['steps'] as List? ?? const []).cast<Map<String, dynamic>>();
@@ -97,6 +118,11 @@ class LessonDetail {
             title: (raw[i]['title'] ?? 'Step ${i + 1}') as String,
             text: (raw[i]['text'] ?? '') as String,
             bag: raw[i]['bag'],
+            id: '${raw[i]['id'] ?? ''}',
+            goal: raw[i]['goal'] as String?,
+            hints: [for (final h in (raw[i]['hints'] as List? ?? const [])) '$h'],
+            picture: raw[i]['picture'] as String?,
+            code: raw[i]['code'] as String?,
             parts: [for (final p in (raw[i]['parts'] as List? ?? const [])) Piece.fromJson(p as Map<String, dynamic>)],
           ),
       ],

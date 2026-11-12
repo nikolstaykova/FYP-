@@ -106,7 +106,7 @@ class _GatherScreenState extends State<GatherScreen> {
           for (var i = 0; i < q.pieces.length; i++)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: _PieceRow(
+              child: PieceRow(
                 piece: q.pieces[i],
                 got: _got.contains(i),
                 expanded: _open == i,
@@ -129,8 +129,9 @@ class _GatherScreenState extends State<GatherScreen> {
   }
 }
 
-class _PieceRow extends StatelessWidget {
-  const _PieceRow({
+class PieceRow extends StatelessWidget {
+  const PieceRow({
+    super.key,
     required this.piece,
     required this.got,
     required this.expanded,
@@ -162,7 +163,7 @@ class _PieceRow extends StatelessWidget {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            _Brick(colour: piece.colour, count: piece.count, fallback: accent),
+            Brick(colour: piece.colour, count: piece.count, fallback: accent),
             const SizedBox(width: 12),
             Expanded(
               child: AnimatedDefaultTextStyle(
@@ -212,8 +213,8 @@ class _PieceRow extends StatelessWidget {
 }
 
 /// The piece's colour as a little brick with its count on it.
-class _Brick extends StatelessWidget {
-  const _Brick({this.colour, required this.count, required this.fallback});
+class Brick extends StatelessWidget {
+  const Brick({super.key, this.colour, required this.count, required this.fallback});
 
   final String? colour;
   final int count;

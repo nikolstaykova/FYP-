@@ -5,7 +5,10 @@ import '../api.dart';
 import '../models.dart';
 import '../progress.dart';
 import '../theme.dart';
+import '../pip/pip.dart';
+import '../pip/pip_bar.dart';
 import '../widgets/bouncy.dart';
+import '../session/session.dart';
 import 'gather.dart';
 
 /// One gather quest: the pieces to find, and which card the server checks them against.
@@ -181,12 +184,23 @@ class _LessonScreenState extends State<LessonScreen> {
               ),
               SliverToBoxAdapter(
                 child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+                  child: _PipCard(
+                    color: c,
+                    onTap: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => SessionScreen(summary: s)))
+                        .then((_) => _loadDone()),
+                  ),
+                ).animate().fadeIn(delay: 150.ms).slideY(begin: 0.1),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(24, 4, 24, 120),
                   child: Row(children: [
                     const Icon(Icons.construction_rounded, color: Pq.muted, size: 20),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text('Building steps come to the app next. For now: find the parts.',
+                      child: Text('Or find the parts on your own: tap a quest.',
                           style: t.bodySmall?.copyWith(color: Pq.muted)),
                     ),
                   ]),
@@ -331,6 +345,40 @@ class _Ring extends StatelessWidget {
               backgroundColor: color.withValues(alpha: 0.12),
             ),
             Center(child: Text('$done/$total', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15))),
+          ]),
+        ),
+      );
+}
+
+/// The way in to a whole lesson with Pip, the voice tutor.
+class _PipCard extends StatelessWidget {
+  const _PipCard({required this.color, required this.onTap});
+
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Bouncy(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(22),
+            gradient: LinearGradient(colors: [const Color(0xFF2A2F6B), Color.lerp(color, const Color(0xFF2A2F6B), 0.35)!]),
+            boxShadow: [BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 18, offset: const Offset(0, 8))],
+          ),
+          child: Row(children: [
+            const Orb(state: PipState.listening, size: 50),
+            const SizedBox(width: 14),
+            const Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Learn with Pip', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
+                SizedBox(height: 2),
+                Text('Your voice tutor: finds the parts with you, checks them, and builds it step by step.',
+                    style: TextStyle(color: Colors.white70, height: 1.3)),
+              ]),
+            ),
+            const Icon(Icons.chevron_right_rounded, color: Colors.white),
           ]),
         ),
       );

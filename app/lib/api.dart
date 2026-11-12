@@ -59,6 +59,13 @@ class Api {
     return _decode(r);
   }
 
+  /// A file from the server as text (the 3D viewer's page and model).
+  Future<String> text(String path) async {
+    final r = await _client.get(url(path)).timeout(const Duration(minutes: 2));
+    if (r.statusCode != 200) throw ApiError('Server error ${r.statusCode}');
+    return utf8.decode(r.bodyBytes);
+  }
+
   Future<dynamic> _post(String path, Map<String, dynamic> body) async {
     final r = await _client
         .post(url(path), headers: {'Content-Type': 'application/json'}, body: jsonEncode(body))
@@ -100,6 +107,42 @@ class Api {
   /// The first look. card: the LEGO gather card's number; null for an electronics lesson.
   Future<CheckResult> firstLook(String upload, String lesson, int? card) async => CheckResult.fromJson(
       await _post('/api/flow/first', {'upload': upload, 'lesson': lesson, 'card': ?card}));
+
+  /// The raw answer of a check, for Pip (it is told the facts in its own words: see pip/summary.dart).
+  Future<Map<String, dynamic>> flow(String action, Map<String, dynamic> body) async =>
+      (await _post('/api/flow/$action', body)) as Map<String, dynamic>;
+
+  /// A Gemini Live session for Pip: a single-use token and the setup (the key stays on the server).
+  Future<Map<String, dynamic>> tutorSession(String lesson,
+          {String? resume, bool speakers = false, String? name, String? level}) async =>
+      (await _post('/api/tutor/session', {
+        'lesson': lesson,
+        'resume': resume,
+        'speakers': speakers,
+        'name': name,
+        'level': level,
+      })) as Map<String, dynamic>;
+
+  /// The free voice: Haiku writes Pip's next words (and one tool), the phone speaks them.
+  Future<Map<String, dynamic>> tutorReply(String lesson, List<Map<String, String>> history, String text,
+          {String? name, String? level}) async =>
+      (await _post('/api/tutor/reply', {
+        'lesson': lesson,
+        'history': history,
+        'text': text,
+        'name': name,
+        'level': level,
+      })) as Map<String, dynamic>;
+
+  /// Pip looks something up in the lesson (lesson_info, step_info, part_info).
+  Future<dynamic> lookup(String lesson, String tool, Map<String, dynamic> args) async =>
+      _post('/api/tutor/lookup', {'lesson': lesson, 'tool': tool, 'args': args});
+
+  /// A server path ("/files/...", "/viewer/...") as a full link with the key.
+  String link(String path) {
+    final u = Uri.parse(path);
+    return base!.replace(path: u.path, queryParameters: {...u.queryParameters, 'key': key}).toString();
+  }
 
   Future<CheckResult> closeup(String upload, String askKey, Uint8List photo) async =>
       CheckResult.fromJson(await _post('/api/flow/closeup', {'upload': upload, 'key': askKey, 'photo': _dataUrl(photo)}));
