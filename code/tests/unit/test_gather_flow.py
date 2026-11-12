@@ -1,5 +1,5 @@
-"""The two-step parts check (checker.gather_flow) with given answers: no photos, no model calls."""
-from checker import gather_flow as c
+"""The two-step parts check (gather.gather_flow) with given answers: no photos, no model calls."""
+from gather import gather_flow as c
 
 
 def S(name, lesson_part="none", value="", count=1, unsure="", might_replace="", replace_note=""):
@@ -23,7 +23,7 @@ def test_nothing_to_settle_skips_the_second_look():
 
 
 def test_unsure_and_unidentified_objects_are_flagged():
-    from checker import gather
+    from gather import gather
     seen = KIT[:3] + [S("resistor", "resistor", "", unsure="bands too small"),
                       S("small black component with three legs"), S("USB cable"),
                       S("blue microcontroller board", might_replace="arduino-uno")]
@@ -68,7 +68,7 @@ def test_a_board_opus_names_exactly_gets_the_pin_check():
 
 
 def _first(seen, lesson="blink"):
-    from checker import gather
+    from gather import gather
     res = gather.check(lesson, [], research=False, seen=seen)
     objects, parts = c.flags(res, {r["type"] for r in res["parts"]})
     return res, c.asks(res, objects, parts)
@@ -85,7 +85,7 @@ def test_learner_is_asked_for_a_closeup_of_the_unsure_resistor_and_for_the_missi
 
 
 def test_closeup_answer_settles_it_and_is_not_asked_again():
-    from checker import gather
+    from gather import gather
     seen = KIT[:3] + [S("resistor", "resistor", "", unsure="bands too small"), KIT[4]]
     res, qs = _first(seen)
     q = next(q for q in qs if q["kind"] == "closeup")

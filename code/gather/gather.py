@@ -16,8 +16,8 @@ electronics check's shape, so the page and the tutor use one result screen for b
 Used for     the gather step (RECOGNITION.md section 2, CHECKER.md); research/recognition/lab/server.py (the flow).
 Where        reads the lesson and the parts catalogue through the lesson store (the database when set up, else files);
              research adds cards to the electronics card store, as any new lesson's parts do.
-Run          ./pinpoint checker.gather blink photo1.jpg photo2.jpg [--model opus] [--no-research]
-             ./pinpoint checker.gather 60065-1 photo.jpg --card 1     (a LEGO lesson's gather card, by its number)
+Run          ./pinpoint gather.gather blink photo1.jpg photo2.jpg [--model opus] [--no-research]
+             ./pinpoint gather.gather 60065-1 photo.jpg --card 1     (a LEGO lesson's gather card, by its number)
 """
 import json
 import pathlib
@@ -502,7 +502,7 @@ def _card_answer(text):
 def card_look(photos, its, model=CARD_FIRST, effort="low", small=True):
     """One look at the photos with the card's list. Returns ({key: verdict}, extra pieces, stats).
     small: the photos at 768 px, JPEG 35 (the first look, CHECKER.md §3.7); close-ups go at full size."""
-    from checker import gather_vlm as vlm
+    from gather import gather_vlm as vlm
     images = [vlm.shrink(p) if small else (pathlib.Path(p).read_bytes(), vlm.media_type(p)) for p in photos]
     out, stats, _ = vlm.ask(model, images, CARD_LOOK.format(items=_card_list(its)), max_tokens=4000, effort=effort)
     pieces, extra = _card_answer(out)

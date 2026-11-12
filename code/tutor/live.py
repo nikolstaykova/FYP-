@@ -426,7 +426,7 @@ def brief(lesson_id, name=None, level=None):
              "beginner's pace.", "", "How the session goes:", *flow, "",
              f'The lesson: "{les["name"]}" ({les["lesson_type"]}), {len(les["steps"])} steps.']
     if arduino:
-        from checker import gather
+        from gather import gather
         rec, phys = gather.lesson(lesson_id)
         lines.append("The parts to gather: " + "; ".join(
             f'{r["count"]}x {r["name"]}' + (f' ({", ".join(sorted({str(v) for v in r["values"] if v}))})'
@@ -516,7 +516,7 @@ sentences, plainly and honestly (say if the photo does not show it clearly, and 
 
 def look(lesson_id, photo, question):
     """Pip's look tool: one photo and one question, answered by Haiku (about 0.1 cents)."""
-    from checker import gather_vlm
+    from gather import gather_vlm
     st = steps(lesson_id)
     parts = sorted({p["what"] for s in st["steps"] for p in s.get("parts") or []})[:40]
     out, stats, _ = gather_vlm.ask("claude-haiku-5-5", [gather_vlm.shrink(photo, 1280, 80)],
@@ -534,7 +534,7 @@ A message in brackets such as "(result of check_parts: ...)" is what a tool gave
 
 def reply(lesson_id, history, text, name=None, level=None):
     """The tutor's next words and its next tool, from Haiku (the free-voices mode). history: [{"who", "text"}]."""
-    from checker import gather_vlm
+    from gather import gather_vlm
     les_type = steps(lesson_id)["lesson_type"]
     names = ", ".join(f'{d["name"]}({", ".join(d.get("parameters", {}).get("properties", {}))})'
                       for d in tools(les_type)[0]["functionDeclarations"])

@@ -1,9 +1,9 @@
 """Which model and image size give the cheapest right check, once the Opus fallback is paid for.
 
 For every model x photo size x photo set:
-  1. first look by the model (the production prompt; Claude through checker.gather_flow.first_look, Gemini and NVIDIA
+  1. first look by the model (the production prompt; Claude through gather.gather_flow.first_look, Gemini and NVIDIA
      through kit_test.look_nvidia, the same instruction and JSON);
-  2. the rules (checker.gather.check) and the flags (checker.gather_flow.flags): what the first look could not settle;
+  2. the rules (gather.gather.check) and the flags (gather.gather_flow.flags): what the first look could not settle;
   3. the fallback: Opus looks again at only the flagged objects and parts, on the same photos
      (gather_flow.second_look). In the app the learner's close-up goes to Haiku first and Opus only when Haiku still
      cannot tell, so this is the worst case: every question the learner would get (at most 3, lesson parts only,
@@ -32,7 +32,7 @@ OPUS = 'claude-opus-5-5'
 
 
 def first(model, photos, rec, lesson):
-    from checker import gather_flow
+    from gather import gather_flow
     if model.startswith('claude-'):
         return gather_flow.first_look(photos, rec, model, small=False)  # the photos are already sized
     from kit_test import look_nvidia
@@ -41,7 +41,7 @@ def first(model, photos, rec, lesson):
 
 
 def one(case, model, size):
-    from checker import gather, gather_flow
+    from gather import gather, gather_flow
     from res_test import variant
     name, edge = size
     photos = [str(variant(p, edge, 85)[0]) for p in case['photos']]

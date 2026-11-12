@@ -1,6 +1,6 @@
 # Part recognition: step 0 of the phone app
 
-**Status:** 3 November 2026. Scenario fixed (section 1); the parts check is built (`code/checker/gather.py`)
+**Status:** 3 November 2026. Scenario fixed (section 1); the parts check is built (`code/gather/gather.py`)
 and tested on whole sets from the web (6.5); Claude Opus chosen for the look (section 7); small local VLMs still
 running.
 **Code:** `research/recognition/` (the comparison). **The checker built from it, its cost per check and how to
@@ -334,13 +334,13 @@ price ($0.30 / $2.50 per 1M tokens in / out for Flash-Lite); the runs themselves
 ### 6.10 Claude through the API directly, and the flow it led to (3–4 November)
 
 Haiku was first run through the `claude -p` command line (the subscription), which adds start-up time to every
-call (9.4 s a photo in 6.2). Called through the Anthropic API directly (`code/checker/gather_vlm.py`), Haiku takes
+call (9.4 s a photo in 6.2). Called through the Anthropic API directly (`code/gather/gather_vlm.py`), Haiku takes
 **4–8 s a photo at about 0.1¢** (one first call took 57 s, a one-off). Flash-Lite on Gemini's free tier ranged from
 3 s to 99 s on the same photo (its queue). Haiku is as accurate as Flash-Lite (6.9), more careful (it says "check"
 more often, which is what the parts check needs) and keeps everything with one provider, so **Haiku is the first
 look**.
 
-The flow (`code/checker/gather_flow.py`, the parts lab's *Check flow* tab with the camera):
+The flow (`code/gather/gather_flow.py`, the parts lab's *Check flow* tab with the camera):
 1. Haiku looks at the learner's photos (about 0.1–0.2¢).
 2. For what can change a verdict for this lesson (at most 3 questions, boards first), the learner is asked for a
    close-up, in Haiku's own words: "I can see some resistors, but I can't read their colour bands. Can you take a
@@ -394,7 +394,7 @@ re-run a benchmark, restore `data/sources/electrocom61` from the archive.
 - **What Haiku cannot settle, the learner settles with a close-up**, and only if Haiku still cannot tell from the
   close-up does **Opus** look, at that one photo (6.10). A check costs about 0.2–1.5¢.
 - **Everything after the look is code** (match, compare, substitute), so the verdicts rest on the catalogue, the pin
-  tables and the lesson's own circuit, not on the model's opinion (`code/checker/gather.py`).
+  tables and the lesson's own circuit, not on the model's opinion (`code/gather/gather.py`).
 - **Kept for later:** Gemini 3.5 Flash-Lite (6.9; as accurate, but its free tier's speed varies a lot), local
   Qwen3-VL 4B / 8B (6.11; free, but several times slower).
 - **Not used:** untrained detectors (do not know electronic parts), Florence-2 (finds but cannot name), the NVIDIA

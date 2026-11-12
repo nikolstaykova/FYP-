@@ -13,7 +13,7 @@
    once per question. Still open after that: the learner can retake it or skip.
 `check()` runs the first look and an Opus look at all photos without a learner (benchmarks, the command line).
 
-Run: ./pinpoint checker.gather_flow blink p1.jpg p2.jpg [--no-research]
+Run: ./pinpoint gather.gather_flow blink p1.jpg p2.jpg [--no-research]
 """
 import json
 import pathlib
@@ -21,7 +21,7 @@ import re
 import sys
 import time
 
-from checker import gather, gather_vlm as vlm
+from gather import gather, gather_vlm as vlm
 
 FIRST = "claude-haiku-5-5"
 SECOND = "claude-opus-5-5"

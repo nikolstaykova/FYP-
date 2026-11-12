@@ -1,15 +1,12 @@
-"""The build checker: does what the learner has built match the lesson's step?
+"""The gather check: before a stretch of steps, does the learner have the parts?
 
-What it is   compares the learner's build (what is placed and how it is joined) with the expected state of a lesson
-             step, and says what is right, what is a harmless difference, and what to fix. One verdict vocabulary
-             for LEGO and Arduino, from CircuitQuest's checker: pass / harmless (a symmetric swap, a substitutable
-             colour) / substituted (another part of the same kind) / wrong; plus missing and extra.
-Used for     the learner's feedback after each step; later, the same check on what a VLM reads from a photo (AR).
-Where        reads a lesson from the store (lesson_store: data/lessons/store/<id>/assembled.json); nothing here
-             writes to the store.
-
-The expected state after step N is every part and join of steps 1..N (assembled.json steps[*].parts and
-.connections: instances with type, colour and place; joins port to port, e.g. b1 stud.1.1 -> b7 anti.1.2,
-wire1 a -> uno 13). LEGO compares parts, places and joins; Arduino compares nets (position-free), as CircuitQuest.
-Tolerance per part (exact / any colour / any part of a kind, e.g. a minifigure head) decides harmless against wrong.
+What it is   from a few photos of the parts laid out: electronics (an Arduino lesson's whole parts list: what is on
+             the table, matched to the catalogue, with values and substitutes) and LEGO (one gather card of about 10
+             pieces: is each one there, the right kind and size, in the right colour). One result shape for both.
+Files        gather.py       the check, both kinds of lesson (electronics: check; LEGO: card_*)
+             gather_flow.py  the electronics check as the learner gets it: Haiku first, close-ups, Opus once
+             gather_vlm.py   the one Claude call (photos + text -> JSON), with prices and photo shrinking
+Used for     the gather steps of every lesson (the app, the web game, the tutor's check_parts); CHECKER.md (cost).
+             The gather cards themselves are made with the lesson (graph/lego_gather.py). After a step, whether the
+             build is right is the validator's job (code/validator).
 """

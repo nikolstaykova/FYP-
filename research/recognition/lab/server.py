@@ -1,14 +1,14 @@
 """Parts lab: a local page to try the parts check on your own photos with different models.
 
 Pick a saved lesson (its parts list comes from data/lessons/store), add photos, tick models: every model looks at
-the same photos with the same instruction (kit_test.look_nvidia), the code (checker.gather) compares what it saw
+the same photos with the same instruction (kit_test.look_nvidia), the code (gather.gather) compares what it saw
 with the lesson's list, and the page shows each model's verdicts, time and cost side by side.
 API keys stay in .env on this Mac; the page only talks to this server.
 
 Pages: / is Parts Quest (game.html), the learner's flow as a game: choose a lesson, gather its parts (a checklist),
 scan them (camera or upload), and the check (what you have, what can stand in, close-up quests). /lab is the lab
 (index.html), in two modes: "Check flow" (the product flow: camera -> Haiku looks -> the learner is asked for close-ups of what
-Haiku could not settle -> Opus on a close-up only when Haiku still cannot tell; checker.gather_flow) and "Compare models" (every ticked model on the same photos).
+Haiku could not settle -> Opus on a close-up only when Haiku still cannot tell; gather.gather_flow) and "Compare models" (every ticked model on the same photos).
 
 Run:  ./research/recognition/lab/run.sh                 then open http://127.0.0.1:8765 (camera works on this Mac)
       ./research/recognition/lab/run.sh --lan --https   from a phone on the same Wi-Fi, with the live camera (phones
@@ -37,7 +37,7 @@ REC = HERE.parent
 ROOT = REC.parents[1]
 sys.path[:0] = [str(ROOT / 'code'), str(REC)]
 
-from checker import gather, gather_flow  # noqa: E402
+from gather import gather, gather_flow  # noqa: E402
 from kit_test import look_nvidia  # noqa: E402
 
 RUNS = REC / 'runs' / 'lab'
@@ -243,7 +243,7 @@ def _card(lesson, n):
 
 
 def lego_flow(action, d, body):
-    """The photo check of a LEGO gather card (checker.gather, the LEGO card check), with the same actions and answer shape as flow():
+    """The photo check of a LEGO gather card (gather.gather, the LEGO card check), with the same actions and answer shape as flow():
     first (Haiku looks at the laid-out pieces), closeup / closeup_all (Haiku on the close-up, Opus once when it still
     cannot tell), dismiss. State in runs/lab/<upload>/flow_state.json."""
     sf = d / 'flow_state.json'

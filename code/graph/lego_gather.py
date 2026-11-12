@@ -4,7 +4,7 @@ are stored in the steps graph (and the database) like any other step.
 
 A LEGO learner has the set, so there is no whole-set check, and finding pieces before every single step is too slow
 on a big set. So the steps are split into groups, and a gather card goes before each group. Each card is checked
-from one photo of the pieces laid out (checker.gather, the LEGO card check), so a card must stay small enough for a model to see
+from one photo of the pieces laid out (gather.gather, the LEGO card check), so a card must stay small enough for a model to see
 every piece: about PIECES pieces and at most KINDS different kinds.
 - A numbered bag (from the booklet) always starts a new group: "Open bag 2 and find these pieces".
 - A group holds at most MAX_STEPS steps. Sizes are balanced, so the last group is not a leftover, and a group with

@@ -36,7 +36,7 @@ def photos():
 
 
 def main():
-    from checker import gather
+    from gather import gather
     model = sys.argv[1]
     rows, t0 = [], time.monotonic()
     for board, path in photos():

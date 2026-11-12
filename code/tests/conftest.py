@@ -1,4 +1,4 @@
-"""The tests run from any folder: the product's package (code/graph; the checks are in code/checker), the tests' tools (consensus and the
+"""The tests run from any folder: the product's package (code/graph; the checks are in code/gather), the tests' tools (consensus and the
 like) and the research versions (code/tests/research), which are not part of the product, are put on the path."""
 import os
 import pathlib

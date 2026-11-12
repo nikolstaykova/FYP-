@@ -61,7 +61,7 @@ def test_cards_fit_one_photo():
 
 
 def test_card_check_result():
-    from checker import gather
+    from gather import gather
     card = {"parts": [{"what": "Red Brick 2 x 4", "count": 1}, {"what": "Black Plate 1 x 1 Round", "count": 6},
                       {"what": "Blue Plate 2 x 3", "count": 2}, {"what": "White Tile 1 x 2", "count": 1},
                       {"what": "Yellow Minifig Head", "count": 1}]}
@@ -103,7 +103,7 @@ def test_cards_are_stored_in_the_lesson_graph():
 
 def test_piece_kinds():
     """Each piece goes to the model as the kind of piece it is, with its size."""
-    from checker.gather import piece_kind
+    from gather.gather import piece_kind
     assert piece_kind("Black Plate 2 x 2") == "plate 2x2"
     assert piece_kind("Trans Yellow Plate Round 1 x 1 with Solid Stud") == "round plate 1x1"
     assert piece_kind("Black Tyre 21 x 12 with Offset Tread") == "tyre (rubber)"
@@ -115,7 +115,7 @@ def test_piece_kinds():
 
 
 def test_wrong_piece_says_what_it_is():
-    from checker import gather
+    from gather import gather
     its = gather.card_items({"parts": [{"what": "Black Plate 2 x 2", "count": 1}]})
     res = gather.card_result(its, {"p1": {"status": "wrong_piece", "seen_as": "a 2x3 plate"}})
     assert res["parts"][0]["status"] == "missing"

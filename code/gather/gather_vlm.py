@@ -1,5 +1,5 @@
 """Claude through the Anthropic API: one call with photos, answer as JSON. Used by the gather flow
-(checker.gather_flow).
+(gather.gather_flow).
 
 Needs ANTHROPIC_API_KEY in the environment or in .env at the project root.
 Prices per 1M tokens (in / out), Anthropic API, read 3 Nov 2026.

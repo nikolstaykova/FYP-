@@ -6,7 +6,7 @@ import pytest
 PIL = pytest.importorskip("PIL")
 from PIL import Image  # noqa: E402
 
-from checker import gather_vlm as vlm  # noqa: E402
+from gather import gather_vlm as vlm  # noqa: E402
 
 
 def _photo(tmp_path, size, fmt="JPEG", name="p.jpg"):

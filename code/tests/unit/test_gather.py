@@ -1,5 +1,5 @@
-"""The parts check (checker.gather) from given sightings: no photos, no Claude calls."""
-from checker import gather as g
+"""The parts check (gather.gather) from given sightings: no photos, no Claude calls."""
+from gather import gather as g
 
 
 def S(name, lesson_part, value="", count=1, unsure="", might_replace="", replace_note=""):

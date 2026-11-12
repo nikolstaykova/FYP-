@@ -10,11 +10,11 @@ its models can be swapped (section 4). Choosing the model is in `RECOGNITION.md`
 
 | File | What it does |
 |---|---|
-| `code/checker/gather.py` (electronics part: `check`) | The rules: match what was seen to the lesson's parts, compare (values, counts), substitutes (a resistor in a range, a board that can stand in), parts the catalogue does not know |
-| `code/checker/gather_flow.py` | The Arduino check as the learner gets it: Haiku's first look, close-ups for what it could not settle, Opus once only when Haiku still cannot tell |
+| `code/gather/gather.py` (electronics part: `check`) | The rules: match what was seen to the lesson's parts, compare (values, counts), substitutes (a resistor in a range, a board that can stand in), parts the catalogue does not know |
+| `code/gather/gather_flow.py` | The Arduino check as the learner gets it: Haiku's first look, close-ups for what it could not settle, Opus once only when Haiku still cannot tell |
 | `code/graph/lego_gather.py` (not the checker: part of making a lesson) | Splits a LEGO lesson into gather cards when the lesson is made, stored in the lesson and Neo4j (COVERS): by numbered bag, else about 10 pieces and at most 8 kinds per card, never splitting a sub-build |
-| `code/checker/gather.py` (LEGO part: `card_items`, `card_look`, `card_closeup`, `card_result`) | The LEGO card check, in the same module as the electronics check: each of the card's ~10 pieces goes to Haiku with its kind and size ("plate 2x2", "wheel", "minifigure head"); it says there / other colour / wrong piece (and what it is instead) / unsure / not there; close-ups, Opus once for what Haiku still cannot tell; the electronics result shape |
-| `code/checker/gather_vlm.py` | The one Claude call the checker uses (photos + text → JSON), with prices |
+| `code/gather/gather.py` (LEGO part: `card_items`, `card_look`, `card_closeup`, `card_result`) | The LEGO card check, in the same module as the electronics check: each of the card's ~10 pieces goes to Haiku with its kind and size ("plate 2x2", "wheel", "minifigure head"); it says there / other colour / wrong piece (and what it is instead) / unsure / not there; close-ups, Opus once for what Haiku still cannot tell; the electronics result shape |
+| `code/gather/gather_vlm.py` | The one Claude call the checker uses (photos + text → JSON), with prices |
 
 The flow is the same for both: **first look (Haiku) → questions → close-ups (Haiku) → Opus only for a close-up Haiku
 still cannot read.** Both return the same result shape, so the page and Pip use one result screen.
@@ -318,11 +318,11 @@ saving is shortening it (3.3.1).
 
 **Where in the code.**
 
-- `code/checker/gather_vlm.py`: `FIRST_EDGE = 768`, `FIRST_QUALITY = 35`, `shrink(path)` (rotates by EXIF, never
+- `code/gather/gather_vlm.py`: `FIRST_EDGE = 768`, `FIRST_QUALITY = 35`, `shrink(path)` (rotates by EXIF, never
   enlarges, sends the file as it is if Pillow cannot read it).
-- `code/checker/gather_flow.py`: `first_look(..., small=True)`. The cost tests pass `small=False` because they size
+- `code/gather/gather_flow.py`: `first_look(..., small=True)`. The cost tests pass `small=False` because they size
   the photos themselves (`res_test.py`, `model_cost_test.py`), so their results stay repeatable.
-- `code/checker/gather.py`: `card_look(..., small=True)` for the gather card's first look; `card_closeup` passes
+- `code/gather/gather.py`: `card_look(..., small=True)` for the gather card's first look; `card_closeup` passes
   `small=False`.
 - Tests: `code/tests/unit/test_shrink.py`.
 
@@ -349,7 +349,7 @@ works with the rules; the research scripts already prove the same prompt runs on
 
 What breaks or goes wrong today when a model is swapped:
 
-1. **Two separate Claude callers** (`checker/gather_vlm.py` and `graph/extract.py`) plus one inline call in
+1. **Two separate Claude callers** (`gather/gather_vlm.py` and `graph/extract.py`) plus one inline call in
    `live.reply`: three places to change.
 2. **Prices are looked up by exact model name.** A model missing from `PRICES` costs **$0 in the logs, silently**,
    so the cost tracking would be wrong without any error.

@@ -1,6 +1,6 @@
 #!/bin/zsh
 # Run a Pinpoint module from anywhere: ./pinpoint lessons lego 7613-1  ->  python -m graph.lessons lego 7613-1
-#   ./pinpoint checker.gather blink p1.jpg   a check (code/checker)
+#   ./pinpoint gather.gather blink p1.jpg   the gather check (code/gather); validator.* the after-step check
 #   ./pinpoint lego_booklet.pdf_lesson 30103-1
 #   ./pinpoint lesson_store build arduino blink
 #   ./pinpoint test                      the unit and research tests
@@ -12,6 +12,6 @@ case $1 in
   "") sed -n '2,7p' "$0"; exit 1 ;;
   test) shift; exec $PY -m pytest -q "$HERE/code/tests/unit" "$HERE/code/tests/research" -p no:cacheprovider "$@" ;;
   tool) shift; t=$1; shift; exec $PY "$HERE/code/tests/tools/$t.py" "$@" ;;
-  checker*) m=$1; shift; exec $PY -m "$m" "$@" ;;
+  gather*|validator*) m=$1; shift; exec $PY -m "$m" "$@" ;;
   *) m=$1; shift; exec $PY -m "graph.${m#graph.}" "$@" ;;
 esac

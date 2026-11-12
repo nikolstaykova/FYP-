@@ -1,7 +1,7 @@
 """What image size and JPEG quality the parts check needs: cost (image tokens, bytes) against how right it is.
 
-Two sets, both through the production first look (checker.gather_flow.first_look, Haiku) and the rules
-(checker.gather.check):
+Two sets, both through the production first look (gather.gather_flow.first_look, Haiku) and the rules
+(gather.gather.check):
 - kit:  the labelled kit photos (kit_test.CASES: 10 cases, accepted answers per lesson part) -> % right.
 - lab:  the learner's own phone photos from Parts Quest (runs/lab, up to 1600 px, no labels) -> how many part
         verdicts stay the same as at full size. Full size is run twice: the model's own run-to-run change is the
@@ -78,7 +78,7 @@ def cases():
 
 
 def one(case, var):
-    from checker import gather, gather_flow
+    from gather import gather, gather_flow
     name, edge, q = var
     made = [variant(p, edge, q) for p in case['photos']]
     rec, _ = gather.lesson(case['lesson'])

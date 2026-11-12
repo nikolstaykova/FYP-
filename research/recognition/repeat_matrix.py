@@ -25,7 +25,7 @@ LOCK = threading.Lock()
 
 
 def one(case, model, size, q, run):
-    from checker import gather
+    from gather import gather
     from model_cost_test import first, _verdicts
     from res_test import variant
     name, edge = size

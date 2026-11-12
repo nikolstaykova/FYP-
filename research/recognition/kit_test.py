@@ -1,4 +1,4 @@
-"""Test the parts check (code/checker/gather.py) on photos of whole parts sets taken from the web.
+"""Test the parts check (code/gather/gather.py) on photos of whole parts sets taken from the web.
 
 Photos: data/sources/kit_photos/ (sources.json has each photo's page, author and licence; CC photos from Wikimedia
 Commons and Openverse, one ELEGOO product photo for internal testing only). Each case is a set of photos, a lesson,
@@ -62,7 +62,7 @@ ONCE = {'standalone-switches': {'led': 1, 'pushbutton': 1, 'crystal': 1}}
 
 def look_nvidia(photos, lesson_id, model):
     """The look step with an NVIDIA or Gemini VLM: the same instruction as Claude gets, answer as JSON, same fields."""
-    from checker import gather
+    from gather import gather
     if model.startswith('gemini'):
         from gemini_bench import ask
     elif model.startswith('claude-'):
@@ -96,7 +96,7 @@ def look_nvidia(photos, lesson_id, model):
 
 
 def run(name, model):
-    from checker import gather
+    from gather import gather
     photos, lesson_id, want = CASES[name]
     t0 = time.monotonic()
     if model.startswith(('nvidia/', 'gemini', 'claude-')):
