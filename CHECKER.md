@@ -10,10 +10,10 @@ its models can be swapped (section 4). Choosing the model is in `RECOGNITION.md`
 
 | File | What it does |
 |---|---|
-| `code/checker/gather.py` | The rules: match what was seen to the lesson's parts, compare (values, counts), substitutes (a resistor in a range, a board that can stand in), parts the catalogue does not know |
+| `code/checker/gather.py` (electronics part: `check`) | The rules: match what was seen to the lesson's parts, compare (values, counts), substitutes (a resistor in a range, a board that can stand in), parts the catalogue does not know |
 | `code/checker/gather_flow.py` | The Arduino check as the learner gets it: Haiku's first look, close-ups for what it could not settle, Opus once only when Haiku still cannot tell |
 | `code/graph/lego_gather.py` (not the checker: part of making a lesson) | Splits a LEGO lesson into gather cards when the lesson is made, stored in the lesson and Neo4j (COVERS): by numbered bag, else about 10 pieces and at most 8 kinds per card, never splitting a sub-build |
-| `code/checker/lego_check.py` | The LEGO card check: Haiku ticks off the card's list (there / other colour / unsure / not there), close-ups, Opus once |
+| `code/checker/gather.py` (LEGO part: `card_items`, `card_look`, `card_closeup`, `card_result`) | The LEGO card check, in the same module as the electronics check: each of the card's ~10 pieces goes to Haiku with its kind and size ("plate 2x2", "wheel", "minifigure head"); it says there / other colour / wrong piece (and what it is instead) / unsure / not there; close-ups, Opus once for what Haiku still cannot tell; the electronics result shape |
 | `code/checker/gather_vlm.py` | The one Claude call the checker uses (photos + text → JSON), with prices |
 
 The flow is the same for both: **first look (Haiku) → questions → close-ups (Haiku) → Opus only for a close-up Haiku
@@ -23,7 +23,7 @@ still cannot read.** Both return the same result shape, so the page and Pip use 
 
 1. The page (camera or upload) scales each photo to **at most 1600 px on the long edge** and saves it as JPEG at
    quality 0.88 (`canvasToPhoto` in `research/recognition/lab/game.html`): a phone photo becomes about 140 KB.
-2. **The first look** (electronics `gather_flow.first_look`, LEGO cards `lego_check.look`) is sent at **768 px on the
+2. **The first look** (electronics `gather_flow.first_look`, LEGO cards `gather.card_look`) is sent at **768 px on the
    long edge, JPEG quality 35** (`gather_vlm.shrink`, `FIRST_EDGE` / `FIRST_QUALITY`; since 12 November 2026, from
    the test in 3.7, see 3.8). **Close-ups and Opus's second look** get the photo unchanged (`gather_vlm.ask`).
 3. Claude prices an image by its pixels, not its file size: **⌈width/28⌉ × ⌈height/28⌉ tokens**. Haiku 5.5 is in
@@ -322,7 +322,7 @@ saving is shortening it (3.3.1).
   enlarges, sends the file as it is if Pillow cannot read it).
 - `code/checker/gather_flow.py`: `first_look(..., small=True)`. The cost tests pass `small=False` because they size
   the photos themselves (`res_test.py`, `model_cost_test.py`), so their results stay repeatable.
-- `code/checker/lego_check.py`: `look(..., small=True)` for the gather card's first look; `closeup` passes
+- `code/checker/gather.py`: `card_look(..., small=True)` for the gather card's first look; `card_closeup` passes
   `small=False`.
 - Tests: `code/tests/unit/test_shrink.py`.
 
@@ -337,7 +337,7 @@ for LEGO only.
 | Part | Where the model is set | Swap to another Claude model | Swap to another provider (Gemini, NVIDIA, local) |
 |---|---|---|---|
 | Arduino check (`gather_flow`) | `FIRST`, `SECOND` constants | Change the string | Not plug-in: `gather_vlm.ask` speaks only to Anthropic |
-| LEGO card check (`lego_check`) | `FIRST`, `SECOND` constants | Change the string | Same as above |
+| LEGO card check (`gather.card_*`) | `FIRST`, `SECOND` constants | Change the string | Same as above |
 | Opus "whole look" (`gather.look`, benchmarks, command line) | `model=` argument | Pass it | Through `graph/extract.py`, Anthropic only |
 | Lesson building (`graph/…`) | `model=` arguments and defaults per stage | Pass it (aliases opus / sonnet / haiku) | Anthropic only |
 | Voice tutor (`tutor/live.py`) | `MODEL = "gemini-3.8-live"`, `VOICE` | n/a | Another Gemini Live model: change the string. Another realtime provider: rewrite the transport (the browser speaks Gemini Live's WebSocket protocol) |

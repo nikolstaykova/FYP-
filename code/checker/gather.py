@@ -1,16 +1,23 @@
-"""Step 0, the parts check: from a few photos, what the learner has against what an Arduino lesson needs.
+"""The gather check, for both kinds of lesson: from a few photos, does the learner have what the lesson needs?
 
-What it is   the learner uploads a few photos of their parts. 1 LOOK (Claude, all photos in one call): every object,
-             counted once across photos, with the details that decide a substitute (resistor bands, board name,
-             breadboard size, LED colour). 2 MATCH (code): each object to a catalogue part. 3 COMPARE (code): the
-             lesson's parts list against what is there. 4 SUBSTITUTE (code): can what is there do the job, and
-             what changes (pins moved, sketch lines rewritten). 5 RESEARCH: an object the catalogue does not know is
-             looked up on the approved sites and carded (parts/mcp_server.lookup), then tried as a substitute.
-Used for     the gather step before building; RECOGNITION.md section 2. The model choice is from the comparison there.
-Where        reads the lesson (record, assembled parts list, physical graph) and the parts catalogue through the lesson store,
-             from the database when it is set up (graph.db), else the files;
+Electronics (an Arduino lesson's parts list): the question is open, "what is on the table?", because a different
+board or resistor may still do the job.
+  1 LOOK (Claude, all photos in one call): every object, counted once across photos, with the details that decide a
+  substitute (resistor bands, board name, breadboard size, LED colour). 2 MATCH (code): each object to a catalogue
+  part. 3 COMPARE (code): the lesson's parts list against what is there. 4 SUBSTITUTE (code): can what is there do
+  the job, and what changes (pins moved, sketch lines rewritten). 5 RESEARCH: an object the catalogue does not know
+  is looked up on the approved sites and carded (parts/mcp_server.lookup), then tried as a substitute.
+LEGO (one gather card, about 10 pieces: graph/lego_gather.py): the question is closed, "are THESE pieces here?",
+because a model cannot name LEGO pieces from scratch (tens of thousands of near-identical parts) but can tick off a
+short list. Each piece goes to the model with its kind and size ("plate 2x2", "wheel", "minifigure head"); for each it
+says there / another colour / wrong piece (something like it, but not it: what it is) / not sure / not there
+(card_look). Close-ups: Haiku, then Opus once when it still cannot tell (card_closeup). card_result gives the
+electronics check's shape, so the page and the tutor use one result screen for both.
+Used for     the gather step (RECOGNITION.md section 2, CHECKER.md); research/recognition/lab/server.py (the flow).
+Where        reads the lesson and the parts catalogue through the lesson store (the database when set up, else files);
              research adds cards to the electronics card store, as any new lesson's parts do.
 Run          ./pinpoint checker.gather blink photo1.jpg photo2.jpg [--model opus] [--no-research]
+             ./pinpoint checker.gather 60065-1 photo.jpg --card 1     (a LEGO lesson's gather card, by its number)
 """
 import json
 import pathlib
@@ -395,25 +402,197 @@ def check(lesson_id, photos, model="opus", research=True, seen=None):
 
 
 def text(res):
-    mark = {"have": "✓", "use instead": "↔", "check": "?", "missing": "✗"}
+    mark = {"have": "✓", "use instead": "↔", "use another colour": "↔", "check": "?", "missing": "✗", "skipped": "–"}
     out = [f"Parts check for {res['lesson']}:"]
     for r in res["parts"]:
         out.append(f"{mark.get(r['status'], '✗')} {r['part']} x{r['need']}: {r['status']}")
         for h in r["have"]:
-            out.append(f"     {'have' if h['ok'] else 'have? check'} {h['count']} {h['object']}" + (f" ({h['value']})" if h["value"] else "")
-                       + (f": {h['why']}" if h["why"] else ""))
+            out.append(f"     {'have' if h.get('ok', True) else 'have? check'} {h['count']} {h['object']}" + (f" ({h['value']})" if h.get("value") else "")
+                       + (f": {h['why']}" if h.get("why") else ""))
         for u in r["use_instead"]:
             verdict = {True: "can use", None: "may use, check", False: "cannot use"}[u["ok"]]
             out.append(f"     {verdict} {u['object']}: {u['why']}")
     if res["not_needed"]:
         out.append("Also there, not needed: " + "; ".join(
-            f"{x['count']} {x['object']}" + (f" ({x['value']})" if x["value"] else "") +
-            ("" if x["type"] else " [not in the catalogue]") for x in res["not_needed"]))
-    if res["retake"]:
+            f"{x.get('count', '')} {x['object']}".strip() + (f" ({x['value']})" if x.get("value") else "") +
+            ("" if x.get("type", True) else " [not in the catalogue]") for x in res["not_needed"]))
+    if res.get("retake"):
         out.append("Could not tell: " + " | ".join(res["retake"]))
     if res["look"]:
         out.append(f"(look: {res['look'].get('seconds')} s, ${res['look'].get('cost_usd')})")
     return "\n".join(out)
+
+
+# ---- LEGO: one gather card ---------------------------------------------------------------------------------------
+CARD_FIRST = "claude-haiku-5-5"  # the first look and close-ups
+CARD_SECOND = "claude-opus-5-5"  # once, for a close-up Haiku still cannot tell
+MANY = 3  # this many identical pieces or more: seeing some is enough (a model cannot count ten 1x1 studs)
+
+KINDS = [  # (words in the piece's name, what it is, said plainly): the first that fits
+    (("minifig head", "minifigure head"), "minifigure head"), (("torso",), "minifigure torso"),
+    (("hips and legs", "minifig legs", "legs"), "minifigure legs"), (("hair",), "minifigure hair"),
+    (("helmet",), "helmet"), (("hat", "cap"), "hat"), (("tyre", "tire"), "tyre (rubber)"),
+    (("wheel holder", "wheels holder", "wheel pins"), None), (("wheel",), "wheel"), (("steering",), "steering wheel"),
+    (("windscreen", "windshield"), "windscreen"), (("door",), "door"), (("fence",), "fence"), (("panel",), "panel"),
+    (("slope", "sloped"), "slope"), (("wedge",), "wedge"), (("dish",), "dish"), (("cone",), "cone"),
+    (("tile",), "tile"), (("plate",), "plate"), (("brick",), "brick"), (("bar",), "bar"), (("axle",), "axle"),
+    (("pin",), "pin"), (("hinge",), "hinge"), (("clip",), "clip"), (("antenna",), "antenna"), (("lever",), "lever"),
+]
+
+
+def piece_kind(name):
+    """What a LEGO piece is, plainly, with its size: "plate 2x2", "round plate 1x1", "wheel", "minifigure head"."""
+    n = name.lower()
+    size = re.search(r"(\d+)\s*x\s*(\d+)(?:\s*x\s*(\d+(?:/\d+)?))?", n)
+    kind = next((k for words, k in KINDS if any(re.search(rf"\b{re.escape(w)}", n) for w in words)), "")
+    if kind is None:  # a plate with wheel pins: a plate, not a wheel
+        kind = "plate" if "plate" in n else "brick"
+    if not kind:
+        return ""
+    if "round" in n and kind in ("plate", "brick", "tile"):
+        kind = "round " + kind
+    if size and kind in ("plate", "brick", "tile", "slope", "wedge", "panel", "round plate", "round brick", "round tile"):
+        kind += " " + "x".join(x for x in size.groups() if x)
+    return kind
+
+
+def card_items(card):
+    """A gather card's pieces with keys p1, p2... (`card`: a gather card from tutor.live.steps)."""
+    return [{"key": f"p{i}", "what": p["what"], "kind": piece_kind(p["what"]), "count": p["count"],
+             "colour": p.get("colour"), "about": p.get("about") or ""} for i, p in enumerate(card.get("parts") or [], 1)]
+
+
+CARD_LOOK = """The learner is about to build a LEGO model and has laid out the pieces for the next few steps. Here is the
+list of pieces they should have (each: key, how many, its name, WHAT KIND OF PIECE it is and its size, a description):
+{items}
+
+Look at the photos and, for EACH piece on the list (by its key), first find the piece on the table that could be it,
+then check it is that KIND of piece and that size (a 2x2 plate, not a 2x3 plate or a 2x2 brick; a wheel, not a tyre;
+a minifigure head, not a 1x1 round brick), then say:
+- "there": it is that piece, in the right colour. `seen`: how many you can see.
+- "other_colour": it is that piece (same kind and size) in another colour. `colour_seen`: which.
+- "wrong_piece": something similar is there but it is NOT that piece (another size, or another kind). `seen_as`: what
+  it is, in a few words ("a 2x3 plate", "a 1x1 round brick").
+- "unsure": something that could be it, but you cannot tell (too small, blurry, hidden, or two list items look alike).
+  `why`: what you cannot tell. `ask`: one short, friendly question asking for the close-up that would settle it ("I can
+  see a grey plate, but I can't count its studs. Can you hold it up close to the camera?").
+- "not_there": nothing like it at all.
+Count studs when they show; a plate is thin, a brick three times as tall, a tile has no studs on top. A minifigure part
+with another face, print, hair or accessory counts as "there". Each piece in the photos can be only one item on the
+list. Do not guess: when you cannot tell, say "unsure".
+Answer ONLY with JSON: {{"pieces": [{{"key": "p1", "status": "there", "seen": 1, "colour_seen": "", "seen_as": "", "why": "", "ask": ""}}],
+"extra": ["short name of any piece on the table that is not on the list"]}}"""
+
+
+def _card_list(its):
+    return "\n".join(f'- {x["key"]}: {x["count"]}x {x["what"]}' + (f' [kind: {x["kind"]}]' if x.get("kind") else "")
+                     + (f' ({x["about"]})' if x["about"] else "") for x in its)
+
+
+def _card_answer(text):
+    i, j = text.find("{"), text.rfind("}")
+    try:
+        d = json.loads(text[i:j + 1])
+    except ValueError:
+        return [], []
+    pieces = [p for p in d.get("pieces") or [] if isinstance(p, dict) and p.get("key")]
+    return pieces, [str(x) for x in d.get("extra") or [] if x][:8]
+
+
+def card_look(photos, its, model=CARD_FIRST, effort="low", small=True):
+    """One look at the photos with the card's list. Returns ({key: verdict}, extra pieces, stats).
+    small: the photos at 768 px, JPEG 35 (the first look, CHECKER.md §3.7); close-ups go at full size."""
+    from checker import gather_vlm as vlm
+    images = [vlm.shrink(p) if small else (pathlib.Path(p).read_bytes(), vlm.media_type(p)) for p in photos]
+    out, stats, _ = vlm.ask(model, images, CARD_LOOK.format(items=_card_list(its)), max_tokens=4000, effort=effort)
+    pieces, extra = _card_answer(out)
+    known = {x["key"] for x in its}
+    blank = {"seen": 0, "colour_seen": "", "seen_as": "", "why": "", "ask": "", "by": model}
+    got = {p["key"]: {**blank, "status": p.get("status") or "unsure",
+                      "seen": int(p.get("seen") or 0) if str(p.get("seen") or 0).isdigit() else 0,
+                      **{k: p.get(k) or "" for k in ("colour_seen", "seen_as", "why", "ask")}}
+           for p in pieces if p["key"] in known}
+    for x in its:  # a piece the model left out was not seen
+        got.setdefault(x["key"], {**blank, "status": "not_there"})
+    return got, extra, {**stats, "raw": out[:3000]}
+
+
+def card_closeup(photo, its, state_verdicts):
+    """A close-up for one or more open pieces: Haiku first; the pieces it still cannot tell go to Opus once.
+    Returns (new verdicts for those keys, steps for the cost log)."""
+    got, _, st = card_look([photo], its, CARD_FIRST, small=False)
+    steps = [{"what": "close-up", **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
+    still = [x for x in its if got[x["key"]]["status"] == "unsure"
+             and not any(v.get("by") == CARD_SECOND for k, v in state_verdicts.items() if k == x["key"])]
+    if still:
+        more, _, st2 = card_look([photo], still, CARD_SECOND, effort="medium", small=False)
+        got.update(more)
+        steps.append({"what": "close-up, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
+    for k in got:
+        got[k]["closeup"] = True
+    return got, steps
+
+
+def _short(what):
+    return what if len(what) < 40 else what[:38].rsplit(" ", 1)[0] + "…"
+
+
+def card_result(its, verdicts, dismissed=(), extra=()):
+    """The verdicts in the electronics check's shape: {parts: [...], asks: [...], not_needed: [...]}."""
+    parts, asks = [], []
+    for x in its:
+        v = verdicts.get(x["key"]) or {"status": "not_there", "seen": 0}
+        st, need, seen = v["status"], x["count"], v.get("seen") or 0
+        name = _short(x["what"])
+        row = {"type": x["key"], "part": x["what"], "need": need, "have": [], "use_instead": []}
+        if st == "there" and (seen >= need or (need >= MANY and seen >= 1) or seen == 0):
+            row["status"] = "have"
+            note = "" if seen >= need or seen == 0 else f"I can see {seen}; make sure you have {need}"
+            row["have"] = [{"object": x["what"], "count": need, "why": note}]
+        elif st == "there":  # fewer than needed of a piece that is easy to count
+            row["status"] = "check"
+            row["have"] = [{"object": x["what"], "count": seen, "why": f"I can see {seen} of the {need}"}]
+            if x["key"] not in dismissed:
+                asks.append({"key": x["key"], "kind": "find", "message": f"I can see {seen} of the {need} {name}. "
+                             "Can you find the rest and show me?"})
+        elif st == "other_colour":
+            row["status"] = "use another colour"
+            c = v.get("colour_seen") or "another colour"
+            row["use_instead"] = [{"object": f"{c} {x['what']}".strip(), "ok": True,
+                                   "why": "only the colour is different, so the build still works"}]
+        elif st == "unsure":
+            row["status"] = "check"
+            row["have"] = [{"object": x["what"], "count": seen, "why": v.get("why") or "needs a better look"}]
+            if x["key"] not in dismissed:
+                asks.append({"key": x["key"], "kind": "closeup", "message": v.get("ask") or
+                             f"I'm not sure about the {name}. Can you hold it up close to the camera?"})
+        elif st == "wrong_piece":  # something like it, but not it: say what it is, and what is needed
+            row["status"] = "skipped" if x["key"] in dismissed else "missing"
+            what_it_is = v.get("seen_as") or "a different piece"
+            row["use_instead"] = [{"object": what_it_is, "ok": False,
+                                   "why": f"that is {what_it_is}, not a {x.get('kind') or name}"}]
+            if x["key"] not in dismissed:
+                asks.append({"key": x["key"], "kind": "find", "message": f"That looks like {what_it_is}, not the "
+                             f"{x.get('kind') or name} I need ({name}). Can you find the right one and show me?"})
+        else:
+            row["status"] = "skipped" if x["key"] in dismissed else "missing"
+            if x["key"] not in dismissed:
+                asks.append({"key": x["key"], "kind": "find", "message": f"I can't see the {name}. "
+                             "If you have it, show it to me."})
+        parts.append(row)
+    return {"parts": parts, "asks": asks[:4], "not_needed": [{"object": e} for e in extra]}
+
+
+def check_card(lesson_id, card_no, photos):
+    """The whole first look for one LEGO gather card (the command line; the app goes through the server's flow)."""
+    from tutor import live
+    steps = live.steps(lesson_id)["steps"]
+    card = steps[int(card_no) - 1] if 0 < int(card_no) <= len(steps) else None
+    if not card or card["kind"] != "gather":
+        raise ValueError(f"card {card_no} is not a gather card")
+    its = card_items(card)
+    verdicts, extra, stats = card_look(photos, its)
+    return {"lesson": f"{lesson_id}, card {card_no}", **card_result(its, verdicts, extra=extra), "look": stats}
 
 
 def main(argv=None):
@@ -423,7 +602,9 @@ def main(argv=None):
         a.remove("--model")
     research = "--no-research" not in a
     a = [x for x in a if x != "--no-research"]
-    res = check(a[0], a[1:], model=model, research=research)
+    card = a.pop(a.index("--card") + 1) if "--card" in a else None
+    a = [x for x in a if x != "--card"]
+    res = check_card(a[0], card, a[1:]) if card else check(a[0], a[1:], model=model, research=research)
     out = ROOT / "data/parts_checks"
     out.mkdir(parents=True, exist_ok=True)
     name = f"{a[0]}-{pathlib.Path(a[1]).stem}.json"

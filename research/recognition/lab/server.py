@@ -37,7 +37,7 @@ REC = HERE.parent
 ROOT = REC.parents[1]
 sys.path[:0] = [str(ROOT / 'code'), str(REC)]
 
-from checker import gather, gather_flow, lego_check  # noqa: E402
+from checker import gather, gather_flow  # noqa: E402
 from kit_test import look_nvidia  # noqa: E402
 
 RUNS = REC / 'runs' / 'lab'
@@ -239,34 +239,34 @@ def _card(lesson, n):
     card = steps[int(n) - 1] if 0 < int(n) <= len(steps) else None
     if not card or card['kind'] != 'gather':
         raise ValueError(f'card {n} is not a gather card')
-    return lego_check.items(card)
+    return gather.card_items(card)
 
 
 def lego_flow(action, d, body):
-    """The photo check of a LEGO gather card (checker.lego_check), with the same actions and answer shape as flow():
+    """The photo check of a LEGO gather card (checker.gather, the LEGO card check), with the same actions and answer shape as flow():
     first (Haiku looks at the laid-out pieces), closeup / closeup_all (Haiku on the close-up, Opus once when it still
     cannot tell), dismiss. State in runs/lab/<upload>/flow_state.json."""
     sf = d / 'flow_state.json'
     if action == 'first':
         its = _card(body['lesson'], body['card'])
         photos = sorted(str(p) for p in d.glob('photo_*.jpg'))
-        verdicts, extra, stats = lego_check.look(photos, its)
+        verdicts, extra, stats = gather.card_look(photos, its)
         st = {'lesson': body['lesson'], 'card': int(body['card']), 'items': its, 'verdicts': verdicts, 'extra': extra,
               'dismissed': [], 'closeups': [], 'steps': [{'what': 'first look', **{k: stats.get(k) for k in ('model', 'seconds', 'cost_usd')}}]}
-        st['first_parts'] = [{'type': r['type'], 'status': r['status']} for r in lego_check.result(its, verdicts)['parts']]
+        st['first_parts'] = [{'type': r['type'], 'status': r['status']} for r in gather.card_result(its, verdicts)['parts']]
     else:
         st = json.loads(sf.read_text())
         its = st['items']
         if action == 'dismiss':
             st['dismissed'].append(body['key'])
         elif action in ('closeup', 'closeup_all'):
-            open_keys = [q['key'] for q in lego_check.result(its, st['verdicts'], st['dismissed'])['asks']]
+            open_keys = [q['key'] for q in gather.card_result(its, st['verdicts'], st['dismissed'])['asks']]
             keys = open_keys if action == 'closeup_all' else [body['key']] if body['key'] in open_keys else []
             if not keys:
                 raise ValueError('that question is no longer open')
             f = d / f"closeup_{len(st['closeups']) + 1}.jpg"
             save_photo(body['photo'], f, body.get('crop'))
-            got, steps = lego_check.closeup(str(f), [x for x in its if x['key'] in keys], st['verdicts'])
+            got, steps = gather.card_closeup(str(f), [x for x in its if x['key'] in keys], st['verdicts'])
             for k in keys:  # a close-up that still did not show the piece keeps the question open as "not sure"
                 v = got.get(k)
                 if v and not (v['status'] == 'not_there' and action == 'closeup_all'):
@@ -274,7 +274,7 @@ def lego_flow(action, d, body):
             st['steps'] += steps
             st['closeups'] += [{'key': k, 'photo': f.name} for k in keys]
     sf.write_text(json.dumps(st, indent=1))
-    res = lego_check.result(its, st['verdicts'], st['dismissed'], st.get('extra') or [])
+    res = gather.card_result(its, st['verdicts'], st['dismissed'], st.get('extra') or [])
     return {**res, 'steps': st['steps'], 'first_parts': st['first_parts'], 'card': st['card'],
             'total_cost_usd': round(sum(x.get('cost_usd') or 0 for x in st['steps']), 6)}
 

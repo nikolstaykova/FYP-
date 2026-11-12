@@ -61,19 +61,19 @@ def test_cards_fit_one_photo():
 
 
 def test_card_check_result():
-    from checker import lego_check
+    from checker import gather
     card = {"parts": [{"what": "Red Brick 2 x 4", "count": 1}, {"what": "Black Plate 1 x 1 Round", "count": 6},
                       {"what": "Blue Plate 2 x 3", "count": 2}, {"what": "White Tile 1 x 2", "count": 1},
                       {"what": "Yellow Minifig Head", "count": 1}]}
-    its = lego_check.items(card)
+    its = gather.card_items(card)
     v = {"p1": {"status": "there", "seen": 1}, "p2": {"status": "there", "seen": 3},
          "p3": {"status": "there", "seen": 1}, "p4": {"status": "unsure", "seen": 0, "ask": "Hold it up?"},
          "p5": {"status": "other_colour", "colour_seen": "tan"}}
-    res = lego_check.result(its, v)
+    res = gather.card_result(its, v)
     st = {r["type"]: r["status"] for r in res["parts"]}
     assert st == {"p1": "have", "p2": "have", "p3": "check", "p4": "check", "p5": "use another colour"}
     assert [q["key"] for q in res["asks"]] == ["p3", "p4"] and res["asks"][1]["message"] == "Hold it up?"
-    res = lego_check.result(its, {}, dismissed=["p1"])
+    res = gather.card_result(its, {}, dismissed=["p1"])
     assert res["parts"][0]["status"] == "skipped" and "p1" not in [q["key"] for q in res["asks"]]
 
 
@@ -99,3 +99,24 @@ def test_cards_are_stored_in_the_lesson_graph():
     assert sorted({e["v"] for e in covers}) == [f"step-{k}" for k in range(1, 7)]  # every step gathered for
     for e in covers:  # each card comes before every step it covers
         assert order.index(e["u"]) < order.index(e["v"])
+
+
+def test_piece_kinds():
+    """Each piece goes to the model as the kind of piece it is, with its size."""
+    from checker.gather import piece_kind
+    assert piece_kind("Black Plate 2 x 2") == "plate 2x2"
+    assert piece_kind("Trans Yellow Plate Round 1 x 1 with Solid Stud") == "round plate 1x1"
+    assert piece_kind("Black Tyre 21 x 12 with Offset Tread") == "tyre (rubber)"
+    assert piece_kind("Light Bluish Gray Wheel 11mm D. x 8mm with Center Groove") == "wheel"
+    assert piece_kind("Black Plate Special 2 x 2 with Wheel Holder") == "plate 2x2"  # not a wheel
+    assert piece_kind("Yellow Minifig Head Smile Print") == "minifigure head"
+    assert piece_kind("White Brick Sloped 30° 1 x 2 x 2/3") == "slope 1x2x2/3"
+    assert piece_kind("Red Brick 2 x 4") == "brick 2x4"
+
+
+def test_wrong_piece_says_what_it_is():
+    from checker import gather
+    its = gather.card_items({"parts": [{"what": "Black Plate 2 x 2", "count": 1}]})
+    res = gather.card_result(its, {"p1": {"status": "wrong_piece", "seen_as": "a 2x3 plate"}})
+    assert res["parts"][0]["status"] == "missing"
+    assert "a 2x3 plate, not the plate 2x2" in res["asks"][0]["message"]
