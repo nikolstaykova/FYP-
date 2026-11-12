@@ -8,9 +8,9 @@ import 'dart:convert';
 
 import 'package:camera/camera.dart';
 import 'package:confetti/confetti.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../api.dart';
@@ -18,6 +18,7 @@ import '../models.dart';
 import '../pip/pip.dart';
 import '../pip/pip_bar.dart';
 import '../pip/summary.dart';
+import '../screens/capture.dart';
 import '../screens/check.dart';
 import '../screens/gather.dart';
 import '../theme.dart';
@@ -60,7 +61,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Stage _stage = Stage.hello;
 
   // the check
-  final List<Uint8List> _photos = [];
+  final List<Shot> _photos = [];
+  final _visible = ValueNotifier<List<double>?>(null); // the part of the frame on screen (installed app)
+  String? _lookQuestion; // the browser: Pip's look waits for the learner's photo
+  Stage _lookBack = Stage.build;
   String? _upload;
   Map<String, dynamic>? _last; // the server's raw answer
   String? _working; // a check is running: what to show
@@ -161,9 +165,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return {'shown': true, 'parts': [for (final p in s.parts) '${p.count}x ${p.what}']};
       case 'open_camera':
         await _openCamera();
+        if (kIsWeb) return {'camera': 'ready', 'tell_them': 'tap Take photo: their phone camera opens full screen; one clear photo from above is enough'};
         return _cam != null ? {'mode': 'camera', 'camera': 'open'} : {'camera': 'not available', 'tell_them': 'they can pick photos from the gallery'};
       case 'take_photo':
         if (_stage != Stage.camera) await _openCamera();
+        if (kIsWeb) return {'photos': _photos.length, 'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
         final p = await _snap();
         if (p == null) return {'error': 'the camera is not ready yet; try again in a second'};
         setState(() => _photos.add(p));
@@ -179,6 +185,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         if (q == null) return {'error': 'no open question with that key', 'open_questions': [for (final a in asks) a.key]};
         _pending = q;
         if (_stage != Stage.camera) await _openCamera();
+        if (kIsWeb) return {'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
         await Future<void>.delayed(const Duration(milliseconds: 300));
         final p = await _snap();
         if (p == null) return {'error': 'the camera is not ready; try again'};
@@ -192,6 +199,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         if (_asks.isEmpty) return {'error': 'no open questions'};
         _pending = Ask(key: '*', kind: 'closeup', message: 'All ${_asks.length} together: hold them up close in one photo');
         if (_stage != Stage.camera) await _openCamera();
+        if (kIsWeb) return {'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
         await Future<void>.delayed(const Duration(milliseconds: 300));
         final p = await _snap();
         if (p == null) return {'error': 'the camera is not ready; try again'};
@@ -217,6 +225,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return {'their_versions': _swaps, 'note': 'the step cards now show theirs; call it their way from now on'};
       case 'look':
         final back = _stage;
+        if (kIsWeb) {
+          _lookBack = back;
+          setState(() => _lookQuestion = '${args['question'] ?? 'What is this?'}');
+          if (_stage != Stage.camera) await _openCamera();
+          return {'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
+        }
         if (_stage != Stage.camera) await _openCamera();
         await Future<void>.delayed(const Duration(milliseconds: 600));
         final p = await _snap();
@@ -305,7 +319,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     }
   }
 
-  Future<Map<String, dynamic>> _closeupWith(String key, Uint8List photo) async {
+  Future<Map<String, dynamic>> _closeupWith(String key, Shot photo) async {
     setState(() {
       _pending = null;
       _working = 'Looking at your close-up…';
@@ -313,7 +327,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _go(Stage.result);
     try {
       final st = await _api.flow(key == '*' ? 'closeup_all' : 'closeup',
-          {'upload': _upload, 'photo': 'data:image/jpeg;base64,${base64Encode(photo)}', if (key != '*') 'key': key});
+          {'upload': _upload, 'photo': Api.dataUrl(photo.bytes), 'crop': ?photo.cropOrNull, if (key != '*') 'key': key});
       _show(st);
       return _told(st);
     } catch (e) {
@@ -366,7 +380,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   // ---------------------------------------------------------------- the camera
   Future<void> _openCamera() async {
     _go(Stage.camera);
-    if (_cam != null) return;
+    if (kIsWeb || _cam != null) return; // the browser: the phone's own camera app, opened by a tap
     try {
       final cams = await availableCameras();
       if (cams.isEmpty) throw CameraException('none', 'No camera on this device');
@@ -395,13 +409,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     c?.dispose();
   }
 
-  Future<Uint8List?> _snap() async {
+  Future<Shot?> _snap() async {
     final c = _cam;
     if (c == null || !c.value.isInitialized) return null;
     HapticFeedback.mediumImpact();
     setState(() => _flash = true);
     try {
-      return await (await c.takePicture()).readAsBytes();
+      return Shot(await (await c.takePicture()).readAsBytes(), _visible.value);
     } catch (_) {
       return null;
     } finally {
@@ -410,13 +424,32 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   }
 
   /// The shutter, tapped: a close-up goes straight to the check; a photo of the parts joins the others.
+  /// (_snap is the installed app's live camera; the browser takes photos with the phone's camera app.)
   Future<void> _shutter() async {
     final p = await _snap();
     if (p == null) return;
     await _gotPhoto(p);
   }
 
-  Future<void> _gotPhoto(Uint8List p) async {
+  Future<void> _gotPhoto(Shot p) async {
+    final look = _lookQuestion;
+    if (look != null) {
+      setState(() {
+        _lookQuestion = null;
+        _working = 'Having a look…';
+      });
+      Map<String, dynamic> r;
+      try {
+        r = await _api.look(s.id, p, look);
+      } catch (e) {
+        r = {'error': e is ApiError ? e.message : '$e'};
+      }
+      if (!mounted) return;
+      setState(() => _working = null);
+      _go(_lookBack == Stage.camera || (_lookBack == Stage.result && _last == null) ? Stage.build : _lookBack);
+      _tell('(You asked to look: "$look". The photo shows: ${jsonEncode(r)}. Tell them, in your own words.)');
+      return;
+    }
     final q = _pending;
     if (q != null) {
       final r = await _closeupWith(q.key, p);
@@ -433,25 +466,19 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _tell('(The learner took a photo themselves: ${_photos.length} so far.)');
   }
 
-  /// The phone's own camera app: its best focus and quality (when the live picture will not focus).
+  /// The phone's own camera app: full screen, its autofocus, full quality.
   Future<void> _phoneCamera() async {
-    final f = await ImagePicker().pickImage(source: ImageSource.camera, maxWidth: 2400, maxHeight: 2400, imageQuality: 90);
-    if (f != null) await _gotPhoto(await f.readAsBytes());
+    final shot = await phoneCameraShot();
+    if (shot != null) await _gotPhoto(shot);
   }
 
   Future<void> _gallery() async {
-    final picker = ImagePicker();
-    if (_pending != null) {
-      final f = await picker.pickImage(source: ImageSource.gallery, maxWidth: 1600, maxHeight: 1600, imageQuality: 88);
-      if (f != null) await _gotPhoto(await f.readAsBytes());
-      return;
-    }
-    final files = await picker.pickMultiImage(maxWidth: 1600, maxHeight: 1600, imageQuality: 88, limit: 3);
-    for (final f in files.take(3 - _photos.length)) {
-      _photos.add(await f.readAsBytes());
-    }
-    setState(() {});
-    if (files.isNotEmpty) _tell('(The learner picked ${files.length} photo(s) from the gallery: ${_photos.length} so far.)');
+    final one = _pending != null || _lookQuestion != null;
+    final shots = await galleryShots(one ? 1 : 3 - _photos.length);
+    if (shots.isEmpty) return;
+    if (one) return _gotPhoto(shots.first);
+    setState(() => _photos.addAll(shots));
+    _tell('(The learner picked ${shots.length} photo(s) from the gallery: ${_photos.length} so far.)');
   }
 
   Future<void> _checkTapped() async {
@@ -479,7 +506,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         ),
         body: Stack(children: [
           Column(children: [
-            _Track(stage: _stage, lego: _lego, color: c),
+            if (_stage != Stage.camera) _Track(stage: _stage, lego: _lego, color: c),
             Expanded(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 320),
@@ -610,95 +637,165 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   }
 
   Widget _camera(Color c) {
-    final cam = _cam;
     final q = _pending;
-    return Container(
-      color: Colors.black,
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
-          child: Container(
+    final what = _lookQuestion != null
+        ? 'Hold it up so Pip can see it'
+        : q != null
+            ? 'Close-up: ${q.message}'
+            : _lego
+                ? 'Lay the pieces flat, a little apart'
+                : 'Lay the parts out so I can see them all';
+    final thumbs = _photos.isNotEmpty && q == null && _lookQuestion == null;
+    final checkBtn = q == null && _lookQuestion == null;
+    return kIsWeb ? _cameraBrowser(c, what, thumbs, checkBtn) : _cameraLive(c, what, thumbs, checkBtn);
+  }
+
+  /// A phone's browser: the phone's own camera app takes the photo (full screen, its focus, full quality).
+  Widget _cameraBrowser(Color c, String what, bool thumbs, bool checkBtn) => Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+        child: Column(children: [
+          Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(color: q != null ? Pq.check : Colors.white12, borderRadius: BorderRadius.circular(18)),
-            child: Text(
-              q != null ? 'Close-up: ${q.message}' : _lego ? 'Lay the pieces flat, a little apart' : 'Lay the parts out so I can see them all',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: (_pending != null || _lookQuestion != null ? Pq.check : c).withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(18),
             ),
+            child: Text(what, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
           ),
-        ),
-        // the whole frame the photo will have: what you see is what Pip gets
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: cam != null && cam.value.isInitialized
-                ? FullFramePreview(
-                    controller: cam,
-                    overlay: IgnorePointer(
-                      child: AnimatedOpacity(opacity: _flash ? 0.8 : 0, duration: 90.ms, child: const ColoredBox(color: Colors.white)),
-                    ),
+          Expanded(
+            child: thumbs
+                ? GridView.count(
+                    padding: const EdgeInsets.only(top: 14),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    children: [
+                      for (var i = 0; i < _photos.length; i++)
+                        Stack(fit: StackFit.expand, children: [
+                          ClipRRect(borderRadius: BorderRadius.circular(16), child: Image.memory(_photos[i].bytes, fit: BoxFit.cover)),
+                          Positioned(
+                            right: 6,
+                            top: 6,
+                            child: GestureDetector(
+                              onTap: () => setState(() => _photos.removeAt(i)),
+                              child: const CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.close_rounded, size: 16, color: Pq.ink)),
+                            ),
+                          ),
+                        ]).animate().scale(curve: Curves.easeOutBack, duration: 300.ms),
+                    ],
                   )
                 : Center(
-                    child: _camError == null
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Padding(
-                            padding: const EdgeInsets.all(28),
-                            child: Text("The camera isn't available here: $_camError\nPick photos from the gallery instead.",
-                                textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70)),
-                          ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Icons.photo_camera_rounded, size: 72, color: c)
+                          .animate(onPlay: (a) => a.repeat(reverse: true))
+                          .scale(begin: const Offset(0.94, 0.94), end: const Offset(1.05, 1.05), duration: 1100.ms),
+                      const SizedBox(height: 12),
+                      const Text("Your phone's camera opens full screen.\nOne clear photo is enough.",
+                          textAlign: TextAlign.center, style: TextStyle(color: Pq.muted, height: 1.4)),
+                    ]),
                   ),
           ),
+          const SizedBox(height: 12),
+          // one clear photo is enough: once there is one, checking is the big button
+          if (thumbs && checkBtn)
+            BigButton(label: 'Check (${_photos.length})', icon: Icons.check_rounded, color: Pq.have, onTap: _checkTapped)
+          else
+            BigButton(label: 'Take photo', icon: Icons.photo_camera_rounded, color: c, onTap: _phoneCamera),
+          const SizedBox(height: 10),
+          Row(children: [
+            Expanded(child: SoftButton(label: 'From gallery', icon: Icons.photo_library_rounded, onTap: _gallery)),
+            const SizedBox(width: 10),
+            Expanded(
+              child: thumbs && checkBtn
+                  ? SoftButton(label: 'Add another', icon: Icons.add_a_photo_rounded, onTap: _photos.length >= 3 ? null : _phoneCamera)
+                  : !checkBtn
+                      ? SoftButton(
+                          label: 'Cancel',
+                          icon: Icons.close_rounded,
+                          color: Pq.muted,
+                          onTap: () => setState(() {
+                            _pending = null;
+                            _lookQuestion = null;
+                          }),
+                        )
+                      : const SizedBox.shrink(),
+            ),
+          ]),
+        ]),
+      );
+
+  /// The installed app: the camera live and filling the screen; the photo is cropped to what was on it.
+  Widget _cameraLive(Color c, String what, bool thumbs, bool checkBtn) {
+    final cam = _cam;
+    return Container(
+      color: Colors.black,
+      child: Stack(fit: StackFit.expand, children: [
+        if (cam != null && cam.value.isInitialized)
+          CameraFill(controller: cam, visible: _visible)
+        else
+          Center(
+            child: _camError == null
+                ? const CircularProgressIndicator(color: Colors.white)
+                : Padding(
+                    padding: const EdgeInsets.all(28),
+                    child: Text("The camera isn't available here: $_camError\nPick photos from the gallery instead.",
+                        textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70)),
+                  ),
+          ),
+        IgnorePointer(child: AnimatedOpacity(opacity: _flash ? 0.8 : 0, duration: 90.ms, child: const ColoredBox(color: Colors.white))),
+        const Positioned(top: 0, left: 0, right: 0, height: 120, child: IgnorePointer(child: Shade(top: true))),
+        const Positioned(bottom: 0, left: 0, right: 0, height: 220, child: IgnorePointer(child: Shade(top: false))),
+        Positioned(
+          top: 12,
+          left: 16,
+          right: 16,
+          child: Text(what,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15, shadows: [Shadow(blurRadius: 8, color: Colors.black54)])),
         ),
-        TextButton.icon(
-          onPressed: _phoneCamera,
-          icon: const Icon(Icons.center_focus_strong_rounded, color: Colors.white70, size: 18),
-          label: const Text("Blurry? Tap the picture to focus, or use the phone's camera",
-              style: TextStyle(color: Colors.white70, fontSize: 12.5)),
-        ),
-        if (_photos.isNotEmpty && q == null)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SizedBox(
-              height: 56,
-              child: ListView(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), children: [
-                for (var i = 0; i < _photos.length; i++)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: GestureDetector(
-                      onTap: () => setState(() => _photos.removeAt(i)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.memory(_photos[i], width: 56, height: 56, fit: BoxFit.cover),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 12,
+          child: Column(children: [
+            if (thumbs)
+              SizedBox(
+                height: 56,
+                child: ListView(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), children: [
+                  for (var i = 0; i < _photos.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: GestureDetector(
+                        onTap: () => setState(() => _photos.removeAt(i)),
+                        child: ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.memory(_photos[i].bytes, width: 56, height: 56, fit: BoxFit.cover)),
                       ),
                     ),
-                  ).animate().scale(curve: Curves.easeOutBack),
-              ]),
-            ),
-          ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 12),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            _RoundBtn(icon: Icons.photo_library_rounded, label: 'Photos', onTap: _gallery),
-            Bouncy(
-              onTap: cam == null ? null : _shutter,
-              scale: 0.88,
-              child: Container(
-                width: 74,
-                height: 74,
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 5)),
-                child: const DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white)),
+                ]),
               ),
-            ),
-            q == null
-                ? _RoundBtn(
-                    icon: Icons.check_rounded,
-                    label: _photos.isEmpty ? 'Check' : 'Check (${_photos.length})',
-                    color: _photos.isEmpty ? null : Pq.have,
-                    onTap: _photos.isEmpty ? null : _checkTapped,
-                  )
-                : _RoundBtn(icon: Icons.close_rounded, label: 'Cancel', onTap: () => setState(() => _pending = null)),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              _RoundBtn(icon: Icons.photo_library_rounded, label: 'Photos', onTap: _gallery),
+              Bouncy(
+                onTap: cam == null ? null : _shutter,
+                scale: 0.88,
+                child: Container(
+                  width: 76,
+                  height: 76,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 5)),
+                  child: const DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white)),
+                ),
+              ),
+              checkBtn
+                  ? _RoundBtn(
+                      icon: Icons.check_rounded,
+                      label: _photos.isEmpty ? 'Check' : 'Check (${_photos.length})',
+                      color: _photos.isEmpty ? null : Pq.have,
+                      onTap: _photos.isEmpty ? null : _checkTapped,
+                    )
+                  : _RoundBtn(icon: Icons.close_rounded, label: 'Cancel', onTap: () => setState(() => _pending = null)),
+            ]),
           ]),
         ),
       ]),
@@ -709,7 +806,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     if (_working != null || _last == null) {
       return _photos.isEmpty
           ? Center(child: Text(_working ?? 'No check yet.', style: Theme.of(context).textTheme.titleLarge))
-          : ScanningView(photo: _photos.first, lego: _lego);
+          : ScanningView(photo: _photos.first.bytes, lego: _lego);
     }
     final r = CheckResult.fromJson(_last!);
     return Stack(children: [

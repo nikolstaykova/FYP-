@@ -43,7 +43,7 @@ class _GatherScreenState extends State<GatherScreen> {
   }
 
   Future<void> _scan() async {
-    final photos = await Navigator.of(context).push<List<Uint8List>>(MaterialPageRoute(
+    final photos = await Navigator.of(context).push<List<Shot>>(MaterialPageRoute(
       fullscreenDialog: true,
       builder: (_) => CaptureScreen(
         prompt: widget.lesson.isLego ? 'Lay the pieces flat, a little apart' : 'Lay the parts out so I can see them all',

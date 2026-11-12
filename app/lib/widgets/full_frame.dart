@@ -4,37 +4,58 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 
-class FullFramePreview extends StatelessWidget {
-  const FullFramePreview({super.key, required this.controller, this.overlay});
+/// The camera filling its whole box (full screen), like the phone's camera app. What is cut off at the sides is
+/// cut off the photo too: [visible] holds the part of the frame on screen, as [x0, y0, x1, y1] fractions, and the
+/// server crops the photo to it, so the photo is exactly what the learner saw.
+class CameraFill extends StatelessWidget {
+  const CameraFill({super.key, required this.controller, required this.visible, this.overlay});
 
   final CameraController controller;
-  final Widget? overlay; // drawn on the picture itself (guide corners)
+  final ValueNotifier<List<double>?> visible;
+  final Widget? overlay;
+
+  /// The frame's width / height as shown (phones report the sensor's landscape size; the browser the video's).
+  static double ratioOf(CameraController c, BuildContext context) {
+    var r = c.value.aspectRatio;
+    if (!kIsWeb && MediaQuery.of(context).orientation == Orientation.portrait) r = 1 / r;
+    return r;
+  }
+
+  /// The part of a frame of [ratio] that a [box] shows when the frame covers it.
+  static List<double> shown(double ratio, Size box) {
+    if (box.isEmpty || ratio <= 0) return [0, 0, 1, 1];
+    final boxRatio = box.width / box.height;
+    if (ratio > boxRatio) {
+      final f = boxRatio / ratio; // the frame is wider: its sides are cut
+      return [(1 - f) / 2, 0, (1 + f) / 2, 1];
+    }
+    final f = ratio / boxRatio; // the frame is taller: top and bottom are cut
+    return [0, (1 - f) / 2, 1, (1 + f) / 2];
+  }
 
   @override
   Widget build(BuildContext context) {
     final v = controller.value;
-    // phones report the sensor's landscape size; the browser reports the video as it is shown
-    final portrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    var ratio = v.aspectRatio; // width / height of the sensor's frame
-    if (!kIsWeb && portrait) ratio = 1 / ratio;
-    final preview = kIsWeb ? controller.buildPreview() : CameraPreview(controller);
-    return Center(
-      child: AspectRatio(
-        aspectRatio: ratio,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: LayoutBuilder(
-            builder: (context, box) => GestureDetector(
-              onTapUp: (d) => focusAt(controller, d.localPosition, box.biggest),
-              child: Stack(fit: StackFit.expand, children: [
-            kIsWeb ? FittedBox(fit: BoxFit.contain, child: SizedBox(width: v.previewSize?.width ?? 1280, height: v.previewSize?.height ?? 720, child: preview)) : preview,
-            ?overlay,
-              ]),
-            ),
-          ),
-        ),
-      ),
-    );
+    final ratio = ratioOf(controller, context);
+    final preview = kIsWeb
+        ? SizedBox(width: v.previewSize?.width ?? 1280, height: v.previewSize?.height ?? 720, child: controller.buildPreview())
+        : SizedBox(width: 1000 * ratio, height: 1000, child: CameraPreview(controller));
+    return LayoutBuilder(builder: (context, box) {
+      visible.value = shown(ratio, box.biggest);
+      return GestureDetector(
+        onTapUp: (d) {
+          // the tap, in the frame's own fractions
+          final c = visible.value!;
+          final fx = c[0] + (c[2] - c[0]) * d.localPosition.dx / box.maxWidth;
+          final fy = c[1] + (c[3] - c[1]) * d.localPosition.dy / box.maxHeight;
+          focusAt(controller, Offset(fx, fy), const Size(1, 1));
+        },
+        child: Stack(fit: StackFit.expand, children: [
+          ClipRect(child: FittedBox(fit: BoxFit.cover, child: preview)),
+          ?overlay,
+        ]),
+      );
+    });
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 // What the parts server sends (research/recognition/lab/server.py), as Dart objects.
 
 int _int(Object? v, [int d = 0]) => v is int ? v : v is num ? v.toInt() : int.tryParse('$v') ?? d;
@@ -204,4 +206,15 @@ class CheckResult {
             if (e is Map && e['object'] != null) '${e['object']}'
         ],
       );
+}
+
+/// A photo, and the part of it the learner saw on screen ([x0, y0, x1, y1] fractions; null: all of it). The server
+/// crops it to that part.
+class Shot {
+  Shot(this.bytes, [this.crop]);
+  final Uint8List bytes;
+  final List<double>? crop;
+
+  /// Nearly the whole frame: no need to crop.
+  List<double>? get cropOrNull => crop == null || (crop![2] - crop![0]) * (crop![3] - crop![1]) > 0.97 ? null : crop;
 }

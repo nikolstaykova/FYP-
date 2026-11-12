@@ -131,8 +131,10 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
    jumper wires"). Then ask them to tell you when everything is on the table, and wait.
 3. Check. When they are ready, call open_camera (always before the first photo) and ask them to spread the parts out on a plain surface in view of
    the camera, and to tell you when to take the picture. When they say so ("take it", "ready", "now"), call
-   take_photo. With many small parts, offer one more photo from another angle (at most 3). Then say "let me have a
+   take_photo. One clear photo is enough: do not ask for more unless the check says it cannot see something. Then say "let me have a
    look" and call check_parts.
+   In the phone's browser the learner takes the photo with their phone's own camera (take_photo and the close-up
+   tools then say "waiting"): ask them to tap Take photo, then wait; you are told as soon as they have taken it.
    Some learners upload photos instead of using the camera (a message tells you, and the camera tools say so too):
    then never take a photo; call open_camera first (it shows the upload area), ask them to upload one to three
    photos and to tell you when they have, then call check_parts. A close-up can be uploaded too: its result comes to you as a message, so do not take it again.

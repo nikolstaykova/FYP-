@@ -20,7 +20,7 @@ class CheckScreen extends StatefulWidget {
 
   final LessonSummary lesson;
   final Quest quest;
-  final List<Uint8List> photos;
+  final List<Shot> photos;
 
   @override
   State<CheckScreen> createState() => _CheckScreenState();
@@ -73,7 +73,7 @@ class _CheckScreenState extends State<CheckScreen> {
   }
 
   Future<void> _closeup(Ask a) async {
-    final shot = await Navigator.of(context).push<List<Uint8List>>(MaterialPageRoute(
+    final shot = await Navigator.of(context).push<List<Shot>>(MaterialPageRoute(
       fullscreenDialog: true,
       builder: (_) => CaptureScreen(prompt: a.message, max: 1),
     ));
@@ -113,7 +113,7 @@ class _CheckScreenState extends State<CheckScreen> {
           child: _error != null
               ? _Failed(key: const ValueKey('err'), error: _error!, retry: _run)
               : r == null
-                  ? ScanningView(key: const ValueKey('scan'), photo: widget.photos.first, lego: widget.lesson.isLego)
+                  ? ScanningView(key: const ValueKey('scan'), photo: widget.photos.first.bytes, lego: widget.lesson.isLego)
                   : ResultsView(
                       key: const ValueKey('res'),
                       result: r,

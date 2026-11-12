@@ -93,13 +93,17 @@ class Api {
 
   Future<LessonDetail> lesson(String id) async => LessonDetail.fromJson(await _get('/api/lesson', {'id': id}) as Map<String, dynamic>);
 
+  static String dataUrl(Uint8List b) => _dataUrl(b);
   static String _dataUrl(Uint8List b) => 'data:image/jpeg;base64,${base64Encode(b)}';
 
   /// Sends the photos; returns the upload id the check works on.
-  Future<String> upload(String lesson, List<Uint8List> photos) async {
+  Future<String> upload(String lesson, List<Shot> photos) async {
     final j = await _post('/api/upload', {
       'lesson': lesson,
-      'photos': [for (var i = 0; i < photos.length; i++) {'name': 'photo-${i + 1}.jpg', 'data': _dataUrl(photos[i])}],
+      'photos': [
+        for (var i = 0; i < photos.length; i++)
+          {'name': 'photo-${i + 1}.jpg', 'data': _dataUrl(photos[i].bytes), 'crop': ?photos[i].cropOrNull},
+      ],
     });
     return j['upload'] as String;
   }
@@ -135,8 +139,9 @@ class Api {
       })) as Map<String, dynamic>;
 
   /// Pip's look tool: one photo, one question, answered by Haiku on the server.
-  Future<Map<String, dynamic>> look(String lesson, Uint8List photo, String question) async =>
-      (await _post('/api/tutor/look', {'lesson': lesson, 'photo': _dataUrl(photo), 'question': question}))
+  Future<Map<String, dynamic>> look(String lesson, Shot photo, String question) async =>
+      (await _post('/api/tutor/look',
+              {'lesson': lesson, 'photo': _dataUrl(photo.bytes), 'crop': ?photo.cropOrNull, 'question': question}))
           as Map<String, dynamic>;
 
   /// Pip looks something up in the lesson (lesson_info, step_info, part_info).
@@ -149,8 +154,8 @@ class Api {
     return base!.replace(path: u.path, queryParameters: {...u.queryParameters, 'key': key}).toString();
   }
 
-  Future<CheckResult> closeup(String upload, String askKey, Uint8List photo) async =>
-      CheckResult.fromJson(await _post('/api/flow/closeup', {'upload': upload, 'key': askKey, 'photo': _dataUrl(photo)}));
+  Future<CheckResult> closeup(String upload, String askKey, Shot photo) async => CheckResult.fromJson(await _post(
+      '/api/flow/closeup', {'upload': upload, 'key': askKey, 'photo': _dataUrl(photo.bytes), 'crop': ?photo.cropOrNull}));
 
   Future<CheckResult> dismiss(String upload, String askKey) async =>
       CheckResult.fromJson(await _post('/api/flow/dismiss', {'upload': upload, 'key': askKey}));

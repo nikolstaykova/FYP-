@@ -98,6 +98,27 @@ def lego_lessons():
                   key=lambda x: (x["name"].lower(), x["kind"]))
 
 
+def save_photo(data_url, path, crop=None):
+    """A photo from the page or the app, saved as JPEG. crop: [x0, y0, x1, y1] fractions: the part of the frame the
+    learner saw on screen (the app's full-screen camera), so the photo is exactly what they saw."""
+    raw = base64.b64decode(data_url.split(',', 1)[-1])
+    if crop:
+        try:
+            import io
+            from PIL import Image, ImageOps
+            x0, y0, x1, y1 = [min(1.0, max(0.0, float(v))) for v in crop][:4]
+            im = ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert('RGB')
+            if x1 - x0 > 0.05 and y1 - y0 > 0.05:
+                w, h = im.size
+                im = im.crop((round(x0 * w), round(y0 * h), round(x1 * w), round(y1 * h)))
+                buf = io.BytesIO()
+                im.save(buf, 'JPEG', quality=92)
+                raw = buf.getvalue()
+        except Exception:
+            traceback.print_exc()
+    path.write_bytes(raw)
+
+
 def run_check(upload, lesson_id, model, research, repeat):
     """Look `repeat` times (for timing), check the first answer against the lesson."""
     photos = sorted(str(p) for p in (RUNS / upload).glob('photo_*.jpg'))
@@ -178,7 +199,7 @@ def flow(action, upload, body):
                 raise ValueError('that question is no longer open')
             n = len(st['closeups']) + 1
             f = d / f'closeup_{n}.jpg'
-            f.write_bytes(base64.b64decode(body['photo'].split(',', 1)[-1]))
+            save_photo(body['photo'], f, body.get('crop'))
             from concurrent.futures import ThreadPoolExecutor
             with ThreadPoolExecutor(max(1, len(qs_))) as pool:  # one look per question, all at once
                 answered = list(pool.map(lambda q: answer_closeup(st, q, res, rec, f), qs_))
@@ -244,7 +265,7 @@ def lego_flow(action, d, body):
             if not keys:
                 raise ValueError('that question is no longer open')
             f = d / f"closeup_{len(st['closeups']) + 1}.jpg"
-            f.write_bytes(base64.b64decode(body['photo'].split(',', 1)[-1]))
+            save_photo(body['photo'], f, body.get('crop'))
             got, steps = lego_check.closeup(str(f), [x for x in its if x['key'] in keys], st['verdicts'])
             for k in keys:  # a close-up that still did not show the piece keeps the question open as "not sure"
                 v = got.get(k)
@@ -366,8 +387,7 @@ class Handler(BaseHTTPRequestHandler):
                 up = time.strftime('%Y%m%d-%H%M%S') + '-' + secrets.token_hex(2)
                 (RUNS / up).mkdir(parents=True, exist_ok=True)
                 for i, p in enumerate(body['photos'], 1):
-                    data = base64.b64decode(p['data'].split(',', 1)[-1])
-                    (RUNS / up / f'photo_{i}.jpg').write_bytes(data)
+                    save_photo(p['data'], RUNS / up / f'photo_{i}.jpg', p.get('crop'))
                 (RUNS / up / 'upload.json').write_text(json.dumps({'names': [p.get('name') for p in body['photos']],
                                                                    'lesson': body.get('lesson')}))
                 return self.send(200, {'upload': up})
@@ -391,7 +411,7 @@ class Handler(BaseHTTPRequestHandler):
                 d = RUNS / ('look-' + time.strftime('%Y%m%d'))
                 d.mkdir(parents=True, exist_ok=True)
                 f = d / f"look-{time.strftime('%H%M%S')}-{secrets.token_hex(2)}.jpg"
-                f.write_bytes(base64.b64decode(body['photo'].split(',', 1)[-1]))
+                save_photo(body['photo'], f, body.get('crop'))
                 return self.send(200, live.look(body['lesson'], str(f), str(body.get('question') or 'What is this?')[:400]))
             if u.path == '/api/tutor/reply':  # the free-voices mode: Haiku writes the tutor's next words
                 from tutor import live
