@@ -416,7 +416,7 @@ class Handler(BaseHTTPRequestHandler):
                     photos.append(str(d / f'photo_{i}.jpg'))
                 if not photos:
                     return self.send(400, {'error': 'no photo'})
-                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {})
+                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {}, bool(body.get('second')))
                 (d / 'result.json').write_text(json.dumps({'lesson': body['lesson'], 'step': body['step'], **res}, indent=1))
                 return self.send(200, res)
             if u.path == '/api/tutor/look':  # Pip's look tool: a photo and a question, Haiku answers

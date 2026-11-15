@@ -178,10 +178,11 @@ class Pip extends ChangeNotifier {
 
   /// What the learner did on the screen, or typed. While Pip is talking it waits: anything sent to Gemini
   /// mid-sentence cuts Pip off, so it goes when Pip has finished (several taps go together).
-  void tell(String text) {
+  /// now: send it even while Pip talks (a photo just arrived: Pip must not ask for it again).
+  void tell(String text, {bool now = false}) {
     _active();
     if (!on) return;
-    if (mode == PipMode.live && _talking) {
+    if (mode == PipMode.live && _talking && !now) {
       _later.add(text);
       return;
     }

@@ -87,6 +87,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _checkingStep = false;
   Map<String, dynamic>? _stepResult; // the last step check, shown on its step
   int? _stepResultFor;
+  DateTime _stepResultAt = DateTime.fromMillisecondsSinceEpoch(0);
+  Map<String, dynamic>? _stepToldPip; // what check_step gave Pip for it (given again if Pip asks again)
+  DateTime _lastPhotoAt = DateTime.fromMillisecondsSinceEpoch(0); // the last photo of the parts the learner took
+  Map<String, dynamic>? _lastLook;
+  DateTime _lastLookAt = DateTime.fromMillisecondsSinceEpoch(0);
 
   // the camera, inside the session so Pip can take the photo
   CameraController? _cam;
@@ -176,6 +181,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return _cam != null ? {'mode': 'camera', 'camera': 'open'} : {'camera': 'not available', 'tell_them': 'they can pick photos from the gallery'};
       case 'take_photo':
         if (_stage != Stage.camera) await _openCamera();
+        if (kIsWeb && _photos.isNotEmpty && DateTime.now().difference(_lastPhotoAt).inSeconds < 90) {
+          return {'photos': _photos.length, 'note': 'they have already taken it: call check_parts now'};
+        }
         if (kIsWeb) return {'photos': _photos.length, 'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
         final p = await _snap();
         if (p == null) return {'error': 'the camera is not ready yet; try again in a second'};
@@ -232,6 +240,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return {'their_versions': _swaps, 'note': 'the step cards now show theirs; call it their way from now on'};
       case 'look':
         final back = _stage;
+        if (kIsWeb && _lastLook != null && DateTime.now().difference(_lastLookAt).inSeconds < 60) {
+          final r = _lastLook!;
+          _lastLook = null;
+          return r;
+        }
         if (kIsWeb) {
           _lookBack = back;
           setState(() => _lookQuestion = '${args['question'] ?? 'What is this?'}');
@@ -257,6 +270,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         final cur = _b?.steps[_i];
         if (cur == null || _stage != Stage.build || !_checkable(cur)) {
           return {'note': 'show the build step first (show_step); a step that puts nothing on the board has nothing to check'};
+        }
+        if (_checkingStep) {
+          return {'status': 'checking the photo they just took: the result comes to you in a few seconds; do not ask for another photo'};
+        }
+        if (_stepResultFor == _i + 1 && _stepToldPip != null && DateTime.now().difference(_stepResultAt).inSeconds < 60) {
+          return {..._stepToldPip!, 'note': 'this is the check of the photo they just took'};
         }
         setState(() => _stepPending = true);
         await _openCamera();
@@ -456,6 +475,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   /// The step check: the photo to the server, the verdict on the step card, their columns from now on.
   Future<Map<String, dynamic>> _validateStep(Shot photo) async {
     final n = _i + 1;
+    if (_checkingStep) return {'status': 'already checking a photo of this step'};
+    final second = _stepResultFor == n && _stepResult?['verdict'] == 'unsure';
     setState(() {
       _stepPending = false;
       _checkingStep = true;
@@ -464,7 +485,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     });
     _go(Stage.build);
     try {
-      final r = await _api.validateStep(s.id, n, [photo], {'where': _where});
+      final r = await _api.validateStep(s.id, n, [photo], {'where': _where}, second: second);
       final where = ((r['state'] as Map?)?['where'] as Map?)?.cast<String, dynamic>() ?? {};
       final cols = (r['columns'] as Map?)?.cast<String, dynamic>() ?? {};
       final ok = const ['pass', 'harmless', 'moved'].contains(r['verdict']);
@@ -479,7 +500,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         if (ok) _done.add(n);
       });
       ok ? HapticFeedback.mediumImpact() : HapticFeedback.heavyImpact();
-      return {
+      _stepResultAt = DateTime.now();
+      return _stepToldPip = {
         'verdict': r['verdict'],
         'say': r['say'],
         'legs': [
@@ -499,8 +521,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   Future<void> _gotPhoto(Shot p) async {
     if (_stepPending) {
+      pip.tell('(The learner has just taken the photo of the board: it is being checked now and the result comes to you '
+          'in a few seconds. Do not ask for another photo; say something short while you wait, or nothing.)', now: true);
       final r = await _validateStep(p);
-      _tell('(The learner took the photo of the board for the step check. Result: ${jsonEncode(r)}. Tell them what it means.)');
+      _tell('(The step check of the photo they took: ${jsonEncode(r)}. Tell them what it means.)');
       return;
     }
     final look = _lookQuestion;
@@ -509,6 +533,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         _lookQuestion = null;
         _working = 'Having a look…';
       });
+      pip.tell('(The learner has just taken the photo you asked for: you get the answer in a few seconds. Do not ask '
+          'for it again.)', now: true);
       Map<String, dynamic> r;
       try {
         r = await _api.look(s.id, p, look);
@@ -517,6 +543,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       }
       if (!mounted) return;
       setState(() => _working = null);
+      _lastLook = r;
+      _lastLookAt = DateTime.now();
       _go(_lookBack == Stage.camera || (_lookBack == Stage.result && _last == null) ? Stage.build : _lookBack);
       _tell('(You asked to look: "$look". The photo shows: ${jsonEncode(r)}. Tell them, in your own words.)');
       return;
@@ -534,7 +562,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       return;
     }
     setState(() => _photos.add(p));
-    _tell('(The learner took a photo themselves: ${_photos.length} so far.)');
+    _lastPhotoAt = DateTime.now();
+    pip.tell('(The learner has just taken a photo of the parts: ${_photos.length} so far. Do not ask for it again: '
+        'call check_parts when they are ready.)', now: true);
   }
 
   /// The phone's own camera app: full screen, its autofocus, full quality.
