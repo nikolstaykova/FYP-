@@ -1,0 +1,430 @@
+"""The Arduino step check: after a build step, a photo of the breadboard, and is every leg where it should be?
+
+The logic is CircuitQuest's (core/checker.py, core/engine.py "landing" checks), on what a photo can show. A photo
+cannot show the exact hole, and does not need to: on a breadboard only the STRIP matters (a column on one half, or a
+power rail), and on the Arduino the pin. So every leg of the step is checked as a place:
+  strip  "14t"   column 14, top half (rows a-e; "b" is the bottom half, rows f-j)
+  rail   "tp"    the top + rail ("tn" top -, "bp" bottom +, "bn" bottom -)
+  pin    "uno:13" an Arduino pin (any GND is the same GND)
+and each leg either SHARES a place with an earlier leg (it must be in that same strip: the model is asked "same
+column as the resistor's leg?", which a photo shows much better than a number) or STARTS a new one (any free strip
+will do: the model gives the column, counted from a leg it knows). A leg that starts a new strip somewhere else is
+accepted and the lesson's column becomes the learner's for every later step ("we want column 3, you used 4": from
+now on 3 means their 4). Verdicts, as CircuitQuest: pass; harmless (a resistor or wire turned round); moved
+(accepted, in their columns); wrong (a leg that should share a strip does not, a strip that would join two things,
+an LED the wrong way round, a pin that cannot stand in); unsure (the model could not read it: a close-up is asked).
+
+The prompt is made for each step from the lesson (plan + prompt); a lesson can add its own words for a step (a
+`check_note` on the step, stored with the lesson and in the database): `python -m validator.arduino note ...`.
+
+  plan(lesson_id, step)                  the legs this step places, where, and what each must share
+  prompt(plan_, state)                   what the model is asked
+  look(photos, plan_, state)             the model's reading (Haiku; the legs it cannot read go to Opus once)
+  judge(plan_, reading, state)           the verdict, leg by leg, and the learner's places from now on
+  check(lesson_id, step, photos, state)  all of it
+state: {"where": {lesson place: their place}} (the learner's columns and pins so far), sent back updated.
+
+Run  ./pinpoint validator.arduino plan blink 2
+     ./pinpoint validator.arduino check blink 2 photo.jpg [photo2.jpg]
+     ./pinpoint validator.arduino note blink 2 "The LED is small: look closely at which leg is longer."
+"""
+import json
+import re
+import sys
+
+FIRST = "claude-haiku-5-5"
+SECOND = "claude-opus-5-5"
+RAILS = {"tp": "the top + rail", "tn": "the top - rail", "bp": "the bottom + rail", "bn": "the bottom - rail"}
+LEG = {"A": "long leg (+)", "C": "short leg (-)", "1": "one leg", "2": "other leg", "a": "one end", "b": "other end"}
+
+
+# ---- the lesson: what this step places, and where --------------------------------------------------------------
+def _lesson(lesson_id):
+    from graph import lesson_store
+    view = lesson_store.assemble(lesson_id)
+    _, graphs = lesson_store._load(lesson_id)
+    phys = graphs.get("physical") or {"nodes": []}
+    nodes = {n["id"]: n for n in phys["nodes"]}
+    cards = lesson_store._cards(lesson_store.PARTS)
+    card = {i: (lesson_store.definition(cards, n.get("type"))[0] or {}) for i, n in nodes.items()}
+    rec = graphs.get("lesson") or {}
+    return view, nodes, card, rec
+
+
+def _is_board(card_):
+    return (card_.get("category") or "").lower() in ("microcontroller", "board", "microcontroller board") or \
+        any(str(p.get("id", "")).upper().startswith("GND") for p in card_.get("ports") or []) and \
+        len(card_.get("ports") or []) > 10
+
+
+def place_of(end, nodes, card):
+    """A join's other end as a place: ("strip", "14t"), ("rail", "tn"), ("pin", "uno:13"), ("part", "x:y")."""
+    inst, _, port = str(end).partition(":")
+    n = nodes.get(inst) or {}
+    if (n.get("type") or "").startswith("breadboard"):
+        m = re.match(r"(\d+)([tb])\.", port)
+        if m:
+            return "strip", f"{int(m.group(1))}{m.group(2)}"
+        m = re.match(r"([tb][pn])\.", port)
+        if m:
+            return "rail", m.group(1)
+    if _is_board(card.get(inst, {})):
+        return "pin", f"{inst}:{'GND' if port.upper().startswith('GND') else port}"
+    return "part", f"{inst}:{port}"
+
+
+def _who(nodes, inst, port):
+    n = nodes.get(inst) or {}
+    label = re.sub(r"\s*\(.*?\)", "", n.get("label") or inst).strip()
+    return f"the {label}'s {LEG.get(port, port)}"
+
+
+def say_place(kind, p):
+    """A place the way a person says it."""
+    if kind == "strip":
+        m = re.match(r"(\d+)([tb])$", p)
+        return f"column {m.group(1)} ({'top' if m.group(2) == 't' else 'bottom'} half)" if m else p
+    if kind == "rail":
+        return RAILS.get(p, p)
+    if kind == "pin":
+        pin = p.split(":", 1)[1]
+        return "the Arduino's GND" if pin == "GND" else f"the Arduino's pin {pin}"
+    return p
+
+
+def plan(lesson_id, step):
+    """The legs a build step places: [{key, leg, part, who, kind, lesson, shares (an earlier leg, or None),
+    polarized, swap_group}], with the step's words and the legs placed before it (landmarks). `step`: its number in
+    the lesson (as the app counts, from 1) or its id."""
+    view, nodes, card, rec = _lesson(lesson_id)
+    steps = [s for s in view["steps"] if s.get("kind") != "overview"]
+    idx = next((i for i, s in enumerate(steps) if s["id"] == str(step)), None)
+    if idx is None and str(step).isdigit():
+        idx = int(step) - 1
+    if idx is None or not 0 <= idx < len(steps):
+        raise ValueError(f"no step {step} in {lesson_id}")
+
+    def legs_of(s):
+        out = []
+        for c in s.get("connections") or []:
+            a, b = c["from"], c["to"]
+            ka, _ = place_of(a, nodes, card)
+            kb, _ = place_of(b, nodes, card)
+            leg, other = (a, b) if ka == "part" else (b, a) if kb == "part" else (a, b)
+            kind, where = place_of(other, nodes, card)
+            if kind == "part" and place_of(leg, nodes, card)[0] == "part" and leg.split(":")[0] == other.split(":")[0]:
+                continue
+            out.append((leg, kind, where))
+        return out
+
+    earlier, seen_place = [], {}
+    for s in steps[:idx]:
+        for leg, kind, where in legs_of(s):
+            earlier.append({"leg": leg, "who": _who(nodes, *leg.split(":", 1)), "kind": kind, "lesson": where})
+            seen_place.setdefault(where, earlier[-1])
+    s = steps[idx]
+    legs, sym = [], {}
+    for k, (leg, kind, where) in enumerate(legs_of(s), 1):
+        inst, port = leg.split(":", 1)
+        c = card.get(inst, {})
+        polarized = bool((c.get("metadata") or {}).get("polarized"))
+        two = len(c.get("ports") or []) == 2
+        x = {"key": f"L{k}", "leg": leg, "part": inst, "who": _who(nodes, inst, port), "kind": kind, "lesson": where,
+             "shares": seen_place.get(where), "polarized": polarized, "swap_group": inst if two and not polarized else None}
+        legs.append(x)
+        seen_place.setdefault(where, {"leg": leg, "who": x["who"], "kind": kind, "lesson": where, "this_step": x["key"]})
+        sym.setdefault(inst, []).append(x["key"])
+    for x in legs:  # only a part with both legs in this step can be turned round
+        if x["swap_group"] and len(sym[x["part"]]) != 2:
+            x["swap_group"] = None
+    pins = {p: v for p, v in ((rec.get("substitutions") or {}).get("pins") or {}).items() if isinstance(v, dict)}
+    return {"lesson_id": lesson_id, "step": s["id"], "n": idx + 1, "text": s.get("text") or "", "legs": legs,
+            "earlier": earlier, "note": s.get("check_note") or "", "pins": pins}
+
+
+# ---- the question to the model ---------------------------------------------------------------------------------
+LOOK = """You check one step of an Arduino build on a breadboard, from photos. The step said: "{text}"
+
+How a breadboard works: the holes are numbered along the long edge (the numbers are printed, usually every 5: 1, 5,
+10, 15...), and lettered across (a-e on one half, f-j on the other, with a gap in the middle). Each COLUMN on one half
+is one strip: its five holes are joined. The halves are separate. The long rows along both edges are the power rails:
++ (red line) and - (blue line). On the Arduino, every pin socket has its label printed beside it (13, 12, ~11, GND,
+5V, A0...).
+{earlier}
+For each item below, find that leg (or wire end) in the photos and answer what is asked:
+{items}
+Count columns from a leg you are sure of when you cannot read the printed number. Do not guess: if you cannot see a
+leg, or cannot tell its column, say so ("sure": false, and "why": one short sentence, at most 15 words). If
+something placed earlier looks pulled out or moved, list it in "moved".{note}
+Answer ONLY with JSON: {{"legs": [{{"key": "L1", "same": null, "column": 0, "half": "", "rail": "", "pin": "", "sure": true, "why": ""}}], "moved": []}}
+("same": true/false only where asked; "half": "top" or "bottom"; "rail": "top +", "top -", "bottom +" or "bottom -";
+"pin": the Arduino label, as printed.)"""
+
+
+def their(where, kind, p):
+    """The learner's place for a lesson place, so far."""
+    return where.get(p, p)
+
+
+def prompt(plan_, state=None):
+    where = (state or {}).get("where") or {}
+    earlier = ""
+    if plan_["earlier"]:
+        ls = [f"  - {e['who']}: {say_place(e['kind'], their(where, e['kind'], e['lesson']))}" for e in plan_["earlier"]]
+        earlier = "\nAlready on the board (checked before; use them as landmarks):\n" + "\n".join(ls[-14:]) + "\n"
+    items = []
+    for x in plan_["legs"]:
+        sh = x["shares"]
+        if x["kind"] == "pin":
+            pin = their(where, "pin", x["lesson"])
+            items.append(f"- {x['key']}: {x['who']}. Which Arduino pin socket is it in? The lesson wants "
+                         f"{say_place('pin', pin)}. Give \"pin\".")
+        elif x["kind"] == "rail":
+            items.append(f"- {x['key']}: {x['who']}. Which power rail is it in? The lesson wants "
+                         f"{RAILS.get(their(where, 'rail', x['lesson']), x['lesson'])}. Give \"rail\".")
+        elif x["kind"] == "part":
+            items.append(f"- {x['key']}: {x['who']}. Is it connected to {x['lesson']}? Give \"same\".")
+        elif sh:
+            ref = sh["who"] + (" (placed in this step too)" if sh.get("this_step") else "")
+            at = "" if sh.get("this_step") else f", which is in {say_place('strip', their(where, 'strip', x['lesson']))}"
+            items.append(f"- {x['key']}: {x['who']}. It must be in the SAME column as {ref}{at}, on the same half. "
+                         "Give \"same\" (true or false), and its \"column\" and \"half\".")
+        else:
+            items.append(f"- {x['key']}: {x['who']}. Which column and which half is it in? (The lesson suggests "
+                         f"{say_place('strip', x['lesson'])}, but any free column is fine.) Give \"column\" and \"half\".")
+    note = f"\nAbout this step: {plan_['note']}" if plan_.get("note") else ""
+    return LOOK.format(text=plan_["text"], earlier=earlier, items="\n".join(items), note=note)
+
+
+def _answer(text):
+    i, j = text.find("{"), text.rfind("}")
+    try:
+        d = json.loads(text[i:j + 1])
+    except ValueError:
+        return {}, []
+    legs = {x["key"]: x for x in d.get("legs") or [] if isinstance(x, dict) and x.get("key")}
+    return legs, [str(m) for m in d.get("moved") or [] if m]
+
+
+def reading_place(x, r):
+    """What the model read for a leg, as a place (or None when it could not tell)."""
+    if not r or r.get("sure") is False:
+        return None
+    if x["kind"] == "pin":
+        pin = str(r.get("pin") or "").strip().upper().lstrip("~D").replace("PIN", "").strip()
+        if not pin:
+            return None
+        board = x["lesson"].split(":")[0]
+        return f"{board}:{'GND' if pin.startswith('GND') else pin}"
+    if x["kind"] == "rail":
+        t = str(r.get("rail") or "").lower()
+        if not t:
+            return None
+        return ("t" if "top" in t else "b") + ("n" if "-" in t or "minus" in t or "neg" in t or "blue" in t else "p")
+    col = r.get("column")
+    try:
+        col = int(col)
+    except (TypeError, ValueError):
+        return None
+    if col <= 0:
+        return None
+    half = str(r.get("half") or "").lower()
+    return f"{col}{'b' if half.startswith('b') else 't'}"
+
+
+def look(photos, plan_, state=None, model=FIRST, keys=None):
+    """The model's reading of the photos: ({key: answer}, moved, stats). keys: only these legs (a second look)."""
+    from gather import gather_vlm as vlm
+    p = dict(plan_, legs=[x for x in plan_["legs"] if not keys or x["key"] in keys])
+    images = [vlm.shrink(ph, 1600, 85) for ph in photos]  # columns need the detail: not the 768 px first look
+    out, stats, _ = vlm.ask(model, images, prompt(p, state), max_tokens=3000, effort="low" if model == FIRST else "medium")
+    legs, moved = _answer(out)
+    return legs, moved, {**stats, "raw": out[:3000]}
+
+
+# ---- the verdict ------------------------------------------------------------------------------------------------
+def _pin_ok(plan_, lesson_pin, read):
+    """Can the pin the learner used stand in for the lesson's? (The lesson's substitutions, as the tutor knows them.)"""
+    sub = plan_["pins"].get(lesson_pin) or {}
+    pin = read.split(":", 1)[1]
+    if pin in (sub.get("refused") or {}):
+        return False, sub["refused"][pin]
+    return pin in [str(s) for s in sub.get("stand_ins") or []], ""
+
+
+def _judge_one(plan_, x, read, r, where, used):
+    """One leg: (status, their place or None, words). status: ok, moved, wrong, unsure."""
+    lesson = x["lesson"]
+    if read is None:
+        if x["kind"] == "strip" and x["shares"] and r and r.get("same") is True:
+            return "ok", their(where, "strip", lesson), ""
+        return "unsure", None, (r or {}).get("why") or "I couldn't see it clearly"
+    want = where.get(lesson)
+    if x["kind"] == "pin":
+        want = want or lesson
+        if read == want:
+            return "ok", read, ""
+        ok, why = _pin_ok(plan_, lesson, read)
+        if ok and read not in used:
+            return "moved", read, f"{say_place('pin', read)} instead of {say_place('pin', want)}: that works (the sketch uses that pin then)"
+        return "wrong", read, (f"{say_place('pin', read)} can't be used: {why}" if why else
+                               f"it should go in {say_place('pin', want)}, not {say_place('pin', read)}")
+    if x["kind"] in ("strip", "rail"):
+        if x["shares"]:
+            want = want or lesson
+            same = (r or {}).get("same")
+            if same is True or (same is None and read == want):
+                return "ok", want, ""
+            ref = x["shares"]["who"]
+            return "wrong", read, f"it should be in the same {'column' if x['kind'] == 'strip' else 'rail'} as {ref} ({say_place(x['kind'], want)}), but it's in {say_place(x['kind'], read)}"
+        if x["kind"] == "rail" and read[1] != lesson[1]:
+            return "wrong", read, f"it should go in a {'+' if lesson[1] == 'p' else '-'} rail, not {say_place('rail', read)}"
+        if read in used and used[read] != lesson:
+            return "wrong", read, f"{say_place(x['kind'], read)} already has something else in it, so they would be joined"
+        if read == lesson:
+            return "ok", read, ""
+        return "moved", read, f"{say_place(x['kind'], read)} instead of {say_place(x['kind'], lesson)}: that's fine"
+    same = (r or {}).get("same")
+    return ("ok", lesson, "") if same is not False else ("wrong", None, f"it should be connected to {lesson}")
+
+
+def _run(plan_, readings, where0, order):
+    """Judge the legs in order, with the readings swapped as `order` says. Returns (results, where)."""
+    where = dict(where0)
+    used = {v: k for k, v in where.items()}
+    for e in plan_["earlier"]:  # what the earlier legs occupy (in the learner's places)
+        used.setdefault(their(where, e["kind"], e["lesson"]), e["lesson"])
+    out = []
+    for x in plan_["legs"]:
+        r = readings.get(order.get(x["key"], x["key"]))
+        read = reading_place(x, r)
+        status, place, words = _judge_one(plan_, x, read, r, where, used)
+        if place and status in ("ok", "moved") and x["kind"] != "part":
+            where[x["lesson"]] = place
+            used[place] = x["lesson"]
+        out.append({"key": x["key"], "leg": x["leg"], "who": x["who"], "status": status,
+                    "place": say_place(x["kind"], place) if place else None, "words": words})
+    return out, where
+
+
+def judge(plan_, readings, state=None):
+    """The step's verdict from the model's readings: CircuitQuest's order, pass < harmless/moved < unsure < wrong.
+    A part with both legs in this step that is not polarized may be turned round (harmless); a polarized one
+    (an LED) turned round is wrong, and said so."""
+    where0 = dict((state or {}).get("where") or {})
+    best = _run(plan_, readings, where0, {})
+    swapped = []
+    groups = {}
+    for x in plan_["legs"]:
+        if x["swap_group"]:
+            groups.setdefault(x["swap_group"], []).append(x["key"])
+    for g, (a, b) in ((g, ks) for g, ks in groups.items() if len(ks) == 2):  # turned round: try it
+        trial = _run(plan_, readings, where0, {a: b, b: a})
+        bad = lambda res: sum(r["status"] in ("wrong", "unsure") for r in res[0])  # noqa: E731
+        if bad(trial) < bad(best):
+            best, swapped = trial, swapped + [g]
+    results, where = best
+    reversed_ = []
+    for x in plan_["legs"]:  # an LED the wrong way round: its two legs read where the other should be
+        if x["polarized"]:
+            mates = [y for y in plan_["legs"] if y["part"] == x["part"] and y is not x]
+            if len(mates) == 1:
+                y = mates[0]
+                rx, ry = reading_place(x, readings.get(x["key"])), reading_place(y, readings.get(y["key"]))
+                wx, wy = where0.get(x["lesson"], x["lesson"]), where0.get(y["lesson"], y["lesson"])
+                if rx and ry and rx == wy and ry == wx and x["part"] not in reversed_:
+                    reversed_.append(x["part"])
+    for res in results:
+        part = res["leg"].split(":")[0]
+        if part in reversed_:
+            res["status"] = "wrong"
+            res["words"] = "the LED is the wrong way round: the long leg (+) goes where the short leg is now"
+    st = [r["status"] for r in results]
+    verdict = ("wrong" if "wrong" in st else "unsure" if "unsure" in st else
+               "moved" if "moved" in st else "harmless" if swapped else "pass")
+    changed = {k: v for k, v in where.items() if where0.get(k) != v and k != v}
+    columns = {}
+    for k, v in where.items():  # for the screen: the lesson's column numbers -> theirs (same half)
+        a, b = re.match(r"(\d+)[tb]$", k), re.match(r"(\d+)[tb]$", v)
+        if a and b and a.group(1) != b.group(1):
+            columns[a.group(1)] = b.group(1)
+    return {"verdict": verdict, "legs": results, "turned_round": swapped, "reversed": reversed_,
+            "changed": {k: v for k, v in changed.items()}, "columns": columns, "state": {"where": where}}
+
+
+def _asks(res):
+    out = []
+    for r in res["legs"]:
+        if r["status"] == "unsure":
+            out.append({"key": r["key"], "kind": "closeup",
+                        "message": f"I can't quite see {r['who']}. Can you take a closer photo of where it goes in?"})
+        elif r["status"] == "wrong":
+            out.append({"key": r["key"], "kind": "fix", "message": f"{r['who'][0].upper() + r['who'][1:]}: {r['words']}."})
+    return out
+
+
+def check(lesson_id, step, photos, state=None):
+    """The whole check of one step: plan, Haiku's look, Opus once for the legs Haiku could not read, the verdict.
+    Returns the verdict with `asks` (what to tell or ask the learner), `say` (for the tutor) and the cost."""
+    p = plan(lesson_id, step)
+    if not p["legs"]:
+        return {"verdict": "pass", "legs": [], "asks": [], "state": state or {"where": {}}, "steps": [],
+                "say": "Nothing to check on the board in this step.", "step": p["step"], "n": p["n"]}
+    readings, moved, st = look(photos, p, state)
+    steps = [{"what": "step check", **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
+    res = judge(p, readings, state)
+    unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
+    if unsure:  # a second look, by the bigger model, at only those legs
+        more, moved2, st2 = look(photos, p, state, model=SECOND, keys=unsure)
+        steps.append({"what": "step check, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
+        readings.update(more)
+        moved += moved2
+        res = judge(p, readings, state)
+    good = [r for r in res["legs"] if r["status"] in ("ok", "moved")]
+    say = {"pass": "Everything in this step is in the right place.",
+           "harmless": "All right: " + ", ".join(res["turned_round"]) + " is turned round, which is fine for it.",
+           "moved": "It's all connected right, in their own columns: " + "; ".join(r["words"] for r in good if r["words"]),
+           "unsure": "I couldn't see everything: " + "; ".join(f"{r['who']}: {r['words']}" for r in res["legs"] if r["status"] == "unsure"),
+           "wrong": "Something needs fixing: " + "; ".join(f"{r['who']}: {r['words']}" for r in res["legs"] if r["status"] == "wrong"),
+           }[res["verdict"]]
+    return {**res, "asks": _asks(res), "moved_earlier": moved[:5], "say": say, "step": p["step"], "n": p["n"],
+            "steps": steps, "cost_usd": round(sum(s.get("cost_usd") or 0 for s in steps), 6)}
+
+
+# ---- a lesson's own words for a step's check --------------------------------------------------------------------
+def set_note(lesson_id, step, note):
+    """Store a step's own check words in the lesson (the steps graph, then the database): appended to the prompt."""
+    from graph import lesson_store
+    p = plan(lesson_id, step)
+    d = lesson_store.STORE / lesson_id
+    inst = json.loads((d / "instruction.json").read_text())
+    for n in inst["nodes"]:
+        if n["id"] == p["step"]:
+            if note:
+                n["check_note"] = note
+            else:
+                n.pop("check_note", None)
+    (d / "instruction.json").write_text(json.dumps(inst, indent=1))
+    lesson_store.sync_db(lesson_id)
+    return p["step"]
+
+
+def main(argv=None):
+    a = list(argv or sys.argv[1:])
+    if not a or a[0] not in ("plan", "prompt", "check", "note"):
+        print(__doc__.split("Run")[1])
+        return
+    cmd, lid, step, rest = a[0], a[1], a[2], a[3:]
+    if cmd == "plan":
+        print(json.dumps(plan(lid, step), indent=1))
+    elif cmd == "prompt":
+        print(prompt(plan(lid, step)))
+    elif cmd == "note":
+        print("stored for", set_note(lid, step, " ".join(rest)))
+    else:
+        res = check(lid, step, rest)
+        print(json.dumps({k: res[k] for k in ("verdict", "legs", "changed", "columns", "asks", "say", "cost_usd")}, indent=1))
+
+
+if __name__ == "__main__":
+    main()

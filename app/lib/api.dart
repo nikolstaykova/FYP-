@@ -144,7 +144,17 @@ class Api {
               {'lesson': lesson, 'photo': _dataUrl(photo.bytes), 'crop': ?photo.cropOrNull, 'question': question}))
           as Map<String, dynamic>;
 
-  /// Pip looks something up in the lesson (lesson_info, step_info, part_info).
+  /// After a build step: photos of the board, and is every leg where it should be? (code/validator)
+  /// state: the learner's places so far ({"where": {lesson place: theirs}}), sent back updated.
+  Future<Map<String, dynamic>> validateStep(String lesson, int step, List<Shot> photos, Map<String, dynamic> state) async =>
+      (await _post('/api/validate/step', {
+        'lesson': lesson,
+        'step': step,
+        'state': state,
+        'photos': [for (final p in photos) {'data': _dataUrl(p.bytes), 'crop': ?p.cropOrNull}],
+      })) as Map<String, dynamic>;
+
+    /// Pip looks something up in the lesson (lesson_info, step_info, part_info).
   Future<dynamic> lookup(String lesson, String tool, Map<String, dynamic> args) async =>
       _post('/api/tutor/lookup', {'lesson': lesson, 'tool': tool, 'args': args});
 

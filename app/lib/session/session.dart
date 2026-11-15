@@ -81,6 +81,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   final Map<String, String> _cols = {}; // breadboard columns: the lesson's → the learner's (use_column)
   final Map<String, String> _swaps = {}; // their versions: "orange wire" → "blue wire" (use_instead, or the check)
 
+  // the step check (code/validator): after a build step, a photo of the board
+  final Map<String, dynamic> _where = {}; // the learner's places so far: lesson place -> theirs ("15t" -> "16t")
+  bool _stepPending = false; // the browser: a step check waits for the learner's photo
+  bool _checkingStep = false;
+  Map<String, dynamic>? _stepResult; // the last step check, shown on its step
+  int? _stepResultFor;
+
   // the camera, inside the session so Pip can take the photo
   CameraController? _cam;
   String? _camError;
@@ -246,6 +253,18 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             if (back != Stage.camera) _go(back == Stage.result && _last == null ? Stage.build : back);
           }
         }
+      case 'check_step':
+        final cur = _b?.steps[_i];
+        if (cur == null || _stage != Stage.build || !_checkable(cur)) {
+          return {'note': 'show the build step first (show_step); a step that puts nothing on the board has nothing to check'};
+        }
+        setState(() => _stepPending = true);
+        await _openCamera();
+        if (kIsWeb) return {'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+        final shot = await _snap();
+        if (shot == null) return {'error': 'the camera is not ready; try again'};
+        return _validateStep(shot);
       case 'start_building':
         return {'step': _showStep(1), 'steps': _b?.steps.length ?? 0};
       case 'show_step':
@@ -431,7 +450,59 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     await _gotPhoto(p);
   }
 
+  /// A build step on an electronics lesson that puts something on the board: it can be checked from a photo.
+  bool _checkable(LessonStep st) => !_lego && !st.isGather && st.kind != 'upload' && st.parts.isNotEmpty;
+
+  /// The step check: the photo to the server, the verdict on the step card, their columns from now on.
+  Future<Map<String, dynamic>> _validateStep(Shot photo) async {
+    final n = _i + 1;
+    setState(() {
+      _stepPending = false;
+      _checkingStep = true;
+      _stepResult = null;
+      _stepResultFor = n;
+    });
+    _go(Stage.build);
+    try {
+      final r = await _api.validateStep(s.id, n, [photo], {'where': _where});
+      final where = ((r['state'] as Map?)?['where'] as Map?)?.cast<String, dynamic>() ?? {};
+      final cols = (r['columns'] as Map?)?.cast<String, dynamic>() ?? {};
+      final ok = const ['pass', 'harmless', 'moved'].contains(r['verdict']);
+      setState(() {
+        _where
+          ..clear()
+          ..addAll(where);
+        for (final e in cols.entries) {
+          _cols[e.key] = '${e.value}';
+        }
+        _stepResult = r;
+        if (ok) _done.add(n);
+      });
+      ok ? HapticFeedback.mediumImpact() : HapticFeedback.heavyImpact();
+      return {
+        'verdict': r['verdict'],
+        'say': r['say'],
+        'legs': [
+          for (final l in (r['legs'] as List? ?? const []).cast<Map>())
+            {'what': l['who'], 'status': l['status'], 'where': l['place'], if ('${l['words']}'.isNotEmpty) 'note': l['words']}
+        ],
+        if (cols.isNotEmpty) 'their_columns': cols,
+        if ((r['asks'] as List? ?? const []).isNotEmpty) 'tell_them': [for (final a in (r['asks'] as List).cast<Map>()) a['message']],
+      };
+    } catch (e) {
+      setState(() => _stepResult = {'verdict': 'error', 'say': e is ApiError ? e.message : '$e'});
+      return {'error': e is ApiError ? e.message : '$e'};
+    } finally {
+      if (mounted) setState(() => _checkingStep = false);
+    }
+  }
+
   Future<void> _gotPhoto(Shot p) async {
+    if (_stepPending) {
+      final r = await _validateStep(p);
+      _tell('(The learner took the photo of the board for the step check. Result: ${jsonEncode(r)}. Tell them what it means.)');
+      return;
+    }
     final look = _lookQuestion;
     if (look != null) {
       setState(() {
@@ -638,15 +709,17 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   Widget _camera(Color c) {
     final q = _pending;
-    final what = _lookQuestion != null
+    final what = _stepPending
+        ? 'Hold the phone over the breadboard, so every leg of this step shows'
+        : _lookQuestion != null
         ? 'Hold it up so Pip can see it'
         : q != null
             ? 'Close-up: ${q.message}'
             : _lego
                 ? 'Lay the pieces flat, a little apart'
                 : 'Lay the parts out so I can see them all';
-    final thumbs = _photos.isNotEmpty && q == null && _lookQuestion == null;
-    final checkBtn = q == null && _lookQuestion == null;
+    final thumbs = _photos.isNotEmpty && q == null && _lookQuestion == null && !_stepPending;
+    final checkBtn = q == null && _lookQuestion == null && !_stepPending;
     return kIsWeb ? _cameraBrowser(c, what, thumbs, checkBtn) : _cameraLive(c, what, thumbs, checkBtn);
   }
 
@@ -714,10 +787,14 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                           label: 'Cancel',
                           icon: Icons.close_rounded,
                           color: Pq.muted,
-                          onTap: () => setState(() {
-                            _pending = null;
-                            _lookQuestion = null;
-                          }),
+                          onTap: () {
+                            setState(() {
+                              _pending = null;
+                              _lookQuestion = null;
+                              _stepPending = false;
+                            });
+                            if (_b != null && _stage == Stage.camera) _go(Stage.build);
+                          },
                         )
                       : const SizedBox.shrink(),
             ),
@@ -794,7 +871,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                       color: _photos.isEmpty ? null : Pq.have,
                       onTap: _photos.isEmpty ? null : _checkTapped,
                     )
-                  : _RoundBtn(icon: Icons.close_rounded, label: 'Cancel', onTap: () => setState(() => _pending = null)),
+                  : _RoundBtn(
+                      icon: Icons.close_rounded,
+                      label: 'Cancel',
+                      onTap: () => setState(() {
+                        _pending = null;
+                        _stepPending = false;
+                      })),
             ]),
           ]),
         ),
@@ -993,6 +1076,19 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
               },
             ),
           ),
+        if (_checkable(st)) ...[
+          const SizedBox(height: 14),
+          _StepCheck(
+            result: _stepResultFor == n ? _stepResult : null,
+            busy: _checkingStep && _stepResultFor == n,
+            color: c,
+            onCheck: () {
+              setState(() => _stepPending = true);
+              _openCamera();
+              _tell('(The learner tapped Check my step on step $n: they take a photo of the board; the result comes to you.)');
+            },
+          ),
+        ],
         if (st.hints.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 12),
@@ -1348,4 +1444,69 @@ class _Menu extends StatelessWidget {
           CheckedPopupMenuItem(value: 'level:', checked: Pip.level.isEmpty, child: const Text('Let Pip ask')),
         ],
       );
+}
+
+
+/// The step check on a build step: the button, then what the photo of the board showed.
+class _StepCheck extends StatelessWidget {
+  const _StepCheck({required this.result, required this.busy, required this.color, required this.onCheck});
+
+  final Map<String, dynamic>? result;
+  final bool busy;
+  final Color color;
+  final VoidCallback onCheck;
+
+  @override
+  Widget build(BuildContext context) {
+    if (busy) {
+      return Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(18)),
+        child: const Row(children: [
+          SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.4)),
+          SizedBox(width: 12),
+          Text('Checking your board…', style: TextStyle(fontWeight: FontWeight.w700)),
+        ]),
+      ).animate(onPlay: (a) => a.repeat(reverse: true)).fade(begin: 0.7, end: 1, duration: 700.ms);
+    }
+    final r = result;
+    if (r == null) {
+      return SoftButton(label: 'Check my step', icon: Icons.photo_camera_rounded, color: color, onTap: onCheck);
+    }
+    final v = '${r['verdict']}';
+    final (tone, icon, title) = switch (v) {
+      'pass' => (Pq.have, Icons.check_circle_rounded, 'Spot on!'),
+      'harmless' => (Pq.have, Icons.check_circle_rounded, 'All good'),
+      'moved' => (Pq.swap, Icons.swap_horiz_rounded, 'All connected, in your own columns'),
+      'unsure' => (Pq.check, Icons.help_rounded, "I couldn't see everything"),
+      'wrong' => (Pq.missing, Icons.build_circle_rounded, 'Something to fix'),
+      _ => (Pq.muted, Icons.error_outline_rounded, "The check didn't work"),
+    };
+    final legs = (r['legs'] as List? ?? const []).cast<Map>().where((l) => '${l['words'] ?? ''}'.isNotEmpty).toList();
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: tone.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: tone.withValues(alpha: 0.5), width: 1.5),
+      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Icon(icon, color: tone),
+          const SizedBox(width: 8),
+          Expanded(child: Text(title, style: TextStyle(fontWeight: FontWeight.w800, color: tone, fontSize: 16))),
+        ]),
+        if (v == 'error') Padding(padding: const EdgeInsets.only(top: 6), child: Text('${r['say']}')),
+        for (final l in legs)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text('${'${l['who']}'.replaceFirst('the ', 'The ')}: ${l['words']}', style: const TextStyle(height: 1.3)),
+          ),
+        if (v != 'pass' && v != 'harmless' && v != 'moved') ...[
+          const SizedBox(height: 10),
+          SoftButton(label: v == 'unsure' ? 'Take a closer photo' : 'Fixed it: check again', icon: Icons.refresh_rounded, color: tone, onTap: onCheck),
+        ],
+      ]).animate().fadeIn().slideY(begin: 0.1),
+    );
+  }
 }

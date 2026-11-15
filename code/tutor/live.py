@@ -158,6 +158,19 @@ FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with it
    part to pick up (the short way), then what to do with it. When they say they are done, go on to the next
    step. When they seem stuck, give the step's hints, one at a time. After the last step, call finish_lesson and
    celebrate.{lego}"""
+FLOW_BUILD_CHECK = """
+   Check each step on the board. When they say a step that puts something on the breadboard or the Arduino is done,
+   ask them to hold the phone over the board so you can see it, then call check_step (it checks the step on the screen
+   from a photo: in the phone's browser they tap Take photo, and the result comes to you). Say what it found in your
+   own words:
+   - right (pass): a quick "spot on" and move on;
+   - turned round (harmless): a resistor or wire either way round is fine, say so lightly;
+   - their own columns (moved): that is completely fine, say which columns they used and from then on talk in THEIR
+     columns (the screen already shows them; do not call use_column for these);
+   - something to fix (wrong): say exactly what, kindly, with the column it should share ("the LED's long leg needs to
+     be in the same column as the resistor's leg, your column 14"), wait until they say it is fixed, and check again;
+   - not sure (unsure): ask for a closer photo of that leg, then check again.
+   Steps with nothing to put on the board (uploading code) have nothing to check."""
 FLOW_BUILD_LEGO = """
    The LEGO lesson comes as cards: gather cards (kind gather: "Find the pieces", or "Bag 2: find the pieces") and
    build steps. show_step takes the card number. On a gather card: if it says to open a bag, tell them to open that
@@ -243,6 +256,12 @@ TOOL_DEFS = {
              "parameters": {"type": "OBJECT", "properties": {"question": {"type": "STRING",
                             "description": "exactly what to find out, with what the lesson expects (\"Is this resistor "
                                            "220 ohm: red, red, brown, gold?\")"}}, "required": ["question"]}},
+    "check_step": {"description": "Check the step on the screen from a photo of the board: is every leg and wire end of "
+                                  "this step in the right column, rail or pin? Call it after they say the step is done "
+                                  "and are holding the phone over the board. Takes about 10 seconds. Returns the verdict "
+                                  "(pass, harmless, moved: their own columns, which is fine; wrong: what to fix; unsure: "
+                                  "a closer photo is needed) and what to say.",
+                   "behavior": "NON_BLOCKING", "parameters": {"type": "OBJECT", "properties": {}}},
     "start_building": {"description": "Go to the building steps on the screen (step 1).",
                        "parameters": {"type": "OBJECT", "properties": {}}},
     "show_step": {"description": "Show a step of the lesson on the screen. Call it before you talk about that step.",
@@ -267,7 +286,7 @@ CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "t
                "skip_question", "use_column")
 
 
-LEGO_SKIP = ("show_parts_list", "use_column")  # a LEGO lesson checks each gather card, not a parts list or columns
+LEGO_SKIP = ("show_parts_list", "use_column", "check_step")  # a LEGO lesson checks each gather card, not a parts list or columns
 
 
 def tools(lesson_type):
@@ -420,7 +439,7 @@ def brief(lesson_id, name=None, level=None):
     ask_level = ("" if level else " Then ask how much they have built before and call remember_level with "
                  "beginner, some, or advanced.")
     flow = [FLOW_HELLO_KNOWN.format(name=name, level_q=ask_level) if name else FLOW_HELLO_NEW,
-            FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3, lego="" if arduino else FLOW_BUILD_LEGO.format(
+            FLOW_ARDUINO if arduino else FLOW_LEGO, FLOW_BUILD.format(n=4 if arduino else 3, lego=FLOW_BUILD_CHECK if arduino else FLOW_BUILD_LEGO.format(
                 visual=VISUAL_BOOKLET if les["lesson_id"].endswith("-pdf") else VISUAL_3D))]
     lines = [RULES, "", LEVELS[level] if level else "Their level: not known yet (you will ask). Until then, go at a "
              "beginner's pace.", "", "How the session goes:", *flow, "",

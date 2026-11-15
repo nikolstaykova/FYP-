@@ -406,6 +406,19 @@ class Handler(BaseHTTPRequestHandler):
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),
                                                    body.get('name') or None, body.get('level') or None))
+            if u.path == '/api/validate/step':  # after a build step: a photo of the board, is it right? (validator)
+                from validator import arduino as step_check
+                d = RUNS / ('step-' + time.strftime('%Y%m%d-%H%M%S') + '-' + secrets.token_hex(2))
+                d.mkdir(parents=True, exist_ok=True)
+                photos = []
+                for i, ph in enumerate(body.get('photos') or [], 1):
+                    save_photo(ph['data'], d / f'photo_{i}.jpg', ph.get('crop'))
+                    photos.append(str(d / f'photo_{i}.jpg'))
+                if not photos:
+                    return self.send(400, {'error': 'no photo'})
+                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {})
+                (d / 'result.json').write_text(json.dumps({'lesson': body['lesson'], 'step': body['step'], **res}, indent=1))
+                return self.send(200, res)
             if u.path == '/api/tutor/look':  # Pip's look tool: a photo and a question, Haiku answers
                 from tutor import live
                 d = RUNS / ('look-' + time.strftime('%Y%m%d'))

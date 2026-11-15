@@ -13,4 +13,10 @@ The expected state after step N is every part and join of steps 1..N (assemble(.
 ["connections"]: instances with type, colour and place; joins port to port, e.g. b1 stud.1.1 -> b7 anti.1.2,
 wire1 a -> uno 13). LEGO compares parts, places and joins; Arduino compares nets (position-free), as CircuitQuest.
 Tolerance per part (exact / any colour / any part of a kind, e.g. a minifigure head) decides harmless against wrong.
+
+Files        arduino.py   the Arduino step check (built 15 Nov): every leg of the step as a place (a strip, a rail, a
+                          pin), "same column as ...?" for legs that must share, the learner's own columns kept for
+                          later steps; CircuitQuest's verdicts. Server: POST /api/validate/step; the tutor: check_step;
+                          the app: "Check my step" on each build step.
+             (lego.py: next, the LEGO step check)
 """
