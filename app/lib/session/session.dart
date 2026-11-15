@@ -182,7 +182,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       case 'take_photo':
         if (_stage != Stage.camera) await _openCamera();
         if (kIsWeb && _photos.isNotEmpty && DateTime.now().difference(_lastPhotoAt).inSeconds < 90) {
-          return {'photos': _photos.length, 'note': 'they have already taken it: call check_parts now'};
+          return {'photos': _photos.length, 'note': 'they have already taken ${_photos.length} photo(s): do not ask for more; check when they say they are done or tap Check'};
         }
         if (kIsWeb) return {'photos': _photos.length, 'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
         final p = await _snap();
@@ -520,8 +520,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   Future<void> _gotPhoto(Shot p) async {
     if (_stepPending) {
-      pip.tell('(The learner has just taken the photo of the board: it is being checked now and the result comes to you '
-          'in a few seconds. Do not ask for another photo; say something short while you wait, or nothing.)', now: true);
       final r = await _validateStep(p);
       _tell('(The step check of the photo they took: ${jsonEncode(r)}. Tell them what it means.)');
       return;
@@ -532,8 +530,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         _lookQuestion = null;
         _working = 'Having a look…';
       });
-      pip.tell('(The learner has just taken the photo you asked for: you get the answer in a few seconds. Do not ask '
-          'for it again.)', now: true);
       Map<String, dynamic> r;
       try {
         r = await _api.look(s.id, p, look);
@@ -562,8 +558,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     }
     setState(() => _photos.add(p));
     _lastPhotoAt = DateTime.now();
-    pip.tell('(The learner has just taken a photo of the parts: ${_photos.length} so far. Do not ask for it again: '
-        'call check_parts when they are ready.)', now: true);
+    _tell('(The learner added a photo of the parts: ${_photos.length} so far. They may take more: do not check yet, '
+        'and do not ask for another photo. Wait until they tap Check or say they are done.)');
   }
 
   /// The phone's own camera app: full screen, its autofocus, full quality.
@@ -1111,6 +1107,14 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             result: _stepResultFor == n ? _stepResult : null,
             busy: _checkingStep && _stepResultFor == n,
             color: c,
+            onSkip: n >= b.steps.length
+                ? null
+                : () {
+                    _done.add(n);
+                    _showStep(n + 1);
+                    _tell('(The learner chose to carry on without fixing or checking step $n: the screen shows step '
+                        '${n + 1}. Teach it, and do not bring up the check of step $n again.)');
+                  },
             onCheck: () {
               setState(() => _stepPending = true);
               _openCamera();
@@ -1478,12 +1482,13 @@ class _Menu extends StatelessWidget {
 
 /// The step check on a build step: the button, then what the photo of the board showed.
 class _StepCheck extends StatelessWidget {
-  const _StepCheck({required this.result, required this.busy, required this.color, required this.onCheck});
+  const _StepCheck({required this.result, required this.busy, required this.color, required this.onCheck, this.onSkip});
 
   final Map<String, dynamic>? result;
   final bool busy;
   final Color color;
   final VoidCallback onCheck;
+  final VoidCallback? onSkip; // carry on anyway: the check is help, never a requirement
 
   @override
   Widget build(BuildContext context) {
@@ -1533,7 +1538,10 @@ class _StepCheck extends StatelessWidget {
           ),
         if (v != 'pass' && v != 'harmless' && v != 'moved') ...[
           const SizedBox(height: 10),
-          SoftButton(label: v == 'unsure' ? 'Take a closer photo' : 'Fixed it: check again', icon: Icons.refresh_rounded, color: tone, onTap: onCheck),
+          Wrap(spacing: 8, runSpacing: 8, children: [
+            SoftButton(label: v == 'unsure' ? 'Take a closer photo' : 'Fixed it: check again', icon: Icons.refresh_rounded, color: tone, onTap: onCheck),
+            if (onSkip != null) SoftButton(label: 'Carry on anyway', icon: Icons.skip_next_rounded, color: Pq.muted, onTap: onSkip),
+          ]),
         ],
       ]).animate().fadeIn().slideY(begin: 0.1),
     );
