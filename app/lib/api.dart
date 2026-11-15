@@ -146,14 +146,11 @@ class Api {
 
   /// After a build step: photos of the board, and is every leg where it should be? (code/validator)
   /// state: the learner's places so far ({"where": {lesson place: theirs}}), sent back updated.
-  /// second: a closer photo after an unsure check (then the bigger model may look too).
-  Future<Map<String, dynamic>> validateStep(String lesson, int step, List<Shot> photos, Map<String, dynamic> state,
-          {bool second = false}) async =>
+  Future<Map<String, dynamic>> validateStep(String lesson, int step, List<Shot> photos, Map<String, dynamic> state) async =>
       (await _post('/api/validate/step', {
         'lesson': lesson,
         'step': step,
         'state': state,
-        'second': second,
         'photos': [for (final p in photos) {'data': _dataUrl(p.bytes), 'crop': ?p.cropOrNull}],
       })) as Map<String, dynamic>;
 

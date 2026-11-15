@@ -476,7 +476,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Future<Map<String, dynamic>> _validateStep(Shot photo) async {
     final n = _i + 1;
     if (_checkingStep) return {'status': 'already checking a photo of this step'};
-    final second = _stepResultFor == n && _stepResult?['verdict'] == 'unsure';
     setState(() {
       _stepPending = false;
       _checkingStep = true;
@@ -485,7 +484,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     });
     _go(Stage.build);
     try {
-      final r = await _api.validateStep(s.id, n, [photo], {'where': _where}, second: second);
+      final r = await _api.validateStep(s.id, n, [photo], {'where': _where});
       final where = ((r['state'] as Map?)?['where'] as Map?)?.cast<String, dynamic>() ?? {};
       final cols = (r['columns'] as Map?)?.cast<String, dynamic>() ?? {};
       final ok = const ['pass', 'harmless', 'moved'].contains(r['verdict']);

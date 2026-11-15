@@ -363,10 +363,9 @@ def _asks(res):
     return out
 
 
-def check(lesson_id, step, photos, state=None, second=False):
-    """The whole check of one step: plan, Haiku's look, the verdict. A leg Haiku cannot read asks the learner for a
-    closer photo (a few seconds); only on that closer photo (`second`: the step was unsure before) does Opus look at
-    the legs Haiku still cannot read (Opus adds 7-13 s and about 2.5 cents, so not on every check).
+def check(lesson_id, step, photos, state=None):
+    """The whole check of one step: plan, Haiku's look, the verdict. The legs Haiku cannot read go straight to Opus,
+    on the same photo (no retake); only a leg Opus cannot read either asks the learner for a closer photo.
     Returns the verdict with `asks` (what to tell or ask the learner), `say` (for the tutor) and the cost."""
     p = plan(lesson_id, step)
     if not p["legs"]:
@@ -376,7 +375,7 @@ def check(lesson_id, step, photos, state=None, second=False):
     steps = [{"what": "step check", **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
-    if unsure and second:  # the closer photo, and Haiku still cannot tell: the bigger model, only those legs
+    if unsure:  # the same photo, the bigger model, only those legs
         more, moved2, st2 = look(photos, p, state, model=SECOND, keys=unsure)
         steps.append({"what": "step check, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
         readings.update(more)
