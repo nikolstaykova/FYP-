@@ -32,7 +32,9 @@ import json
 import re
 import sys
 
-FIRST = "claude-haiku-5-5"
+# Testing Opus first (15 Nov): Haiku miscounted a column by one and was sure of it (step-20261115-213655-9d61:
+# 14 for 13, twice), so it never asked Opus. Back to Haiku -> Opus once the photos are cropped and zoomed.
+FIRST = "claude-opus-5-5"
 SECOND = "claude-opus-5-5"
 RAILS = {"tp": "the top + rail", "tn": "the top - rail", "bp": "the bottom + rail", "bn": "the bottom - rail"}
 LEG = {"A": "long leg (+)", "C": "short leg (-)", "1": "one leg", "2": "other leg", "a": "one end", "b": "other end"}
@@ -401,7 +403,7 @@ def check(lesson_id, step, photos, state=None):
     steps = [{"what": "step check", **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
-    if unsure:  # the same photo, the bigger model, only those legs
+    if unsure and SECOND != FIRST:  # the same photo, the bigger model, only those legs
         more, moved2, st2 = look(photos, p, state, model=SECOND, keys=unsure)
         steps.append({"what": "step check, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
         readings.update(more)
