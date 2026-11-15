@@ -74,7 +74,7 @@ def test_what_cannot_be_seen_is_asked_about():
     p = A.plan("blink", STEP_LED)
     res = A.judge(p, {"L1": leg("L1", same=True), "L2": {"key": "L2", "sure": False, "why": "hidden behind the LED"}}, AS_LESSON)
     assert res["verdict"] == "unsure"
-    assert A._asks(res)[0]["kind"] == "closeup"
+    assert A._asks(res)[0]["kind"] == "tell"  # when the photo cannot show it, the learner says where it is
 
 
 def test_a_steps_own_words_go_into_the_prompt():
@@ -101,3 +101,12 @@ def test_a_model_that_contradicts_itself_is_not_trusted():
 def test_the_question_does_not_lead_the_model():
     q = A.prompt(A.plan("blink", STEP_LED), AS_LESSON)
     assert "must be in the SAME column" not in q and '"offset"' in q
+
+
+def test_what_the_learner_says_is_judged_like_a_photo():
+    """The photo could not show the LED's short leg; they say "column 18": accepted, and kept for later steps."""
+    readings = {"L1": leg("L1", offset=0, column=14, half="top"), "L2": {"key": "L2", "sure": False}}
+    res = A.told("blink", STEP_LED, AS_LESSON, readings, {"L2": {"column": 18, "half": "top"}})
+    assert res["verdict"] == "moved" and res["state"]["where"]["15t"] == "18t"
+    taken = A.told("blink", STEP_LED, AS_LESSON, readings, {"L2": {"column": 10, "half": "top"}})
+    assert taken["verdict"] == "wrong"  # column 10 already holds the resistor's other leg

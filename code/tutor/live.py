@@ -70,7 +70,8 @@ How you talk:
   them). Don't re-explain a step they have not asked about again.
 - They are in charge. If they want to skip something ("skip", "no", "not now", "later", "move on", "next", "I'll do
   it myself"), say a quick "sure" and do what they asked: go on to the next thing, and never bring up what they
-  skipped again (no "are you sure?", no asking a second time). Checks and photos are help, never a requirement.
+  skipped again (no "are you sure?", no asking a second time). Photos of the parts are help and can be skipped. The
+  check after a build step is the one exception: it cannot be skipped (see Build).
 - Only move on when they clearly say they have done it ("done", "it's in", "next", "okay, what now?"). A question,
   a worry, something you could not follow, or "I'm still on the last bit" means you stay where you are: answer it,
   then ask again. If you are not sure whether they are done, ask ("Is the LED in?"). Never skip ahead.
@@ -171,19 +172,21 @@ FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with it
    step. When they seem stuck, give the step's hints, one at a time. After the last step, call finish_lesson and
    celebrate.{lego}"""
 FLOW_BUILD_CHECK = """
-   Checking a step on the board is OPTIONAL help. When they say a step that puts something on the breadboard or the
-   Arduino is done, offer it once in a few words ("Want me to check it? Just hold the phone over the board."). If they
-   say yes, call check_step (in the phone's browser they tap Take photo, and the result comes to you: do not call it
-   again or ask for the photo again meanwhile, and never say how the step looks until the result has come). If they say no, skip, or simply go on, go to the next step and do not
-   offer again for that step. Say what the check found in your own words, briefly:
+   Every step that puts something on the breadboard or the Arduino is CHECKED before the next one: it cannot be
+   skipped (a wrong column now means a circuit that does not work later). When they say it is done, ask them to hold
+   the phone over the board and call check_step (in the phone's browser they tap Take photo, and the result comes to
+   you: do not call it again or ask for the photo again meanwhile, and never say how the step looks until the result
+   has come). If they want to skip it, say kindly, once, that this check catches mistakes now, and ask for the photo.
+   Do not move on until the check says pass, harmless or moved. Say what it found in your own words, briefly:
    - right (pass): a quick "spot on" and move on;
    - turned round (harmless): a resistor or wire either way round is fine, say so lightly;
    - their own columns (moved): that is completely fine, say which columns they used and from then on talk in THEIR
      columns (the screen already shows them; do not call use_column for these);
    - something to fix (wrong): say exactly what, once, kindly, with the column it should share ("the LED's long leg
-     needs to be in the same column as the resistor's leg, your column 14"). If they fix it they may ask you to check
-     again; if they want to carry on anyway, that is their choice: move on without arguing;
-   - not sure (unsure): say which leg you could not see; offer one closer photo; if they'd rather not, move on.
+     needs to be in the same column as the resistor's leg, your column 14"); when they say it is fixed, check again;
+   - not sure (unsure): the photo could not show some legs, even to the bigger model. Then ask them to TELL you where
+     each of those legs is ("Which column is the LED's short leg in, and is it on the top half?"), and call
+     tell_places with what they say (the keys from the check). It is judged like a photo; say the result.
    Steps with nothing to put on the board (uploading code) have nothing to check."""
 FLOW_BUILD_LEGO = """
    The LEGO lesson comes as cards: gather cards (kind gather: "Find the pieces", or "Bag 2: find the pieces") and
@@ -276,6 +279,17 @@ TOOL_DEFS = {
                                   "(pass, harmless, moved: their own columns, which is fine; wrong: what to fix; unsure: "
                                   "a closer photo is needed) and what to say.",
                    "behavior": "NON_BLOCKING", "parameters": {"type": "OBJECT", "properties": {}}},
+    "tell_places": {"description": "When the step check could not see a leg even after a good photo: what the learner "
+                                   "TELLS you about where it is (\"the short leg is in column 18, top half\"). It is "
+                                   "judged exactly like a photo. Use the leg keys the check gave you.",
+                    "parameters": {"type": "OBJECT", "properties": {"places": {"type": "ARRAY", "items": {
+                        "type": "OBJECT", "properties": {
+                            "key": {"type": "STRING", "description": "the leg's key from the check (L1, L2...)"},
+                            "column": {"type": "INTEGER"},
+                            "half": {"type": "STRING", "enum": ["top", "bottom"]},
+                            "pin": {"type": "STRING", "description": "an Arduino pin, as its label says (13, GND...)"},
+                            "rail": {"type": "STRING", "description": "top +, top -, bottom + or bottom -"}},
+                        "required": ["key"]}}}, "required": ["places"]}},
     "start_building": {"description": "Go to the building steps on the screen (step 1).",
                        "parameters": {"type": "OBJECT", "properties": {}}},
     "show_step": {"description": "Show a step of the lesson on the screen. Call it before you talk about that step.",
@@ -300,7 +314,7 @@ CHECK_TOOLS = ("show_parts_list", "open_camera", "take_photo", "check_parts", "t
                "skip_question", "use_column")
 
 
-LEGO_SKIP = ("show_parts_list", "use_column", "check_step")  # a LEGO lesson checks each gather card, not a parts list or columns
+LEGO_SKIP = ("show_parts_list", "use_column", "check_step", "tell_places")  # a LEGO lesson checks each gather card, not a parts list or columns
 
 
 def tools(lesson_type):

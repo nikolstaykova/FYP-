@@ -154,6 +154,17 @@ class Api {
         'photos': [for (final p in photos) {'data': _dataUrl(p.bytes), 'crop': ?p.cropOrNull}],
       })) as Map<String, dynamic>;
 
+    /// The legs a photo could not show: where the learner says they are, judged like a photo.
+  Future<Map<String, dynamic>> validateTold(String lesson, int step, Map<String, dynamic> state,
+          Map<String, dynamic> readings, Map<String, dynamic> places) async =>
+      (await _post('/api/validate/told', {
+        'lesson': lesson,
+        'step': step,
+        'state': state,
+        'readings': readings,
+        'places': places,
+      })) as Map<String, dynamic>;
+
     /// Pip looks something up in the lesson (lesson_info, step_info, part_info).
   Future<dynamic> lookup(String lesson, String tool, Map<String, dynamic> args) async =>
       _post('/api/tutor/lookup', {'lesson': lesson, 'tool': tool, 'args': args});

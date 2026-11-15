@@ -406,6 +406,10 @@ class Handler(BaseHTTPRequestHandler):
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),
                                                    body.get('name') or None, body.get('level') or None))
+            if u.path == '/api/validate/told':  # the legs a photo could not show: what the learner says about them
+                from validator import arduino as step_check
+                return self.send(200, step_check.told(body['lesson'], body['step'], body.get('state') or {},
+                                                      body.get('readings') or {}, body.get('places') or {}))
             if u.path == '/api/validate/step':  # after a build step: a photo of the board, is it right? (validator)
                 from validator import arduino as step_check
                 d = RUNS / ('step-' + time.strftime('%Y%m%d-%H%M%S') + '-' + secrets.token_hex(2))

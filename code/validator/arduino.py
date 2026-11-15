@@ -330,7 +330,7 @@ def _run(plan_, readings, where0, order):
         if place and status in ("ok", "moved") and x["kind"] != "part":
             where[x["lesson"]] = place
             used[place] = x["lesson"]
-        out.append({"key": x["key"], "leg": x["leg"], "who": x["who"], "status": status,
+        out.append({"key": x["key"], "leg": x["leg"], "who": x["who"], "kind": x["kind"], "status": status,
                     "place": say_place(x["kind"], place) if place else None, "words": words})
     return out, where
 
@@ -384,8 +384,8 @@ def _asks(res):
     out = []
     for r in res["legs"]:
         if r["status"] == "unsure":
-            out.append({"key": r["key"], "kind": "closeup",
-                        "message": f"I can't quite see {r['who']}. Can you take a closer photo of where it goes in?"})
+            out.append({"key": r["key"], "kind": "tell",
+                        "message": f"I can't see {r['who']} clearly. Which column is it in, and on which half?"})
         elif r["status"] == "wrong":
             out.append({"key": r["key"], "kind": "fix", "message": f"{r['who'][0].upper() + r['who'][1:]}: {r['words']}."})
     return out
@@ -417,7 +417,28 @@ def check(lesson_id, step, photos, state=None):
            "wrong": "Something needs fixing: " + "; ".join(f"{r['who']}: {r['words']}" for r in res["legs"] if r["status"] == "wrong"),
            }[res["verdict"]]
     return {**res, "asks": _asks(res), "moved_earlier": moved[:5], "say": say, "step": p["step"], "n": p["n"],
-            "steps": steps, "cost_usd": round(sum(s.get("cost_usd") or 0 for s in steps), 6)}
+            "readings": readings, "steps": steps, "cost_usd": round(sum(s.get("cost_usd") or 0 for s in steps), 6)}
+
+
+def told(lesson_id, step, state, readings, places):
+    """What the learner SAYS about the legs the photo could not show ("the short leg is in column 18"), judged exactly
+    as a reading of the photo: added to the photo's readings and the step judged again (a column already taken, or
+    one that should be shared and is not, is still caught). places: {leg key: {"column", "half"} or {"pin"} or
+    {"rail"}}. Returns the same shape as check()."""
+    p = plan(lesson_id, step)
+    readings = {k: dict(v) for k, v in (readings or {}).items()}
+    for k, v in (places or {}).items():
+        if k in {x["key"] for x in p["legs"]}:
+            readings[k] = {"key": k, **{f: v.get(f) for f in ("column", "half", "rail", "pin") if v.get(f) not in (None, "")},
+                           "sure": True, "by": "the learner said"}
+    res = judge(p, readings, state)
+    words = "; ".join(f"{r['who']}: {r['words']}" for r in res["legs"] if r["status"] in ("wrong", "unsure"))
+    say = {"pass": "From what they told you, everything in this step is in the right place.",
+           "harmless": "From what they told you, it's all right.",
+           "moved": "From what they told you, it's connected right, in their own columns.",
+           "unsure": "Still not settled: " + words, "wrong": "From what they told you, something needs fixing: " + words}[res["verdict"]]
+    return {**res, "asks": _asks(res), "say": say, "step": p["step"], "n": p["n"], "readings": readings, "steps": [],
+            "cost_usd": 0, "from": "the learner"}
 
 
 # ---- a lesson's own words for a step's check --------------------------------------------------------------------

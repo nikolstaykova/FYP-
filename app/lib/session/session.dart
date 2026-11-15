@@ -85,6 +85,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   final Map<String, dynamic> _where = {}; // the learner's places so far: lesson place -> theirs ("15t" -> "16t")
   bool _stepPending = false; // the browser: a step check waits for the learner's photo
   bool _checkingStep = false;
+  final Set<int> _passed = {}; // build steps whose check passed: the next step waits for it
   Map<String, dynamic>? _stepResult; // the last step check, shown on its step
   int? _stepResultFor;
   DateTime _lastPhotoAt = DateTime.fromMillisecondsSinceEpoch(0); // the last photo of the parts the learner took
@@ -284,10 +285,23 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         final shot = await _snap();
         if (shot == null) return {'error': 'the camera is not ready; try again'};
         return _validateStep(shot);
+      case 'tell_places':
+        final places = <String, dynamic>{
+          for (final x in (args['places'] as List? ?? const []).cast<Map>())
+            '${x['key']}': {for (final f in const ['column', 'half', 'pin', 'rail']) if (x[f] != null) f: x[f]}
+        };
+        if (places.isEmpty) return {'error': 'give the leg keys and where they are'};
+        return _tellPlaces(places);
       case 'start_building':
         return {'step': _showStep(1), 'steps': _b?.steps.length ?? 0};
       case 'show_step':
-        return {'screen_shows_step': _showStep(int.tryParse('${args['n']}') ?? 1)};
+        final want = int.tryParse('${args['n']}') ?? 1;
+        final stop = _uncheckedBefore(want);
+        if (stop != null) {
+          _showStep(stop);
+          return {'screen_shows_step': stop, 'note': 'step $stop has not been checked yet: it must be checked (check_step) before going on'};
+        }
+        return {'screen_shows_step': _showStep(want)};
       case 'lesson_info' || 'step_info' || 'part_info':
         try {
           final r = await _api.lookup(s.id, name, args);
@@ -473,9 +487,21 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _checkable(LessonStep st) => !_lego && !st.isGather && st.kind != 'upload' && st.parts.isNotEmpty;
 
   /// The step check: the photo to the server, the verdict on the step card, their columns from now on.
-  Future<Map<String, dynamic>> _validateStep(Shot photo) async {
+  Future<Map<String, dynamic>> _validateStep(Shot photo) async =>
+      _runStepCheck(() => _api.validateStep(s.id, _i + 1, [photo], {'where': _where}));
+
+  /// What the learner says about the legs the photo could not show, judged like a photo.
+  Future<Map<String, dynamic>> _tellPlaces(Map<String, dynamic> places) async {
+    final last = _stepResultFor == _i + 1 ? _stepResult : null;
+    final readings = ((last?['readings'] as Map?) ?? const {}).cast<String, dynamic>();
+    final before = ((last?['before'] as Map?) ?? {'where': Map<String, dynamic>.of(_where)}).cast<String, dynamic>();
+    return _runStepCheck(() => _api.validateTold(s.id, _i + 1, before, readings, places));
+  }
+
+  Future<Map<String, dynamic>> _runStepCheck(Future<Map<String, dynamic>> Function() call) async {
     final n = _i + 1;
-    if (_checkingStep) return {'status': 'already checking a photo of this step'};
+    if (_checkingStep) return {'status': 'already checking this step'};
+    final before = {'where': Map<String, dynamic>.of(_where)}; // the places before this step (for a told answer)
     setState(() {
       _stepPending = false;
       _checkingStep = true;
@@ -484,19 +510,22 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     });
     _go(Stage.build);
     try {
-      final r = await _api.validateStep(s.id, n, [photo], {'where': _where});
+      final r = {...await call(), 'before': before};
       final where = ((r['state'] as Map?)?['where'] as Map?)?.cast<String, dynamic>() ?? {};
       final cols = (r['columns'] as Map?)?.cast<String, dynamic>() ?? {};
       final ok = const ['pass', 'harmless', 'moved'].contains(r['verdict']);
       setState(() {
-        _where
-          ..clear()
-          ..addAll(where);
-        for (final e in cols.entries) {
-          _cols[e.key] = '${e.value}';
+        if (ok) {  // only a step that passed changes the learner's places
+          _where
+            ..clear()
+            ..addAll(where);
+          for (final e in cols.entries) {
+            _cols[e.key] = '${e.value}';
+          }
+          _passed.add(n);
+          _done.add(n);
         }
         _stepResult = r;
-        if (ok) _done.add(n);
       });
       ok ? HapticFeedback.mediumImpact() : HapticFeedback.heavyImpact();
       return {
@@ -504,10 +533,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         'say': r['say'],
         'legs': [
           for (final l in (r['legs'] as List? ?? const []).cast<Map>())
-            {'what': l['who'], 'status': l['status'], 'where': l['place'], if ('${l['words']}'.isNotEmpty) 'note': l['words']}
+            {'key': l['key'], 'what': l['who'], 'status': l['status'], 'where': l['place'],
+              if ('${l['words']}'.isNotEmpty) 'note': l['words']}
         ],
-        if (cols.isNotEmpty) 'their_columns': cols,
+        if (cols.isNotEmpty && ok) 'their_columns': cols,
         if ((r['asks'] as List? ?? const []).isNotEmpty) 'tell_them': [for (final a in (r['asks'] as List).cast<Map>()) a['message']],
+        if (r['verdict'] == 'unsure') 'next': 'ask them where those legs are, then call tell_places with the keys',
       };
     } catch (e) {
       setState(() => _stepResult = {'verdict': 'error', 'say': e is ApiError ? e.message : '$e'});
@@ -515,6 +546,16 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     } finally {
       if (mounted) setState(() => _checkingStep = false);
     }
+  }
+
+  /// The first build step that must still be checked before going past it (null: none before `n`).
+  int? _uncheckedBefore(int n) {
+    final b = _b;
+    if (b == null) return null;
+    for (var k = 1; k < n && k <= b.steps.length; k++) {
+      if (_checkable(b.steps[k - 1]) && !_passed.contains(k)) return k;
+    }
+    return null;
   }
 
   Future<void> _gotPhoto(Shot p) async {
@@ -987,6 +1028,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     return Stack(children: [
       ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 110), children: [
         _Dots(steps: b.steps, at: _i, done: _done, lego: _lego, color: c, onTap: (k) {
+          final stop = _uncheckedBefore(k);
+          if (stop != null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Step $stop needs its check first.')));
+            k = stop;
+          }
           _showStep(k);
           _tell('(The learner opened ${_lego ? 'card' : 'step'} $k on the screen.)');
         }),
@@ -1106,14 +1152,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             result: _stepResultFor == n ? _stepResult : null,
             busy: _checkingStep && _stepResultFor == n,
             color: c,
-            onSkip: n >= b.steps.length
-                ? null
-                : () {
-                    _done.add(n);
-                    _showStep(n + 1);
-                    _tell('(The learner chose to carry on without fixing or checking step $n: the screen shows step '
-                        '${n + 1}. Teach it, and do not bring up the check of step $n again.)');
-                  },
+            onTell: (places) async {
+              final r = await _tellPlaces(places);
+              _tell('(The learner typed where the legs are for step $n: ${jsonEncode(r)}. Tell them what it means.)');
+            },
             onCheck: () {
               setState(() => _stepPending = true);
               _openCamera();
@@ -1178,10 +1220,17 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         ],
         Expanded(
           child: BigButton(
-            label: n == b.steps.length ? 'Finish' : find ? 'Got them: build' : 'Done: next',
+            label: _checkable(st) && !_passed.contains(n) ? 'Done: check it' : n == b.steps.length ? 'Finish' : find ? 'Got them: build' : 'Done: next',
             icon: n == b.steps.length ? Icons.emoji_events_rounded : Icons.arrow_forward_rounded,
             color: c,
             onTap: () {
+              if (_checkable(st) && !_passed.contains(n)) {  // the check comes first: it cannot be skipped
+                setState(() => _stepPending = true);
+                _openCamera();
+                _tell('(The learner tapped Next on step $n, which has not been checked yet: they are taking the photo '
+                    'of the board now; the result comes to you.)');
+                return;
+              }
               _done.add(n);
               if (n >= b.steps.length) {
                 runTool('finish_lesson', {});
@@ -1481,13 +1530,13 @@ class _Menu extends StatelessWidget {
 
 /// The step check on a build step: the button, then what the photo of the board showed.
 class _StepCheck extends StatelessWidget {
-  const _StepCheck({required this.result, required this.busy, required this.color, required this.onCheck, this.onSkip});
+  const _StepCheck({required this.result, required this.busy, required this.color, required this.onCheck, required this.onTell});
 
   final Map<String, dynamic>? result;
   final bool busy;
   final Color color;
   final VoidCallback onCheck;
-  final VoidCallback? onSkip; // carry on anyway: the check is help, never a requirement
+  final Future<void> Function(Map<String, dynamic> places) onTell; // where the learner says the unseen legs are
 
   @override
   Widget build(BuildContext context) {
@@ -1537,12 +1586,109 @@ class _StepCheck extends StatelessWidget {
           ),
         if (v != 'pass' && v != 'harmless' && v != 'moved') ...[
           const SizedBox(height: 10),
-          Wrap(spacing: 8, runSpacing: 8, children: [
-            SoftButton(label: v == 'unsure' ? 'Take a closer photo' : 'Fixed it: check again', icon: Icons.refresh_rounded, color: tone, onTap: onCheck),
-            if (onSkip != null) SoftButton(label: 'Carry on anyway', icon: Icons.skip_next_rounded, color: Pq.muted, onTap: onSkip),
-          ]),
+          if (v == 'unsure')
+            _TellWhere(legs: (r['legs'] as List? ?? const []).cast<Map>().where((l) => l['status'] == 'unsure').toList(), onTell: onTell),
+          SoftButton(label: v == 'unsure' ? 'Or take another photo' : 'Fixed it: check again', icon: Icons.refresh_rounded, color: tone, onTap: onCheck),
         ],
       ]).animate().fadeIn().slideY(begin: 0.1),
+    );
+  }
+}
+
+
+/// The legs the photo could not show: the learner types where they are (column and half, or the Arduino pin).
+class _TellWhere extends StatefulWidget {
+  const _TellWhere({required this.legs, required this.onTell});
+
+  final List<Map> legs;
+  final Future<void> Function(Map<String, dynamic> places) onTell;
+
+  @override
+  State<_TellWhere> createState() => _TellWhereState();
+}
+
+class _TellWhereState extends State<_TellWhere> {
+  final Map<String, TextEditingController> _text = {};
+  final Map<String, String> _half = {};
+  bool _busy = false;
+
+  @override
+  void dispose() {
+    for (final c in _text.values) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 6),
+            child: Text("I couldn't see these. Where are they?", style: TextStyle(fontWeight: FontWeight.w700)),
+          ),
+          for (final l in widget.legs) _row(l),
+          const SizedBox(height: 4),
+          SoftButton(
+            label: _busy ? 'Checking…' : 'That\'s where they are',
+            icon: Icons.check_rounded,
+            color: Pq.have,
+            onTap: _busy
+                ? null
+                : () async {
+                    final places = <String, dynamic>{};
+                    for (final l in widget.legs) {
+                      final k = '${l['key']}', t = _text[k]?.text.trim() ?? '';
+                      if (t.isEmpty) continue;
+                      places[k] = l['kind'] == 'pin'
+                          ? {'pin': t}
+                          : l['kind'] == 'rail'
+                              ? {'rail': t}
+                              : {'column': int.tryParse(t), 'half': _half[k] ?? 'top'};
+                    }
+                    if (places.isEmpty) return;
+                    setState(() => _busy = true);
+                    await widget.onTell(places);
+                    if (mounted) setState(() => _busy = false);
+                  },
+          ),
+        ]),
+      );
+
+  Widget _row(Map l) {
+    final k = '${l['key']}';
+    final c = _text.putIfAbsent(k, () => TextEditingController());
+    final kind = '${l['kind']}';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(children: [
+        Expanded(child: Text('${l['who']}'.replaceFirst('the ', 'The '), style: const TextStyle(height: 1.2))),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: kind == 'strip' ? 64 : 90,
+          child: TextField(
+            controller: c,
+            keyboardType: kind == 'strip' ? TextInputType.number : TextInputType.text,
+            decoration: InputDecoration(
+              isDense: true,
+              hintText: kind == 'pin' ? 'pin' : kind == 'rail' ? 'top -' : 'col',
+              filled: true,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+            ),
+          ),
+        ),
+        if (kind == 'strip') ...[
+          const SizedBox(width: 6),
+          ToggleButtons(
+            isSelected: [(_half[k] ?? 'top') == 'top', _half[k] == 'bottom'],
+            onPressed: (i) => setState(() => _half[k] = i == 0 ? 'top' : 'bottom'),
+            borderRadius: BorderRadius.circular(10),
+            constraints: const BoxConstraints(minHeight: 34, minWidth: 52),
+            children: const [Text('top'), Text('bottom')],
+          ),
+        ],
+      ]),
     );
   }
 }
