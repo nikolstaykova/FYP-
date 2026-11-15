@@ -87,8 +87,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _checkingStep = false;
   Map<String, dynamic>? _stepResult; // the last step check, shown on its step
   int? _stepResultFor;
-  DateTime _stepResultAt = DateTime.fromMillisecondsSinceEpoch(0);
-  Map<String, dynamic>? _stepToldPip; // what check_step gave Pip for it (given again if Pip asks again)
   DateTime _lastPhotoAt = DateTime.fromMillisecondsSinceEpoch(0); // the last photo of the parts the learner took
   Map<String, dynamic>? _lastLook;
   DateTime _lastLookAt = DateTime.fromMillisecondsSinceEpoch(0);
@@ -274,12 +272,14 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         if (_checkingStep) {
           return {'status': 'checking the photo they just took: the result comes to you in a few seconds; do not ask for another photo'};
         }
-        if (_stepResultFor == _i + 1 && _stepToldPip != null && DateTime.now().difference(_stepResultAt).inSeconds < 60) {
-          return {..._stepToldPip!, 'note': 'this is the check of the photo they just took'};
-        }
         setState(() => _stepPending = true);
         await _openCamera();
-        if (kIsWeb) return {'waiting': 'In the browser they take the photo themselves: ask them to tap Take photo (their phone camera opens). The result comes to you as soon as they have.'};
+        if (kIsWeb) {
+          return {
+            'waiting': 'NO PHOTO YET, so there is no result: say nothing about how the step looks. Ask them to tap Take '
+                'photo (their phone camera opens) and wait. The result comes to you as soon as they have taken it.'
+          };
+        }
         await Future<void>.delayed(const Duration(milliseconds: 500));
         final shot = await _snap();
         if (shot == null) return {'error': 'the camera is not ready; try again'};
@@ -499,8 +499,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         if (ok) _done.add(n);
       });
       ok ? HapticFeedback.mediumImpact() : HapticFeedback.heavyImpact();
-      _stepResultAt = DateTime.now();
-      return _stepToldPip = {
+      return {
         'verdict': r['verdict'],
         'say': r['say'],
         'legs': [
@@ -521,7 +520,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Future<void> _gotPhoto(Shot p) async {
     if (_stepPending) {
       final r = await _validateStep(p);
-      _tell('(The step check of the photo they took: ${jsonEncode(r)}. Tell them what it means.)');
+      pip.tell('(The step check of the photo they have just taken: ${jsonEncode(r)}. Tell them what it means.)', now: true);
       return;
     }
     final look = _lookQuestion;

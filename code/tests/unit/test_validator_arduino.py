@@ -80,3 +80,24 @@ def test_what_cannot_be_seen_is_asked_about():
 def test_a_steps_own_words_go_into_the_prompt():
     p = dict(A.plan("blink", STEP_LED), note="The LED is small: look closely at which leg is longer.")
     assert "About this step: The LED is small" in A.prompt(p)
+
+
+def test_one_column_off_is_caught():
+    """The LED's long leg in 13 when it must share the resistor's 14: the model counts one column off."""
+    p = A.plan("blink", STEP_LED)
+    res = A.judge(p, {"L1": leg("L1", offset=-1, column=13, half="top"), "L2": leg("L2", column=15, half="top")}, AS_LESSON)
+    assert res["verdict"] == "wrong" and "column 14" in res["legs"][0]["words"]
+    only_count = A.judge(p, {"L1": leg("L1", offset=-1), "L2": leg("L2", column=15, half="top")}, AS_LESSON)
+    assert only_count["verdict"] == "wrong" and "1 column off" in only_count["legs"][0]["words"]
+
+
+def test_a_model_that_contradicts_itself_is_not_trusted():
+    """It says 'same column' (offset 0) but reads column 13 where the resistor is in 14: unsure, not a pass."""
+    p = A.plan("blink", STEP_LED)
+    res = A.judge(p, {"L1": leg("L1", offset=0, column=13, half="top"), "L2": leg("L2", column=15, half="top")}, AS_LESSON)
+    assert res["legs"][0]["status"] == "unsure" and res["verdict"] == "unsure"
+
+
+def test_the_question_does_not_lead_the_model():
+    q = A.prompt(A.plan("blink", STEP_LED), AS_LESSON)
+    assert "must be in the SAME column" not in q and '"offset"' in q

@@ -156,8 +156,8 @@ For each item below, find that leg (or wire end) in the photos and answer what i
 Count columns from a leg you are sure of when you cannot read the printed number. Do not guess: if you cannot see a
 leg, or cannot tell its column, say so ("sure": false, and "why": one short sentence, at most 15 words). If
 something placed earlier looks pulled out or moved, list it in "moved".{note}
-Answer ONLY with JSON: {{"legs": [{{"key": "L1", "same": null, "column": 0, "half": "", "rail": "", "pin": "", "sure": true, "why": ""}}], "moved": []}}
-("same": true/false only where asked; "half": "top" or "bottom"; "rail": "top +", "top -", "bottom +" or "bottom -";
+Answer ONLY with JSON: {{"legs": [{{"key": "L1", "offset": null, "same": null, "column": 0, "half": "", "rail": "", "pin": "", "sure": true, "why": ""}}], "moved": []}}
+("offset" and "same" only where asked; "half": "top" or "bottom"; "rail": "top +", "top -", "bottom +" or "bottom -";
 "pin": the Arduino label, as printed.)"""
 
 
@@ -187,8 +187,10 @@ def prompt(plan_, state=None):
         elif sh:
             ref = sh["who"] + (" (placed in this step too)" if sh.get("this_step") else "")
             at = "" if sh.get("this_step") else f", which is in {say_place('strip', their(where, 'strip', x['lesson']))}"
-            items.append(f"- {x['key']}: {x['who']}. It must be in the SAME column as {ref}{at}, on the same half. "
-                         "Give \"same\" (true or false), and its \"column\" and \"half\".")
+            items.append(f"- {x['key']}: {x['who']}. Find it and count the columns between it and {ref}{at}. "
+                         "Give its \"column\" and \"half\", and \"offset\": how many columns it is from that leg (0 if "
+                         "it is in exactly the same column; 1 or -1 if it is one column off, towards higher or lower "
+                         "numbers; and so on). One column off is a common mistake, so count the holes carefully.")
         else:
             items.append(f"- {x['key']}: {x['who']}. Which column and which half is it in? (The lesson suggests "
                          f"{say_place('strip', x['lesson'])}, but any free column is fine.) Give \"column\" and \"half\".")
@@ -252,12 +254,30 @@ def _pin_ok(plan_, lesson_pin, read):
     return pin in [str(s) for s in sub.get("stand_ins") or []], ""
 
 
+def _offset(r):
+    """How many columns the model counted from the leg it should share (0 = the same column), or None."""
+    try:
+        return int((r or {}).get("offset"))
+    except (TypeError, ValueError):
+        return None
+
+
 def _judge_one(plan_, x, read, r, where, used):
     """One leg: (status, their place or None, words). status: ok, moved, wrong, unsure."""
     lesson = x["lesson"]
+    off = _offset(r)
     if read is None:
-        if x["kind"] == "strip" and x["shares"] and r and r.get("same") is True:
-            return "ok", their(where, "strip", lesson), ""
+        if x["kind"] == "strip" and x["shares"] and r and r.get("sure") is not False and off is not None:
+            want = where.get(lesson, lesson)
+            if off == 0:
+                return "ok", want, ""
+            m = re.match(r"(\d+)([tb])$", want)
+            got = f"{int(m.group(1)) + off}{m.group(2)}" if m else None
+            return "wrong", got, (f"it should be in the same column as {x['shares']['who']} ({say_place('strip', want)}), "
+                                  f"but it's {abs(off)} column{'s' if abs(off) > 1 else ''} off"
+                                  + (f" (in {say_place('strip', got)})" if got else ""))
+        if x["kind"] == "strip" and x["shares"] and r and r.get("same") is True and off is None:
+            return "ok", where.get(lesson, lesson), ""  # only "same", no column: taken as said
         return "unsure", None, (r or {}).get("why") or "I couldn't see it clearly"
     want = where.get(lesson)
     if x["kind"] == "pin":
@@ -273,9 +293,15 @@ def _judge_one(plan_, x, read, r, where, used):
         if x["shares"]:
             want = want or lesson
             same = (r or {}).get("same")
-            if same is True or (same is None and read == want):
-                return "ok", want, ""
             ref = x["shares"]["who"]
+            if x["kind"] == "strip" and off is not None:
+                agrees = (off == 0) == (read == want)  # the offset and the column read say the same thing
+                if not agrees:
+                    return "unsure", None, f"I can't tell for sure if it's in the same column as {ref}"
+                if off == 0:
+                    return "ok", want, ""
+            elif same is True and read == want or (same is None and read == want):
+                return "ok", want, ""
             return "wrong", read, f"it should be in the same {'column' if x['kind'] == 'strip' else 'rail'} as {ref} ({say_place(x['kind'], want)}), but it's in {say_place(x['kind'], read)}"
         if x["kind"] == "rail" and read[1] != lesson[1]:
             return "wrong", read, f"it should go in a {'+' if lesson[1] == 'p' else '-'} rail, not {say_place('rail', read)}"
