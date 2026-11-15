@@ -45,7 +45,7 @@ class PipLine {
   String text;
 }
 
-const _nonBlocking = {'check_parts', 'take_closeup', 'take_closeup_all', 'look'};
+const _nonBlocking = {'check_parts', 'take_closeup', 'take_closeup_all', 'look', 'check_step'};
 
 /// Tools whose result goes back to Pip in free mode (the others just change the screen).
 const _answerBack = {
@@ -176,11 +176,40 @@ class Pip extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// What the learner did on the screen, or typed.
+  /// What the learner did on the screen, or typed. While Pip is talking it waits: anything sent to Gemini
+  /// mid-sentence cuts Pip off, so it goes when Pip has finished (several taps go together).
   void tell(String text) {
     _active();
     if (!on) return;
+    if (mode == PipMode.live && _talking) {
+      _later.add(text);
+      return;
+    }
     _send(text);
+  }
+
+  final List<String> _later = [];
+  bool _modelTurn = false; // Gemini is still sending this turn (audio may still be coming)
+
+  /// Pip is talking, or about to: its turn is not finished, or its voice is still playing.
+  bool get _talking => _modelTurn || _player.playing;
+
+  void _flushLater() {
+    if (_later.isEmpty || _talking) return;
+    final all = _later.join(' ');
+    _later.clear();
+    _send(all);
+  }
+
+  /// Stop Pip talking now (a tap on the orb): what it was saying is dropped.
+  void hush() {
+    if (mode == PipMode.live) {
+      _player.flush();
+      _modelTurn = false;
+      _set(PipState.listening);
+    } else {
+      _tts.stop();
+    }
   }
 
   void _send(String text) {
@@ -196,6 +225,7 @@ class Pip extends ChangeNotifier {
   void _onTick() {
     if (!on) return;
     if (mode == PipMode.live && state == PipState.speaking && !_player.playing) _set(PipState.listening);
+    if (mode == PipMode.live) _flushLater();
     if (host.finished || host.busy || _player.playing || _speaking || _freeBusy) return;
     final idle = DateTime.now().difference(_lastActive).inSeconds;
     if (_nudged < _nudges.length && idle >= _nudges[_nudged].$1) {
@@ -212,6 +242,7 @@ class Pip extends ChangeNotifier {
   StreamSubscription<Uint8List>? _micSub;
   WebSocketChannel? _ws;
   String? _handle;
+  DateTime _quietUntil = DateTime.fromMillisecondsSinceEpoch(0);
 
   Future<void> _liveStart(String? first) async {
     _player.start();
@@ -227,6 +258,9 @@ class Pip extends ChangeNotifier {
     ));
     _micSub = stream.listen((chunk) {
       if (muted || _ws == null) return;
+      // On the phone's speaker, the mic would hear Pip and Gemini would take it as the learner cutting in: so while
+      // Pip talks (and a moment after), the mic sends nothing. With headphones it always listens (talk over Pip).
+      if (speakers && (_talking || DateTime.now().isBefore(_quietUntil))) return;
       _ws!.sink.add(jsonEncode({
         'realtimeInput': {
           'audio': {'data': base64Encode(chunk), 'mimeType': 'audio/pcm;rate=16000'}
@@ -293,6 +327,7 @@ class Pip extends ChangeNotifier {
         final d = (p as Map)['inlineData'] as Map?;
         if (d?['data'] != null) {
           _player.push(base64Decode(d!['data'] as String));
+          _modelTurn = true;
           _set(PipState.speaking);
         }
       }
@@ -303,9 +338,11 @@ class Pip extends ChangeNotifier {
       }
       final said = (sc['outputTranscription'] as Map?)?['text'] as String?;
       if (said != null && said.isNotEmpty) caption('tutor', said, append: true);
-      if (sc['turnComplete'] == true) {
+      if (sc['turnComplete'] == true || sc['interrupted'] == true) {
         _open = null;
         _lastActive = DateTime.now();
+        _modelTurn = false;
+        _quietUntil = DateTime.now().add(const Duration(milliseconds: 400)); // the room's echo dies down
       }
     }
     final calls = ((m['toolCall'] as Map?)?['functionCalls'] as List?) ?? const [];
@@ -316,7 +353,8 @@ class Pip extends ChangeNotifier {
           'id': fc['id'],
           'name': name,
           'response': {'result': result},
-          if (_nonBlocking.contains(name)) 'scheduling': 'INTERRUPT',
+          // a check's result waits until Pip has finished its sentence (INTERRUPT cut it off mid-word)
+          if (_nonBlocking.contains(name)) 'scheduling': 'WHEN_IDLE',
         };
         _ws?.sink.add(jsonEncode({
           'toolResponse': {

@@ -23,7 +23,7 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 MODEL = "gemini-3.8-live"
-VOICE = "Kore"
+VOICE = "Aoede"  # light and warm ("Kore", the first choice, is Google's "firm" voice: it sounded flat and robotic)
 WS = ("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService."
       "BidiGenerateContentConstrained?access_token=")
 # USD per 1M tokens, on the high side of the published figures (Nov 2026), so the cap is reached early rather than late
@@ -48,8 +48,11 @@ How you talk:
 - Always speak English. If what you hear sounds like another language or makes no sense, it is probably English
   misheard: answer in English, and if you could not follow, just say so like a person would ("Sorry, I didn't
   catch that, could you say it again?"). Never mention languages.
-- Short, natural spoken sentences, one or two at a time. No lists, no headings, no markdown, no ids or codes
-  (never say "step-3", "b11", "r1", "led1:A" or a question key).
+- Talk like a warm, relaxed person chatting across the table, not like a voice assistant reading instructions:
+  natural rhythm, contractions ("it's", "you'll"), little reactions ("oh nice", "ah, okay", "hmm, let me see"),
+  and sentences of different lengths. Two or three sentences at a time is fine; always finish your thought.
+  Don't start every turn the same way (not always "Great!" or their name).
+- No lists, no headings, no markdown, no ids or codes (never say "step-3", "b11", "r1", "led1:A" or a question key).
 - Call parts the short, everyday way: "the resistor", "the LED", "the black wire", "the Arduino". Say a value
   ("220 ohm") only once, while they gather the parts (so they pick the right one out of the box); while building,
   never, unless the lesson has two of that kind to tell apart (a 10k and a 220). A colour only when two look alike. Do not repeat what you have just said, and do not re-list parts they already have.
@@ -511,7 +514,8 @@ def session(lesson_id, resume=None, speakers=False, name=None, level=None):
              "tools": tools(steps(lesson_id)["lesson_type"]),
              "inputAudioTranscription": {}, "outputAudioTranscription": {},
              "realtimeInputConfig": {"automaticActivityDetection": {
-                 "silenceDurationMs": 700, **({"startOfSpeechSensitivity": "START_SENSITIVITY_LOW"} if speakers else {})}},
+                 # 900 ms: a learner pausing mid-sentence is not done yet
+                 "silenceDurationMs": 900, **({"startOfSpeechSensitivity": "START_SENSITIVITY_LOW"} if speakers else {})}},
              "contextWindowCompression": {"slidingWindow": {}},
              "sessionResumption": {"handle": resume} if resume else {}}
     return {"ws": WS + token, "setup": {"setup": setup}, "prices": PRICES, "cap_usd": CAP_USD, "warn_usd": WARN_USD,

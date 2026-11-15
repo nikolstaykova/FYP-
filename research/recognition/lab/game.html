@@ -834,7 +834,7 @@ function onLive(m, first, resumed) {
     runTool(fc.name, fc.args).then(result => {
       if (!T.ws || T.ws.readyState !== 1) return;
       const r = { id: fc.id, name: fc.name, response: { result } };
-      if (NON_BLOCKING.has(fc.name)) r.scheduling = 'INTERRUPT';
+      if (NON_BLOCKING.has(fc.name)) r.scheduling = 'WHEN_IDLE';  // a result waits until Pip has finished its sentence
       T.ws.send(JSON.stringify({ toolResponse: { functionResponses: [r] } }));
     });
   }

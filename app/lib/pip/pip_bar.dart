@@ -33,7 +33,7 @@ class PipBar extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(14, 12, 10, 10),
                 child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                  Bouncy(onTap: pip.on ? null : onStart, child: Orb(state: pip.state)),
+                  Bouncy(onTap: pip.on ? (pip.state == PipState.speaking ? pip.hush : null) : onStart, child: Orb(state: pip.state)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: GestureDetector(
@@ -84,7 +84,7 @@ class PipBar extends StatelessWidget {
         PipState.connecting => 'Pip · connecting…',
         PipState.listening => p.muted ? 'Pip · muted' : 'Pip · listening',
         PipState.thinking => 'Pip · thinking…',
-        PipState.speaking => 'Pip · talking',
+        PipState.speaking => 'Pip · talking (tap me to stop)',
       };
 
   static Color _colour(PipState s) => switch (s) {

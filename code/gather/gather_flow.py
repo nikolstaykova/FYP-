@@ -36,8 +36,22 @@ ANSWER = ('Answer ONLY with JSON: {"objects": [{"name": "", "lesson_part": "", "
           '"photos": [1], "might_replace": "", "replace_note": "", "unsure": ""}]}')
 
 
+def _bands(p):
+    """A resistor's colour bands, worked out from its value (checking known colours is far easier for a model than
+    reading tiny stripes from scratch, often on a blue body)."""
+    if p.get("type") != "resistor":
+        return ""
+    from tutor.lookup import ohms, resistor_bands
+    b = resistor_bands(ohms(p.get("name") or ""))
+    if not b:
+        return ""
+    return (f" (its bands: {', '.join(b[0][:3])}, then a gold band, on a 4-band resistor; or {', '.join(b[1][:4])}, "
+            "then a brown band, on a 5-band one, which often has a blue body. Compare the bands with these colours. "
+            "Kit resistors often sit on a paper strip with the value written on it.)")
+
+
 def lesson_text(rec):
-    parts = "\n".join(f"- {p['type']}: {p['name']} x{p['count']}" for p in rec["parts_list"])
+    parts = "\n".join(f"- {p['type']}: {p['name']} x{p['count']}{_bands(p)}" for p in rec["parts_list"])
     return f"The lesson is \"{rec['name']}\". Its parts list:\n{parts}"
 
 
@@ -57,8 +71,9 @@ def to_seen(objs, extra=()):
 
 
 ASK_FIELD = ('- ask: only when `unsure` is not empty: one short, friendly question to the learner asking for the photo '
-             'that would settle it, as if talking to them ("I can see some resistors, but I can\'t read their colour '
-             'bands. Can you take a close-up of them?"). Otherwise "".')
+             'that would settle it, as if talking to them, with a tip that makes it easy ("I can see some resistors, '
+             'but I can\'t read their colour bands. Can you hold one up close, flat on something white, in good '
+             'light?"). Otherwise "".')
 
 
 def first_look(photos, rec, model=FIRST, small=True):
