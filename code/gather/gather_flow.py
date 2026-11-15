@@ -45,9 +45,11 @@ def _bands(p):
     b = resistor_bands(ohms(p.get("name") or ""))
     if not b:
         return ""
-    return (f" (its bands: {', '.join(b[0][:3])}, then a gold band, on a 4-band resistor; or {', '.join(b[1][:4])}, "
-            "then a brown band, on a 5-band one, which often has a blue body. Compare the bands with these colours. "
-            "Kit resistors often sit on a paper strip with the value written on it.)")
+    return (f" (the lesson's value has the bands {', '.join(b[0][:3])}, then a gold band, on a 4-band resistor; or "
+            f"{', '.join(b[1][:4])}, then a brown band, on a 5-band one, which often has a blue body. Read the bands "
+            "the resistor really has and give its value from them: a different value is common and may still do, so "
+            "never report this value unless those are the colours you see. Kit resistors often sit on a paper strip "
+            "with the value written on it.)")
 
 
 def lesson_text(rec):
