@@ -110,9 +110,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   @override
   bool get finished => _stage == Stage.done;
 
+  late final _life = AppLifecycleListener(onResume: () => pip.wake());
+
   @override
   void initState() {
     super.initState();
+    _life; // wake Pip when the page or app comes back to the front
     pip.addListener(_onPip);
     _load();
   }
@@ -123,6 +126,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   @override
   void dispose() {
+    _life.dispose();
     pip.removeListener(_onPip);
     pip.dispose();
     _cam?.dispose();
@@ -559,6 +563,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   }
 
   Future<void> _gotPhoto(Shot p) async {
+    pip.wake(); // back from the phone's camera app: the browser paused Pip's sound, mic and connection
     if (_stepPending) {
       final r = await _validateStep(p);
       pip.tell('(The step check of the photo they have just taken: ${jsonEncode(r)}. Tell them what it means.)', now: true);

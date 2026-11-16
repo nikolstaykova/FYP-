@@ -247,8 +247,19 @@ class Pip extends ChangeNotifier {
 
   Future<void> _liveStart(String? first) async {
     _player.start();
+    _fails = 0;
     await _openLive(first, resumed: false);
     if (!await _mic.hasPermission()) throw ApiError('Pip needs the microphone: allow it in Settings.');
+    await _micUp();
+  }
+
+  bool _micLive = false;
+
+  Future<void> _micUp() async {
+    await _micSub?.cancel();
+    try {
+      await _mic.stop();
+    } catch (_) {}
     final stream = await _mic.startStream(const RecordConfig(
       encoder: AudioEncoder.pcm16bits,
       sampleRate: 16000,
@@ -257,7 +268,8 @@ class Pip extends ChangeNotifier {
       noiseSuppress: true,
       autoGain: true,
     ));
-    _micSub = stream.listen((chunk) {
+    _micLive = true;
+    _micSub = stream.listen(onDone: () => _micLive = false, onError: (_) => _micLive = false, (chunk) {
       if (muted || _ws == null) return;
       // On the phone's speaker, the mic would hear Pip and Gemini would take it as the learner cutting in: so while
       // Pip talks (and a moment after), the mic sends nothing. With headphones it always listens (talk over Pip).
@@ -270,7 +282,58 @@ class Pip extends ChangeNotifier {
     });
   }
 
+  int _fails = 0; // connections in a row that dropped within seconds
+  DateTime _openedAt = DateTime.now();
+  DateTime _lastNote = DateTime.fromMillisecondsSinceEpoch(0);
+
+  /// Back on the page (from the camera app, or the phone woke up): sound, mic and connection up again.
+  Future<void> wake() async {
+    if (!on || mode != PipMode.live) return;
+    _player.start();
+    if (!_micLive) {
+      try {
+        await _micUp();
+      } catch (_) {}
+    }
+    if (_ws == null && !_reconnecting) _reconnect('back on the page');
+  }
+
+  bool _reconnecting = false;
+
+  void _reconnect(String why) {
+    if (!on || _stopping || _reconnecting) return;
+    final quick = DateTime.now().difference(_openedAt).inSeconds < 8;
+    _fails = quick ? _fails + 1 : 0;
+    if (_fails >= 4) {
+      caption('sys', 'Pip lost its connection ($why). Tap Pip to start again.');
+      stop();
+      return;
+    }
+    if (DateTime.now().difference(_lastNote).inSeconds > 30) {
+      caption('sys', 'Reconnecting…');
+      _lastNote = DateTime.now();
+    }
+    if (_fails >= 2) _handle = null; // resuming keeps failing: a fresh session, told where they are
+    _reconnecting = true;
+    Future.delayed(Duration(milliseconds: 400 * (1 << _fails)), () async {
+      try {
+        if (on) await _openLive(null, resumed: _handle != null);
+      } catch (e) {
+        _reconnecting = false;
+        _reconnect('$e');
+        return;
+      }
+      _reconnecting = false;
+      if (!_micLive) {
+        try {
+          await _micUp();
+        } catch (_) {}
+      }
+    });
+  }
+
   Future<void> _openLive(String? first, {required bool resumed}) async {
+    _openedAt = DateTime.now();
     final s = await _api.tutorSession(host.lessonId,
         resume: _handle, speakers: speakers, name: name.isEmpty ? null : name, level: level.isEmpty ? null : level);
     cap = (s['cap_usd'] as num?)?.toDouble() ?? cap;
@@ -287,15 +350,10 @@ class Pip extends ChangeNotifier {
       },
       onDone: () {
         if (on && !_stopping && identical(ws, _ws)) {
-          caption('sys', 'Reconnecting…');
-          Future.delayed(const Duration(milliseconds: 400), () {
-            if (on) {
-              _openLive(null, resumed: true).catchError((Object e) {
-                caption('sys', 'Could not reconnect: $e');
-                stop();
-              });
-            }
-          });
+          _ws = null;
+          final why = [ws.closeCode, ws.closeReason].where((x) => x != null && '$x'.isNotEmpty).join(' ');
+          debugPrint('pip socket closed: $why');
+          _reconnect(why.isEmpty ? 'the connection closed' : why);
         }
       },
       onError: (Object e) => debugPrint('pip socket: $e'),
@@ -306,8 +364,14 @@ class Pip extends ChangeNotifier {
     if (m.containsKey('setupComplete')) {
       _set(PipState.listening);
       if (!resumed) {
+        final again = lines.any((l) => l.who == 'tutor'); // a fresh session in the middle of the lesson
         _ws?.sink.add(jsonEncode({
-          'realtimeInput': {'text': _opening(first)}
+          'realtimeInput': {
+            'text': again
+                ? '(The connection dropped and came back. Carry on exactly where you were, without greeting them again: '
+                    '${host.situation()})'
+                : _opening(first)
+          }
         }));
       }
     }
