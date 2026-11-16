@@ -236,12 +236,57 @@ def reading_place(x, r):
     return f"{col}{'b' if half.startswith('b') else 't'}"
 
 
-def look(photos, plan_, state=None, model=FIRST, keys=None):
-    """The model's reading of the photos: ({key: answer}, moved, stats). keys: only these legs (a second look)."""
+LOCATE = """This photo shows a breadboard. In this step the learner put in: {parts}.
+Find where those legs go into the board. Give ONE box that contains all those legs where they enter the holes, the
+printed column numbers nearest to them (the numbers along the edge of that half), and a margin of a few columns on
+each side. Coordinates from 0 to 1000 across the image (x, left to right) and down it (y, top to bottom).
+Answer ONLY with JSON: {{"box": [x0, y0, x1, y1]}}"""
+ZOOMED = "This is a zoomed-in crop of the board around this step's parts. "
+
+
+def zoom(photo, plan_, edge=1600):
+    """The photo cropped to this step's parts and enlarged, from the FULL-size photo (16 Nov: on the learner's photos
+    the columns read right went from 60% to 80% with Haiku, 50% to 90% with Opus; research/recognition/step_crop.py).
+    A quick Haiku look finds the box (about 0.05 cents). Returns ((jpeg bytes, media type), cost) or (None, cost)."""
+    import io
+    from PIL import Image, ImageFilter, ImageOps
+    from gather import gather_vlm as vlm
+    parts = sorted({x["who"].split("'s ")[0].replace("the ", "") for x in plan_["legs"]})
+    out, st, _ = vlm.ask(FINDER, [vlm.shrink(photo, 1600, 85)], LOCATE.format(parts=", ".join(parts)),
+                         max_tokens=2500, effort="low")
+    cost = st.get("cost_usd") or 0
+    i, j = out.find("{"), out.rfind("}")
+    try:
+        x0, y0, x1, y1 = [float(v) / 1000 for v in json.loads(out[i:j + 1])["box"]]
+    except Exception:
+        return None, cost
+    im = ImageOps.exif_transpose(Image.open(photo)).convert("RGB")
+    W, H = im.size
+    x0, x1, y0, y1 = x0 * W, x1 * W, y0 * H, y1 * H
+    if x1 - x0 < 10 or y1 - y0 < 10:
+        return None, cost
+    mx, my = 0.15 * (x1 - x0) + 0.02 * W, 0.15 * (y1 - y0) + 0.02 * H  # a margin: the box is only roughly right
+    c = im.crop((int(max(0, x0 - mx)), int(max(0, y0 - my)), int(min(W, x1 + mx)), int(min(H, y1 + my))))
+    s = edge / max(c.size)
+    if s > 1:
+        c = c.resize((round(c.width * s), round(c.height * s)), Image.LANCZOS)
+    c = c.filter(ImageFilter.UnsharpMask(radius=2, percent=80, threshold=2))
+    buf = io.BytesIO()
+    c.save(buf, "JPEG", quality=90)
+    return (buf.getvalue(), "image/jpeg"), cost
+
+
+FINDER = "claude-haiku-5-5"
+
+
+def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
+    """The model's reading of the photos: ({key: answer}, moved, stats). keys: only these legs (a second look).
+    zoomed: the crop around the step's parts (zoom()); without one, the whole photo."""
     from gather import gather_vlm as vlm
     p = dict(plan_, legs=[x for x in plan_["legs"] if not keys or x["key"] in keys])
-    images = [vlm.shrink(ph, 1600, 85) for ph in photos]  # columns need the detail: not the 768 px first look
-    out, stats, _ = vlm.ask(model, images, prompt(p, state), max_tokens=3000, effort="low" if model == FIRST else "medium")
+    images = [zoomed] if zoomed else [vlm.shrink(ph, 1600, 85) for ph in photos]
+    q = (ZOOMED if zoomed else "") + prompt(p, state)
+    out, stats, _ = vlm.ask(model, images, q, max_tokens=3000, effort="low" if model == FIRST else "medium")
     legs, moved = _answer(out)
     return legs, moved, {**stats, "raw": out[:3000]}
 
@@ -399,12 +444,14 @@ def check(lesson_id, step, photos, state=None):
     if not p["legs"]:
         return {"verdict": "pass", "legs": [], "asks": [], "state": state or {"where": {}}, "steps": [],
                 "say": "Nothing to check on the board in this step.", "step": p["step"], "n": p["n"]}
-    readings, moved, st = look(photos, p, state)
-    steps = [{"what": "step check", **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
+    zoomed, zcost = zoom(photos[0], p)
+    readings, moved, st = look(photos, p, state, zoomed=zoomed)
+    steps = [{"what": "finding the parts", "model": FINDER, "cost_usd": zcost},
+             {"what": "step check" + (" (zoomed)" if zoomed else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
     if unsure and SECOND != FIRST:  # the same photo, the bigger model, only those legs
-        more, moved2, st2 = look(photos, p, state, model=SECOND, keys=unsure)
+        more, moved2, st2 = look(photos, p, state, model=SECOND, keys=unsure, zoomed=zoomed)
         steps.append({"what": "step check, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
         readings.update(more)
         moved += moved2
