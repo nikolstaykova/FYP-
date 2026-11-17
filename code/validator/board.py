@@ -391,6 +391,8 @@ def frame_outline(photo_path, arduino=False, min_pitch=18):
                                          for x, y in q]
     a = (h.get("measure") or {}).get("arduino") or (arduino_box(im) if arduino else None)
     h["arduino"] = (a or {}).get("quad")
+    if h["ok"] and h["board"] is None:  # the photo takes itself only once the outline has found the board
+        h.update(ok=False, hint="Hold still")
     return h
 
 

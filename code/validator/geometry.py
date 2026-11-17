@@ -121,10 +121,14 @@ def upside_down(img, g, halves, cell=36, margin=8):
     return votes[0]
 
 
-def flat_board(photo_path, cell=36, margin=3):
-    """The straightened board and how to read it: (flat BGR image, info) with info["col"](x, half) -> printed number,
-    info["half_of"](y) -> 0 upper / 1 lower / None, the halves' y ranges, the grid's holes in flat pixels."""
-    g = best_grid(board.load(photo_path))
+def flat_board(photo_path, cell=36, margin=3, g=None, src=None, flip=False):
+    """The straightened board and how to read it: (flat BGR image, info) with info["idx_of"](x) -> hole column (1 =
+    the board's first), info["half_of"](y) -> 0 upper / 1 lower / None, the halves' row-centre y ranges ("yr"), M (photo
+    -> flat). g: a grid already found (best_grid); src: the full-size photo to cut from (sharper close-ups; g was found
+    on a smaller copy); flip: turned half round (the board is printed the same both ways round, so the halves and the
+    numbers read the same; see analyse)."""
+    if g is None:
+        g = best_grid(board.load(photo_path))
     if g is None:
         return None, "no grid"
     pl = g["places"]
@@ -137,9 +141,16 @@ def flat_board(photo_path, cell=36, margin=3):
     lo = g["lo"]
     T = np.array([[1, 0, (lo[0] - first + 1) * cell], [0, 1, (lo[1] - top + margin) * cell], [0, 0, 1]], float)
     S = np.diag([cell / 36, cell / 36, 1.0])
+    W, H = (last - first + 3) * cell, (lo1 - top + 2 * margin + 2) * cell  # the same margin all round
     M = T @ S @ g["H"]
-    W, H = (last - first + 3) * cell, (lo1 - top + 2 * margin + 3) * cell
-    flat = cv2.warpPerspective(g["img"], M, (int(W), int(H)))
+    img = g["img"]
+    if src is not None:  # from the full-size photo: g's homography is for the smaller copy
+        r = g["img"].shape[1] / src.shape[1]
+        M = M @ np.diag([r, r, 1.0])
+        img = src
+    if flip:
+        M = np.array([[-1, 0, W], [0, -1, H], [0, 0, 1]], float) @ M
+    flat = cv2.warpPerspective(img, M, (int(W), int(H)))
     yr = {0: ((margin + 1) * cell, (margin + 1 + 4) * cell),  # row centres of the upper half: first..last
           1: ((lo1 - 4 - top + margin + 1) * cell, (lo1 - top + margin + 1) * cell)}
 
@@ -151,10 +162,36 @@ def flat_board(photo_path, cell=36, margin=3):
             if a - 1.2 * cell <= y <= b + 1.2 * cell:
                 return k
         return None
-    hh, ww = g["img"].shape[:2]
+    hh, ww = img.shape[:2]
     pc = cv2.perspectiveTransform(np.float32([[[ww / 2, hh / 2]]]), M)[0, 0]
-    return flat, {"centre_flat": (float(pc[0]), float(pc[1])), "cell": cell, "idx_of": idx_of, "half_of": half_of, "yr": yr, "M": M, "img": g["img"],
-                  "upside_down": upside_down(g["img"], g, halves), "first": first, "last": last}
+    return flat, {"centre_flat": (float(pc[0]), float(pc[1])), "cell": cell, "idx_of": idx_of, "half_of": half_of,
+                  "yr": yr, "M": M, "img": img, "g": g, "first": first, "last": last, "flip": flip,
+                  "upside_down": False}  # turned round already when flip
+
+
+def occupied(flat, info):
+    """Where things sit on the board: per half, per hole column, how much more of it is covered than the board's usual
+    column (so shade and the light's colour cancel out): parts are much more coloured than the board around them
+    (resistor bodies, LEDs, wires) or much darker (black connectors, bigger than a hole). Returns {0: array, 1: array},
+    index 0 = hole column 1; above about 0.08 = something is there."""
+    cell = info["cell"]
+    hsv = cv2.cvtColor(flat, cv2.COLOR_BGR2HSV)
+    n = info["last"] - info["first"] + 1
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(cell * 0.6),) * 2)
+    out = {}
+    for h, (a, b) in info["yr"].items():
+        band = hsv[int(a - 0.5 * cell):int(b + 0.5 * cell), int(1.5 * cell):int((n + 1.5) * cell)]
+        if band.size == 0:
+            out[h] = np.zeros(n)
+            continue
+        S, V = band[..., 1].astype(float), band[..., 2].astype(float)
+        colour = S > max(90, np.median(S) + 50)
+        dark = cv2.morphologyEx((V < 0.45 * np.median(V)).astype(np.uint8), cv2.MORPH_OPEN, k) > 0  # not holes
+        stuff = colour | dark
+        col = np.array([stuff[:, int(i * cell):int((i + 1) * cell)].mean() for i in range(n)])
+        out[h] = np.clip(col - np.median(col), 0, 1)
+    return out
+
 
 
 def to_flat(info, x, y):
@@ -341,7 +378,7 @@ def numbered(photo_path, cell=26, margin=3):
     ok, buf = cv2.imencode(".jpg", out, [cv2.IMWRITE_JPEG_QUALITY, 90])
     flip = upside_down(g["img"], g, halves)
     return buf.tobytes(), {"columns": last - first + 1, "holes": int(g["inliers"]), "size": out.shape[1::-1],
-                           "upside_down": flip}
+                           "upside_down": False}  # turned round already when flip
 
 
 def numbered_from(flat, info, shift=(0, 0)):
@@ -363,27 +400,55 @@ def numbered_from(flat, info, shift=(0, 0)):
     return buf.tobytes()
 
 
-def analyse(photo_path, cell=30):
-    """Geometry for one step photo, from one grid: {"trusted", "why", "numbered" (JPEG bytes or None), "ends"
-    (read_ends' list), "upside_down", "shift"}. trusted: the board found has this board's 65 columns and its printed
-    numbers, where they can be seen, sit where our numbering puts them (at most one column out, corrected). When it
-    is not trusted, nothing from geometry is used and the check runs as before."""
+def analyse(photo_path, cell=30, closeup_cell=56):
+    """Geometry for one step photo, from one grid: {"trusted", "why", "numbered" (the whole board straightened with
+    every column's number, JPEG), "closeup" (the part of it where things sit, cut from the full-size photo, bigger,
+    numbered, JPEG), "ends" (read_ends' list), "shift", "marks"}. trusted: the board has this board's 65 columns and
+    its printed numbers, where they can be seen, sit where our numbering puts them (at most one column out,
+    corrected). When it is not trusted nothing from geometry is used and the check runs as before.
+    Which half is "top": this board is printed the same both ways round (its rails clip on either way too, so their
+    colours don't tell), so the halves can't be told apart from the board itself. The half the parts are on is the
+    top half (blink and most first lessons build in one half); the image is turned round to put it on top."""
     try:
-        flat, info = flat_board(photo_path, cell=cell)
+        full = board.load(photo_path)
+        g = best_grid(full)
+        flat, info = flat_board(photo_path, cell=cell, g=g)
+        if flat is None:
+            return {"trusted": False, "why": info, "numbered": None, "closeup": None, "ends": []}
+        occ = occupied(flat, info)
+        flip = bool(occ[1].sum() > 1.3 * occ[0].sum() and occ[1].max() > 0.08)
+        if flip:
+            flat, info = flat_board(photo_path, cell=cell, g=g, flip=True)
+            occ = occupied(flat, info)
     except Exception as e:  # never let geometry break a check
-        return {"trusted": False, "why": f"error: {e}", "numbered": None, "ends": []}
-    if flat is None:
-        return {"trusted": False, "why": info, "numbered": None, "ends": []}
+        return {"trusted": False, "why": f"error: {e}", "numbered": None, "closeup": None, "ends": []}
     shift, marks = printed_shift(flat, info)
-    seen = [s for s, m in zip(shift, marks) if m]
-    trusted = info["last"] - info["first"] + 1 == COLUMNS and bool(seen) and all(abs(s) <= 1 for s in seen)
+    seen = [s_ for s_, m in zip(shift, marks) if m]
+    trusted = info["last"] - info["first"] + 1 == COLUMNS and bool(seen) and all(abs(s_) <= 1 for s_ in seen)
     why = "" if trusted else ("the printed numbers could not be found" if not seen else
                               f"the printed numbers are {shift} columns from where they should be")
-    ends = []
-    if trusted:
-        ends = _ends(flat, info, shift)
-    return {"trusted": trusted, "why": why, "numbered": numbered_from(flat, info, shift) if trusted else None,
-            "ends": ends, "upside_down": info["upside_down"], "shift": shift, "marks": marks}
+    out = {"trusted": trusted, "why": why, "shift": shift, "marks": marks, "flipped": flip, "ends": [],
+           "numbered": None, "closeup": None, "upside_down": False}
+    if not trusted:
+        return out
+    out["ends"] = _ends(flat, info, shift)
+    out["numbered"] = numbered_from(flat, info, shift)
+    # the close-up: the columns where something sits (both halves), 4 columns either side, from the full-size photo
+    busy = np.where(np.maximum(occ[0], occ[1]) > 0.08)[0]
+    try:
+        hi, hinfo = flat_board(photo_path, cell=closeup_cell, g=g, src=full, flip=flip)
+        pic = cv2.imdecode(np.frombuffer(numbered_from(hi, hinfo, shift), np.uint8), cv2.IMREAD_COLOR)
+        if len(busy):
+            a, b = max(0, busy.min() - 4), min(len(occ[0]) - 1, busy.max() + 4)
+            if b - a < 16:  # at least 17 columns, so the printed numbers either side are in it
+                a, b = max(0, (a + b) // 2 - 8), min(len(occ[0]) - 1, (a + b) // 2 + 8)
+            pic = pic[:, int((a + 1.5) * closeup_cell):int((b + 2.5) * closeup_cell)]
+            out["closeup_columns"] = [int(label(a + 1, 0, shift)), int(label(b + 1, 0, shift))]
+        ok, buf = cv2.imencode(".jpg", pic, [cv2.IMWRITE_JPEG_QUALITY, 90])
+        out["closeup"] = buf.tobytes()
+    except Exception:
+        pass
+    return out
 
 
 def _ends(flat, info, shift):

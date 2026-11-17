@@ -172,3 +172,16 @@ def test_the_live_outline_finds_the_boards_and_the_arduinos_corners(tmp_path):
     assert b[:, 0].min() > 340  # not stretched to the dots on the table
     a = np.array(h["arduino"]) * [1200, 900]
     assert abs(a[:, 0].min() - 40) < 15 and abs(a[:, 0].max() - 300) < 15 and abs(a[:, 1].min() - 300) < 15
+
+
+def test_of_a_few_frames_the_sharp_one_geometry_knows_is_read_and_a_blurry_one_needs_no_retake(monkeypatch):
+    from validator import board
+    q = {"blurry": (False, "The photo is blurry.", {"sharp": 10}), "ok": (True, "", {"sharp": 120}),
+         "sharp": (True, "", {"sharp": 400})}
+    monkeypatch.setattr(board, "quality", lambda ph: q[ph])
+    monkeypatch.setattr(A, "_geometry", lambda ph: {"trusted": ph == "ok"})
+    order, ok, why, m, geo = A._pick(["blurry", "sharp", "ok"])
+    assert ok and order[0] == "ok" and geo["trusted"]  # geometry knows the board on it: read that one
+    assert "blurry" not in order and "3 sent, 2 good enough" in m["photos"]
+    order, ok, *_ = A._pick(["blurry"])
+    assert not ok  # only when none will do: take it again

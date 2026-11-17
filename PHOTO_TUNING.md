@@ -309,3 +309,20 @@ base estimate went from 13 to 15/21 once fixed).
 4. Each check records the geometry step (used or why not, connectors found, legs set by geometry).
 On the learner's step photo b2c4 (blink step 3): geometry sure of column 13; with their earlier columns the board end
 passes (it had been misread as 11 before any of this).
+
+---
+
+## 10. First real step checks with geometry, and fixes (17 November, late)
+
+The learner's two step checks (blink steps 1 and 2, board held upright in the photo):
+
+| Problem seen | Why | Fix |
+|---|---|---|
+| The close-up showed empty columns 25–45; the parts were at 10–20 ("LED not visible") | Haiku's box was wrong on an upright board | **Geometry makes the close-up**: on the straightened board, the columns where something sits (much more coloured or darker than the board's usual column) ±4, cut from the full-size photo at 56 px a column, with the yellow numbers. Haiku is only asked when the step wires to the Arduino |
+| The resistor was read as "bottom half" | Which way up came from the rails' colours, but this board's rails clip on either way round (red above blue in one photo, blue above red in another), and the board itself is printed the same both ways | **The half with the parts is the top half**: the straightened board is turned round so that half is on top (blink builds in one half) |
+| A frame that is blurry means "take it again" | One photo per check | **A few frames**: the app keeps the frames taken while lining up where the board was found; with the photo that takes itself go the 2 sharpest others. The server reads the sharpest one geometry knows the board on, sends one more as a second view, and asks for a retake only if none will do |
+
+Re-run on the same two photos: step 1 resistor in the top half, column 13 (one bent leg unsure), cost 3.5¢ (was
+6.5¢: no Haiku); step 2 LED in the top half, its legs hidden under its body from straight above: unsure (honest),
+the learner is asked. Also: the live outline (board and Arduino found by their corners) now has to have found the
+board before the photo takes itself.

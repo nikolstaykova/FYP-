@@ -316,7 +316,7 @@ def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
     z = zoomed or {}
     images, said = [], []
     if z.get("numbered"):
-        up = "bottom (rows f-j)" if z.get("upside_down") else "top (rows a-e)"
+        up = "top (rows a-e)"  # geometry turns the board so the half with the parts is on top (analyse)
         images.append(z["numbered"])
         said.append("the breadboard straightened by code, with every column's number written in yellow: the yellow "
                     "row above the upper half belongs to the upper half, the one below the lower half to the lower "
@@ -324,7 +324,9 @@ def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
                     "holes): read a leg's column from the yellow numbers instead of counting holes")
     if z.get("board"):
         images.append(z["board"])
-        said.append("a close-up of the breadboard around this step's parts (read the columns here)")
+        said.append("a close-up of the straightened board where the parts are, with the same yellow column numbers "
+                    "(read the columns here)" if z.get("board_numbered") else
+                    "a close-up of the breadboard around this step's parts (read the columns here)")
     if z.get("arduino"):
         images.append(z["arduino"])
         said.append("a close-up of the Arduino's pins (read the pin labels here)")
@@ -485,6 +487,35 @@ def _asks(res):
     return out
 
 
+def _pick(photos):
+    """The frames in the order to use them: those good enough to read (board.quality), the ones geometry knows the
+    board on first, sharpest first. Returns (photos, ok, why, measure of the first, geometry of the first)."""
+    from validator import board
+    rated = []
+    for i, ph in enumerate(photos[:4]):
+        try:
+            ok, why, m = board.quality(ph)
+        except Exception:
+            ok, why, m = True, "", {}
+        rated.append({"photo": ph, "ok": ok, "why": why, "m": m, "i": i})
+    good = sorted([r for r in rated if r["ok"]], key=lambda r: -(r["m"].get("sharp") or 0))
+    if not good:
+        return photos, False, rated[0]["why"], rated[0]["m"], {}
+    best, geo = good[0], {}
+    for r in good[:3]:
+        g = _geometry(r["photo"])
+        if g.get("trusted"):
+            best, geo = r, g
+            break
+        if not geo:
+            geo = g if r is good[0] else geo
+    if not geo:
+        geo = _geometry(best["photo"])
+    order = [best["photo"]] + [r["photo"] for r in good if r is not best]
+    m = dict(best["m"], photos=f"{len(photos)} sent, {len(good)} good enough, frame {best['i'] + 1} read")
+    return order, True, "", m, geo
+
+
 def _geometry(photo):
     """validator.geometry.analyse, never breaking a check (a photo it can't read just isn't helped)."""
     try:
@@ -540,25 +571,33 @@ def check(lesson_id, step, photos, state=None, keep=None):
     if not p["legs"]:
         return {"verdict": "pass", "legs": [], "asks": [], "state": state or {"where": {}}, "steps": [],
                 "say": "Nothing to check on the board in this step.", "step": p["step"], "n": p["n"]}
-    try:  # is the photo good enough to read at all? (free, a fraction of a second: no model is asked otherwise)
-        from validator import board
-        ok, why, m = board.quality(photos[0])
-    except Exception:
-        ok, why, m = True, "", {}
+    # the camera may send a few frames taken while lining up: the best one is read (sharp, and geometry knows the
+    # board), one more goes along as a second view; "take it again" only when none of them will do (free, no model)
+    photos, ok, why, m, geo = _pick(photos)
     if not ok:
         return {"verdict": "retake", "legs": [], "asks": [{"key": "", "kind": "retake", "message": why}], "say": why,
                 "state": state or {"where": {}}, "readings": {}, "steps": [], "cost_usd": 0, "photo": m,
                 "step": p["step"], "n": p["n"]}
-    zoomed, zcost = zoom(photos[0], p)
-    geo = _geometry(photos[0])
+    photos = photos[:2]
+    pins = any(x["kind"] == "pin" for x in p["legs"])
+    if geo.get("trusted") and geo.get("closeup") and not pins:
+        zoomed, zcost = {"board": None, "arduino": None}, 0  # geometry's close-up: no need to ask Haiku where it is
+    else:
+        zoomed, zcost = zoom(photos[0], p)
     if geo.get("trusted"):
-        zoomed = {"numbered": (geo["numbered"], "image/jpeg"), "upside_down": geo.get("upside_down"), **zoomed}
+        zoomed = {"numbered": (geo["numbered"], "image/jpeg"), **zoomed}
+        if geo.get("closeup"):
+            zoomed["board"] = (geo["closeup"], "image/jpeg")
+            zoomed["board_numbered"] = True
     if keep:
         for k, v in zoomed.items():
             if v and isinstance(v, tuple):
                 (pathlib.Path(keep) / f"{k}.jpg").write_bytes(v[0])
+        for i, ph in enumerate(photos):  # which frame was read (the first), and the second view
+            (pathlib.Path(keep) / f"used_{i + 1}.jpg").write_bytes(pathlib.Path(ph).read_bytes())
     readings, moved, st = look(photos, p, state, zoomed=zoomed)
-    steps = [{"what": "finding the parts", "model": FINDER, "cost_usd": zcost},
+    steps = [{"what": "finding the parts", "model": FINDER if zcost else "geometry", "cost_usd": zcost,
+              "photos": m.get("photos")},
              {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if isinstance(v, tuple)) + " close-ups + whole photo)" if any(isinstance(v, tuple) for v in zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     snapped = _snap(p, readings, geo)
     res = judge(p, readings, state)

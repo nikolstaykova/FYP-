@@ -93,6 +93,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _ready = false;
   List<Offset>? _seenBoard, _seenUno; // where the live check found them (fractions of the screen)
   int _lost = 0, _unoLost = 0; // frames in a row without it: an outline stays one frame, then goes
+  // the frames taken while lining up where the board was found (with how sharp each was): when the photo takes itself
+  // the sharpest others go with it, so the check can read the best one and needs no retake for a blurry frame
+  final List<(Shot, num)> _burst = [];
+  List<Shot> _burstExtras = [];
   int _okRun = 0;
   int _softRun = 0; // frames where all is fine but no (blue) Arduino was seen: after a few, take it anyway
   bool _framing = false;
@@ -486,6 +490,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _hint = 'Line the board up with the outline';
     _seenBoard = _seenUno = null;
     _lost = _unoLost = 0;
+    _burst.clear();
+    _burstExtras = [];
     _api.validateShots(s.id, _i + 1).then((x) {
       if (mounted) setState(() => _stepArduino = x.contains('arduino'));
     }).catchError((_) {});
@@ -507,6 +513,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
           ? [for (final p in q) Offset((p[0] as num).toDouble(), (p[1] as num).toDouble())]
           : null;
       final board = corners(r['board']), uno = corners(r['arduino']);
+      if (board != null) {
+        _burst.add((shot, ((r['measure'] as Map?)?['sharp'] as num?) ?? 0));
+        if (_burst.length > 4) _burst.removeAt(0);
+      }
       setState(() {
         _ready = ok;
         _hint = _okRun >= 2 ? 'Got it!' : '${r['hint'] ?? ''}';
@@ -517,6 +527,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       });
       if (_okRun >= 2) {
         _frameTimer?.cancel();
+        _burstExtras = ([..._burst.where((b) => !identical(b.$1, shot))]..sort((a, b) => b.$2.compareTo(a.$2)))
+            .take(2)
+            .map((b) => b.$1)
+            .toList();
         HapticFeedback.mediumImpact();
         setState(() => _flash = true);
         Future.delayed(const Duration(milliseconds: 140), () {
@@ -537,6 +551,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _hint = null;
     _ready = false;
     _seenBoard = _seenUno = null;
+    _burst.clear();
     final c = _cam;
     _cam = null;
     c?.dispose();
@@ -570,7 +585,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   /// The step check: the photo to the server, the verdict on the step card, their columns from now on.
   Future<Map<String, dynamic>> _validateStep(Shot photo) async =>
-      _runStepCheck(() => _api.validateStep(s.id, _i + 1, [photo], {'where': _where}));
+      _runStepCheck(() {
+        final extras = _burstExtras; // frames from lining up, when the photo took itself
+        _burstExtras = [];
+        _burst.clear();
+        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where});
+      });
 
   /// What the learner says about the legs the photo could not show, judged like a photo.
   Future<Map<String, dynamic>> _tellPlaces(Map<String, dynamic> places) async {
