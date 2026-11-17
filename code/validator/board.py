@@ -205,6 +205,35 @@ def quality(photo_path):
     return True, "", m
 
 
+def arduino_box(im):
+    """The Arduino in a frame, by its blue circuit board (Uno, Duemilanove and most clones are blue): its box as
+    fractions of the frame and whether it touches an edge, or None (no big blue patch: not in the photo, or a board
+    of another colour). The breadboard's thin blue rail lines are opened away."""
+    hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
+    blue = cv2.inRange(hsv, (96, 55, 25), (128, 255, 235))  # dark blue PCB (measured on a Duemilanove: H 105, S 80, V 84)
+    k = max(5, int(min(im.shape[:2]) * 0.02)) | 1
+    blue = cv2.morphologyEx(blue, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (k, k)))  # its printing
+    blue = cv2.morphologyEx(blue, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7)))  # the rail lines
+    n, lab, stats, _ = cv2.connectedComponentsWithStats(blue)
+    H, W = im.shape[:2]
+    best = None
+    for x, y, w, h, area in stats[1:]:
+        # an Arduino is a solid rectangle, about 1.3 : 1, a few percent of the frame (not jeans or a blue cloth)
+        if area < 0.012 * W * H or w * h > 0.3 * W * H:
+            continue
+        solid, aspect = area / (w * h), max(w, h) / max(1, min(w, h))
+        if solid < 0.55 or aspect > 2.0:
+            continue
+        if best is None or area > best[4]:
+            best = (x, y, w, h, area)
+    if best is None:
+        return None
+    x, y, w, h, area = best
+    e = 0.01
+    return {"box": [round(x / W, 3), round(y / H, 3), round((x + w) / W, 3), round((y + h) / H, 3)],
+            "cut": bool(x < e * W or y < e * H or x + w > (1 - e) * W or y + h > (1 - e) * H)}
+
+
 def frame_hint(photo_path, arduino=False, min_pitch=18):
     """For the live camera (a frame about once a second): is the board ready to be photographed, and if not, what
     to do, in two or three words. Uses only what is reliable on real photos: the holes found (how many, how far
@@ -235,9 +264,20 @@ def frame_hint(photo_path, arduino=False, min_pitch=18):
     # the board fills most of the frame; less when the Arduino must be in the photo too (beside it)
     if fill < (0.45 if arduino else 0.6) or m.get("pitch_px", 99) < min_pitch:
         return {"ok": False, "hint": "Closer", "measure": m}
-    if abs(cx) > 0.12 or abs(cy) > 0.12:  # the board off to one side: move the phone towards it
+    edge = 0.015  # the board cut off at an edge of the frame: move the phone that way
+    cut = [(x0 / W < edge, "Move left"), (x1 / W > 1 - edge, "Move right"), (y0 / H < edge, "Move up"), (y1 / H > 1 - edge, "Move down")]
+    if any(c for c, _ in cut):
+        return {"ok": False, "hint": next(h for c, h in cut if c), "measure": m}
+    if not arduino and (abs(cx) > 0.12 or abs(cy) > 0.12):  # alone, the board sits in the middle
         hint = ("Move left" if cx < 0 else "Move right") if abs(cx) >= abs(cy) else ("Move up" if cy < 0 else "Move down")
         return {"ok": False, "hint": hint, "measure": m}
+    if arduino:  # the Arduino must be in the photo too, whole: found by its blue board (free)
+        a = arduino_box(im)
+        m["arduino"] = a
+        if a is None:
+            return {"ok": False, "hint": "Get the Arduino in too", "soft": True, "measure": m}
+        if a["cut"]:
+            return {"ok": False, "hint": "Move back: the Arduino is cut off", "measure": m}
     if m["sharp"] < MIN_SHARP:
         return {"ok": False, "hint": "Hold still, tap to focus", "measure": m}
     return {"ok": True, "hint": "Hold still", "measure": m}

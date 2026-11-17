@@ -447,7 +447,9 @@ class Handler(BaseHTTPRequestHandler):
                 f.parent.mkdir(parents=True, exist_ok=True)
                 try:
                     save_photo(body['photo'], f, body.get('crop'))
-                    return self.send(200, board_check.frame_hint(str(f), arduino=bool(body.get('arduino'))))
+                    h = board_check.frame_hint(str(f), arduino=bool(body.get('arduino')))
+                    print(f"frame: {h['hint']} {h['measure']}", flush=True)  # what the live camera was told
+                    return self.send(200, h)
                 finally:
                     f.unlink(missing_ok=True)
             if u.path == '/api/validate/step':  # after a build step: a photo of the board, is it right? (validator)
@@ -460,7 +462,7 @@ class Handler(BaseHTTPRequestHandler):
                     photos.append(str(d / f'photo_{i}.jpg'))
                 if not photos:
                     return self.send(400, {'error': 'no photo'})
-                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {})
+                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {}, keep=d)
                 (d / 'result.json').write_text(json.dumps({'lesson': body['lesson'], 'step': body['step'], **res}, indent=1))
                 return self.send(200, res)
             if u.path == '/api/tutor/look':  # Pip's look tool: a photo and a question, Haiku answers

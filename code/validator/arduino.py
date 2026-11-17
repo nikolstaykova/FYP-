@@ -29,6 +29,7 @@ Run  ./pinpoint validator.arduino plan blink 2
      ./pinpoint validator.arduino note blink 2 "The LED is small: look closely at which leg is longer."
 """
 import json
+import pathlib
 import re
 import sys
 
@@ -475,10 +476,11 @@ def _asks(res):
     return out
 
 
-def check(lesson_id, step, photos, state=None):
+def check(lesson_id, step, photos, state=None, keep=None):
     """The whole check of one step: plan, Haiku's look, the verdict. The legs Haiku cannot read go straight to Opus,
     on the same photo (no retake); only a leg Opus cannot read either asks the learner for a closer photo.
-    Returns the verdict with `asks` (what to tell or ask the learner), `say` (for the tutor) and the cost."""
+    Returns the verdict with `asks` (what to tell or ask the learner), `say` (for the tutor) and the cost.
+    keep: a folder to save the close-ups in (board.jpg, arduino.jpg: what the model was shown)."""
     p = plan(lesson_id, step)
     if not p["legs"]:
         return {"verdict": "pass", "legs": [], "asks": [], "state": state or {"where": {}}, "steps": [],
@@ -493,6 +495,10 @@ def check(lesson_id, step, photos, state=None):
                 "state": state or {"where": {}}, "readings": {}, "steps": [], "cost_usd": 0, "photo": m,
                 "step": p["step"], "n": p["n"]}
     zoomed, zcost = zoom(photos[0], p)
+    if keep:
+        for k, v in zoomed.items():
+            if v:
+                (pathlib.Path(keep) / f"{k}.jpg").write_bytes(v[0])
     readings, moved, st = look(photos, p, state, zoomed=zoomed)
     steps = [{"what": "finding the parts", "model": FINDER, "cost_usd": zcost},
              {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if v) + " close-ups + whole photo)" if any(zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]

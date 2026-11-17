@@ -86,7 +86,35 @@ def first_look(photos, rec, model=FIRST, small=True):
             + lesson_text(rec) + "\nList every object in the photos. " + ANSWER.replace('"unsure": ""', '"unsure": "", "ask": ""'))
     out, stats, _ = vlm.ask(model, images, text, effort="low")
     stats["raw"] = out[:6000]
-    return to_seen(vlm.json_objects(out), extra=("ask",)), stats
+    seen = to_seen(vlm.json_objects(out), extra=("ask",))
+    stats["cost_usd"] = round((stats.get("cost_usd") or 0) + read_resistors(seen, photos), 6)
+    return seen, stats
+
+
+def read_resistors(seen, photos, limit=2):
+    """Resistors in the first photos whose value could not be read: the band reader (gather/resistor.py) tries each
+    on its full-size photo before a close-up is asked for (a resistor flat on white paper is usually read here).
+    Fills in the value of those it reads surely. Returns the cost."""
+    from concurrent.futures import ThreadPoolExecutor
+    from gather import resistor
+    todo = [s for s in seen if ("resistor" in (s.get("lesson_part") or "") or "resistor" in s["name"].lower())
+            and (s.get("unsure") or not re.search(r"\d", s.get("value") or "")) and s.get("photos")][:limit]
+    if not todo:
+        return 0
+
+    def one(s):
+        try:
+            return resistor.read(photos[s["photos"][0] - 1])
+        except Exception:
+            return {}
+    with ThreadPoolExecutor(len(todo)) as ex:
+        found = list(ex.map(one, todo))
+    for s, r in zip(todo, found):
+        v = r.get("value")
+        if v and v.get("sure") and s.get("count", 1) == 1:  # one resistor in the photo: the one the reader found
+            s.update(value=v["text"].replace(" Ω", ""), unsure="", by="bands", bands=v["bands"])
+            s.pop("ask", None)
+    return sum(r.get("cost_usd") or 0 for r in found)
 
 
 def flags(res, lesson_types, done=()):
@@ -182,6 +210,30 @@ def closeup_look(photo, question, rec, seen_item=None, model=FIRST, effort="low"
     zoom_cost = 0
     what = (seen_item or {}).get("name") or ""
     small = "resistor" in f"{what} {question}".lower() or "band" in question.lower()
+    paper = False
+    if small and model == FIRST:
+        # the bands read by code + a model naming each numbered band's colour (gather/resistor.py: on the learner's
+        # photos 5 of 7 right, none wrong, against 3 of 6 for a model reading the value): when it gives a sure value,
+        # that is the answer
+        from gather import resistor
+        try:
+            r = resistor.read(photo)
+        except Exception as e:
+            r = {"value": None, "why": str(e), "cost_usd": 0}
+        v = r.get("value")
+        if v and v.get("sure"):
+            got = to_seen([{"name": "resistor", "lesson_part": (seen_item or {}).get("lesson_part") or "resistor",
+                            "value": v["text"].replace(" Ω", ""), "count": (seen_item or {}).get("count") or 1,
+                            "photos": [1]}])
+            for g in got:
+                g["by"] = "bands"
+                g["bands"] = v["bands"]
+            return got, {"model": "code + " + (r.get("by") or ""), "cost_usd": r.get("cost_usd") or 0,
+                         "raw": json.dumps(r, default=str)[:4000]}
+        paper = bool(r.get("white_paper")) or "bands" in (r.get("why") or "")
+        zoom_cost_r = r.get("cost_usd") or 0
+    else:
+        zoom_cost_r = 0
     if small:  # tiny stripes: the resistor itself, cut out, enlarged and colour-balanced, first; the close-up after it
         z, zoom_cost = vlm.zoom(photo, what or "the resistor", colour=True)
         if z:
@@ -189,11 +241,14 @@ def closeup_look(photo, question, rec, seen_item=None, model=FIRST, effort="low"
             text = ("Photo 1 is the part enlarged from the close-up (colours balanced); Photo 2 is the whole close-up.\n"
                     + text)
     out, stats, _ = vlm.ask(model, images, text, effort=effort)
-    stats["cost_usd"] = round((stats.get("cost_usd") or 0) + zoom_cost, 6)
+    stats["cost_usd"] = round((stats.get("cost_usd") or 0) + zoom_cost + zoom_cost_r, 6)
     stats["raw"] = out[:4000]
     got = to_seen(vlm.json_objects(out), extra=("ask",))
     for g in got:
         g["by"] = "closeup" if model == FIRST else "opus"
+        if paper and g.get("unsure"):  # the bands could not be found on that background: white paper makes it easy
+            g["ask"] = ("I still can't read the colour bands. Could you lay the resistor on a sheet of white paper, "
+                        "in good light, and take the close-up from just above it?")
     return got, stats
 
 

@@ -92,6 +92,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   String? _hint;
   bool _ready = false;
   int _okRun = 0;
+  int _softRun = 0; // frames where all is fine but no (blue) Arduino was seen: after a few, take it anyway
   bool _framing = false;
   Timer? _frameTimer;
   final Set<int> _passed = {}; // build steps whose check passed: the next step waits for it
@@ -478,6 +479,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   void _startFraming() {
     _frameTimer?.cancel();
     _okRun = 0;
+    _softRun = 0;
     _ready = false;
     _hint = 'Line the board up with the outline';
     _api.validateShots(s.id, _i + 1).then((x) {
@@ -494,7 +496,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       final shot = Shot(await (await c.takePicture()).readAsBytes(), _visible.value);
       final r = await _api.validateFrame(shot, arduino: _stepArduino);
       if (!mounted || !_stepPending || _checkingStep) return;
-      final ok = r['ok'] == true;
+      _softRun = r['soft'] == true ? _softRun + 1 : 0;
+      final ok = r['ok'] == true || _softRun >= 4;
       _okRun = ok ? _okRun + 1 : 0;
       setState(() {
         _ready = ok;
@@ -696,10 +699,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   @override
   Widget build(BuildContext context) {
     final c = Pq.forLesson(s);
+    // the live camera fills the whole screen, like the phone's camera app (no title bar, no Pip bar: Pip still talks)
+    final full = _stage == Stage.camera && !(kIsWeb && (!_stepPending || _camError != null));
     return PopScope(
       onPopInvokedWithResult: (_, _) => pip.stop(),
       child: Scaffold(
-        appBar: AppBar(
+        backgroundColor: full ? Colors.black : null,
+        appBar: full ? null : AppBar(
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.titleMedium),
             Text(Pip.name.isEmpty ? Pq.kindLabel(s) : 'Hi, ${Pip.name}${Pip.level.isEmpty ? '' : ' · ${_levelName[Pip.level]}'}',
@@ -721,7 +727,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                 child: KeyedSubtree(key: ValueKey(_stage), child: _body(c)),
               ),
             ),
-            PipBar(pip: pip, onStart: _startPip),
+            if (!full) PipBar(pip: pip, onStart: _startPip),
           ]),
           Align(
             alignment: Alignment.topCenter,
@@ -945,7 +951,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     final cam = _cam;
     return Container(
       color: Colors.black,
-      child: Stack(fit: StackFit.expand, children: [
+      child: SafeArea(child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
           CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready) : null)
         else
@@ -1034,7 +1040,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             ]),
           ]),
         ),
-      ]),
+      ])),
     );
   }
 
