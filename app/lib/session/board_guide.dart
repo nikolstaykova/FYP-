@@ -113,10 +113,15 @@ class _GuidePainter extends CustomPainter {
   bool shouldRepaint(_) => false;
 }
 
-/// On the live camera, for a step check: the outline the breadboard should fill, along the screen's long side (phone
-/// sideways: the board left to right). Full or half board, the learner's choice (kept for the session).
+/// On the live camera, for a step check: the outline the breadboard should fill (big, so the photo is close), and
+/// when the step wires to the Arduino, the Arduino's place beside it (one photo with both: the server cuts out each).
+/// [hint] is what the live check says ("Closer", "Hold still"); [ready] turns the outline green.
 class BoardOutline extends StatefulWidget {
-  const BoardOutline({super.key});
+  const BoardOutline({super.key, this.arduino = false, this.hint, this.ready = false});
+
+  final bool arduino;
+  final String? hint;
+  final bool ready;
 
   static bool full = true; // a full-size board (about 3 : 1) or a half one (about 1.5 : 1)
 
@@ -127,77 +132,99 @@ class BoardOutline extends StatefulWidget {
 class _BoardOutlineState extends State<BoardOutline> {
   @override
   Widget build(BuildContext context) => Stack(fit: StackFit.expand, children: [
-        IgnorePointer(
-          child: CustomPaint(painter: _OutlinePainter(BoardOutline.full ? 3.0 : 1.5))
-              .animate(onPlay: (a) => a.repeat(reverse: true))
-              .fade(begin: 0.75, end: 1, duration: 900.ms),
-        ),
-        Positioned(
-          bottom: MediaQuery.sizeOf(context).width >= MediaQuery.sizeOf(context).height ? 104 : 132,
-          left: 0,
-          right: 0,
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(20)),
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                for (final (full, label) in const [(true, 'Full board'), (false, 'Half board')])
-                  GestureDetector(
-                    onTap: () => setState(() => BoardOutline.full = full),
-                    child: AnimatedContainer(
-                      duration: 200.ms,
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                      decoration: BoxDecoration(
-                        color: BoardOutline.full == full ? Colors.white : Colors.transparent,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Text(label,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 13,
-                              color: BoardOutline.full == full ? Pq.ink : Colors.white)),
-                    ),
-                  ),
-              ]),
+        IgnorePointer(child: CustomPaint(painter: _OutlinePainter(BoardOutline.full ? 3.0 : 1.5, widget.arduino, widget.ready))),
+        if (widget.hint != null)
+          Align(
+            alignment: const Alignment(0, -0.05),
+            child: IgnorePointer(
+              child: AnimatedContainer(
+                duration: 250.ms,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: (widget.ready ? Pq.have : Colors.black).withValues(alpha: widget.ready ? 0.9 : 0.55),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(widget.hint!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
+              ),
             ),
+          ),
+        Positioned(
+          top: 40,
+          left: 10,
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(16)),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              for (final (full, label) in const [(true, 'Full'), (false, 'Half')])
+                GestureDetector(
+                  onTap: () => setState(() => BoardOutline.full = full),
+                  child: AnimatedContainer(
+                    duration: 200.ms,
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: BoardOutline.full == full ? Colors.white : Colors.transparent,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Text(label,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12, color: BoardOutline.full == full ? Pq.ink : Colors.white)),
+                  ),
+                ),
+            ]),
           ),
         ),
       ]);
 }
 
-/// The board's outline: dims what is outside it, its edges with corner marks, the power rails and the middle gap
-/// drawn faintly inside, so the learner lines the real board up with it.
+/// The board's outline (and the Arduino's place): dims what is outside, corner marks, the rails and the middle gap
+/// drawn faintly inside so the real board can be lined up with it.
 class _OutlinePainter extends CustomPainter {
-  _OutlinePainter(this.ratio);
+  _OutlinePainter(this.ratio, this.arduino, this.ready);
 
   final double ratio; // the board's long side / short side
+  final bool arduino;
+  final bool ready;
 
   @override
   void paint(Canvas canvas, Size s) {
     final wide = s.width >= s.height;
-    // room for the words at the top and the buttons at the bottom
-    final area = Rect.fromLTRB(s.width * 0.05, 56, s.width * 0.95, s.height - (wide ? 150 : 190));
+    // as big as the screen allows: the words at the top, the shutter row at the bottom
+    final area = Rect.fromLTRB(s.width * 0.02, 72, s.width * 0.98, s.height - (wide ? 100 : 130));
+    // with the Arduino: the board takes about 60% of the short side, the Arduino the rest beside its first end
+    final share = arduino ? 0.6 : 1.0;
     var long = wide ? area.width : area.height, short = long / ratio;
-    final room = wide ? area.height : area.width;
+    final room = (wide ? area.height : area.width) * share;
     if (short > room) {
       short = room;
       long = short * ratio;
     }
-    final r = Rect.fromCenter(center: area.center, width: wide ? long : short, height: wide ? short : long);
-    // dim outside the outline
-    canvas.drawPath(
-        Path.combine(PathOperation.difference, Path()..addRect(Offset.zero & s),
-            Path()..addRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)))),
+    final Rect r;
+    Rect? uno;
+    if (!arduino) {
+      r = Rect.fromCenter(center: area.center, width: wide ? long : short, height: wide ? short : long);
+    } else if (wide) {
+      // board along the bottom, the Arduino above its left end
+      r = Rect.fromLTWH(area.center.dx - long / 2, area.bottom - short, long, short);
+      final h = math.min(area.height - short - 8, short * 1.4), w = h * 1.35;
+      uno = Rect.fromLTWH(r.left, r.top - 8 - h, w, h);
+    } else {
+      // phone upright: board down the right, the Arduino beside its top end (as it usually sits)
+      r = Rect.fromLTWH(area.right - short, area.center.dy - long / 2, short, long);
+      final w = math.min(area.width - short - 8, short * 1.4), h = w * 1.35;
+      uno = Rect.fromLTWH(r.left - 8 - w, r.top, w, h);
+    }
+    final hole = Path()..addRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)));
+    if (uno != null) hole.addRRect(RRect.fromRectAndRadius(uno, const Radius.circular(10)));
+    canvas.drawPath(Path.combine(PathOperation.difference, Path()..addRect(Offset.zero & s), hole),
         Paint()..color = Colors.black.withValues(alpha: 0.35));
-    final faint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.55)
-      ..strokeWidth = 1.5
+    final edge = Paint()
+      ..color = (ready ? Pq.have : Colors.white).withValues(alpha: ready ? 0.95 : 0.6)
+      ..strokeWidth = ready ? 3 : 1.5
       ..style = PaintingStyle.stroke;
-    canvas.drawRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)), faint);
-    // the rails (near both long edges) and the middle gap, across the short side
+    canvas.drawRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)), edge);
     void across(double f, Color c, {double w = 2}) {
       final p = Paint()
-        ..color = c.withValues(alpha: 0.7)
+        ..color = c.withValues(alpha: 0.6)
         ..strokeWidth = w;
       if (wide) {
         final y = r.top + r.height * f;
@@ -213,21 +240,30 @@ class _OutlinePainter extends CustomPainter {
     across(0.85, const Color(0xFFE5484D));
     across(0.95, const Color(0xFF2A78D6));
     across(0.5, Colors.white, w: 6);
-    // corner marks
+    if (uno != null) {
+      canvas.drawRRect(RRect.fromRectAndRadius(uno, const Radius.circular(10)), edge);
+      final tp = TextPainter(
+        text: const TextSpan(text: 'Arduino', style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w800)),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, uno.center - Offset(tp.width / 2, tp.height / 2));
+    }
     final mark = Paint()
       ..color = Pq.have
       ..strokeWidth = 5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
-    final l = math.min(34.0, r.shortestSide * 0.25);
-    for (final (x, y, sx, sy) in [(r.left, r.top, 1.0, 1.0), (r.right, r.top, -1.0, 1.0), (r.left, r.bottom, 1.0, -1.0), (r.right, r.bottom, -1.0, -1.0)]) {
-      canvas.drawPath(Path()
-        ..moveTo(x, y + sy * l)
-        ..lineTo(x, y)
-        ..lineTo(x + sx * l, y), mark);
+    for (final b in [r, ?uno]) {
+      final l = math.min(34.0, b.shortestSide * 0.25);
+      for (final (x, y, sx, sy) in [(b.left, b.top, 1.0, 1.0), (b.right, b.top, -1.0, 1.0), (b.left, b.bottom, 1.0, -1.0), (b.right, b.bottom, -1.0, -1.0)]) {
+        canvas.drawPath(Path()
+          ..moveTo(x, y + sy * l)
+          ..lineTo(x, y)
+          ..lineTo(x + sx * l, y), mark);
+      }
     }
   }
 
   @override
-  bool shouldRepaint(_OutlinePainter old) => old.ratio != ratio;
+  bool shouldRepaint(_OutlinePainter old) => old.ratio != ratio || old.arduino != arduino || old.ready != ready;
 }

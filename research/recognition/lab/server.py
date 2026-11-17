@@ -438,6 +438,18 @@ class Handler(BaseHTTPRequestHandler):
                 from validator import arduino as step_check
                 return self.send(200, step_check.told(body['lesson'], body['step'], body.get('state') or {},
                                                       body.get('readings') or {}, body.get('places') or {}))
+            if u.path == '/api/validate/shots':  # which photos a step check needs (board; and the Arduino?)
+                from validator import arduino as step_check
+                return self.send(200, step_check.shots(body['lesson'], body['step']))
+            if u.path == '/api/validate/frame':  # the live camera: is the board ready? (free, no model)
+                from validator import board as board_check
+                f = RUNS / 'frames' / f"frame-{secrets.token_hex(3)}.jpg"
+                f.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    save_photo(body['photo'], f, body.get('crop'))
+                    return self.send(200, board_check.frame_hint(str(f), arduino=bool(body.get('arduino'))))
+                finally:
+                    f.unlink(missing_ok=True)
             if u.path == '/api/validate/step':  # after a build step: a photo of the board, is it right? (validator)
                 from validator import arduino as step_check
                 d = RUNS / ('step-' + time.strftime('%Y%m%d-%H%M%S') + '-' + secrets.token_hex(2))

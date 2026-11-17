@@ -236,36 +236,29 @@ def reading_place(x, r):
     return f"{col}{'b' if half.startswith('b') else 't'}"
 
 
-LOCATE = """This photo shows a breadboard. In this step the learner put in: {parts}.
-Find where those legs go into the board. Give ONE box that contains all those legs where they enter the holes, the
-printed column numbers nearest to them (the numbers along the edge of that half), and a margin of a few columns on
-each side. Coordinates from 0 to 1000 across the image (x, left to right) and down it (y, top to bottom).
-Answer ONLY with JSON: {{"box": [x0, y0, x1, y1]}}"""
-ZOOMED = "This is a zoomed-in crop of the board around this step's parts. "
+LOCATE = """This photo shows a breadboard{and_arduino}. In this step the learner put in: {parts}.
+Find where those legs go into the board. Give a "board" box that contains all those legs where they enter the holes,
+the printed column numbers nearest to them (the numbers along the edge of that half), and a margin of a few columns
+on each side.{arduino_ask}
+Coordinates from 0 to 1000 across the image (x, left to right) and down it (y, top to bottom).
+Answer ONLY with JSON: {{"board": [x0, y0, x1, y1]{arduino_json}}}"""
+LOCATE_ARDUINO = (' Also give an "arduino" box around the Arduino\'s pin header(s) where this step\'s wires plug in, with '
+                  'the printed pin labels beside them (null if no Arduino is in the photo).')
 
 
-def zoom(photo, plan_, edge=1600):
-    """The photo cropped to this step's parts and enlarged, from the FULL-size photo (16 Nov: on the learner's photos
-    the columns read right went from 60% to 80% with Haiku, 50% to 90% with Opus; research/recognition/step_crop.py).
-    A quick Haiku look finds the box (about 0.05 cents). Returns ((jpeg bytes, media type), cost) or (None, cost)."""
+def _crop(im, box, edge, margin=0.15):
+    """A box (0-1000) cut from the full-size image with a margin, enlarged to `edge` and sharpened, as JPEG."""
     import io
-    from PIL import Image, ImageFilter, ImageOps
-    from gather import gather_vlm as vlm
-    parts = sorted({x["who"].split("'s ")[0].replace("the ", "") for x in plan_["legs"]})
-    out, st, _ = vlm.ask(FINDER, [vlm.shrink(photo, 1600, 85)], LOCATE.format(parts=", ".join(parts)),
-                         max_tokens=2500, effort="low")
-    cost = st.get("cost_usd") or 0
-    i, j = out.find("{"), out.rfind("}")
-    try:
-        x0, y0, x1, y1 = [float(v) / 1000 for v in json.loads(out[i:j + 1])["box"]]
-    except Exception:
-        return None, cost
-    im = ImageOps.exif_transpose(Image.open(photo)).convert("RGB")
+    from PIL import Image, ImageFilter
     W, H = im.size
+    try:
+        x0, y0, x1, y1 = [float(v) / 1000 for v in box]
+    except Exception:
+        return None
     x0, x1, y0, y1 = x0 * W, x1 * W, y0 * H, y1 * H
     if x1 - x0 < 10 or y1 - y0 < 10:
-        return None, cost
-    mx, my = 0.15 * (x1 - x0) + 0.02 * W, 0.15 * (y1 - y0) + 0.02 * H  # a margin: the box is only roughly right
+        return None
+    mx, my = margin * (x1 - x0) + 0.02 * W, margin * (y1 - y0) + 0.02 * H  # the box is only roughly right
     c = im.crop((int(max(0, x0 - mx)), int(max(0, y0 - my)), int(min(W, x1 + mx)), int(min(H, y1 + my))))
     s = edge / max(c.size)
     if s > 1:
@@ -273,19 +266,65 @@ def zoom(photo, plan_, edge=1600):
     c = c.filter(ImageFilter.UnsharpMask(radius=2, percent=80, threshold=2))
     buf = io.BytesIO()
     c.save(buf, "JPEG", quality=90)
-    return (buf.getvalue(), "image/jpeg"), cost
+    return buf.getvalue(), "image/jpeg"
+
+
+def zoom(photo, plan_, edge=1600):
+    """One photo, split for reading: the breadboard around this step's parts, and (when a wire goes to an Arduino
+    pin) the Arduino's pin header, each cut from the FULL-size photo and enlarged. One quick Haiku look finds both
+    boxes (about 0.05 cents). (16 Nov: the board crop took the columns read right from 60% to 80% with Haiku, 50% to
+    90% with Opus; research/recognition/step_crop.py.)
+    Returns ({"board": image or None, "arduino": image or None}, cost)."""
+    from PIL import Image, ImageOps
+    from gather import gather_vlm as vlm
+    parts = sorted({x["who"].split("'s ")[0].replace("the ", "") for x in plan_["legs"]})
+    pins = any(x["kind"] == "pin" for x in plan_["legs"])
+    q = LOCATE.format(parts=", ".join(parts), and_arduino=" and an Arduino" if pins else "",
+                      arduino_ask=LOCATE_ARDUINO if pins else "", arduino_json=', "arduino": [x0, y0, x1, y1]' if pins else "")
+    out, st, _ = vlm.ask(FINDER, [vlm.shrink(photo, 1600, 85)], q, max_tokens=2500, effort="low")
+    cost = st.get("cost_usd") or 0
+    i, j = out.find("{"), out.rfind("}")
+    try:
+        boxes = json.loads(out[i:j + 1])
+    except Exception:
+        return {"board": None, "arduino": None}, cost
+    im = ImageOps.exif_transpose(Image.open(photo)).convert("RGB")
+    return {"board": _crop(im, boxes.get("board") or boxes.get("box"), edge),
+            "arduino": _crop(im, boxes.get("arduino"), edge, margin=0.1) if pins and boxes.get("arduino") else None}, cost
 
 
 FINDER = "claude-haiku-5-5"
 
 
+def shots(lesson_id, step):
+    """The photos a step check needs, in order: the breadboard, and the Arduino too when a leg or wire goes into one
+    of its pins (one photo close enough to read the columns cannot show the Arduino's pin labels as well)."""
+    p = plan(lesson_id, step)
+    kinds = {x["kind"] for x in p["legs"]}
+    out = (["board"] if kinds - {"pin"} else []) + (["arduino"] if "pin" in kinds else [])
+    return {"step": p["step"], "n": p["n"], "shots": out if p["legs"] else []}
+
+
 def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
     """The model's reading of the photos: ({key: answer}, moved, stats). keys: only these legs (a second look).
-    zoomed: the crop around the step's parts (zoom()); without one, the whole photo."""
+    zoomed: zoom()'s close-ups of the board and the Arduino; the model sees them, then the whole photo."""
     from gather import gather_vlm as vlm
     p = dict(plan_, legs=[x for x in plan_["legs"] if not keys or x["key"] in keys])
-    images = [zoomed] if zoomed else [vlm.shrink(ph, 1600, 85) for ph in photos]
-    q = (ZOOMED if zoomed else "") + prompt(p, state)
+    z = zoomed or {}
+    images, said = [], []
+    if z.get("board"):
+        images.append(z["board"])
+        said.append("a close-up of the breadboard around this step's parts (read the columns here)")
+    if z.get("arduino"):
+        images.append(z["arduino"])
+        said.append("a close-up of the Arduino's pins (read the pin labels here)")
+    images.append(vlm.shrink(photos[0], 1600, 85))
+    said.append("the whole photo (to see where things are and follow the wires)")
+    for ph in photos[1:]:
+        images.append(vlm.shrink(ph, 1600, 85))
+        said.append("another photo of the same build")
+    q = ("The images, in order: " + "; ".join(f"{k}) {w}" for k, w in enumerate(said, 1)) + ". They are all the "
+         "same build, so a leg in a close-up is the same leg in the whole photo.\n") + prompt(p, state)
     out, stats, _ = vlm.ask(model, images, q, max_tokens=3000, effort="low" if model == FIRST else "medium")
     legs, moved = _answer(out)
     return legs, moved, {**stats, "raw": out[:3000]}
@@ -456,7 +495,7 @@ def check(lesson_id, step, photos, state=None):
     zoomed, zcost = zoom(photos[0], p)
     readings, moved, st = look(photos, p, state, zoomed=zoomed)
     steps = [{"what": "finding the parts", "model": FINDER, "cost_usd": zcost},
-             {"what": "step check" + (" (zoomed)" if zoomed else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
+             {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if v) + " close-ups + whole photo)" if any(zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
     if unsure and SECOND != FIRST:  # the same photo, the bigger model, only those legs

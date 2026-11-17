@@ -205,6 +205,44 @@ def quality(photo_path):
     return True, "", m
 
 
+def frame_hint(photo_path, arduino=False, min_pitch=18):
+    """For the live camera (a frame about once a second): is the board ready to be photographed, and if not, what
+    to do, in two or three words. Uses only what is reliable on real photos: the holes found (how many, how far
+    apart = how close the board is, where they are = how much of the frame the board fills and whether it is in
+    the middle) and how sharp they are; not the hole grid, which often places only part of a real board.
+    Returns {"ok", "hint", "measure"}. Free, about 0.2 s."""
+    img = load(photo_path)
+    H0, W0 = img.shape[:2]
+    f = min(1.0, 1200 / max(H0, W0))
+    im = cv2.resize(img, None, fx=f, fy=f, interpolation=cv2.INTER_AREA) if f < 1 else img
+    H, W = im.shape[:2]
+    c = holes(im)
+    m = {"holes": int(len(c))}
+    if len(c) < MIN_HOLES:
+        return {"ok": False, "hint": "Find the breadboard", "measure": m}
+    d = np.sqrt(((c[:, None] - c[None]) ** 2).sum(-1)) if len(c) <= 2500 else None
+    if d is not None:
+        np.fill_diagonal(d, np.inf)
+        m["pitch_px"] = round(float(np.median(d.min(1))) / f, 1)  # the distance between holes, in the photo
+    # the board's extent: the middle 96% of the holes (a few stray dots on the table do not count)
+    x0, x1 = np.percentile(c[:, 0], [2, 98])
+    y0, y1 = np.percentile(c[:, 1], [2, 98])
+    fill = max((x1 - x0) / W, (y1 - y0) / H)  # along the board's long side
+    cx, cy = (x0 + x1) / 2 / W - 0.5, (y0 + y1) / 2 / H - 0.5
+    g = cv2.cvtColor(im[int(y0):int(y1) + 1, int(x0):int(x1) + 1], cv2.COLOR_BGR2GRAY)
+    m.update(fill=round(float(fill), 2), off=[round(float(cx), 2), round(float(cy), 2)],
+             sharp=round(float(cv2.Laplacian(g, cv2.CV_64F).var())))
+    # the board fills most of the frame; less when the Arduino must be in the photo too (beside it)
+    if fill < (0.45 if arduino else 0.6) or m.get("pitch_px", 99) < min_pitch:
+        return {"ok": False, "hint": "Closer", "measure": m}
+    if abs(cx) > 0.12 or abs(cy) > 0.12:  # the board off to one side: move the phone towards it
+        hint = ("Move left" if cx < 0 else "Move right") if abs(cx) >= abs(cy) else ("Move up" if cy < 0 else "Move down")
+        return {"ok": False, "hint": hint, "measure": m}
+    if m["sharp"] < MIN_SHARP:
+        return {"ok": False, "hint": "Hold still, tap to focus", "measure": m}
+    return {"ok": True, "hint": "Hold still", "measure": m}
+
+
 def mark(flat, pl, cell=36, band=40):
     """Number every column on the flat board (1 = the leftmost found), in a band above and below and in the channel
     down the middle, so the model reads the marker of the column a leg goes into instead of counting holes.

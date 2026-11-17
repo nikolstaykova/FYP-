@@ -86,6 +86,14 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   final Map<String, dynamic> _where = {}; // the learner's places so far: lesson place -> theirs ("15t" -> "16t")
   bool _stepPending = false; // the browser: a step check waits for the learner's photo
   bool _checkingStep = false;
+  // the live camera lines the board up by itself: a frame about once a second to the server's free check; when the
+  // board is ready twice running, that frame is the photo
+  bool _stepArduino = false; // the step wires to the Arduino: one photo with the board and the Arduino
+  String? _hint;
+  bool _ready = false;
+  int _okRun = 0;
+  bool _framing = false;
+  Timer? _frameTimer;
   final Set<int> _passed = {}; // build steps whose check passed: the next step waits for it
   Map<String, dynamic>? _stepResult; // the last step check, shown on its step
   int? _stepResultFor;
@@ -127,6 +135,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   @override
   void dispose() {
+    _frameTimer?.cancel();
     _life.dispose();
     pip.removeListener(_onPip);
     pip.dispose();
@@ -282,8 +291,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         await _openCamera();
         return {
           'waiting': 'NO PHOTO YET, so there is no result: say nothing about how the step looks. The camera is open '
-              'with an outline of the board on it: ask them to hold the phone sideways, line the breadboard up with '
-              'the outline and tap the white button, then wait. The result comes to you as soon as they have taken it.'
+              'with an outline on it (the board, and the Arduino when this step wires to it): ask them to hold the phone '
+              'straight above so the board fills the outline; the photo is taken by itself when the board is clear '
+              '(or they tap the white button). Then wait: the result comes to you as soon as it is taken.'
         };
       case 'tell_places':
         final places = <String, dynamic>{
@@ -438,6 +448,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   // ---------------------------------------------------------------- the camera
   Future<void> _openCamera() async {
     _go(Stage.camera);
+    if (_stepPending) _startFraming();
     // the browser: the phone's own camera app, opened by a tap; but the live camera for a step check, to show the
     // outline the board should fill
     if (_cam != null || (kIsWeb && !_stepPending)) return;
@@ -464,7 +475,52 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     }
   }
 
+  void _startFraming() {
+    _frameTimer?.cancel();
+    _okRun = 0;
+    _ready = false;
+    _hint = 'Line the board up with the outline';
+    _api.validateShots(s.id, _i + 1).then((x) {
+      if (mounted) setState(() => _stepArduino = x.contains('arduino'));
+    }).catchError((_) {});
+    _frameTimer = Timer.periodic(const Duration(milliseconds: 1200), (_) => _frameTick());
+  }
+
+  Future<void> _frameTick() async {
+    final c = _cam;
+    if (_framing || c == null || !c.value.isInitialized || !_stepPending || _checkingStep || _stage != Stage.camera) return;
+    _framing = true;
+    try {
+      final shot = Shot(await (await c.takePicture()).readAsBytes(), _visible.value);
+      final r = await _api.validateFrame(shot, arduino: _stepArduino);
+      if (!mounted || !_stepPending || _checkingStep) return;
+      final ok = r['ok'] == true;
+      _okRun = ok ? _okRun + 1 : 0;
+      setState(() {
+        _ready = ok;
+        _hint = _okRun >= 2 ? 'Got it!' : '${r['hint'] ?? ''}';
+      });
+      if (_okRun >= 2) {
+        _frameTimer?.cancel();
+        HapticFeedback.mediumImpact();
+        setState(() => _flash = true);
+        Future.delayed(const Duration(milliseconds: 140), () {
+          if (mounted) setState(() => _flash = false);
+        });
+        await _gotPhoto(shot);
+      }
+    } catch (_) {
+      // a frame that could not be taken or checked: the next one tries again
+    } finally {
+      _framing = false;
+    }
+  }
+
   void _stopCamera() {
+    _frameTimer?.cancel();
+    _frameTimer = null;
+    _hint = null;
+    _ready = false;
     final c = _cam;
     _cam = null;
     c?.dispose();
@@ -786,7 +842,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Widget _camera(Color c) {
     final q = _pending;
     final what = _stepPending
-        ? 'Phone sideways, straight above: line the breadboard up with the outline, tap it to focus'
+        ? (_stepArduino
+            ? 'The breadboard and the Arduino in the outlines: it takes the photo by itself'
+            : 'Straight above, the breadboard in the outline: it takes the photo by itself')
         : _lookQuestion != null
         ? 'Hold it up so Pip can see it'
         : q != null
@@ -889,7 +947,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       color: Colors.black,
       child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
-          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? const BoardOutline() : null)
+          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready) : null)
         else
           Center(
             child: _camError == null
@@ -913,16 +971,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         ),
         if (kIsWeb && _stepPending)
           Positioned(
-            top: 40,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: TextButton.icon(
-                onPressed: _phoneCamera,
-                style: TextButton.styleFrom(foregroundColor: Colors.white70),
-                icon: const Icon(Icons.photo_camera_outlined, size: 18),
-                label: const Text('Blurry? Use the phone camera instead'),
-              ),
+            top: 34,
+            right: 4,
+            child: TextButton.icon(
+              onPressed: _phoneCamera,
+              style: TextButton.styleFrom(foregroundColor: Colors.white70),
+              icon: const Icon(Icons.photo_camera_outlined, size: 18),
+              label: const Text('Phone camera'),
             ),
           ),
         Positioned(
