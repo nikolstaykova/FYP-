@@ -54,7 +54,9 @@ def _ang(v):
 
 
 def _close(a, b, tol):
-    return np.abs(np.angle(np.exp(1j * (a - b)))) < tol
+    """Two directions within tol of each other; a direction and its reverse are the same (up = down: mod 180 degrees,
+    or a board standing upright in the photo finds 'up' and 'down' as its two grid directions)."""
+    return np.abs(np.angle(np.exp(2j * (a - b)))) / 2 < tol
 
 
 def grid(c):
@@ -76,6 +78,8 @@ def grid(c):
 
     def step(a):  # the shortest common step in that direction (not two holes on)
         v = vec[_close(ang, a, np.radians(8))]
+        u = np.array([np.cos(a), np.sin(a)])
+        v = np.where((v @ u < 0)[:, None], -v, v)  # up and down are one direction: point them all the same way
         ln = np.linalg.norm(v, axis=1)
         return np.median(v[ln < np.percentile(ln, 30) * 1.3], axis=0)
     s1, s2 = step(a1), step(a2)

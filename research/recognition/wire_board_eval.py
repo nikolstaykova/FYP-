@@ -77,6 +77,44 @@ def read_raw(photo, model):
     return ends, st.get("cost_usd") or 0, None
 
 
+HYBRID = """The first image is a breadboard that code has straightened. Code has also written the number of every
+column in yellow boxes: the row of yellow numbers ABOVE the upper half belongs to the upper half, the row BELOW the
+lower half belongs to the lower half. These yellow numbers are exact: do not count holes, read the yellow number.
+The second image is the whole photo, for context.
+
+Find every jumper-wire end that is pushed into a hole of the board (ends lying loose on the table don't count).
+A wire end has a black plastic connector, wider than a hole, which hides the hole it is in: the metal pin goes into
+the board at the connector's end that touches the board, at its middle; follow the connector straight down/up to the
+yellow number of that column. Ignore the wire's colour and where the wire itself runs.
+For each end give: "half" ("upper" or "lower" in the straightened image), "column": the yellow number of its column,
+"why": at most 12 words.
+Answer ONLY with JSON: {"ends": [{"colour": "", "half": "upper", "column": 0, "why": ""}]}"""
+
+
+def read_hybrid(photo, model):
+    """Geometry + model: code straightens the board and numbers every column (wire_geometry.numbered); the model only
+    finds the wire end and reads the yellow number. Falls back to the pipeline when no grid is found."""
+    sys.path.insert(0, str(ROOT / "research" / "recognition"))
+    import wire_geometry
+    from gather import gather_vlm as vlm
+    pic, info = wire_geometry.numbered(str(photo))
+    if pic is None:
+        ends, cost, board = read(photo, model)
+        return ends, cost, board
+    out, st, _ = vlm.ask(model, [(pic, "image/jpeg"), vlm.shrink(str(photo), 1200, 80)], HYBRID, max_tokens=4000,
+                         effort="low")
+    i, j = out.find("{"), out.rfind("}")
+    try:
+        ends = json.loads(out[i:j + 1])["ends"]
+    except Exception:
+        ends = []
+    flip = info.get("upside_down")
+    for e in ends:  # upper/lower in the straightened image -> the board's top/bottom half
+        upper = str(e.get("half", "")).lower().startswith("u")
+        e["half"] = "bottom" if upper == bool(flip) else "top"
+    return ends, st.get("cost_usd") or 0, (pic, "image/jpeg")
+
+
 def read(photo, model):
     from gather import gather_vlm as vlm
     from validator import arduino
@@ -100,11 +138,11 @@ def place(e):
     return f"c{e.get('column')}{'b' if h.startswith('b') else 't'}"
 
 
-def one(name, lab, model, out_dir, raw=False):
+def one(name, lab, model, out_dir, raw=False, hybrid=False):
     t = time.time()
     want = truth(lab)
     try:
-        ends, cost, board = (read_raw if raw else read)(jpeg(name), model)
+        ends, cost, board = (read_raw if raw else read_hybrid if hybrid else read)(jpeg(name), model)
     except Exception as e:
         ends, cost, board = [], 0, None
         print(name, "error", e)
@@ -144,23 +182,24 @@ def main():
     ap.add_argument("--set", default="tune", choices=["tune", "test", "all"])
     ap.add_argument("--model", default="claude-opus-5-5")
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--hybrid", action="store_true", help="geometry straightens and numbers the columns, the model reads")
     ap.add_argument("--raw", action="store_true", help="the model as it is: whole photo, plain question")
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args()
     labels = json.loads(LABELS.read_text())
     todo = [(n, l) for n, l in sorted(labels.items()) if not l.get("skip") and truth(l)
             and (a.set == "all" or split(n) == a.set)][:a.limit]
-    out_dir = RUNS / (time.strftime("%Y%m%d-%H%M%S") + ("-raw" if a.raw else "") + "-" + a.model.split("-")[1])
+    out_dir = RUNS / (time.strftime("%Y%m%d-%H%M%S") + ("-raw" if a.raw else "-hybrid" if a.hybrid else "") + "-" + a.model.split("-")[1])
     out_dir.mkdir(parents=True)
     print(f"{len(todo)} photos ({a.set}, {a.model}) → {out_dir}")
     with cf.ThreadPoolExecutor(a.workers) as ex:
-        rows = list(ex.map(lambda nl: one(*nl, a.model, out_dir, a.raw), todo))
+        rows = list(ex.map(lambda nl: one(*nl, a.model, out_dir, a.raw, a.hybrid), todo))
     ends = sum(r["ends"] for r in rows)
     s = {"set": a.set, "model": a.model, "photos": len(rows), "photos_all_right": sum(r["all_right"] for r in rows),
          "ends": ends, "column_right": sum(r["column_right"] for r in rows),
          "column_and_half_right": sum(r["right"] for r in rows), "one_column_off": sum(r["one_off"] for r in rows), "cost_usd": round(sum(r["cost_usd"] for r in rows), 3)}
     (out_dir / "results.json").write_text(json.dumps({"summary": s, "rows": rows}, indent=1))
-    title = (f"Wire ends · {a.set} · {a.model}{' · RAW' if a.raw else ' · pipeline'} · column right {s['column_right']}/{ends} "
+    title = (f"Wire ends · {a.set} · {a.model}{' · RAW' if a.raw else ' · HYBRID' if a.hybrid else ' · pipeline'} · column right {s['column_right']}/{ends} "
              f"(with the half too {s['column_and_half_right']}), one column off {s['one_column_off']}")
     page(rows, out_dir, title)
     print(title, f"· ${s['cost_usd']}")

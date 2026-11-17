@@ -160,3 +160,60 @@ python research/recognition/resistor_eval.py                                   #
 ```
 
 Use `.venv-research/bin/python`. Results: `research/recognition/runs/…/index.html`.
+
+---
+
+## 7. Geometry: code counts the columns (17 November, later)
+
+The holes form an exact grid, so code can do the counting the models get wrong. `validator/board.py` already finds
+the holes, works out the grid and fits a homography (the board warped flat). New in
+`research/recognition/wire_geometry.py`:
+
+- **The two halves** are the two 5-row blocks with the most holes (the printed numbers' row is left out).
+- **The board's end**: the board has 65 hole columns; the 65 with the most holes are the board (stray blobs on the
+  paper past the ends are left out).
+- **This board's numbers**: printed number = hole column from the end − 3 (top half, left to right; bottom half,
+  right to left). In the straightened image the upper half always counts up left to right and the lower half right
+  to left, *whichever way up the photo was taken*, so the column number needs no "which way up" at all.
+- **Which way up** (only for top/bottom half): on an upright board each rail has its blue line above its red one.
+- Fixed in `board.py` on the way: a board standing upright in the photo found "up" and "down" as its two grid
+  directions (angles compared mod 360 instead of mod 180); a grid could come out mirrored (a photo never is).
+  All 173 tests pass.
+
+### 7.1 Geometry alone (no model, free, ~1 s a photo)
+
+Where the learner clicked the wire end, put through the grid: **18/21 columns right**. The 3 misses are clicks
+between two holes (0.3–0.5 of a column off a hole) and one sideways photo.
+
+### 7.2 Geometry + model ("hybrid")
+
+Code straightens the board and writes the true number on **every column** in yellow (upper half's numbers above it,
+lower half's below); the model only finds the wire end and reads the yellow number (`wire_board_eval.py --hybrid`).
+
+| Model | As it is | Pipeline (crop) | **Hybrid (geometry + model)** |
+|---|---|---|---|
+| Opus 5.5 | 14/21 · $0.41 | 18/21 · $0.74 | **17/21 · $0.38** |
+| Haiku 5.5 | 12/21 | 11/21 | 11/21 · $0.015 |
+
+- Hybrid Opus is as good as the pipeline (17 vs 18, within one photo) at **half the cost**: one straightened image
+  instead of a close-up plus the whole photo, and no Haiku box.
+- Haiku is still at ~half right whatever it is shown: it reads the label of the connector's *middle*.
+
+### 7.3 What is still wrong (looked at by eye)
+
+1. **The model reads the connector's middle, not the pin.** IMG_2660: connector over 12–13, wire leaves to the lower
+   right, so the pin is at the upper-left end: 13 (label right, model 12). IMG_2659 the same (49, model 50).
+   The pin is at the end of the connector **away from where the wire leaves it**.
+2. **Anchoring off by one on some photos.** IMG_2640: the yellow 46 sits over the printed 45 in the top half (the
+   bottom half lines up). Counting from the board's end is fragile when the end column is in shadow or the fit is
+   slightly off; the printed numbers are a second anchor.
+3. A few labels may be off by one themselves (clicks between holes); they were read from the photos.
+
+### 7.4 Next
+
+1. **Code finds the pin**: the connector is a dark, elongated blob in the straightened image; the wire (coloured)
+   leaves one end; the pin is the other end. Its column comes straight from the grid. The model then only confirms
+   ("is the connector at the yellow 13?") or handles what code can't find.
+2. **Anchor to the printed numbers too**: check that yellow 5, 10, 15… sit under the printed 5, 10, 15 (one cheap
+   Haiku look or template matching); shift by one when they don't.
+3. Then the full pipeline in the app: geometry first, the model's crop as the fallback when no grid is found.
