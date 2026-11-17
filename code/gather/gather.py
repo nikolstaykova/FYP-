@@ -299,12 +299,12 @@ def is_board(cat, t):
     return c.get("category") in BOARDS or str(t).startswith(("arduino-", "esp32", "pi-pico"))
 
 
-# ---- a board the catalogue does not know: described from Claude's knowledge, once ----------------------------------
-# The approved sites do not list every board (older ones like the Duemilanove, many clones), so a board the check sees
-# but the catalogue does not have is described by Claude: its chip, logic voltage and which pins do what. board_ok
-# then decides as for any board. The description is kept (DESCRIBED), so each board costs one call, once.
-DESCRIBED = pathlib.Path(__import__("os").environ.get("PINPOINT_DESCRIBED")
-                         or ROOT / "code/graph/parts/arduino/boards_described.json")
+# ---- a board the database does not have: investigated, and added to the database ----------------------------------
+# A board the check sees in place of the lesson's, which the parts database does not have (or has without its pins),
+# is investigated: Claude describes it from what it knows (its chip, logic voltage and which pins do what; the
+# approved shop sites rarely list older boards or clones, and their search takes about 30 s), and it is ADDED to the
+# database like any part: a card in the card store, its pins in board_pins.json (graph.arduino.pins), the catalogue
+# rebuilt, which updates Neo4j (part_catalogue.save). From then on it is a normal part: board_ok decides as for any.
 DESCRIBER = "claude-opus-5-5"
 DESCRIBE = __import__("os").environ.get("PINPOINT_DESCRIBE", "1") != "0"  # off in the tests (no model calls)
 BOARD_ASK = """A learner wants to use this board for an Arduino lesson: "{name}"{value}.
@@ -325,21 +325,18 @@ def _slug(text):
     return re.sub(r"[^a-z0-9]+", "-", str(text).lower()).strip("-")
 
 
-def _described():
-    return json.loads(DESCRIBED.read_text()) if DESCRIBED.exists() else {}
+INVESTIGATED = {}  # boards added in this process, in the catalogue's form (until the catalogue is rebuilt)
 
 
-def described_board(name, value, cat, ask=True):
-    """A catalogue card for a board the catalogue does not know, from Claude's knowledge (kept for next time).
-    Returns (type id, card) or (None, None) when Claude does not know the board (or ask is off and it was never
-    described)."""
+def investigate_board(name, value, store, ask=True):
+    """Investigate a board the database does not have and add it. Returns its type id, or None (Claude does not know
+    it, or ask is off). Names Claude did not know are remembered (board_pins.json "_unknown") so they are not asked
+    again."""
+    from graph.arduino import pins
+    facts = json.loads(pins.FOUND.read_text()) if pins.FOUND.exists() else {}
     key = _slug(core_name(name) or name)
-    known = _described()
-    if key in known:
-        c = known[key]
-        return (c["part_type_id"], c) if c.get("part_type_id") else (None, None)
-    if not ask:
-        return None, None
+    if key in facts.get("_unknown", []) or not ask:
+        return None
     from gather import gather_vlm as vlm
     out, _, _ = vlm.ask(DESCRIBER, [], BOARD_ASK.format(name=name, value=f" (written on it: {value})" if value else ""),
                         max_tokens=3000, effort="medium")
@@ -349,35 +346,43 @@ def described_board(name, value, cat, ask=True):
     except ValueError:
         d = {}
     if not d.get("known") or not d.get("digital"):
-        known[key] = {"known": False, "name": name}
-        DESCRIBED.write_text(json.dumps(known, indent=1))
-        return None, None
-    tid = "board-" + _slug(d.get("display_name") or name)
-    uno = cat.get("arduino-uno") or {}
-    if d.get("uno_layout") and uno.get("ports"):
-        import copy
-        ports = copy.deepcopy(uno["ports"])  # the Uno's layout: its pins, as the catalogue knows them
-    else:
-        can = {}
-        for pin in d.get("digital") or []:
-            can.setdefault(str(pin), []).append("digital")
-        for pin in d.get("analog") or []:
-            can.setdefault(str(pin), []).extend(["analog", "digital"])
-        for pin in d.get("pwm") or []:
-            can.setdefault(str(pin), []).append("pwm")
-        for pin in d.get("interrupt") or []:
-            can.setdefault(str(pin), []).append("interrupt")
-        ports = [{"id": pin, "can": sorted(set(c)), **({"reserved": "carries the USB upload and Serial"}
-                                                       if d.get("upload_uart") and pin in ("0", "1") else {})}
-                 for pin, c in can.items()] + [{"id": "GND"}, {"id": "5V" if (d.get("logic_v") or 5) >= 5 else "3V3"}]
-    card = {"part_type_id": tid, "display_name": d.get("display_name") or name, "category": "board", "aliases": [name],
-            "ports": ports, "electrical": {"logic_v": d.get("logic_v")},
-            "metadata": {"specs": {"chip": d.get("chip"), "logic_v": d.get("logic_v")}},
-            "source": {"made_by": "claude", "note": "described from Claude's knowledge of the board, not a datasheet"},
-            "note": d.get("note") or ""}
-    known[key] = card
-    DESCRIBED.write_text(json.dumps(known, indent=1))
-    return tid, card
+        facts.setdefault("_unknown", []).append(key)
+        pins.FOUND.write_text(json.dumps(facts, indent=1))
+        return None
+    tid = _slug(d.get("display_name") or name)
+    if not tid.startswith(("arduino-", "esp", "board-")):
+        tid = "board-" + tid
+    import copy
+    uno = store.cards.get("arduino-uno") or {}
+    card = copy.deepcopy(uno)
+    port = lambda pid: {"id": pid, "kind": "header-socket", "gender": None, "voltage_rating": None, "aliases": []}  # noqa: E731
+    if not d.get("uno_layout"):
+        logic = d.get("logic_v") or 5
+        card["ports"] = [port(str(x)) for x in [*(d.get("digital") or []), *(d.get("analog") or [])]] + \
+                        [port("GND"), port("5V" if logic >= 5 else "3V3")]
+    card.update({"part_type_id": tid, "display_name": d.get("display_name") or name,
+                 "aliases": sorted({name.lower(), (core_name(name) or name).lower(), str(value).lower()} - {""}),
+                 "category": "board", "electrical": {"logic_v": d.get("logic_v"), "max_pin_current_ma": None},
+                 "source": {"platform": "claude", "url": None, "external_id": None, "made_by": "claude"},
+                 "note": ((d.get("note") or "") + " Described by Claude when a learner had one: not checked against a "
+                          "datasheet.").strip()})
+    from graph.parts.cards import gate
+    ok, err = gate(card)
+    if not ok:
+        return None
+    facts[tid] = {k: d.get(k) for k in ("uno_layout", "chip", "logic_v", "digital", "analog", "pwm", "interrupt", "upload_uart")}
+    pins.FOUND.write_text(json.dumps(facts, indent=1))
+    store.put_layer0([ok])
+    import threading
+    from graph.parts import part_catalogue
+    # the catalogue and the database (Neo4j) rebuilt in the background: a paused or slow database must not hold up
+    # the learner's check, which uses the card straight away (the catalogue's form of it, below)
+    threading.Thread(target=part_catalogue.build, daemon=True).start()
+    entry = copy.deepcopy(ok)
+    entry["metadata"] = {"specs": {"chip": d.get("chip"), "logic_v": d.get("logic_v")}}
+    pins.annotate(entry, pins.cq_card(tid))
+    INVESTIGATED[tid] = entry
+    return tid
 
 
 # ---- 3 compare + 4 substitute + 5 research -----------------------------------------------------------------------
@@ -385,38 +390,31 @@ def check(lesson_id, photos, model="opus", research=True, seen=None):
     """The whole parts check. `seen` skips the photo call (tests and re-runs)."""
     from graph.parts import mcp_server
     rec, phys = lesson(lesson_id)
-    cat = catalogue()
+    cat = {**catalogue(), **INVESTIGATED}  # with boards added in this process (their rebuild may still be running)
     store = mcp_server._store()
     stats = {}
     if seen is None:
         seen, stats = look(photos, rec, model)
     rows = needs(rec, phys)
     types = {r["type"] for r in rows}
-    for c in _described().values():  # boards described before (described_board)
-        if c.get("part_type_id"):
-            cat.setdefault(c["part_type_id"], c)
-    objs = []
+    objs, added = [], False
     for s in seen:
         t, how = match(s, types, store)
-        bare = t is not None and t not in types and is_board(cat, t) and \
-            not any(p.get("can") for p in (cat.get(t) or {}).get("ports") or [])  # a board card with no pin details
+        bare = t is not None and t in cat and t not in types and is_board(cat, t) and \
+            not any(p.get("can") for p in (cat.get(t) or {}).get("ports") or [])  # in the database, but not its pins
         if (t is None and s.get("might_replace") in types and is_board(cat, s["might_replace"])) or bare:
-            # a board the catalogue does not know, seen in place of the lesson's board: Claude describes it, once
-            t2, card = described_board(s["name"], s.get("value") or "", cat, ask=DESCRIBE)
-            if card and bare:  # the catalogue's card, with the pins Claude described
-                cat[t] = {**cat[t], "ports": card["ports"], "electrical": card["electrical"],
-                          "metadata": {**(cat[t].get("metadata") or {}), "specs": card["metadata"]["specs"]},
-                          "source": card["source"]}
-                how = "catalogue, pins described by Claude"
-            elif card:
-                cat[t2] = card
-                t, how = t2, "described by Claude (not in the catalogue)"
+            # a board in place of the lesson's that the database does not have: investigate it and add it
+            t2 = investigate_board(s["name"], s.get("value") or "", store, ask=DESCRIBE)
+            if t2:
+                t, how, added = t2, "investigated and added to the parts database", True
         # research only what could matter for this lesson: an unknown object that might stand in for a lesson part
         if t is None and research and s.get("might_replace") in types:
             found = mcp_server.lookup(f"{s['name']} {s['value']}".strip(), store=store)
             if found.get("found"):
                 t, how = found["type"], f"researched: {found.get('source') or found['from']}"
         objs.append({**s, "type": t, "matched_by": how, "left": s["count"]})
+    if added:
+        cat = {**catalogue(), **INVESTIGATED}  # with what was added (the rebuild runs in the background)
 
     report, board_in_use = [], None
     rows.sort(key=lambda r: not is_board(cat, r["type"]))  # boards first: other checks depend on the board in use
@@ -465,7 +463,7 @@ def check(lesson_id, photos, model="opus", research=True, seen=None):
                     elif o["type"] in cat:
                         ok, why, moves = board_ok(rec, cat, o["type"])
                         if (cat[o["type"]].get("source") or {}).get("made_by") == "claude":
-                            why += " (from what Claude knows of this board, not a datasheet: check the pin labels)"
+                            why += " (its pins are from Claude's knowledge of the board, not a datasheet)"
                     else:
                         ok, why, moves = None, (o.get("replace_note") or "may do the job") + \
                             "; not in the catalogue, so its pins could not be checked", {}

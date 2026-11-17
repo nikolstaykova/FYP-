@@ -101,17 +101,31 @@ def test_a_capacitor_of_another_value_is_refused():
     assert cap["status"] == "missing" and "2200 µF" in cap["use_instead"][0]["why"]
 
 
-def test_a_described_board_is_judged_like_any_board(tmp_path, monkeypatch):
-    """A board the catalogue lacks, described once by Claude (here: already described), stands in when its pins do."""
+def test_an_investigated_boards_pins(tmp_path, monkeypatch):
+    """A board added by investigating (its pins in board_pins.json) gets what its pins can do, like a known board."""
     import json
+    from graph.arduino import pins
+    f = tmp_path / "board_pins.json"
+    f.write_text(json.dumps({"board-x": {"uno_layout": False, "digital": [str(i) for i in range(14)],
+                                         "analog": ["A0", "A1"], "pwm": ["3", "5"], "interrupt": ["2"], "upload_uart": True}}))
+    monkeypatch.setattr(pins, "FOUND", f)
+    card = {"part_type_id": "board-x", "ports": [{"id": "13"}, {"id": "3"}, {"id": "A0"}, {"id": "0"}]}
+    assert pins.annotate(card, None) == 4
+    can = {p["id"]: p for p in card["ports"]}
+    assert "pwm" in can["3"]["can"] and "analog" in can["A0"]["can"] and can["0"].get("reserved")
+
+
+def test_an_added_board_is_judged_like_any_board(monkeypatch):
+    """Once investigated and in the database, a board stands in when its pins do (the note says where its pins came from)."""
+    import copy
     from gather import gather
-    card = {"part_type_id": "board-freeduino", "display_name": "Freeduino", "category": "board", "aliases": [],
-            "ports": json.loads(json.dumps(gather.catalogue()["arduino-uno"]["ports"])),
-            "electrical": {"logic_v": 5.0}, "metadata": {"specs": {"chip": "ATmega328P", "logic_v": 5.0}},
-            "source": {"made_by": "claude"}}
-    f = tmp_path / "described.json"
-    f.write_text(json.dumps({"freeduino": card}))
-    monkeypatch.setattr(gather, "DESCRIBED", f)
+    cat = gather.catalogue()
+    board = copy.deepcopy(cat["arduino-uno"])
+    board.update({"part_type_id": "board-freeduino", "display_name": "Freeduino", "source": {"made_by": "claude"}})
+    cat = {**cat, "board-freeduino": board}
+    monkeypatch.setattr(gather, "catalogue", lambda: cat)
+    real = gather.match
+    monkeypatch.setattr(gather, "match", lambda s, t, st: ("board-freeduino", "catalogue") if s["name"] == "Freeduino" else real(s, t, st))
     st, res = status([S("Freeduino", "none", "", might_replace="arduino-uno")])
     row = next(r for r in res["parts"] if r["type"] == "arduino-uno")
     assert st["arduino-uno"] == "use instead" and "not a datasheet" in row["use_instead"][0]["why"]

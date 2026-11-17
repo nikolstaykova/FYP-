@@ -144,6 +144,33 @@ def run_check(upload, lesson_id, model, research, repeat):
     return out
 
 
+RESEARCHED = set()  # parts already looked up in this run of the server
+
+
+def research_later(res, lesson_types):
+    """Parts the check saw but the database does not have, that might stand in for a lesson part: looked up on the
+    approved sites in the background (about 30 s each) and added to the database when found (parts.mcp_server.lookup),
+    so the next check knows them. (Boards are investigated during the check itself: gather.investigate_board.)"""
+    todo = []
+    for o in res.get('seen') or []:
+        name = f"{o.get('name', '')} {o.get('value') or ''}".strip()
+        if o.get('type') is None and o.get('might_replace') in lesson_types and name.lower() not in RESEARCHED:
+            RESEARCHED.add(name.lower())
+            todo.append(name)
+    if not todo:
+        return
+
+    def run():
+        from graph.parts import mcp_server
+        for name in todo:
+            try:
+                r = mcp_server.lookup(name)
+                print(f"research: {name}: {'added ' + r['type'] if r.get('found') else 'not found'}", flush=True)
+            except Exception as e:
+                print(f"research: {name}: {e}", flush=True)
+    threading.Thread(target=run, daemon=True).start()
+
+
 def answer_closeup(st, q, res, rec, f):
     """One question answered from a close-up: Haiku, and Opus once if Haiku still cannot tell. Returns
     (question, answers, steps for the log)."""
@@ -183,6 +210,7 @@ def flow(action, upload, body):
               'steps': [{'what': 'first look', **{k: stats.get(k) for k in ('model', 'seconds', 'cost_usd')}}]}
         res = gather.check(st['lesson'], photos, research=False, seen=seen)
         st['first_parts'] = [{'type': r['type'], 'status': r['status']} for r in res['parts']]
+        research_later(res, {r['type'] for r in res['parts']})
     else:
         st = json.loads(sf.read_text())
         rec, _ = gather.lesson(st['lesson'])

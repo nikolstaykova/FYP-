@@ -37,9 +37,15 @@ FACTS = {
 }
 
 
-# Boards with the Uno's layout (the same headers, pin numbers and 5 V logic): they take the Uno's pinout
-# (cards_electronics.json: copied from arduino-uno)
-UNO_LAYOUT = {"arduino-duemilanove", "arduino-diecimila", "arduino-uno-compatible"}
+# Boards the catalogue did not have, investigated when a learner had one (gather.investigate_board): their pins as
+# described then. A board with the Uno's layout (the same headers, pin numbers and 5 V logic) takes the Uno's pinout.
+FOUND = pathlib.Path(__file__).resolve().parents[1] / "parts" / "arduino" / "board_pins.json"
+
+
+def found_facts(part_id):
+    if not FOUND.exists():
+        return {}
+    return json.loads(FOUND.read_text()).get(part_id) or {}
 
 
 def cq_card(part_id):
@@ -50,8 +56,13 @@ def cq_card(part_id):
 def annotate(card, cq):
     """The board card's ports with `can`, `builtin`, `reserved` and `same_as` (in place). Returns how many ports got
     a capability, or 0 when CircuitQuest describes no pins for this part."""
-    base = "arduino-uno" if card["part_type_id"] in UNO_LAYOUT else card["part_type_id"]
-    facts = FACTS.get(base, {})
+    found = found_facts(card["part_type_id"])
+    base = "arduino-uno" if found.get("uno_layout") else card["part_type_id"]
+    facts = FACTS.get(base) or ({"digital": found.get("digital") or [], "analog": found.get("analog") or [],
+                                 "pwm": " ".join(found.get("pwm") or []), "interrupt": " ".join(found.get("interrupt") or []),
+                                 "uart": {"0": "RX", "1": "TX"} if "0" in (found.get("digital") or []) else {},
+                                 "upload_uart": bool(found.get("upload_uart")),
+                                 "source": "described by Claude when a learner had one (not a datasheet)"} if found else {})
     if base != card["part_type_id"] and not cq:
         cq = cq_card(base)
     if (not cq or not cq.get("pin_domains")) and facts.get("digital"):  # a board known only from its documented pinout

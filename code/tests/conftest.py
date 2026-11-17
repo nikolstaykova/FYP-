@@ -10,6 +10,4 @@ os.environ["PINPOINT_DATA"] = "files"  # and read the files, so they run offline
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE.parent), str(HERE / "tools"), str(HERE / "research")]
 
-os.environ.setdefault("PINPOINT_DESCRIBE", "0")  # gather.described_board: no model calls in the tests,
-os.environ.setdefault("PINPOINT_DESCRIBED", str(__import__("pathlib").Path(__import__("tempfile").gettempdir())
-                                                / "pinpoint-tests-boards-described.json"))  # and not the real file
+os.environ.setdefault("PINPOINT_DESCRIBE", "0")  # gather.investigate_board: no model calls, no database writes
