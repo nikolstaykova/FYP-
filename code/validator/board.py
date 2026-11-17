@@ -221,7 +221,7 @@ def arduino_box(im):
     n, lab, stats, _ = cv2.connectedComponentsWithStats(blue)
     H, W = im.shape[:2]
     best = None
-    for x, y, w, h, area in stats[1:]:
+    for i, (x, y, w, h, area) in enumerate(stats[1:], 1):
         # an Arduino is a solid rectangle, about 1.3 : 1, a few percent of the frame (not jeans or a blue cloth)
         if area < 0.012 * W * H or w * h > 0.3 * W * H:
             continue
@@ -229,13 +229,101 @@ def arduino_box(im):
         if solid < 0.55 or aspect > 2.0:
             continue
         if best is None or area > best[4]:
-            best = (x, y, w, h, area)
+            best = (x, y, w, h, area, i)
     if best is None:
         return None
-    x, y, w, h, area = best
+    x, y, w, h, area, i = best
     e = 0.01
+    pts = cv2.findNonZero((lab == i).astype(np.uint8))
+    quad = order_corners(cv2.boxPoints(cv2.minAreaRect(pts)))  # turned with the board, not just its upright box
     return {"box": [round(x / W, 3), round(y / H, 3), round((x + w) / W, 3), round((y + h) / H, 3)],
-            "cut": bool(x < e * W or y < e * H or x + w > (1 - e) * W or y + h > (1 - e) * H)}
+            "cut": bool(x < e * W or y < e * H or x + w > (1 - e) * W or y + h > (1 - e) * H),
+            "quad": [[round(float(px) / W, 4), round(float(py) / H, 4)] for px, py in quad]}
+
+
+def order_corners(pts):
+    """4 points in order: top-left, top-right, bottom-right, bottom-left (by angle around their middle)."""
+    pts = np.asarray(pts, dtype=float).reshape(-1, 2)
+    m = pts.mean(0)
+    pts = pts[np.argsort(np.arctan2(pts[:, 1] - m[1], pts[:, 0] - m[0]))]  # clockwise from the left (y down)
+    k = int(np.argmin(pts.sum(1)))  # the top-left has the smallest x + y
+    return np.roll(pts, -k, axis=0)
+
+
+def board_corners(c, pitch):
+    """The breadboard's 4 corners in the frame, from its holes: the hull of the holes (stray dots left out) cut down
+    to 4 corners (a slanted board is a trapezoid, not a rectangle), pushed out by about a hole and a half to the
+    plastic's edge. None when the holes don't make a clear 4-sided shape."""
+    if len(c) < 30:
+        return None
+    # only holes inside a regular grid: at least 3 neighbours about one hole apart (wood grain, cloth and the
+    # Arduino's pins are scattered dots), then the biggest group of such holes linked hole to hole: the board
+    d = np.sqrt(((c[:, None] - c[None]) ** 2).sum(-1))
+    np.fill_diagonal(d, np.inf)
+    near = (d > 0.7 * pitch) & (d < 1.5 * pitch)
+    keep = near.sum(1) >= 3
+    idx = np.where(keep)[0]
+    if len(idx) < 30:
+        return None
+    link = near[np.ix_(idx, idx)]
+    group = -np.ones(len(idx), int)
+    groups, g = [], 0
+    for s0 in range(len(idx)):
+        if group[s0] >= 0:
+            continue
+        stack, members = [s0], []
+        group[s0] = g
+        while stack:
+            i = stack.pop()
+            members.append(i)
+            for j in np.where(link[i] & (group < 0))[0]:
+                group[j] = g
+                stack.append(j)
+        groups.append(members)
+        g += 1
+    # the board's halves and rails are separate groups (the middle gap, the rails' gaps): join every sizeable group
+    # within 4 holes of the board so far
+    groups.sort(key=len, reverse=True)
+    best = list(groups[0])
+    joined = True
+    while joined:
+        joined = False
+        for gr in groups[1:]:
+            if len(gr) < 15 or gr[0] in best:
+                continue
+            gap = d[np.ix_(idx[gr], idx[best])].min()
+            if gap < 4 * pitch:
+                best += gr
+                joined = True
+    pts = c[idx[best]].astype(np.float32)
+    if len(pts) < 30:
+        return None
+    hull = cv2.convexHull(pts)
+    peri = cv2.arcLength(hull, True)
+    quad = None
+    for eps in (0.01, 0.02, 0.03, 0.05, 0.08):
+        a = cv2.approxPolyDP(hull, eps * peri, True)
+        if len(a) == 4:
+            quad = a.reshape(4, 2)
+            break
+    if quad is None:
+        quad = cv2.boxPoints(cv2.minAreaRect(pts))
+    q = order_corners(quad)  # tl, tr, br, bl around the holes of the two halves (rows a-j)
+    # out to the plastic's edge, by the board's own shape (830-hole board, 165 x 55 mm): the whole board is about
+    # twice as wide as rows a-j centre to centre (the rails and their margins), and 1.5 holes longer at each end
+    if np.linalg.norm(q[1] - q[0]) + np.linalg.norm(q[2] - q[3]) >= np.linalg.norm(q[3] - q[0]) + np.linalg.norm(q[2] - q[1]):
+        ends = [(0, 3), (1, 2)]  # the board lies across the frame: its ends are the left and right edges
+    else:
+        ends = [(0, 1), (3, 2)]  # it stands up the frame: its ends are the top and bottom edges
+    out = q.copy()
+    (a0, a1), (b0, b1) = ends
+    for (i, j), (k, l) in (((a0, a1), (b0, b1)), ((b0, b1), (a0, a1))):
+        across = q[j] - q[i]  # this end, from one corner to the other (rows a to j)
+        along = (q[i] + q[j]) / 2 - (q[k] + q[l]) / 2  # from the other end to this one
+        along = along / max(1e-6, np.linalg.norm(along))
+        out[i] = q[i] - across * 0.48 + along * 1.5 * pitch
+        out[j] = q[j] + across * 0.48 + along * 1.5 * pitch
+    return out
 
 
 def frame_hint(photo_path, arduino=False, min_pitch=18):
@@ -285,6 +373,25 @@ def frame_hint(photo_path, arduino=False, min_pitch=18):
     if m["sharp"] < MIN_SHARP:
         return {"ok": False, "hint": "Hold still, tap to focus", "measure": m}
     return {"ok": True, "hint": "Hold still", "measure": m}
+
+
+def frame_outline(photo_path, arduino=False, min_pitch=18):
+    """frame_hint, plus where the board and the Arduino are in the frame, for the live camera to draw over them:
+    "board": its 4 corners and "arduino": the Arduino's 4 corners, as fractions of the frame (top-left, top-right,
+    bottom-right, bottom-left), or None when not found. Same cost (the holes are found once more: ~0.1 s)."""
+    h = frame_hint(photo_path, arduino=arduino, min_pitch=min_pitch)
+    img = load(photo_path)
+    f = min(1.0, 1200 / max(img.shape[:2]))
+    im = cv2.resize(img, None, fx=f, fy=f, interpolation=cv2.INTER_AREA) if f < 1 else img
+    H, W = im.shape[:2]
+    c = holes(im)
+    pitch = (h.get("measure", {}).get("pitch_px") or 20) * f
+    q = board_corners(c, pitch) if len(c) >= MIN_HOLES else None
+    h["board"] = None if q is None else [[round(float(np.clip(x / W, 0, 1)), 4), round(float(np.clip(y / H, 0, 1)), 4)]
+                                         for x, y in q]
+    a = (h.get("measure") or {}).get("arduino") or (arduino_box(im) if arduino else None)
+    h["arduino"] = (a or {}).get("quad")
+    return h
 
 
 def mark(flat, pl, cell=36, band=40):

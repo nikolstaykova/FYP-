@@ -91,6 +91,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _stepArduino = false; // the step wires to the Arduino: one photo with the board and the Arduino
   String? _hint;
   bool _ready = false;
+  List<Offset>? _seenBoard, _seenUno; // where the live check found them (fractions of the screen)
+  int _lost = 0, _unoLost = 0; // frames in a row without it: an outline stays one frame, then goes
   int _okRun = 0;
   int _softRun = 0; // frames where all is fine but no (blue) Arduino was seen: after a few, take it anyway
   bool _framing = false;
@@ -482,10 +484,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _softRun = 0;
     _ready = false;
     _hint = 'Line the board up with the outline';
+    _seenBoard = _seenUno = null;
+    _lost = _unoLost = 0;
     _api.validateShots(s.id, _i + 1).then((x) {
       if (mounted) setState(() => _stepArduino = x.contains('arduino'));
     }).catchError((_) {});
-    _frameTimer = Timer.periodic(const Duration(milliseconds: 1200), (_) => _frameTick());
+    _frameTimer = Timer.periodic(const Duration(milliseconds: 800), (_) => _frameTick());
   }
 
   Future<void> _frameTick() async {
@@ -499,9 +503,17 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       _softRun = r['soft'] == true ? _softRun + 1 : 0;
       final ok = r['ok'] == true || _softRun >= 4;
       _okRun = ok ? _okRun + 1 : 0;
+      List<Offset>? corners(Object? q) => q is List && q.length == 4
+          ? [for (final p in q) Offset((p[0] as num).toDouble(), (p[1] as num).toDouble())]
+          : null;
+      final board = corners(r['board']), uno = corners(r['arduino']);
       setState(() {
         _ready = ok;
         _hint = _okRun >= 2 ? 'Got it!' : '${r['hint'] ?? ''}';
+        _lost = board == null ? _lost + 1 : 0;
+        _unoLost = uno == null ? _unoLost + 1 : 0;
+        if (board != null || _lost > 1) _seenBoard = board;
+        if (uno != null || _unoLost > 1) _seenUno = uno;
       });
       if (_okRun >= 2) {
         _frameTimer?.cancel();
@@ -524,6 +536,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _frameTimer = null;
     _hint = null;
     _ready = false;
+    _seenBoard = _seenUno = null;
     final c = _cam;
     _cam = null;
     c?.dispose();
@@ -953,7 +966,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       color: Colors.black,
       child: SafeArea(child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
-          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready) : null)
+          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready, board: _seenBoard, uno: _seenUno) : null)
         else
           Center(
             child: _camError == null

@@ -146,3 +146,29 @@ def test_geometry_agreeing_makes_an_unsure_reading_sure_and_unsure_geometry_chan
     assert A._snap(p, off, {"trusted": True, "ends": [{"column": 10, "half": "top", "sure": False}]}) == []
     assert A._snap(p, off, {"trusted": False, "ends": [{"column": 10, "half": "top", "sure": True}]}) == []
     assert off["L2"]["column"] == 11
+
+
+def test_the_live_outline_finds_the_boards_and_the_arduinos_corners(tmp_path):
+    """A drawn breadboard (two 5-row halves of holes) and a blue Arduino beside it: the live check gives each one's 4
+    corners, around the right places, with the scattered dots on the table left out."""
+    import cv2
+    import numpy as np
+    from validator import board
+    im = np.full((900, 1200, 3), 200, np.uint8)
+    rng = np.random.default_rng(1)
+    for x, y in rng.integers(0, 1200, (60, 2)):  # dots on the table
+        cv2.rectangle(im, (int(x), int(y) % 900), (int(x) + 6, int(y) % 900 + 6), (40, 40, 40), -1)
+    cv2.rectangle(im, (380, 230), (1170, 560), (235, 235, 235), -1)  # the board's plastic
+    for col in range(36):  # holes 20 px apart; rows a-e, the middle gap (3 holes from e to f), rows f-j
+        for row in list(range(5)) + list(range(7, 12)):
+            x, y = 420 + col * 20, 280 + row * 20
+            cv2.rectangle(im, (x - 4, y - 4), (x + 4, y + 4), (30, 30, 30), -1)
+    cv2.rectangle(im, (40, 300), (300, 500), (120, 60, 20), -1)  # a blue Arduino (BGR)
+    f = tmp_path / "frame.jpg"
+    cv2.imwrite(str(f), im)
+    h = board.frame_outline(str(f), arduino=True)
+    b = np.array(h["board"]) * [1200, 900]
+    assert b[:, 0].min() < 420 and b[:, 0].max() > 1120 and b[:, 1].min() < 280 and b[:, 1].max() > 500
+    assert b[:, 0].min() > 340  # not stretched to the dots on the table
+    a = np.array(h["arduino"]) * [1200, 900]
+    assert abs(a[:, 0].min() - 40) < 15 and abs(a[:, 0].max() - 300) < 15 and abs(a[:, 1].min() - 300) < 15

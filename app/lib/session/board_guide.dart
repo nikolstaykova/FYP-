@@ -117,11 +117,16 @@ class _GuidePainter extends CustomPainter {
 /// when the step wires to the Arduino, the Arduino's place beside it (one photo with both: the server cuts out each).
 /// [hint] is what the live check says ("Closer", "Hold still"); [ready] turns the outline green.
 class BoardOutline extends StatefulWidget {
-  const BoardOutline({super.key, this.arduino = false, this.hint, this.ready = false});
+  const BoardOutline({super.key, this.arduino = false, this.hint, this.ready = false, this.board, this.uno});
 
   final bool arduino;
   final String? hint;
   final bool ready;
+
+  /// Where the live check found the board and the Arduino in the frame: 4 corners each, as fractions of what is on
+  /// screen (top-left, top-right, bottom-right, bottom-left), or null. Drawn over them, gliding as the phone moves.
+  final List<Offset>? board;
+  final List<Offset>? uno;
 
   static bool full = true; // a full-size board (about 3 : 1) or a half one (about 1.5 : 1)
 
@@ -129,10 +134,48 @@ class BoardOutline extends StatefulWidget {
   State<BoardOutline> createState() => _BoardOutlineState();
 }
 
-class _BoardOutlineState extends State<BoardOutline> {
+class _BoardOutlineState extends State<BoardOutline> with SingleTickerProviderStateMixin {
+  late final AnimationController _glide = AnimationController(vsync: this, duration: const Duration(milliseconds: 350))
+    ..value = 1;
+  List<Offset>? _fromBoard, _fromUno; // where the outlines were drawn when the newest corners came in
+
+  static List<Offset>? _lerp(List<Offset>? a, List<Offset>? b, double t) {
+    if (b == null) return null;
+    if (a == null || a.length != b.length) return b;
+    return [for (var i = 0; i < b.length; i++) Offset.lerp(a[i], b[i], t)!];
+  }
+
+  @override
+  void didUpdateWidget(BoardOutline old) {
+    super.didUpdateWidget(old);
+    if (old.board != widget.board || old.uno != widget.uno) {
+      final t = Curves.easeOut.transform(_glide.value);
+      _fromBoard = _lerp(_fromBoard, old.board, t);
+      _fromUno = _lerp(_fromUno, old.uno, t);
+      _glide.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _glide.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => Stack(fit: StackFit.expand, children: [
-        IgnorePointer(child: CustomPaint(painter: _OutlinePainter(BoardOutline.full ? 3.0 : 1.5, widget.arduino, widget.ready))),
+        IgnorePointer(
+          child: AnimatedBuilder(
+            animation: _glide,
+            builder: (context, _) {
+              final t = Curves.easeOut.transform(_glide.value);
+              return CustomPaint(
+                painter: _OutlinePainter(BoardOutline.full ? 3.0 : 1.5, widget.arduino, widget.ready,
+                    found: _lerp(_fromBoard, widget.board, t), foundUno: _lerp(_fromUno, widget.uno, t)),
+              );
+            },
+          ),
+        ),
         if (widget.hint != null)
           Align(
             alignment: const Alignment(0, -0.05),
@@ -179,14 +222,73 @@ class _BoardOutlineState extends State<BoardOutline> {
 /// The board's outline (and the Arduino's place): dims what is outside, corner marks, the rails and the middle gap
 /// drawn faintly inside so the real board can be lined up with it.
 class _OutlinePainter extends CustomPainter {
-  _OutlinePainter(this.ratio, this.arduino, this.ready);
+  _OutlinePainter(this.ratio, this.arduino, this.ready, {this.found, this.foundUno});
 
   final double ratio; // the board's long side / short side
   final bool arduino;
   final bool ready;
+  final List<Offset>? found; // the board as the live check found it (fractions of the screen), or null
+  final List<Offset>? foundUno;
 
   @override
   void paint(Canvas canvas, Size s) {
+    if (found != null) {
+      _paintFound(canvas, s);
+      return;
+    }
+    _paintGuide(canvas, s);
+  }
+
+  /// The board (and the Arduino) where they really are: dims the rest, outlines each with its corners marked.
+  /// Yellow while lining up, green when the photo is about to be taken.
+  void _paintFound(Canvas canvas, Size s) {
+    Path quad(List<Offset> q) => Path()..addPolygon([for (final p in q) Offset(p.dx * s.width, p.dy * s.height)], true);
+    final shapes = [found!, ?foundUno];
+    var hole = Path();
+    for (final q in shapes) {
+      hole = Path.combine(PathOperation.union, hole, quad(q));
+    }
+    canvas.drawPath(Path.combine(PathOperation.difference, Path()..addRect(Offset.zero & s), hole),
+        Paint()..color = Colors.black.withValues(alpha: 0.3));
+    final colour = ready ? Pq.have : const Color(0xFFFFC53D);
+    final edge = Paint()
+      ..color = colour.withValues(alpha: 0.9)
+      ..strokeWidth = ready ? 3.5 : 2.5
+      ..style = PaintingStyle.stroke
+      ..strokeJoin = StrokeJoin.round;
+    final mark = Paint()
+      ..color = colour
+      ..strokeWidth = 6
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    for (final q in shapes) {
+      final pts = [for (final p in q) Offset(p.dx * s.width, p.dy * s.height)];
+      canvas.drawPath(quad(q), edge);
+      for (var i = 0; i < 4; i++) {  // an L at each corner, along its two edges
+        final c = pts[i], a = pts[(i + 3) % 4], b = pts[(i + 1) % 4];
+        Offset toward(Offset o) {
+          final d = o - c;
+          final l = math.min(30.0, d.distance * 0.2);
+          return c + d / d.distance * l;
+        }
+        canvas.drawPath(Path()
+          ..moveTo(toward(a).dx, toward(a).dy)
+          ..lineTo(c.dx, c.dy)
+          ..lineTo(toward(b).dx, toward(b).dy), mark);
+      }
+    }
+    if (foundUno != null) {
+      final c = foundUno!.fold(Offset.zero, (a, p) => a + Offset(p.dx * s.width, p.dy * s.height)) / 4;
+      final tp = TextPainter(
+        text: const TextSpan(text: 'Arduino', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w800)),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, c - Offset(tp.width / 2, tp.height / 2));
+    }
+  }
+
+  /// Nothing found yet: the outline the board should fill (and the Arduino's place).
+  void _paintGuide(Canvas canvas, Size s) {
     final wide = s.width >= s.height;
     // as big as the screen allows: the words at the top, the shutter row at the bottom
     final area = Rect.fromLTRB(s.width * 0.02, 72, s.width * 0.98, s.height - (wide ? 100 : 130));
@@ -265,5 +367,6 @@ class _OutlinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_OutlinePainter old) => old.ratio != ratio || old.arduino != arduino || old.ready != ready;
+  bool shouldRepaint(_OutlinePainter old) =>
+      old.ratio != ratio || old.arduino != arduino || old.ready != ready || old.found != found || old.foundUno != foundUno;
 }
