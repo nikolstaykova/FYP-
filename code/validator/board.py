@@ -214,7 +214,7 @@ def arduino_box(im):
     fractions of the frame and whether it touches an edge, or None (no big blue patch: not in the photo, or a board
     of another colour). The breadboard's thin blue rail lines are opened away."""
     hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
-    blue = cv2.inRange(hsv, (96, 55, 25), (128, 255, 235))  # dark blue PCB (measured on a Duemilanove: H 105, S 80, V 84)
+    blue = cv2.inRange(hsv, (96, 45, 10), (128, 255, 235))  # dark blue PCB (Duemilanove: H 104, S 85-106, V 41-84; in shade V down to 15)
     k = max(5, int(min(im.shape[:2]) * 0.02)) | 1
     blue = cv2.morphologyEx(blue, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (k, k)))  # its printing
     blue = cv2.morphologyEx(blue, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7)))  # the rail lines

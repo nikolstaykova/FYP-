@@ -176,9 +176,9 @@ FLOW_BUILD = """{n}. Build. The screen is the truth about which step they are on
    celebrate.{lego}"""
 FLOW_BUILD_CHECK = """
    Every step that puts something on the breadboard or the Arduino is CHECKED before the next one: it cannot be
-   skipped (a wrong column now means a circuit that does not work later). When they say it is done, the app usually
-   hears it and opens the camera itself, and tells you so: then do NOT call check_step, just ask them to hold the
-   phone over the board. If no such message comes, ask them to hold the phone over the board and call check_step
+   skipped (a wrong column now means a circuit that does not work later). When they say it is done, the app hears it and
+   opens the camera itself: say ONE short sentence (hold the phone over the board; the photo takes itself) and call
+   check_step (it just says the camera is already open; never read the step again then). Otherwise call check_step
    (the camera opens with an outline of the board, and of the Arduino
    when the step wires to it: they hold the phone over it and the photo is taken by itself when the board is clear,
    or they tap the white button; the result comes to you: do not call it again or ask for the photo again meanwhile, and never say how the step looks until the result

@@ -151,10 +151,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     if (!saysDone(line)) return;
     _heardDoneFor = n;
     setState(() => _stepPending = true);
-    _openCamera();
-    pip.moveOn('(The learner said they have done step $n: the camera is already open for the step check (do not call '
-        'check_step). Ask them, in one short sentence, to hold the phone over the board; the photo takes itself. '
-        'The result comes to you.)');
+    _openCamera();  // Pip heard them too and answers by itself: no extra message (it made Pip say it all twice)
   }
 
   /// Another step is on the screen: Pip stops talking about the old one and is told the new one, with its words.
@@ -312,6 +309,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
           }
         }
       case 'check_step':
+        if (_stepPending && _stage == Stage.camera) {  // already open (they said "done", or tapped): just wait
+          return {'waiting': 'The camera is already open for this step: say at most one short sentence (hold the phone '
+              'over the board; the photo takes itself), then wait for the result. Do not read the step again.'};
+        }
         final cur = _b?.steps[_i];
         if (cur == null || _stage != Stage.build || !_checkable(cur)) {
           return {'note': 'show the build step first (show_step); a step that puts nothing on the board has nothing to check'};
@@ -338,6 +339,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return {'step': _showStep(1), 'steps': _b?.steps.length ?? 0};
       case 'show_step':
         final want = int.tryParse('${args['n']}') ?? 1;
+        if (_stage == Stage.camera && _stepPending && want == _i + 1) {  // its check is under way: stay on the camera
+          return {'screen_shows_step': want, 'note': 'the camera is open for this step\'s check: wait for the result; do not read the step again'};
+        }
         final stop = _uncheckedBefore(want);
         if (stop != null) {
           _showStep(stop);
