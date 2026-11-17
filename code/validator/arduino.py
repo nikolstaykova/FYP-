@@ -37,6 +37,17 @@ import sys
 # 14 for 13, twice), so it never asked Opus. Back to Haiku -> Opus once the photos are cropped and zoomed.
 FIRST = "claude-opus-5-5"
 SECOND = "claude-opus-5-5"
+# The Arduino's header from above (17 Nov, learner's photos: read one socket towards AREF 5 times in 9): the header
+# and the connector are tall, so they look shifted against the labels printed on the board (parallax): count the
+# header's openings instead of taking the nearest label.
+PIN_HOW = ("Do NOT take the label printed next to the connector: the black header and the wire's connector stand "
+           "1-2 cm above the board, so in a photo from above they look shifted (towards the edge of the photo) "
+           "against the labels and their little dots printed on the board, often by a whole socket. Instead COUNT THE "
+           "HEADER'S OWN SOCKET OPENINGS from the end of the header (the opening at the end is the first label in "
+           "the row printed there, e.g. AREF, then GND, 13, 12, 11 ...), up to the opening the connector goes into. "
+           "The connector leans the same way: its top, where the wire comes out, can lie over the opening before it; "
+           "the opening it is in is under the connector's other end, where it meets the header (the end nearer the "
+           "middle of the photo).")
 RAILS = {"tp": "the top + rail", "tn": "the top - rail", "bp": "the bottom + rail", "bn": "the bottom - rail"}
 LEG = {"A": "long leg (+)", "C": "short leg (-)", "1": "one leg", "2": "other leg", "a": "one end", "b": "other end"}
 
@@ -183,7 +194,7 @@ def prompt(plan_, state=None):
         if x["kind"] == "pin":
             pin = their(where, "pin", x["lesson"])
             items.append(f"- {x['key']}: {x['who']}. Which Arduino pin socket is it in? The lesson wants "
-                         f"{say_place('pin', pin)}. Give \"pin\".")
+                         f"{say_place('pin', pin)}. Give \"pin\". " + PIN_HOW)
         elif x["kind"] == "rail":
             items.append(f"- {x['key']}: {x['who']}. Which power rail is it in? The lesson wants "
                          f"{RAILS.get(their(where, 'rail', x['lesson']), x['lesson'])}. Give \"rail\".")

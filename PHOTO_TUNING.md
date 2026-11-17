@@ -326,3 +326,28 @@ Re-run on the same two photos: step 1 resistor in the top half, column 13 (one b
 6.5¢: no Haiku); step 2 LED in the top half, its legs hidden under its body from straight above: unsure (honest),
 the learner is asked. Also: the live outline (board and Arduino found by their corners) now has to have found the
 board before the photo takes itself.
+
+---
+
+## 11. The Arduino's pins (17 November, late)
+
+The learner's check of blink step 3 read **pin 12; the wire was in 11**. A labelled set started from the checks'
+own photos: `data/arduino_pins/<pin>/` (pin11: 3 frames, pinGND: 6), scored by
+`research/recognition/arduino_pin_eval.py` (the real step check, the pin it reads against the folder).
+
+**Why it is off by one:** the labels and their little gold dots are printed on the board, but the black header and
+the wire's connector stand 1–2 cm above it. In a photo from above (the Arduino away from the photo's middle) the tall
+parts shift against the print (parallax): on the close-up the socket openings sit about half a socket past their
+dots, the connector's top a whole socket. "The label next to the connector" is then one off, always towards the
+edge of the photo (AREF here).
+
+| Prompt for an Arduino pin | Right (of 9) |
+|---|---|
+| Before ("which pin socket is it in?") | 4 (11 read as 12 ×3, GND as AREF, 1 not read) |
+| + "the connector leans away from the photo's middle; its socket is under its other end" | 4 |
+| "Don't take the label next to it: **count the header's own openings** from its end (AREF, GND, 13 …)" | 6 |
+| Both: count the openings, and the opening is under the connector's end that meets the header | **8** |
+
+The one left: a spare frame with the Arduino almost out of the picture (no reading: right to say so). Tuning score
+on 9 photos; fresh photos needed. Also fixed: the live camera missed the learner's Duemilanove in warm light (its
+dark blue reaches V 10–20; the range began at 25): found in 8/9 frames with it, 0 without.
