@@ -174,8 +174,8 @@ FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with it
 FLOW_BUILD_CHECK = """
    Every step that puts something on the breadboard or the Arduino is CHECKED before the next one: it cannot be
    skipped (a wrong column now means a circuit that does not work later). When they say it is done, ask them to hold
-   the phone over the board and call check_step (in the phone's browser they tap Take photo, and the result comes to
-   you: do not call it again or ask for the photo again meanwhile, and never say how the step looks until the result
+   the phone over the board and call check_step (the camera opens with an outline of the board: they hold the phone
+   sideways, line the board up with it and tap the white button; the result comes to you: do not call it again or ask for the photo again meanwhile, and never say how the step looks until the result
    has come). If they want to skip it, say kindly, once, that this check catches mistakes now, and ask for the photo.
    Do not move on until the check says pass, harmless or moved. Say what it found in your own words, briefly:
    - right (pass): a quick "spot on" and move on;
