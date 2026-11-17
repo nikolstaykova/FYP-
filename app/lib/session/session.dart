@@ -1599,6 +1599,13 @@ class _StepCheck extends StatelessWidget {
             padding: const EdgeInsets.only(top: 6),
             child: Text('${'${l['who']}'.replaceFirst('the ', 'The ')}: ${l['words']}', style: const TextStyle(height: 1.3)),
           ),
+        if (v == 'pass' || v == 'harmless' || v == 'moved' || v == 'wrong')
+          // the photo reading can be a column off: the learner, who sees the board, can put it right
+          _TellWhere(
+              legs: (r['legs'] as List? ?? const []).cast<Map>().toList(),
+              onTell: onTell,
+              title: 'Is that where they are? Put right any I misread',
+              startOpen: false),
         if (v != 'pass' && v != 'harmless' && v != 'moved') ...[
           const SizedBox(height: 10),
           if (v == 'unsure')
@@ -1617,9 +1624,11 @@ class _StepCheck extends StatelessWidget {
 
 /// The legs the photo could not show: the learner types where they are (column and half, or the Arduino pin).
 class _TellWhere extends StatefulWidget {
-  const _TellWhere({required this.legs, required this.onTell});
+  const _TellWhere({required this.legs, required this.onTell, this.title = "I couldn't see these. Where are they?", this.startOpen = true});
 
   final List<Map> legs;
+  final String title;
+  final bool startOpen;
   final Future<void> Function(Map<String, dynamic> places) onTell;
 
   @override
@@ -1630,6 +1639,7 @@ class _TellWhereState extends State<_TellWhere> {
   final Map<String, TextEditingController> _text = {};
   final Map<String, String> _half = {};
   bool _busy = false;
+  late bool _open = widget.startOpen;
 
   @override
   void dispose() {
@@ -1640,12 +1650,21 @@ class _TellWhereState extends State<_TellWhere> {
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+  Widget build(BuildContext context) => !_open
+      ? Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: () => setState(() => _open = true),
+            icon: const Icon(Icons.edit_location_alt_rounded, size: 18),
+            label: const Text('Not right? Tell me where they are'),
+          ),
+        )
+      : Padding(
+        padding: const EdgeInsets.only(bottom: 10, top: 6),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 6),
-            child: Text("I couldn't see these. Where are they?", style: TextStyle(fontWeight: FontWeight.w700)),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text(widget.title, style: const TextStyle(fontWeight: FontWeight.w700)),
           ),
           for (final l in widget.legs) _row(l),
           const SizedBox(height: 4),
@@ -1677,7 +1696,9 @@ class _TellWhereState extends State<_TellWhere> {
 
   Widget _row(Map l) {
     final k = '${l['key']}';
-    final c = _text.putIfAbsent(k, () => TextEditingController());
+    final read = RegExp(r'column (\d+) \((top|bottom)').firstMatch('${l['place'] ?? ''}');
+    final c = _text.putIfAbsent(k, () => TextEditingController(text: l['status'] == 'unsure' ? '' : read?.group(1) ?? ''));
+    if (read != null) _half.putIfAbsent(k, () => read.group(2)!);
     final kind = '${l['kind']}';
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),

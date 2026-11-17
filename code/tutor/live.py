@@ -188,6 +188,10 @@ FLOW_BUILD_CHECK = """
    - not sure (unsure): the photo could not show some legs, even to the bigger model. Then ask them to TELL you where
      each of those legs is ("Which column is the LED's short leg in, and is it on the top half?"), and call
      tell_places with what they say (the keys from the check). It is judged like a photo; say the result.
+   - the learner corrects the check ("no, it's in column 10", "actually that leg is in 10"): THEY can see the board,
+     the photo reading can be off by a column. Whatever the verdict was (even pass or moved), believe them: call
+     tell_places straight away with that leg's key and the column they said (the check's legs say which key is which;
+     if it is unclear which leg they mean, ask once). Then say the new result. Never argue with what they see.
    Steps with nothing to put on the board (uploading code) have nothing to check."""
 FLOW_BUILD_LEGO = """
    The LEGO lesson comes as cards: gather cards (kind gather: "Find the pieces", or "Bag 2: find the pieces") and
@@ -280,9 +284,10 @@ TOOL_DEFS = {
                                   "(pass, harmless, moved: their own columns, which is fine; wrong: what to fix; unsure: "
                                   "a closer photo is needed) and what to say.",
                    "behavior": "NON_BLOCKING", "parameters": {"type": "OBJECT", "properties": {}}},
-    "tell_places": {"description": "When the step check could not see a leg even after a good photo: what the learner "
-                                   "TELLS you about where it is (\"the short leg is in column 18, top half\"). It is "
-                                   "judged exactly like a photo. Use the leg keys the check gave you.",
+    "tell_places": {"description": "What the learner TELLS you about where a leg is (\"the short leg is in column 18, "
+                                   "top half\"): when the check could not see it, OR when they correct what the check "
+                                   "read (\"no, it's in 10\"), whatever the verdict was. Their word replaces the "
+                                   "photo's reading and the step is judged again. Use the leg keys the check gave you.",
                     "parameters": {"type": "OBJECT", "properties": {"places": {"type": "ARRAY", "items": {
                         "type": "OBJECT", "properties": {
                             "key": {"type": "STRING", "description": "the leg's key from the check (L1, L2...)"},
