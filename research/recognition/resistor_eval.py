@@ -154,12 +154,15 @@ def main():
     ap.add_argument("--set", default="tune", choices=["tune", "test", "all"])
     ap.add_argument("--limit", type=int)
     ap.add_argument("--free", action="store_true", help="code stages only, no colour naming")
+    ap.add_argument("--root", help="another photo folder, e.g. data/resistors_web")
     ap.add_argument("--workers", type=int, default=6)
     a = ap.parse_args()
+    global PHOTOS
+    PHOTOS = (ROOT / a.root) if a.root else PHOTOS
     todo = photos(a.set)[:a.limit]
     if not todo:
         sys.exit(f"no photos in {PHOTOS}/<value>/ for set '{a.set}'")
-    out_dir = RUNS / (time.strftime("%Y%m%d-%H%M%S") + ("-code" if a.free else ""))
+    out_dir = RUNS / ((PHOTOS.name + "-") + time.strftime("%Y%m%d-%H%M%S") + ("-code" if a.free else ""))
     out_dir.mkdir(parents=True)
     print(f"{len(todo)} photos ({a.set}) → {out_dir}")
     with cf.ThreadPoolExecutor(a.workers) as ex:
