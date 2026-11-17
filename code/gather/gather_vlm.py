@@ -90,3 +90,46 @@ def json_objects(text):
     except (ValueError, AttributeError):
         return []
     return [o for o in objs if isinstance(o, dict)]
+
+
+# ---- zoom: the part a check is about, cut from the full-size photo and enlarged ---------------------------------
+FIND = """Find {what} in this photo. Give ONE box around it with a small margin, coordinates from 0 to 1000 across the
+image (x, left to right) and down it (y, top to bottom). If it is not in the photo, give an empty list.
+Answer ONLY with JSON: {{"box": [x0, y0, x1, y1]}}"""
+
+
+def zoom(photo, what, edge=1600, colour=False, finder="claude-haiku-5-5"):
+    """The part `what` in the photo, cut from the FULL-size photo, enlarged to `edge` px and sharpened (small parts
+    get many more pixels than in the whole photo: the step check's columns went from 60% to 80-90% read right).
+    colour: also balance the colours from the brightest areas (warm indoor light turns a resistor's red bands brown).
+    A quick look by `finder` finds the box (about 0.05 cents). Returns ((jpeg bytes, media type) or None, cost)."""
+    import io
+    from PIL import Image, ImageFilter, ImageOps
+    out, st, _ = ask(finder, [shrink(photo, 1600, 85)], FIND.format(what=what), max_tokens=2500, effort="low")
+    cost = st.get("cost_usd") or 0
+    i, j = out.find("{"), out.rfind("}")
+    try:
+        x0, y0, x1, y1 = [float(v) / 1000 for v in json.loads(out[i:j + 1])["box"]]
+    except Exception:
+        return None, cost
+    im = ImageOps.exif_transpose(Image.open(photo)).convert("RGB")
+    W, H = im.size
+    x0, x1, y0, y1 = x0 * W, x1 * W, y0 * H, y1 * H
+    if x1 - x0 < 8 or y1 - y0 < 8:
+        return None, cost
+    mx, my = 0.15 * (x1 - x0) + 0.02 * W, 0.15 * (y1 - y0) + 0.02 * H  # a margin: the box is only roughly right
+    c = im.crop((int(max(0, x0 - mx)), int(max(0, y0 - my)), int(min(W, x1 + mx)), int(min(H, y1 + my))))
+    s = edge / max(c.size)
+    if s > 1:
+        c = c.resize((round(c.width * s), round(c.height * s)), Image.LANCZOS)
+    if colour:
+        import numpy as np
+        a = np.asarray(c).astype(float)
+        white = np.percentile(a.reshape(-1, 3), 97, axis=0)  # the brightest areas are white or grey: make them so
+        a = np.clip(a * (white.mean() / np.maximum(white, 1)), 0, 255)
+        c = Image.fromarray(a.astype("uint8"))
+    c = c.filter(ImageFilter.UnsharpMask(radius=2, percent=80, threshold=2))
+    buf = io.BytesIO()
+    c.save(buf, "JPEG", quality=92)
+    return (buf.getvalue(), "image/jpeg"), cost
+

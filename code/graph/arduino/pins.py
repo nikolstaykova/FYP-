@@ -37,6 +37,11 @@ FACTS = {
 }
 
 
+# Boards with the Uno's layout (the same headers, pin numbers and 5 V logic): they take the Uno's pinout
+# (cards_electronics.json: copied from arduino-uno)
+UNO_LAYOUT = {"arduino-duemilanove", "arduino-diecimila", "arduino-uno-compatible"}
+
+
 def cq_card(part_id):
     f = CQ_PARTS / f"{part_id}.json"
     return json.loads(f.read_text()) if f.exists() else None
@@ -45,7 +50,10 @@ def cq_card(part_id):
 def annotate(card, cq):
     """The board card's ports with `can`, `builtin`, `reserved` and `same_as` (in place). Returns how many ports got
     a capability, or 0 when CircuitQuest describes no pins for this part."""
-    facts = FACTS.get(card["part_type_id"], {})
+    base = "arduino-uno" if card["part_type_id"] in UNO_LAYOUT else card["part_type_id"]
+    facts = FACTS.get(base, {})
+    if base != card["part_type_id"] and not cq:
+        cq = cq_card(base)
     if (not cq or not cq.get("pin_domains")) and facts.get("digital"):  # a board known only from its documented pinout
         cq = {"pin_domains": {"digital": facts["digital"], "analog": facts.get("analog", [])}}
     if not cq or not cq.get("pin_domains"):

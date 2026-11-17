@@ -99,3 +99,19 @@ def test_a_capacitor_of_another_value_is_refused():
     st, res = status([S("electrolytic capacitor", "capacitor-100nf", "2200uF 16V")], "capacitance-meter")
     cap = next(r for r in res["parts"] if r["type"] == "capacitor-100nf")
     assert cap["status"] == "missing" and "2200 µF" in cap["use_instead"][0]["why"]
+
+
+def test_a_described_board_is_judged_like_any_board(tmp_path, monkeypatch):
+    """A board the catalogue lacks, described once by Claude (here: already described), stands in when its pins do."""
+    import json
+    from gather import gather
+    card = {"part_type_id": "board-freeduino", "display_name": "Freeduino", "category": "board", "aliases": [],
+            "ports": json.loads(json.dumps(gather.catalogue()["arduino-uno"]["ports"])),
+            "electrical": {"logic_v": 5.0}, "metadata": {"specs": {"chip": "ATmega328P", "logic_v": 5.0}},
+            "source": {"made_by": "claude"}}
+    f = tmp_path / "described.json"
+    f.write_text(json.dumps({"freeduino": card}))
+    monkeypatch.setattr(gather, "DESCRIBED", f)
+    st, res = status([S("Freeduino", "none", "", might_replace="arduino-uno")])
+    row = next(r for r in res["parts"] if r["type"] == "arduino-uno")
+    assert st["arduino-uno"] == "use instead" and "not a datasheet" in row["use_instead"][0]["why"]

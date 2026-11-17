@@ -178,7 +178,18 @@ def closeup_look(photo, question, rec, seen_item=None, model=FIRST, effort="low"
             "if you can now see different values), not for anything else in the photo. `count` is how many there are in "
             "all (keep the earlier count unless the close-up shows otherwise). If you still cannot tell, say what in "
             "`unsure` and ask again in `ask`. " + ANSWER.replace('"unsure": ""', '"unsure": "", "ask": ""'))
-    out, stats, _ = vlm.ask(model, [(pathlib.Path(photo).read_bytes(), vlm.media_type(photo))], text, effort=effort)
+    images = [(pathlib.Path(photo).read_bytes(), vlm.media_type(photo))]
+    zoom_cost = 0
+    what = (seen_item or {}).get("name") or ""
+    small = "resistor" in f"{what} {question}".lower() or "band" in question.lower()
+    if small:  # tiny stripes: the resistor itself, cut out, enlarged and colour-balanced, first; the close-up after it
+        z, zoom_cost = vlm.zoom(photo, what or "the resistor", colour=True)
+        if z:
+            images = [z] + images
+            text = ("Photo 1 is the part enlarged from the close-up (colours balanced); Photo 2 is the whole close-up.\n"
+                    + text)
+    out, stats, _ = vlm.ask(model, images, text, effort=effort)
+    stats["cost_usd"] = round((stats.get("cost_usd") or 0) + zoom_cost, 6)
     stats["raw"] = out[:4000]
     got = to_seen(vlm.json_objects(out), extra=("ask",))
     for g in got:
