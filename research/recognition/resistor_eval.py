@@ -43,7 +43,7 @@ def split(path):
 
 def photos(which):
     out = []
-    for d in sorted(p for p in PHOTOS.iterdir() if p.is_dir() and not p.name.startswith(".")):
+    for d in sorted(p for p in PHOTOS.iterdir() if p.is_dir() and not p.name.startswith((".", "_"))):
         try:
             want = ohms(d.name)
         except ValueError:
