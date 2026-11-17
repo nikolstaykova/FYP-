@@ -349,6 +349,12 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     setState(() {
       _last = st;
       _working = null;
+      // what the check found gets its tick on the list (what it did not find stays for the learner)
+      if (_lego && _gcard > 0 && _b != null) {
+        _got.putIfAbsent(_gcard, () => {}).addAll(foundPieces(r, _b!.steps[_gcard - 1].parts, lego: true));
+      } else if (!_lego) {
+        _partsGot.addAll(foundPieces(r, s.parts, lego: false));
+      }
     });
     if (r.allFound && r.asks.isEmpty) {
       HapticFeedback.heavyImpact();

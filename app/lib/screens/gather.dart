@@ -54,6 +54,8 @@ class _GatherScreenState extends State<GatherScreen> {
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => CheckScreen(lesson: widget.lesson, quest: widget.quest, photos: photos),
     ));
+    final got = await Progress.ticked(widget.lesson.id, widget.quest.number); // the check ticked what it found
+    if (mounted) setState(() => _got = got);
   }
 
   @override

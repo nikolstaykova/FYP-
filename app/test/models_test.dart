@@ -60,4 +60,24 @@ void main() {
     expect(r.asks.single.kind, 'closeup');
     expect(r.extra, ['a fan']);
   });
+
+  test('what a check found gets its tick', () {
+    final r = CheckResult.fromJson({
+      'parts': [
+        {'type': 'p1', 'part': 'Black Brick 1 x 2', 'need': 2, 'status': 'have', 'have': [], 'use_instead': []},
+        {'type': 'p2', 'part': 'Red Plate', 'need': 1, 'status': 'use another colour', 'have': [], 'use_instead': []},
+        {'type': 'p3', 'part': 'Wheel', 'need': 1, 'status': 'missing', 'have': [], 'use_instead': []},
+      ],
+    });
+    final pieces = [Piece(what: 'a', count: 2), Piece(what: 'b', count: 1), Piece(what: 'c', count: 1)];
+    expect(foundPieces(r, pieces, lego: true), {0, 1});
+    final e = CheckResult.fromJson({
+      'parts': [
+        {'type': 'resistor', 'part': 'Resistor 220', 'need': 1, 'status': 'have', 'have': [], 'use_instead': []},
+        {'type': 'led', 'part': 'LED', 'need': 1, 'status': 'check', 'have': [], 'use_instead': []},
+      ],
+    });
+    final parts = [Piece(what: 'LED', count: 1, type: 'led'), Piece(what: 'Resistor 220', count: 1, type: 'resistor')];
+    expect(foundPieces(e, parts, lego: false), {1});
+  });
 }

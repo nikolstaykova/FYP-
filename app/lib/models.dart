@@ -218,3 +218,21 @@ class Shot {
   /// Nearly the whole frame: no need to crop.
   List<double>? get cropOrNull => crop == null || (crop![2] - crop![0]) * (crop![3] - crop![1]) > 0.97 ? null : crop;
 }
+
+/// The list rows a check found (there, or a stand-in / other colour that will do): they get their tick.
+/// LEGO: the check's rows are the card's pieces in order (p1, p2...); electronics: by the part's type.
+Set<int> foundPieces(CheckResult r, List<Piece> pieces, {required bool lego}) {
+  final out = <int>{};
+  for (final row in r.parts) {
+    if (row.verdict != Verdict.have && row.verdict != Verdict.swap) continue;
+    if (lego) {
+      final i = int.tryParse(row.key.replaceFirst('p', ''));
+      if (i != null && i >= 1 && i <= pieces.length) out.add(i - 1);
+    } else {
+      for (var i = 0; i < pieces.length; i++) {
+        if (pieces[i].type == row.key) out.add(i);
+      }
+    }
+  }
+  return out;
+}

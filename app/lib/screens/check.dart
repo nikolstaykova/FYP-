@@ -63,6 +63,10 @@ class _CheckScreenState extends State<CheckScreen> {
     if (!mounted) return;
     final wasDone = _result?.allFound ?? false;
     setState(() => _result = r);
+    // what the check found gets its tick on the quest's list (kept on the phone)
+    final found = foundPieces(r, widget.quest.pieces, lego: widget.lesson.isLego);
+    Progress.ticked(widget.lesson.id, widget.quest.number)
+        .then((got) => Progress.setTicked(widget.lesson.id, widget.quest.number, {...got, ...found}));
     if (r.allFound) {
       Progress.markDone(widget.lesson.id, widget.quest.number);
       if (!wasDone) {
