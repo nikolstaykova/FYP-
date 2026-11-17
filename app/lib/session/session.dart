@@ -24,6 +24,7 @@ import '../screens/gather.dart';
 import '../theme.dart';
 import '../widgets/bouncy.dart';
 import '../widgets/full_frame.dart';
+import 'board_guide.dart';
 import 'theirs.dart';
 import 'viewer.dart';
 
@@ -828,7 +829,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                         ]).animate().scale(curve: Curves.easeOutBack, duration: 300.ms),
                     ],
                   )
-                : Center(
+                : _stepPending
+                    ? const SingleChildScrollView(padding: EdgeInsets.only(top: 14), child: BoardGuide())
+                    : Center(
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       Icon(Icons.photo_camera_rounded, size: 72, color: c)
                           .animate(onPlay: (a) => a.repeat(reverse: true))
@@ -1566,6 +1569,7 @@ class _StepCheck extends StatelessWidget {
       'harmless' => (Pq.have, Icons.check_circle_rounded, 'All good'),
       'moved' => (Pq.swap, Icons.swap_horiz_rounded, 'All connected, in your own columns'),
       'unsure' => (Pq.check, Icons.help_rounded, "I couldn't see everything"),
+      'retake' => (Pq.check, Icons.photo_camera_back_rounded, 'Take it again'),
       'wrong' => (Pq.missing, Icons.build_circle_rounded, 'Something to fix'),
       _ => (Pq.muted, Icons.error_outline_rounded, "The check didn't work"),
     };
@@ -1583,7 +1587,7 @@ class _StepCheck extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(child: Text(title, style: TextStyle(fontWeight: FontWeight.w800, color: tone, fontSize: 16))),
         ]),
-        if (v == 'error') Padding(padding: const EdgeInsets.only(top: 6), child: Text('${r['say']}')),
+        if (v == 'error' || v == 'retake') Padding(padding: const EdgeInsets.only(top: 6), child: Text('${r['say']}')),
         for (final l in legs)
           Padding(
             padding: const EdgeInsets.only(top: 6),
@@ -1593,7 +1597,11 @@ class _StepCheck extends StatelessWidget {
           const SizedBox(height: 10),
           if (v == 'unsure')
             _TellWhere(legs: (r['legs'] as List? ?? const []).cast<Map>().where((l) => l['status'] == 'unsure').toList(), onTell: onTell),
-          SoftButton(label: v == 'unsure' ? 'Or take another photo' : 'Fixed it: check again', icon: Icons.refresh_rounded, color: tone, onTap: onCheck),
+          SoftButton(
+              label: v == 'unsure' ? 'Or take another photo' : v == 'retake' ? 'Take it again' : 'Fixed it: check again',
+              icon: Icons.refresh_rounded,
+              color: tone,
+              onTap: onCheck),
         ],
       ]).animate().fadeIn().slideY(begin: 0.1),
     );

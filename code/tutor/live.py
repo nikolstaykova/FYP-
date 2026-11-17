@@ -184,6 +184,7 @@ FLOW_BUILD_CHECK = """
      columns (the screen already shows them; do not call use_column for these);
    - something to fix (wrong): say exactly what, once, kindly, with the column it should share ("the LED's long leg
      needs to be in the same column as the resistor's leg, your column 14"); when they say it is fixed, check again;
+   - photo not usable (retake): too far, too slanted or blurry. Say how to take it (its words), and ask for another;
    - not sure (unsure): the photo could not show some legs, even to the bigger model. Then ask them to TELL you where
      each of those legs is ("Which column is the LED's short leg in, and is it on the top half?"), and call
      tell_places with what they say (the keys from the check). It is judged like a photo; say the result.

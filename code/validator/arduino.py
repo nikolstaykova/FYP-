@@ -444,6 +444,15 @@ def check(lesson_id, step, photos, state=None):
     if not p["legs"]:
         return {"verdict": "pass", "legs": [], "asks": [], "state": state or {"where": {}}, "steps": [],
                 "say": "Nothing to check on the board in this step.", "step": p["step"], "n": p["n"]}
+    try:  # is the photo good enough to read at all? (free, a fraction of a second: no model is asked otherwise)
+        from validator import board
+        ok, why, m = board.quality(photos[0])
+    except Exception:
+        ok, why, m = True, "", {}
+    if not ok:
+        return {"verdict": "retake", "legs": [], "asks": [{"key": "", "kind": "retake", "message": why}], "say": why,
+                "state": state or {"where": {}}, "readings": {}, "steps": [], "cost_usd": 0, "photo": m,
+                "step": p["step"], "n": p["n"]}
     zoomed, zcost = zoom(photos[0], p)
     readings, moved, st = look(photos, p, state, zoomed=zoomed)
     steps = [{"what": "finding the parts", "model": FINDER, "cost_usd": zcost},

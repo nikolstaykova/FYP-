@@ -110,3 +110,15 @@ def test_what_the_learner_says_is_judged_like_a_photo():
     assert res["verdict"] == "moved" and res["state"]["where"]["15t"] == "18t"
     taken = A.told("blink", STEP_LED, AS_LESSON, readings, {"L2": {"column": 10, "half": "top"}})
     assert taken["verdict"] == "wrong"  # column 10 already holds the resistor's other leg
+
+
+def test_a_photo_too_far_away_is_turned_away_before_any_model():
+    """The kit's product photo: the board's columns are 8 px wide, so no model is asked: take it again, closer."""
+    import pathlib
+    import pytest
+    from validator import board
+    photo = pathlib.Path(__file__).resolve().parents[3] / "research/recognition/runs/lab/step-20261115-202656-cd20/photo_1.jpg"
+    if not photo.exists():
+        pytest.skip("the learner's photos are not in git")
+    ok, why, m = board.quality(str(__import__("pathlib").Path(__file__).resolve().parents[3] / "research/recognition/runs/lab/step-20261115-202656-cd20/photo_1.jpg"))
+    assert not ok and "closer" in why and m["column_px"] < board.MIN_COLUMN_PX

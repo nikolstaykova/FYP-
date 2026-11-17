@@ -82,22 +82,32 @@ def grid(c):
     # walk the grid from the middle: each hole's place is a neighbour's place plus one step (or two or three across a
     # gap: the channel down the middle, the space before the rails)
     moves = [(k * s, (k * dv[0], k * dv[1])) for s, dv in ((s1, (1, 0)), (s2, (0, 1))) for k in (1, -1, 2, -2, 3, -3)]
-    place = {}
-    start = int(np.argmin(((c - np.median(c, 0)) ** 2).sum(1)))
-    place[start] = (0, 0)
-    queue = [start]
     reach = 3.4 * max(np.linalg.norm(s1), np.linalg.norm(s2))
-    while queue:
-        i = queue.pop()
-        for j in np.where(dist[i] < reach)[0]:
-            if j in place:
-                continue
-            v = c[j] - c[i]
-            for sv, dv in moves:
-                if np.linalg.norm(v - sv) < 0.3 * min(np.linalg.norm(s1), np.linalg.norm(s2)):
-                    place[j] = (place[i][0] + dv[0], place[i][1] + dv[1])
-                    queue.append(j)
-                    break
+    tol = 0.3 * min(np.linalg.norm(s1), np.linalg.norm(s2))
+
+    def walk(start):
+        place = {start: (0, 0)}
+        queue = [start]
+        while queue:
+            i = queue.pop()
+            for j in np.where(dist[i] < reach)[0]:
+                if j in place:
+                    continue
+                v = c[j] - c[i]
+                for sv, dv in moves:
+                    if np.linalg.norm(v - sv) < tol:
+                        place[j] = (place[i][0] + dv[0], place[i][1] + dv[1])
+                        queue.append(j)
+                        break
+        return place
+    by_middle = np.argsort(((c - np.median(c, 0)) ** 2).sum(1))
+    place = {}
+    for start in [int(by_middle[0])] + [int(x) for x in by_middle[len(c) // 8::max(1, len(c) // 8)][:6]]:
+        got = walk(start)
+        if len(got) > len(place):
+            place = got
+        if len(place) > 0.6 * len(c):
+            break
     idx = np.array(sorted(place))
     pl = np.array([place[i] for i in idx])
     if np.ptp(pl[:, 1]) > np.ptp(pl[:, 0]):  # the long side of the board is the column direction
@@ -143,6 +153,56 @@ def load(path):
     from PIL import Image, ImageOps
     im = ImageOps.exif_transpose(Image.open(path)).convert("RGB")
     return cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2BGR)
+
+
+# ---- is the photo good enough to read? (free, before any model looks) -------------------------------------------
+# Limits from the learner's own photos (16-17 Nov: a column was 38-43 px wide in the full photo, sharpness 84-650,
+# one end at most 1.24x the other): none of them is turned away; a product shot (8 px columns) or a strongly slanted
+# photo (0.63) is.
+MIN_HOLES = 100
+MIN_COLUMN_PX = 22
+MAX_SLANT = 1.45
+MIN_SHARP = 40
+
+
+def quality(photo_path):
+    """Is the board in this photo good enough to read? (ok, what to tell the learner, measurements). Fast (about
+    0.2 s) and free: the hole grid tells how far, how slanted and how sharp the board is."""
+    img = load(photo_path)
+    H0, W0 = img.shape[:2]
+    f = min(1.0, 1600 / max(H0, W0))
+    im = cv2.resize(img, None, fx=f, fy=f, interpolation=cv2.INTER_AREA) if f < 1 else img
+    c = holes(im)
+    m = {"holes": int(len(c))}
+    if len(c) < MIN_HOLES:
+        return False, "I can't find the breadboard in that photo. Take it from above, with the board filling the screen.", m
+    try:
+        idx, pl, s1, s2 = grid(c)
+    except Exception:
+        return True, "", m  # the grid could not be worked out: let the model try rather than block the learner
+    m.update(placed=int(len(idx)), column_px=round(float(np.linalg.norm(s1)) / f, 1))
+    if len(idx) < 0.5 * len(c):  # the grid covers too little of what looked like holes (an Arduino's header pins,
+        return True, "", m       # a pattern on the table): not sure enough to turn the photo away
+    if m["column_px"] < MIN_COLUMN_PX:
+        return False, "The board is too far away to read the columns. Move closer, so the board fills the screen.", m
+    cols = pl[:, 0]
+    ends = []
+    for sel in (cols <= np.percentile(cols, 15), cols >= np.percentile(cols, 85)):
+        pts = c[idx][sel]
+        if len(pts) > 3:
+            d = np.sqrt(((pts[:, None] - pts[None]) ** 2).sum(-1))
+            np.fill_diagonal(d, np.inf)
+            ends.append(float(np.median(d.min(1))))
+    if len(ends) == 2 and min(ends) > 0:
+        m["slant"] = round(max(ends) / min(ends), 2)
+        if m["slant"] > MAX_SLANT:
+            return False, "The photo is too slanted. Hold the phone straight above the board.", m
+    hull = cv2.convexHull(c.astype(np.float32))
+    x0, y0, w, h = cv2.boundingRect(hull.astype(np.int32))
+    m["sharp"] = round(float(cv2.Laplacian(cv2.cvtColor(im[y0:y0 + h, x0:x0 + w], cv2.COLOR_BGR2GRAY), cv2.CV_64F).var()))
+    if m["sharp"] < MIN_SHARP:
+        return False, "The photo is blurry. Hold the phone still and tap the screen to focus before you take it.", m
+    return True, "", m
 
 
 def mark(flat, pl, cell=36, band=40):
