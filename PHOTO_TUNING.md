@@ -217,3 +217,60 @@ lower half's below); the model only finds the wire end and reads the yellow numb
 2. **Anchor to the printed numbers too**: check that yellow 5, 10, 15… sit under the printed 5, 10, 15 (one cheap
    Haiku look or template matching); shift by one when they don't.
 3. Then the full pipeline in the app: geometry first, the model's crop as the fallback when no grid is found.
+
+---
+
+## 8. The pin rule, geometry + pipeline, and code finding the connector (17 November, later)
+
+### 8.1 One sentence that helps every version: where the pin is
+
+"The metal pin is at the connector's end **away from where the wire leaves it**, at that end's middle." Added to the
+prompt (`--pin-rule`), all on the same 21 photos:
+
+| Opus 5.5 | Without the rule | With the rule |
+|---|---|---|
+| Crop pipeline | 18/21 · $0.74 | **19/21** · $0.70 |
+| Geometry + model (numbered board) | 17/21 · $0.38 | **19/21 · $0.39** |
+| Geometry + pipeline in one look (numbered board + crop + photo) | — | **19/21** · $0.64 |
+
+| Haiku 5.5 | Without the rule | With the rule |
+|---|---|---|
+| Crop pipeline | 11/21 | 16/21 · $0.04 |
+| Geometry + model | 11/21 | 17/21 · $0.015 |
+| Geometry + pipeline in one look | — | **18/21** · $0.036 |
+
+- The rule is the biggest single gain (it is exactly the "looks at the connector, not the tip" problem).
+- Geometry gives the same Opus score at half the price, and lifts Haiku most (11 → 17–18 of 21).
+- Opus pipeline and Opus geometry make **different** mistakes: they agree on 16/21 (15 right), and where they
+  disagree one of them is always right.
+
+### 8.2 Code finds the connector (no model)
+
+`wire_geometry.connectors`: on the straightened board, dark blobs bigger than a hole (gaps from the glossy top
+closed first). Found on 18/21 photos. Which point of it is the pin?
+
+| Point used | Columns right (of 21) |
+|---|---|
+| Middle of the black blob | 12 |
+| End away from the wire | 12 |
+| **Base** (camera geometry: the connector stands up, so its top leans away from the point under the camera; the base is the blob's end nearest the photo's centre, half a width in) | **13** |
+
+On its own the code is not good enough (it misses 3 connectors, takes another dark blob once, and is one column out
+on ~4). As a **second opinion** it is very useful:
+
+| Model's answer and code's answer (base or middle) … | agree | of which right | disagree (ask the learner) |
+|---|---|---|---|
+| Opus, geometry + pipeline in one look | 15 | **15 (none wrong)** | 6 |
+| Opus, crop pipeline + pin rule | 14 | **14 (none wrong)** | 7 |
+| Opus, geometry + model + pin rule | 16 | 14 | 5 |
+| Haiku, geometry + pipeline in one look | 15 | 13 | 6 |
+
+So: accept when the model and the code agree, otherwise ask (the app already asks the learner to say where a leg is
+when it is unsure). On these photos that never confirms a wrong column with Opus.
+
+### 8.3 Our numbers against the printed numbers
+
+`wire_geometry.printed_shift`: slides a strip over the 3 rows outside each half and keeps the line with ~13 marks
+(the printed 0, 5 … 60; a line of holes has 65), then checks they sit over the columns our numbering gives them.
+Found on 40 of 42 halves; our numbering matched the printed numbers on all of them (shift 0). When the printed line
+can't be found it keeps the count from the board's end.
