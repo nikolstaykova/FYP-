@@ -10,6 +10,7 @@ steps' parts on the board as the lesson has them (the check reads the new step's
 
     python research/recognition/wire_eval.py                  # tune set (about 70%, fixed by file name)
     python research/recognition/wire_eval.py --set test
+    python research/recognition/wire_eval.py --model claude-haiku-5-5 --second claude-opus-5-5   # another model, same photos
 Writes research/recognition/runs/wires/<time>/ with results.json and index.html (photo, close-ups, read vs true).
 """
 import argparse
@@ -116,8 +117,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", default="tune", choices=["tune", "test", "all"])
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--model", help="the model that reads the step (default: validator FIRST)")
+    ap.add_argument("--second", help="the model for legs the first cannot read (default: same as --model)")
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args()
+    if a.model:
+        from validator import arduino
+        arduino.FIRST, arduino.SECOND = a.model, a.second or a.model
     todo = photos(a.set)[:a.limit]
     if not todo:
         sys.exit(f"no photos in {PHOTOS}/<setup>/ for set '{a.set}'")

@@ -102,13 +102,16 @@ def free(path):
             "white_background": info["white_background"]}
 
 
+MODELS = {}
+
+
 def one(path, want, out_dir, is_free):
     keep = out_dir / "strips" / f"{path.parent.name}__{path.stem}"
     keep.mkdir(parents=True, exist_ok=True)
     t = time.time()
     try:
         src = jpeg(path)
-        r = free(src) if is_free else __import__("gather.resistor", fromlist=["read"]).read(str(src), keep=keep)
+        r = free(src) if is_free else __import__("gather.resistor", fromlist=["read"]).read(str(src), keep=keep, **MODELS)
     except Exception as e:  # one bad photo shouldn't stop the run
         r = {"value": None, "why": f"error: {e}"}
     r["seconds"] = round(time.time() - t, 1)
@@ -155,9 +158,12 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--free", action="store_true", help="code stages only, no colour naming")
     ap.add_argument("--root", help="another photo folder, e.g. data/resistors_web")
+    ap.add_argument("--model", help="the model that names the colours (default Haiku)")
+    ap.add_argument("--second", help="the model asked when the first is not sure (default Opus)")
     ap.add_argument("--workers", type=int, default=6)
     a = ap.parse_args()
     global PHOTOS
+    MODELS.update({k: v for k, v in (("first", a.model), ("second", a.second or a.model)) if v})
     PHOTOS = (ROOT / a.root) if a.root else PHOTOS
     todo = photos(a.set)[:a.limit]
     if not todo:
