@@ -122,3 +122,27 @@ def test_a_photo_too_far_away_is_turned_away_before_any_model():
         pytest.skip("the learner's photos are not in git")
     ok, why, m = board.quality(str(__import__("pathlib").Path(__file__).resolve().parents[3] / "research/recognition/runs/lab/step-20261115-202656-cd20/photo_1.jpg"))
     assert not ok and "closer" in why and m["column_px"] < board.MIN_COLUMN_PX
+
+
+def test_geometry_sure_of_a_connector_puts_the_models_column_right():
+    """The model reads a wire end one column off (its usual mistake); code found that connector and is sure: code's
+    column stands and the offset moves with it. A resistor leg is never moved (it has no connector)."""
+    p = A.plan("blink", 4)
+    geo = {"trusted": True, "ends": [{"column": 10, "half": "top", "sure": True, "candidates": [10]}]}
+    readings = {"L2": leg("L2", offset=1, column=11, half="top")}
+    assert A._snap(p, readings, geo) == ["L2"]
+    assert readings["L2"]["column"] == 10 and readings["L2"]["offset"] == 0 and readings["L2"]["by"] == "geometry"
+    resistor = A.plan("blink", 2)
+    r2 = {"L1": leg("L1", column=11, half="top")}
+    assert A._snap(resistor, r2, geo) == [] and r2["L1"]["column"] == 11
+
+
+def test_geometry_agreeing_makes_an_unsure_reading_sure_and_unsure_geometry_changes_nothing():
+    p = A.plan("blink", 4)
+    agree = {"L2": {**leg("L2", offset=0, column=10, half="top"), "sure": False}}
+    assert A._snap(p, agree, {"trusted": True, "ends": [{"column": 10, "half": "top", "sure": True}]}) == ["L2"]
+    assert agree["L2"]["sure"] is True
+    off = {"L2": leg("L2", offset=1, column=11, half="top")}
+    assert A._snap(p, off, {"trusted": True, "ends": [{"column": 10, "half": "top", "sure": False}]}) == []
+    assert A._snap(p, off, {"trusted": False, "ends": [{"column": 10, "half": "top", "sure": True}]}) == []
+    assert off["L2"]["column"] == 11

@@ -164,6 +164,27 @@ def read_combo(photo, model):
     return ends, (st.get("cost_usd") or 0) + zcost, (pic, "image/jpeg")
 
 
+def read_geometry_first(photo, model):
+    """Geometry first: code finds every connector; where it is sure, its column stands and no model is asked. When it is
+    not sure (or finds nothing), the model gets geometry + pipeline in one look (read_combo); an end code was not sure
+    of is then checked against code's candidates (the model's answer must be one of them, or it is marked unsure)."""
+    sys.path.insert(0, str(ROOT / "research" / "recognition"))
+    import wire_geometry
+    ends, info = wire_geometry.read_ends(str(photo))
+    if ends and all(e["sure"] for e in ends):
+        return [{"column": e["column"], "half": e["half"], "why": "geometry, sure", "by": "geometry"} for e in ends], 0, None
+    got, cost, board = read_combo(photo, model)
+    for g in got:
+        g["by"] = "model"
+        same_half = [e for e in ends if e["half"] == ("bottom" if str(g.get("half", "")).startswith("b") else "top")]
+        near = [e for e in same_half if any(abs(int(g.get("column") or -99) - c) <= 1 for c in e["candidates"])]
+        if near and near[0]["sure"]:  # code is sure of this one: its column stands
+            g["column"], g["by"] = near[0]["column"], "geometry, sure"
+        elif near:
+            g["code_agrees"] = int(g.get("column") or -99) in near[0]["candidates"]
+    return got, cost, board
+
+
 def read(photo, model):
     from gather import gather_vlm as vlm
     from validator import arduino
@@ -189,11 +210,11 @@ def place(e):
     return f"c{e.get('column')}{'b' if h.startswith('b') else 't'}"
 
 
-def one(name, lab, model, out_dir, raw=False, hybrid=False, combo=False):
+def one(name, lab, model, out_dir, raw=False, hybrid=False, combo=False, geo=False):
     t = time.time()
     want = truth(lab)
     try:
-        ends, cost, board = (read_raw if raw else read_hybrid if hybrid else read_combo if combo else read)(jpeg(name), model)
+        ends, cost, board = (read_raw if raw else read_hybrid if hybrid else read_combo if combo else read_geometry_first if geo else read)(jpeg(name), model)
     except Exception as e:
         ends, cost, board = [], 0, None
         print(name, "error", e)
@@ -209,7 +230,8 @@ def one(name, lab, model, out_dir, raw=False, hybrid=False, combo=False):
         (out_dir / f"{name}_board.jpg").write_bytes(board[0])
     return {"photo": name, "truth": want, "read": got, "right": hits, "column_right": col_hits, "ends": len(want), "one_off": near,
             "all_right": col_hits == len(want),
-            "why": [e.get("why") for e in ends], "cost_usd": round(cost, 5), "seconds": round(time.time() - t, 1),
+            "why": [e.get("why") for e in ends], "by": [e.get("by") for e in ends],
+            "code_agrees": [e.get("code_agrees") for e in ends], "cost_usd": round(cost, 5), "seconds": round(time.time() - t, 1),
             "board": f"{name}_board.jpg" if board else None}
 
 
@@ -234,6 +256,7 @@ def main():
     ap.add_argument("--model", default="claude-opus-5-5")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--pin-rule", action="store_true", help="the pin is at the connector end away from the wire (hybrid and pipeline)")
+    ap.add_argument("--geometry-first", action="store_true", help="code reads the connectors; the model only when code is not sure")
     ap.add_argument("--combo", action="store_true", help="geometry + pipeline in one look")
     ap.add_argument("--hybrid", action="store_true", help="geometry straightens and numbers the columns, the model reads")
     ap.add_argument("--raw", action="store_true", help="the model as it is: whole photo, plain question")
@@ -244,17 +267,17 @@ def main():
     labels = json.loads(LABELS.read_text())
     todo = [(n, l) for n, l in sorted(labels.items()) if not l.get("skip") and truth(l)
             and (a.set == "all" or split(n) == a.set)][:a.limit]
-    out_dir = RUNS / (time.strftime("%Y%m%d-%H%M%S") + ("-pin" if a.pin_rule and not (a.hybrid or a.raw or a.combo) else "") + ("-raw" if a.raw else ("-hybrid-pin" if a.pin_rule else "-hybrid") if a.hybrid else "-combo" if a.combo else "") + "-" + a.model.split("-")[1])
+    out_dir = RUNS / (time.strftime("%Y%m%d-%H%M%S") + ("-pin" if a.pin_rule and not (a.hybrid or a.raw or a.combo) else "") + ("-raw" if a.raw else ("-hybrid-pin" if a.pin_rule else "-hybrid") if a.hybrid else "-combo" if a.combo else "-geofirst" if a.geometry_first else "") + "-" + a.model.split("-")[1])
     out_dir.mkdir(parents=True)
     print(f"{len(todo)} photos ({a.set}, {a.model}) → {out_dir}")
     with cf.ThreadPoolExecutor(a.workers) as ex:
-        rows = list(ex.map(lambda nl: one(*nl, a.model, out_dir, a.raw, a.hybrid, a.combo), todo))
+        rows = list(ex.map(lambda nl: one(*nl, a.model, out_dir, a.raw, a.hybrid, a.combo, a.geometry_first), todo))
     ends = sum(r["ends"] for r in rows)
     s = {"set": a.set, "model": a.model, "photos": len(rows), "photos_all_right": sum(r["all_right"] for r in rows),
          "ends": ends, "column_right": sum(r["column_right"] for r in rows),
          "column_and_half_right": sum(r["right"] for r in rows), "one_column_off": sum(r["one_off"] for r in rows), "cost_usd": round(sum(r["cost_usd"] for r in rows), 3)}
     (out_dir / "results.json").write_text(json.dumps({"summary": s, "rows": rows}, indent=1))
-    title = (f"Wire ends · {a.set} · {a.model}{' · RAW' if a.raw else ' · HYBRID' if a.hybrid else ' · COMBO' if a.combo else ' · pipeline'} · column right {s['column_right']}/{ends} "
+    title = (f"Wire ends · {a.set} · {a.model}{' · RAW' if a.raw else ' · HYBRID' if a.hybrid else ' · COMBO' if a.combo else ' · GEOMETRY FIRST' if a.geometry_first else ' · pipeline'} · column right {s['column_right']}/{ends} "
              f"(with the half too {s['column_and_half_right']}), one column off {s['one_column_off']}")
     page(rows, out_dir, title)
     print(title, f"· ${s['cost_usd']}")

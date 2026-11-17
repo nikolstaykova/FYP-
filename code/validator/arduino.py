@@ -152,7 +152,9 @@ How a breadboard works: the holes are numbered along the long edge (the numbers 
 10, 15...), and lettered across (a-e on one half, f-j on the other, with a gap in the middle). Each COLUMN on one half
 is one strip: its five holes are joined. The halves are separate. The long rows along both edges are the power rails:
 + (red line) and - (blue line). On the Arduino, every pin socket has its label printed beside it (13, 12, ~11, GND,
-5V, A0...).
+5V, A0...). A jumper wire's end has a black plastic connector, wider than a hole, which hides the hole it is in: the
+metal pin is at the connector's end AWAY from where the wire leaves it, at that end's middle (not under the middle of
+the black part, and not where the wire's colour is).
 {earlier}
 For each item below, find that leg (or wire end) in the photos and answer what is asked:
 {items}
@@ -313,6 +315,13 @@ def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
     p = dict(plan_, legs=[x for x in plan_["legs"] if not keys or x["key"] in keys])
     z = zoomed or {}
     images, said = [], []
+    if z.get("numbered"):
+        up = "bottom (rows f-j)" if z.get("upside_down") else "top (rows a-e)"
+        images.append(z["numbered"])
+        said.append("the breadboard straightened by code, with every column's number written in yellow: the yellow "
+                    "row above the upper half belongs to the upper half, the one below the lower half to the lower "
+                    f"half; the upper half here is the board's {up} half. These numbers are exact (computed from the "
+                    "holes): read a leg's column from the yellow numbers instead of counting holes")
     if z.get("board"):
         images.append(z["board"])
         said.append("a close-up of the breadboard around this step's parts (read the columns here)")
@@ -476,6 +485,52 @@ def _asks(res):
     return out
 
 
+def _geometry(photo):
+    """validator.geometry.analyse, never breaking a check (a photo it can't read just isn't helped)."""
+    try:
+        from validator import geometry
+        return geometry.analyse(photo)
+    except Exception as e:
+        return {"trusted": False, "why": f"error: {e}", "ends": []}
+
+
+def _snap(plan_, readings, geo):
+    """Geometry first: a wire end the model read in a column, with a connector code is SURE of in the same half and at
+    most one column away (the model's usual mistake), takes code's column (the offset moves with it); when they agree,
+    the reading is sure even if the model wasn't. Only wire ends: a resistor or LED leg has no connector.
+    Returns the keys geometry set or confirmed."""
+    if not geo.get("trusted"):
+        return []
+    done = []
+    for x in plan_["legs"]:
+        r = readings.get(x["key"])
+        if x["kind"] != "strip" or not r or "wire" not in (x["part"] + " " + x["who"]).lower():
+            continue
+        try:
+            col = int(r.get("column"))
+        except (TypeError, ValueError):
+            continue
+        half = "b" if str(r.get("half") or "").lower().startswith("b") else "t"
+        near = [e for e in geo.get("ends") or [] if e["sure"] and e["half"][0] == half and abs(e["column"] - col) <= 1]
+        if len(near) != 1:
+            continue
+        if near[0]["column"] == col:  # the model and code agree: that is sure, whatever the model felt
+            if r.get("sure") is False:
+                r["sure"] = True
+                r["by"] = "model + geometry"
+                r["why"] = f"geometry agrees: column {col} ({r.get('why') or ''})"[:200]
+                done.append(x["key"])
+            continue
+        d = near[0]["column"] - col
+        r["column"] = near[0]["column"]
+        if _offset(r) is not None:
+            r["offset"] = _offset(r) + d
+        r["by"] = "geometry"
+        r["why"] = f"geometry: the connector's pin is in column {r['column']} (the model said {col})"
+        done.append(x["key"])
+    return done
+
+
 def check(lesson_id, step, photos, state=None, keep=None):
     """The whole check of one step: plan, Haiku's look, the verdict. The legs Haiku cannot read go straight to Opus,
     on the same photo (no retake); only a leg Opus cannot read either asks the learner for a closer photo.
@@ -495,13 +550,17 @@ def check(lesson_id, step, photos, state=None, keep=None):
                 "state": state or {"where": {}}, "readings": {}, "steps": [], "cost_usd": 0, "photo": m,
                 "step": p["step"], "n": p["n"]}
     zoomed, zcost = zoom(photos[0], p)
+    geo = _geometry(photos[0])
+    if geo.get("trusted"):
+        zoomed = {"numbered": (geo["numbered"], "image/jpeg"), "upside_down": geo.get("upside_down"), **zoomed}
     if keep:
         for k, v in zoomed.items():
-            if v:
+            if v and isinstance(v, tuple):
                 (pathlib.Path(keep) / f"{k}.jpg").write_bytes(v[0])
     readings, moved, st = look(photos, p, state, zoomed=zoomed)
     steps = [{"what": "finding the parts", "model": FINDER, "cost_usd": zcost},
-             {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if v) + " close-ups + whole photo)" if any(zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
+             {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if isinstance(v, tuple)) + " close-ups + whole photo)" if any(isinstance(v, tuple) for v in zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
+    snapped = _snap(p, readings, geo)
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
     if unsure and SECOND != FIRST:  # the same photo, the bigger model, only those legs
@@ -509,7 +568,11 @@ def check(lesson_id, step, photos, state=None, keep=None):
         steps.append({"what": "step check, second look", **{k: st2.get(k) for k in ("model", "seconds", "cost_usd")}})
         readings.update(more)
         moved += moved2
+        snapped += _snap(p, readings, geo)
         res = judge(p, readings, state)
+    steps.insert(1, {"what": "geometry (the board straightened, columns numbered, connectors found)",
+                     "used": bool(geo.get("trusted")), "why": geo.get("why", ""), "connectors": len(geo.get("ends") or []),
+                     "set_by_geometry": snapped, "cost_usd": 0})
     good = [r for r in res["legs"] if r["status"] in ("ok", "moved")]
     say = {"pass": "Everything in this step is in the right place.",
            "harmless": "All right: " + ", ".join(res["turned_round"]) + " is turned round, which is fine for it.",

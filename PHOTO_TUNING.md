@@ -274,3 +274,38 @@ when it is unsure). On these photos that never confirms a wrong column with Opus
 (the printed 0, 5 … 60; a line of holes has 65), then checks they sit over the columns our numbering gives them.
 Found on 40 of 42 halves; our numbering matched the printed numbers on all of them (shift 0). When the printed line
 can't be found it keeps the count from the board's end.
+
+---
+
+## 9. Geometry first, the model where geometry is not sure — now in the app (17 November, later)
+
+**Rule** (the learner's: "keep geometry; the model is to fine-tune it when geometry is not sure"): code finds every
+connector and is **sure** of one when it is connector-sized (at least one hole cell) and three estimates of the pin
+give the same column: the black blob's middle, its end away from the wire, and its **base**. The base uses the
+connector's radius: a connector stands up, so in a photo from above its top leans away from the point under the
+camera; the pin is at the blob's end nearest the photo's centre, moved in by half the blob's width (the radius).
+Where code is sure, its column stands; elsewhere the model reads (numbered board + crop + photo, pin rule).
+
+| `wire_board_eval.py --geometry-first` | Columns right | Settled by geometry alone | Cost (21 photos) |
+|---|---|---|---|
+| Opus 5.5 | **21/21** | 7 (all right) | $0.42 |
+| Haiku 5.5 | 18/21 | 7 (all right) | $0.02 |
+
+Caveat: these 21 photos were also used to find the rules (the board's numbering, the size check), so this is a
+tuning score, not a test score. New photos are needed for the honest number (§5.7).
+
+Fixes on the way: the RANSAC fit is seeded (the same photo always gives the same grid; one run had placed a shadow as
+a "sure" connector); the straightened image was one row lower than the code assumed (columns unaffected; the code-only
+base estimate went from 13 to 15/21 once fixed).
+
+**In the app** (`code/validator/geometry.py`, used by `validator/arduino.check`):
+1. `geometry.analyse(photo)`: straighten, number every column, check the numbers against the printed ones, find the
+   connectors. **Trusted** only when the board has this board's 65 columns and its printed numbers are where ours say
+   (at most one out, corrected); otherwise nothing from geometry is used and the check runs as before.
+2. The model gets the numbered board first ("these numbers are exact: read them instead of counting"), then the board
+   and Arduino close-ups and the whole photo; the breadboard explanation now has the pin rule.
+3. After the model: a wire end within one column of a connector code is sure of takes code's column (the offset moves
+   with it); when they agree, the reading counts as sure. Resistor and LED legs are never moved (no connector).
+4. Each check records the geometry step (used or why not, connectors found, legs set by geometry).
+On the learner's step photo b2c4 (blink step 3): geometry sure of column 13; with their earlier columns the board end
+passes (it had been misread as 11 before any of this).
