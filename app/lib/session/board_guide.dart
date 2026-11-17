@@ -112,3 +112,122 @@ class _GuidePainter extends CustomPainter {
   @override
   bool shouldRepaint(_) => false;
 }
+
+/// On the live camera, for a step check: the outline the breadboard should fill, along the screen's long side (phone
+/// sideways: the board left to right). Full or half board, the learner's choice (kept for the session).
+class BoardOutline extends StatefulWidget {
+  const BoardOutline({super.key});
+
+  static bool full = true; // a full-size board (about 3 : 1) or a half one (about 1.5 : 1)
+
+  @override
+  State<BoardOutline> createState() => _BoardOutlineState();
+}
+
+class _BoardOutlineState extends State<BoardOutline> {
+  @override
+  Widget build(BuildContext context) => Stack(fit: StackFit.expand, children: [
+        IgnorePointer(
+          child: CustomPaint(painter: _OutlinePainter(BoardOutline.full ? 3.0 : 1.5))
+              .animate(onPlay: (a) => a.repeat(reverse: true))
+              .fade(begin: 0.75, end: 1, duration: 900.ms),
+        ),
+        Positioned(
+          bottom: MediaQuery.sizeOf(context).width >= MediaQuery.sizeOf(context).height ? 104 : 132,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(color: Colors.black45, borderRadius: BorderRadius.circular(20)),
+              child: Row(mainAxisSize: MainAxisSize.min, children: [
+                for (final (full, label) in const [(true, 'Full board'), (false, 'Half board')])
+                  GestureDetector(
+                    onTap: () => setState(() => BoardOutline.full = full),
+                    child: AnimatedContainer(
+                      duration: 200.ms,
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                      decoration: BoxDecoration(
+                        color: BoardOutline.full == full ? Colors.white : Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(label,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                              color: BoardOutline.full == full ? Pq.ink : Colors.white)),
+                    ),
+                  ),
+              ]),
+            ),
+          ),
+        ),
+      ]);
+}
+
+/// The board's outline: dims what is outside it, its edges with corner marks, the power rails and the middle gap
+/// drawn faintly inside, so the learner lines the real board up with it.
+class _OutlinePainter extends CustomPainter {
+  _OutlinePainter(this.ratio);
+
+  final double ratio; // the board's long side / short side
+
+  @override
+  void paint(Canvas canvas, Size s) {
+    final wide = s.width >= s.height;
+    // room for the words at the top and the buttons at the bottom
+    final area = Rect.fromLTRB(s.width * 0.05, 56, s.width * 0.95, s.height - (wide ? 150 : 190));
+    var long = wide ? area.width : area.height, short = long / ratio;
+    final room = wide ? area.height : area.width;
+    if (short > room) {
+      short = room;
+      long = short * ratio;
+    }
+    final r = Rect.fromCenter(center: area.center, width: wide ? long : short, height: wide ? short : long);
+    // dim outside the outline
+    canvas.drawPath(
+        Path.combine(PathOperation.difference, Path()..addRect(Offset.zero & s),
+            Path()..addRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)))),
+        Paint()..color = Colors.black.withValues(alpha: 0.35));
+    final faint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.55)
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+    canvas.drawRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)), faint);
+    // the rails (near both long edges) and the middle gap, across the short side
+    void across(double f, Color c, {double w = 2}) {
+      final p = Paint()
+        ..color = c.withValues(alpha: 0.7)
+        ..strokeWidth = w;
+      if (wide) {
+        final y = r.top + r.height * f;
+        canvas.drawLine(Offset(r.left + 10, y), Offset(r.right - 10, y), p);
+      } else {
+        final x = r.left + r.width * f;
+        canvas.drawLine(Offset(x, r.top + 10), Offset(x, r.bottom - 10), p);
+      }
+    }
+
+    across(0.05, const Color(0xFFE5484D));
+    across(0.15, const Color(0xFF2A78D6));
+    across(0.85, const Color(0xFFE5484D));
+    across(0.95, const Color(0xFF2A78D6));
+    across(0.5, Colors.white, w: 6);
+    // corner marks
+    final mark = Paint()
+      ..color = Pq.have
+      ..strokeWidth = 5
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    final l = math.min(34.0, r.shortestSide * 0.25);
+    for (final (x, y, sx, sy) in [(r.left, r.top, 1.0, 1.0), (r.right, r.top, -1.0, 1.0), (r.left, r.bottom, 1.0, -1.0), (r.right, r.bottom, -1.0, -1.0)]) {
+      canvas.drawPath(Path()
+        ..moveTo(x, y + sy * l)
+        ..lineTo(x, y)
+        ..lineTo(x + sx * l, y), mark);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_OutlinePainter old) => old.ratio != ratio;
+}

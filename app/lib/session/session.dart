@@ -280,16 +280,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         }
         setState(() => _stepPending = true);
         await _openCamera();
-        if (kIsWeb) {
-          return {
-            'waiting': 'NO PHOTO YET, so there is no result: say nothing about how the step looks. Ask them to tap Take '
-                'photo (their phone camera opens) and wait. The result comes to you as soon as they have taken it.'
-          };
-        }
-        await Future<void>.delayed(const Duration(milliseconds: 500));
-        final shot = await _snap();
-        if (shot == null) return {'error': 'the camera is not ready; try again'};
-        return _validateStep(shot);
+        return {
+          'waiting': 'NO PHOTO YET, so there is no result: say nothing about how the step looks. The camera is open '
+              'with an outline of the board on it: ask them to hold the phone sideways, line the breadboard up with '
+              'the outline and tap the white button, then wait. The result comes to you as soon as they have taken it.'
+        };
       case 'tell_places':
         final places = <String, dynamic>{
           for (final x in (args['places'] as List? ?? const []).cast<Map>())
@@ -443,7 +438,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   // ---------------------------------------------------------------- the camera
   Future<void> _openCamera() async {
     _go(Stage.camera);
-    if (kIsWeb || _cam != null) return; // the browser: the phone's own camera app, opened by a tap
+    // the browser: the phone's own camera app, opened by a tap; but the live camera for a step check, to show the
+    // outline the board should fill
+    if (_cam != null || (kIsWeb && !_stepPending)) return;
+    setState(() => _camError = null);
     try {
       final cams = await availableCameras();
       if (cams.isEmpty) throw CameraException('none', 'No camera on this device');
@@ -787,7 +785,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Widget _camera(Color c) {
     final q = _pending;
     final what = _stepPending
-        ? 'Hold the phone over the breadboard, so every leg of this step shows'
+        ? 'Phone sideways, straight above: line the breadboard up with the outline, tap it to focus'
         : _lookQuestion != null
         ? 'Hold it up so Pip can see it'
         : q != null
@@ -797,7 +795,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                 : 'Lay the parts out so I can see them all';
     final thumbs = _photos.isNotEmpty && q == null && _lookQuestion == null && !_stepPending;
     final checkBtn = q == null && _lookQuestion == null && !_stepPending;
-    return kIsWeb ? _cameraBrowser(c, what, thumbs, checkBtn) : _cameraLive(c, what, thumbs, checkBtn);
+    return kIsWeb && (!_stepPending || _camError != null)
+        ? _cameraBrowser(c, what, thumbs, checkBtn)
+        : _cameraLive(c, what, thumbs, checkBtn);
   }
 
   /// A phone's browser: the phone's own camera app takes the photo (full screen, its focus, full quality).
@@ -888,7 +888,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       color: Colors.black,
       child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
-          CameraFill(controller: cam, visible: _visible)
+          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? const BoardOutline() : null)
         else
           Center(
             child: _camError == null
@@ -910,6 +910,20 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15, shadows: [Shadow(blurRadius: 8, color: Colors.black54)])),
         ),
+        if (kIsWeb && _stepPending)
+          Positioned(
+            top: 40,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: TextButton.icon(
+                onPressed: _phoneCamera,
+                style: TextButton.styleFrom(foregroundColor: Colors.white70),
+                icon: const Icon(Icons.photo_camera_outlined, size: 18),
+                label: const Text('Blurry? Use the phone camera instead'),
+              ),
+            ),
+          ),
         Positioned(
           left: 0,
           right: 0,
@@ -953,10 +967,14 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                   : _RoundBtn(
                       icon: Icons.close_rounded,
                       label: 'Cancel',
-                      onTap: () => setState(() {
-                        _pending = null;
-                        _stepPending = false;
-                      })),
+                      onTap: () {
+                        final step = _stepPending;
+                        setState(() {
+                          _pending = null;
+                          _stepPending = false;
+                        });
+                        if (step && _b != null) _go(Stage.build); // back to the step (and the camera off)
+                      }),
             ]),
           ]),
         ),
