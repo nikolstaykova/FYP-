@@ -194,6 +194,16 @@ class Pip extends ChangeNotifier {
   }
 
   final List<String> _later = [];
+
+  /// What the learner says, as it is heard (the line so far): the screen can act on "done" itself.
+  void Function(String line)? onHeard;
+
+  /// The screen moved on (another step): stop talking about the old one and drop what was waiting for Pip.
+  void moveOn(String text) {
+    _later.clear();
+    if (_talking) hush();
+    tell(text, now: true);
+  }
   bool _modelTurn = false; // Gemini is still sending this turn (audio may still be coming)
 
   /// Pip is talking, or about to: its turn is not finished, or its voice is still playing.
@@ -414,6 +424,7 @@ class Pip extends ChangeNotifier {
       if (heard != null && heard.isNotEmpty) {
         _active();
         caption('learner', heard, append: true);
+        onHeard?.call(_open?.text ?? heard);
       }
       final said = (sc['outputTranscription'] as Map?)?['text'] as String?;
       if (said != null && said.isNotEmpty) caption('tutor', said, append: true);
@@ -502,6 +513,7 @@ class Pip extends ChangeNotifier {
         if (r.finalResult && t.isNotEmpty) {
           _active();
           caption('learner', t);
+          onHeard?.call(t);
           _freeAsk(t);
         }
       },

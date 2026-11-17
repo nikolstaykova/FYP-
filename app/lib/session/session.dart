@@ -25,6 +25,7 @@ import '../theme.dart';
 import '../widgets/bouncy.dart';
 import '../widgets/full_frame.dart';
 import 'board_guide.dart';
+import 'heard.dart';
 import 'theirs.dart';
 import 'viewer.dart';
 
@@ -53,7 +54,7 @@ class SessionScreen extends StatefulWidget {
 
 class _SessionScreenState extends State<SessionScreen> implements PipHost {
   final _api = Api.instance;
-  late final Pip pip = Pip(this);
+  late final Pip pip = Pip(this)..onHeard = _heard;
   final _viewer = ViewerController();
   final _confetti = ConfettiController(duration: const Duration(seconds: 2));
 
@@ -91,8 +92,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _stepArduino = false; // the step wires to the Arduino: one photo with the board and the Arduino
   String? _hint;
   bool _ready = false;
-  List<Offset>? _seenBoard, _seenUno; // where the live check found them (fractions of the screen)
-  int _lost = 0, _unoLost = 0; // frames in a row without it: an outline stays one frame, then goes
   // the frames taken while lining up where the board was found (with how sharp each was): when the photo takes itself
   // the sharpest others go with it, so the check can read the best one and needs no retake for a blurry frame
   final List<(Shot, num)> _burst = [];
@@ -138,6 +137,32 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   void _onPip() {
     if (mounted) setState(() {});
+  }
+
+  // "I'm done" opens the camera for the step check straight away (Pip did not always call check_step itself)
+  int? _heardDoneFor; // the step "done" already opened the camera for
+
+  void _heard(String line) {
+    final b = _b;
+    if (b == null || !mounted || _stage != Stage.build || _stepPending || _checkingStep) return;
+    final n = _i + 1;
+    final st = b.steps[_i];
+    if (!_checkable(st) || _passed.contains(n) || _heardDoneFor == n) return;
+    if (!saysDone(line)) return;
+    _heardDoneFor = n;
+    setState(() => _stepPending = true);
+    _openCamera();
+    pip.moveOn('(The learner said they have done step $n: the camera is already open for the step check (do not call '
+        'check_step). Ask them, in one short sentence, to hold the phone over the board; the photo takes itself. '
+        'The result comes to you.)');
+  }
+
+  /// Another step is on the screen: Pip stops talking about the old one and is told the new one, with its words.
+  void _toldStep(String how, int n) {
+    final st = _b?.steps[n - 1];
+    final what = st == null ? '' : ' It says: "${st.title}${st.text.isNotEmpty ? ': ${st.text}' : ''}".';
+    pip.moveOn('($how: the screen now shows ${_lego ? 'card' : 'step'} $n.$what Talk only about this one now; '
+        'forget what you were saying about the other step.)');
   }
 
   @override
@@ -488,8 +513,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _softRun = 0;
     _ready = false;
     _hint = 'Line the board up with the outline';
-    _seenBoard = _seenUno = null;
-    _lost = _unoLost = 0;
     _burst.clear();
     _burstExtras = [];
     _api.validateShots(s.id, _i + 1).then((x) {
@@ -507,25 +530,17 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       final r = await _api.validateFrame(shot, arduino: _stepArduino);
       if (!mounted || !_stepPending || _checkingStep) return;
       _softRun = r['soft'] == true ? _softRun + 1 : 0;
-      final ok = r['ok'] == true || _softRun >= 4;
+      final ok = r['ok'] == true || _softRun >= 3;
       _okRun = ok ? _okRun + 1 : 0;
-      List<Offset>? corners(Object? q) => q is List && q.length == 4
-          ? [for (final p in q) Offset((p[0] as num).toDouble(), (p[1] as num).toDouble())]
-          : null;
-      final board = corners(r['board']), uno = corners(r['arduino']);
-      if (board != null) {
+      if ((r['measure'] as Map?)?['fill'] != null) {  // the board's holes were found in this frame
         _burst.add((shot, ((r['measure'] as Map?)?['sharp'] as num?) ?? 0));
         if (_burst.length > 4) _burst.removeAt(0);
       }
       setState(() {
         _ready = ok;
-        _hint = _okRun >= 2 ? 'Got it!' : '${r['hint'] ?? ''}';
-        _lost = board == null ? _lost + 1 : 0;
-        _unoLost = uno == null ? _unoLost + 1 : 0;
-        if (board != null || _lost > 1) _seenBoard = board;
-        if (uno != null || _unoLost > 1) _seenUno = uno;
+        _hint = _okRun >= 1 ? 'Got it!' : '${r['hint'] ?? ''}';
       });
-      if (_okRun >= 2) {
+      if (_okRun >= 1) {  // one clear frame is enough: the frames before it go along as spares
         _frameTimer?.cancel();
         _burstExtras = ([..._burst.where((b) => !identical(b.$1, shot))]..sort((a, b) => b.$2.compareTo(a.$2)))
             .take(2)
@@ -550,7 +565,6 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _frameTimer = null;
     _hint = null;
     _ready = false;
-    _seenBoard = _seenUno = null;
     _burst.clear();
     final c = _cam;
     _cam = null;
@@ -986,7 +1000,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       color: Colors.black,
       child: SafeArea(child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
-          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready, board: _seenBoard, uno: _seenUno) : null)
+          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready) : null)
         else
           Center(
             child: _camError == null
@@ -1161,7 +1175,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             k = stop;
           }
           _showStep(k);
-          _tell('(The learner opened ${_lego ? 'card' : 'step'} $k on the screen.)');
+          _toldStep('The learner opened it on the screen', k);
         }),
         const SizedBox(height: 10),
         if (_is3d)
@@ -1340,7 +1354,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             dark: false,
             onTap: () {
               _showStep(n - 1);
-              _tell('(The learner tapped Back: the screen shows ${_lego ? 'card' : 'step'} ${n - 1}.)');
+              _toldStep('The learner tapped Back', n - 1);
             },
           ),
           const SizedBox(width: 10),
@@ -1365,7 +1379,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                 return;
               }
               _showStep(n + 1);
-              _tell('(The learner tapped Next: ${_lego ? 'card' : 'step'} $n is done and the screen shows ${n + 1}. Teach it.)');
+              _toldStep('The learner tapped Next: ${_lego ? 'card' : 'step'} $n is done', n + 1);
             },
           ),
         ),

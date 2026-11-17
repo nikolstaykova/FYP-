@@ -447,7 +447,7 @@ class Handler(BaseHTTPRequestHandler):
                 f.parent.mkdir(parents=True, exist_ok=True)
                 try:
                     save_photo(body['photo'], f, body.get('crop'))
-                    h = board_check.frame_outline(str(f), arduino=bool(body.get('arduino')))
+                    h = board_check.frame_hint(str(f), arduino=bool(body.get('arduino')))  # (frame_outline: corners too; the outline is static for now)
                     print(f"frame: {h['hint']} {h['measure']}", flush=True)  # what the live camera was told
                     return self.send(200, h)
                 finally:

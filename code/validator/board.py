@@ -360,7 +360,7 @@ def frame_hint(photo_path, arduino=False, min_pitch=18):
     cut = [(x0 / W < edge, "Move left"), (x1 / W > 1 - edge, "Move right"), (y0 / H < edge, "Move up"), (y1 / H > 1 - edge, "Move down")]
     if any(c for c, _ in cut):
         return {"ok": False, "hint": next(h for c, h in cut if c), "measure": m}
-    if not arduino and (abs(cx) > 0.12 or abs(cy) > 0.12):  # alone, the board sits in the middle
+    if not arduino and (abs(cx) > 0.22 or abs(cy) > 0.22):  # alone, roughly in the middle (geometry finds it anywhere)
         hint = ("Move left" if cx < 0 else "Move right") if abs(cx) >= abs(cy) else ("Move up" if cy < 0 else "Move down")
         return {"ok": False, "hint": hint, "measure": m}
     if arduino:  # the Arduino must be in the photo too, whole: found by its blue board (free)

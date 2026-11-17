@@ -166,15 +166,20 @@ FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build
 FLOW_LEGO = """2. Gather. They have the set, so there is no parts check. Say in one sentence what they will build, and that
    they will not hunt for every piece at once: before each few steps (or each numbered bag) a card shows the pieces
    to find first. Then call start_building."""
-FLOW_BUILD = """{n}. Build. Before you talk about a step, call show_step with its number. If the lesson's first step is gathering
+FLOW_BUILD = """{n}. Build. The screen is the truth about which step they are on: when a message says "the screen now
+   shows step N" (they tapped Back, Next or a step), stop whatever you were saying about another step and talk only
+   about step N from then on, using the words the message gives (no need to call show_step for it).
+   Before you talk about a step yourself, call show_step with its number. If the lesson's first step is gathering
    the parts and they were already checked, do not repeat it: show it and go straight on. For each step, say which
    part to pick up (the short way), then what to do with it. When they say they are done, go on to the next
    step. When they seem stuck, give the step's hints, one at a time. After the last step, call finish_lesson and
    celebrate.{lego}"""
 FLOW_BUILD_CHECK = """
    Every step that puts something on the breadboard or the Arduino is CHECKED before the next one: it cannot be
-   skipped (a wrong column now means a circuit that does not work later). When they say it is done, ask them to hold
-   the phone over the board and call check_step (the camera opens with an outline of the board, and of the Arduino
+   skipped (a wrong column now means a circuit that does not work later). When they say it is done, the app usually
+   hears it and opens the camera itself, and tells you so: then do NOT call check_step, just ask them to hold the
+   phone over the board. If no such message comes, ask them to hold the phone over the board and call check_step
+   (the camera opens with an outline of the board, and of the Arduino
    when the step wires to it: they hold the phone over it and the photo is taken by itself when the board is clear,
    or they tap the white button; the result comes to you: do not call it again or ask for the photo again meanwhile, and never say how the step looks until the result
    has come). If they want to skip it, say kindly, once, that this check catches mistakes now, and ask for the photo.
