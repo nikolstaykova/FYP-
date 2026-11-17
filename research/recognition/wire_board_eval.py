@@ -60,6 +60,23 @@ def truth(lab):
                   if e.get("column") is not None or e["half"] == "rail")
 
 
+RAW = """Where is each jumper-wire end that is plugged into this breadboard? For each, give the column number and
+whether it is in the top or bottom half.
+Answer ONLY with JSON: {"ends": [{"colour": "", "half": "top", "column": 0, "row": "", "why": ""}]}"""
+
+
+def read_raw(photo, model):
+    """The model as it is: the photo (sized as the API takes it) and a plain question. No crop, no explanation."""
+    from gather import gather_vlm as vlm
+    out, st, _ = vlm.ask(model, [vlm.shrink(str(photo), 1600, 85)], RAW, max_tokens=4000, effort="low")
+    i, j = out.find("{"), out.rfind("}")
+    try:
+        ends = json.loads(out[i:j + 1])["ends"]
+    except Exception:
+        ends = []
+    return ends, st.get("cost_usd") or 0, None
+
+
 def read(photo, model):
     from gather import gather_vlm as vlm
     from validator import arduino
@@ -83,22 +100,26 @@ def place(e):
     return f"c{e.get('column')}{'b' if h.startswith('b') else 't'}"
 
 
-def one(name, lab, model, out_dir):
+def one(name, lab, model, out_dir, raw=False):
     t = time.time()
     want = truth(lab)
     try:
-        ends, cost, board = read(jpeg(name), model)
+        ends, cost, board = (read_raw if raw else read)(jpeg(name), model)
     except Exception as e:
         ends, cost, board = [], 0, None
         print(name, "error", e)
     got = sorted(place(e) for e in ends)
-    hits = sum(min(got.count(p), want.count(p)) for p in set(want))
-    near = sum(1 for w in want if w not in got and any(
-        g[-1] == w[-1] and g[1:-1].isdigit() and w[1:-1].isdigit() and abs(int(g[1:-1]) - int(w[1:-1])) == 1 for g in got))
+    col = lambda x: int(x[1:-1]) if x[1:-1].isdigit() else None
+    # only the ends the learner labelled count (a photo may have more wires than were labelled); the column is the
+    # main score, the half separately (an upside-down board makes "top"/"bottom" ambiguous)
+    hits = sum(1 for w in want if w in got)
+    col_hits = sum(1 for w in want if any(col(g) == col(w) for g in got))
+    near = sum(1 for w in want if not any(col(g) == col(w) for g in got)
+               and any(col(g) is not None and col(w) is not None and abs(col(g) - col(w)) == 1 for g in got))
     if board:
         (out_dir / f"{name}_board.jpg").write_bytes(board[0])
-    return {"photo": name, "truth": want, "read": got, "right": hits, "ends": len(want), "one_off": near,
-            "extra": max(0, len(got) - hits), "all_right": hits == len(want) and len(got) == len(want),
+    return {"photo": name, "truth": want, "read": got, "right": hits, "column_right": col_hits, "ends": len(want), "one_off": near,
+            "all_right": col_hits == len(want),
             "why": [e.get("why") for e in ends], "cost_usd": round(cost, 5), "seconds": round(time.time() - t, 1),
             "board": f"{name}_board.jpg" if board else None}
 
@@ -123,23 +144,24 @@ def main():
     ap.add_argument("--set", default="tune", choices=["tune", "test", "all"])
     ap.add_argument("--model", default="claude-opus-5-5")
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--raw", action="store_true", help="the model as it is: whole photo, plain question")
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args()
     labels = json.loads(LABELS.read_text())
     todo = [(n, l) for n, l in sorted(labels.items()) if not l.get("skip") and truth(l)
             and (a.set == "all" or split(n) == a.set)][:a.limit]
-    out_dir = RUNS / time.strftime("%Y%m%d-%H%M%S")
+    out_dir = RUNS / (time.strftime("%Y%m%d-%H%M%S") + ("-raw" if a.raw else "") + "-" + a.model.split("-")[1])
     out_dir.mkdir(parents=True)
     print(f"{len(todo)} photos ({a.set}, {a.model}) → {out_dir}")
     with cf.ThreadPoolExecutor(a.workers) as ex:
-        rows = list(ex.map(lambda nl: one(*nl, a.model, out_dir), todo))
+        rows = list(ex.map(lambda nl: one(*nl, a.model, out_dir, a.raw), todo))
     ends = sum(r["ends"] for r in rows)
     s = {"set": a.set, "model": a.model, "photos": len(rows), "photos_all_right": sum(r["all_right"] for r in rows),
-         "ends": ends, "ends_right": sum(r["right"] for r in rows), "one_column_off": sum(r["one_off"] for r in rows),
-         "extra_ends": sum(r["extra"] for r in rows), "cost_usd": round(sum(r["cost_usd"] for r in rows), 3)}
+         "ends": ends, "column_right": sum(r["column_right"] for r in rows),
+         "column_and_half_right": sum(r["right"] for r in rows), "one_column_off": sum(r["one_off"] for r in rows), "cost_usd": round(sum(r["cost_usd"] for r in rows), 3)}
     (out_dir / "results.json").write_text(json.dumps({"summary": s, "rows": rows}, indent=1))
-    title = (f"Wire ends · {a.set} · {a.model} · {s['ends_right']}/{ends} ends right, {s['one_column_off']} one column off, "
-             f"{s['photos_all_right']}/{len(rows)} photos fully right")
+    title = (f"Wire ends · {a.set} · {a.model}{' · RAW' if a.raw else ' · pipeline'} · column right {s['column_right']}/{ends} "
+             f"(with the half too {s['column_and_half_right']}), one column off {s['one_column_off']}")
     page(rows, out_dir, title)
     print(title, f"· ${s['cost_usd']}")
     print(f"page: {out_dir / 'index.html'}")
