@@ -18,6 +18,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../api.dart';
 import 'audio.dart';
+import 'sound_stub.dart' if (dart.library.js_interop) 'sound_web.dart' as sound;
 
 /// What Pip can do on the screen: the session screen.
 abstract class PipHost {
@@ -80,6 +81,9 @@ class Pip extends ChangeNotifier {
   static String level = ''; // beginner, some, advanced
 
   bool get on => state != PipState.off;
+
+  /// The browser stopped the page's sound (the learner left it for the camera or another app) and it needs a tap.
+  bool soundBlocked = false;
 
   void refresh() => notifyListeners();
 
@@ -225,6 +229,14 @@ class Pip extends ChangeNotifier {
 
   void _onTick() {
     if (!on) return;
+    if (kIsWeb) {
+      final blocked = sound.soundBlocked();
+      if (blocked != soundBlocked) {
+        soundBlocked = blocked;
+        notifyListeners();
+      }
+      if (blocked) sound.wakeSound(); // some browsers allow it without a tap
+    }
     if (mode == PipMode.live && state == PipState.speaking && !_player.playing) _set(PipState.listening);
     if (mode == PipMode.live) _flushLater();
     if (host.finished || host.busy || _player.playing || _speaking || _freeBusy) return;
@@ -288,9 +300,11 @@ class Pip extends ChangeNotifier {
 
   /// Back on the page (from the camera app, or the phone woke up): sound, mic and connection up again.
   Future<void> wake() async {
-    if (!on || mode != PipMode.live) return;
+    if (!on) return;
+    sound.wakeSound();
+    if (mode != PipMode.live) return;
     _player.start();
-    if (!_micLive) {
+    if (!_micLive || kIsWeb) { // the browser may have cut the mic off while the page was away: a fresh one
       try {
         await _micUp();
       } catch (_) {}

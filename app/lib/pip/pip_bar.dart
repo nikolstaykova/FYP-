@@ -21,7 +21,9 @@ class PipBar extends StatelessWidget {
         builder: (context, _) {
           final dark = Theme.of(context).brightness == Brightness.dark;
           final last = pip.lines.where((l) => l.who != 'sys').toList();
-          final sys = pip.lines.isNotEmpty && pip.lines.last.who == 'sys' ? pip.lines.last.text : null;
+          final sys = pip.on && pip.soundBlocked
+              ? "Tap here to hear Pip again (the phone paused the sound)"
+              : pip.lines.isNotEmpty && pip.lines.last.who == 'sys' ? pip.lines.last.text : null;
           return Container(
             decoration: BoxDecoration(
               color: dark ? const Color(0xFF1E1E1C) : Colors.white,
@@ -37,7 +39,7 @@ class PipBar extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => _transcript(context),
+                      onTap: () => pip.soundBlocked ? pip.wake() : _transcript(context),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                         Text(_label(pip), style: TextStyle(fontWeight: FontWeight.w800, color: _colour(pip.state))),
                         const SizedBox(height: 2),

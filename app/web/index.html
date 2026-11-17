@@ -53,6 +53,40 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
+  <script>
+    // Pip's voice and the mic run in Web Audio. The browser suspends audio when the page is left (the camera, another
+    // app, the screen locking) and, on iPhones, may only start it again from a tap. So: keep every audio context the
+    // page makes, start them again on every tap and whenever the page comes back, and tell the app (pipSoundBlocked)
+    // when one is still stopped, so it can ask for a tap.
+    (function () {
+      var all = [];
+      ['AudioContext', 'webkitAudioContext'].forEach(function (name) {
+        var Real = window[name];
+        if (!Real) return;
+        var Kept = function (opts) {
+          var ctx = opts === undefined ? new Real() : new Real(opts);
+          all.push(ctx);
+          return ctx;
+        };
+        Kept.prototype = Real.prototype;
+        window[name] = Kept;
+      });
+      function wake() {
+        all = all.filter(function (c) { return c.state !== 'closed'; });
+        all.forEach(function (c) { if (c.state !== 'running') c.resume().catch(function () {}); });
+      }
+      window.pipWakeSound = wake;
+      window.pipSoundBlocked = function () {
+        return all.some(function (c) { return c.state === 'suspended' || c.state === 'interrupted'; });
+      };
+      ['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+        document.addEventListener(ev, wake, true);
+      });
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) wake(); });
+      window.addEventListener('pageshow', wake);
+      window.addEventListener('focus', wake);
+    })();
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

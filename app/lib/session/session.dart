@@ -468,6 +468,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     final c = _cam;
     _cam = null;
     c?.dispose();
+    if (kIsWeb && c != null) pip.wake(); // the browser's camera can take the sound and the mic with it
   }
 
   Future<Shot?> _snap() async {
