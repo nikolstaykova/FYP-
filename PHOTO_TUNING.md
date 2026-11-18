@@ -400,3 +400,38 @@ From the learner's run (blink steps 1–4, 15 live frames, 7 checks):
 | — | — | When Haiku's header box finds no Arduino, code cuts the Arduino out by its blue board (Haiku's tight header crop stays first: it is what scored 43/43) |
 
 Open: two step-3 photos taken 30 s apart read pin 12 and pin 11 (asked the learner which it was).
+
+---
+
+## 14. Geometry for the Arduino: overlay on a reference of the same board (18 November)
+
+The model kept wavering on pins next to each other (the same photo read 11, 12 or 13; pin 11 was right). Code
+couldn't count the header's openings in the raw photo (black in black, half covered), and the gold dots by the
+labels were confused with other gold pads. The learner's idea: once the gather check knows the board, use what all
+boards of that kind share, and overlay to find the board's rotation.
+
+`code/validator/uno_overlay.py`:
+1. **Overlay.** The Arduino in the photo (its blue board, or the whole photo) is matched to a reference photo of the
+   same board by SIFT features of its print (text, chips, pads); RANSAC gives the homography: position, rotation, which
+   way round, slant, in one go. Reference: `code/graph/parts/arduino/refs/arduino-duemilanove.jpg` (+ `.json`, made by
+   `research/recognition/uno_reference.py` from the clicked photos).
+2. **The openings.** In the straightened photo the header is a straight row; a comb of the header's known shape (16
+   openings 2.54 mm apart, 1.6 spacings between 8 and 7) is slid along it until its teeth sit on the dark openings,
+   the spaces between them on lighter plastic, and the spots past both ends and in the 8/7 gap on no opening.
+3. **The names.** Each pin's name is written in yellow just outside the header with a line to its opening; the model
+   gets this image first and reads the name at the connector.
+
+| On the 43 clicked photos | |
+|---|---|
+| Overlaid on the reference | 40 (3: no blue board found) |
+| Pin nearest the click, positions learned from the other photos | **40/40** |
+
+| The step check on the 12 photos from the learner's checks (not used to make the reference) | Right | Sure and wrong | Cost |
+|---|---|---|---|
+| No overlay, one read | 8–10/12 (varied run to run) | 1–2 | $0.63 |
+| No overlay, read twice (disagreement → ask) | 9/12 | 0–1 | $1.20 |
+| **Overlay, one read** (run twice) | **11/12 both times** | **0** | $0.69 |
+
+The one left is a frame with the Arduino almost out of the picture (no reading: right). The second read is off
+again (`PINPOINT_PIN_TWICE=1` turns it on). Only the Duemilanove has a reference so far; another board needs one
+reference photo and a few clicked photos (the check works as before without one).

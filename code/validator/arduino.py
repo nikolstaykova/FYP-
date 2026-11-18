@@ -339,6 +339,12 @@ def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
         said.append("a close-up of the straightened board where the parts are, with the same yellow column numbers "
                     "(read the columns here)" if z.get("board_numbered") else
                     "a close-up of the breadboard around this step's parts (read the columns here)")
+    if z.get("arduino_numbered"):
+        images.append(z["arduino_numbered"])
+        said.append("the Arduino straightened by code, with every digital pin's name in yellow just outside the "
+                    "header, its little line pointing at that pin's opening (found by code in this photo): the pin a "
+                    "wire is in is the name whose line points at the opening under the connector's end that meets the "
+                    "header")
     if z.get("arduino"):
         images.append(z["arduino"])
         said.append("a close-up of the Arduino's pins (read the pin labels here)")
@@ -655,6 +661,14 @@ def check(lesson_id, step, photos, state=None, keep=None):
                 zoomed["arduino"] = _board.arduino_crop(photos[0])
             except Exception:
                 pass
+    if pins:  # the Arduino straightened onto a reference of the same board, every pin's name at its opening
+        try:
+            from validator import uno_overlay
+            ov = uno_overlay.analyse(photos[0])
+        except Exception:
+            ov = None
+        if ov:
+            zoomed["arduino_numbered"] = (ov["image"], "image/jpeg")
     if geo.get("trusted"):
         zoomed = {"numbered": (geo["numbered"], "image/jpeg"), **zoomed}
         if geo.get("closeup"):
@@ -673,7 +687,8 @@ def check(lesson_id, step, photos, state=None, keep=None):
     snapped = _snap(p, readings, geo)
     hidden = _hidden_leg(p, readings)
     pin_keys = [x["key"] for x in p["legs"] if x["kind"] == "pin" and (readings.get(x["key"]) or {}).get("pin")]
-    if pin_keys:  # a pin is read twice; the reads must agree (one read wavered between 11 and 12 on the same photo)
+    import os
+    if pin_keys and os.environ.get("PINPOINT_PIN_TWICE") == "1":  # read twice (off: the overlay made one read enough)
         again, _, st_again = look(photos, p, state, keys=pin_keys, zoomed=zoomed)
         steps.append({"what": "pin read again", **{k: st_again.get(k) for k in ("model", "seconds", "cost_usd")}})
         for k in pin_keys:
