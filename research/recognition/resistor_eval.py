@@ -50,6 +50,8 @@ def photos(which):
             print(f"skipping folder {d.name}: not a value like 270, 4.7k, 1M")
             continue
         for p in sorted(d.iterdir()):
+            if p.suffix.lower() == ".jpg" and any(p.with_suffix(x).exists() for x in (".HEIC", ".heic")):
+                continue  # the JPEG made from an iPhone photo: the photo itself is already in the list
             if p.suffix.lower() in EXT and (which == "all" or split(p) == which):
                 out.append((p, want))
     return out
@@ -59,15 +61,11 @@ def jpeg(path):
     """HEIC (iPhone) → JPEG beside the run, so the reader and the page can open it."""
     if path.suffix.lower() != ".heic":
         return path
-    from PIL import Image
-    try:
-        import pillow_heif
-        pillow_heif.register_heif_opener()
-    except ImportError:
-        sys.exit("HEIC photos need: pip install pillow-heif (or set the iPhone camera to 'Most Compatible')")
     out = path.with_suffix(".jpg")
-    if not out.exists():
-        Image.open(path).convert("RGB").save(out, quality=92)
+    if not out.exists():  # macOS converts HEIC itself (no extra package)
+        import subprocess
+        subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "92", str(path), "--out", str(out)],
+                       check=True, capture_output=True)
     return out
 
 

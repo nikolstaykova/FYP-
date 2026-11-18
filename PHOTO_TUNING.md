@@ -365,3 +365,23 @@ then the pin question with or without the rule (`arduino.PIN_HOW`).
 | Haiku 5.5 | 25/43 (12 one socket off; also "12" read as "2": the digits are printed stacked) · $0.07 | 35/43 · $0.08 |
 
 The rule holds on photos it was not tuned on. Opus stays first for step checks; Haiku is not good enough for pins.
+
+---
+
+## 12. Resistors: the learner's photos (18 November)
+
+The 23 photos in the "220" folder are **270 Ω** (red-violet-brown-gold: the second band is clearly violet; earlier
+checks had found 270 too): moved to `data/resistors/270/`. `resistor_eval.py --set all` (HEIC converted with sips;
+the converted copies no longer counted twice):
+
+| Outcome (23 photos, mostly from about 30 cm, resistor small in the frame) | Photos |
+|---|---|
+| Right and sure | 6 |
+| Right but marked not sure | 2 |
+| Wrong and sure | **1** (brown multiplier read as black: 27 Ω) |
+| Wrong, marked not sure (not used) | 3 |
+| Bands or body not found (resistor too small, or end-on) → the app asks for a close-up on white paper | 10 |
+| Colours make no value | 1 |
+
+Safe (1 confident mistake in 23) but it reads only about a third of these far photos; close-ups (§ earlier: 5/7)
+do much better. Other values are untested: the Wikimedia download was rate-limited after 5 photos.
