@@ -1093,7 +1093,7 @@ the lessons link to (741 files, checked), each booklet's reads and step files (s
 Arduino route), `kit_photos` and the small run logs. The recognition benchmarks (`research/recognition`: bench,
 swap test, score) need `electrocom61` back from the archive to run again.
 
-## 10. The database: Neo4j (being integrated, November 2026)
+## 10. The database: Neo4j (self-managed on a Hetzner server since 18 November 2026; §10.5)
 
 **Status (4 November 2026): the code works on the database.** The instance is running (AuraDB Free, `bac9405c`,
 Belgium) and holds the 77 lessons and the 1,254-part catalogue (16,624 nodes, 25,669 links, under a tenth of the free
@@ -1253,7 +1253,7 @@ MATCH (l:Lesson)-[:NEEDS]->(:Part {part_type_id:'lego-3626c'}) RETURN l.lesson_i
 
 ### 10.4 Integration plan
 
-1. **Instance** (done): AuraDB Free in Belgium; its URI, user and password in `.env` (`NEO4J_URI`, `NEO4J_USERNAME`,
+1. **Instance** (done; moved 18 Nov to our own server, §10.5): AuraDB Free in Belgium at first; its URI, user and password in `.env` (`NEO4J_URI`, `NEO4J_USERNAME`,
    `NEO4J_PASSWORD`; `.env` is not in git). Python driver `neo4j` (installed in `.venv-research`).
 2. **Loader** (done; `code/graph/db.py`, `./pinpoint db load`): constraints and indexes on the keys above, then every
    part and every lesson from the JSON. Idempotent (`MERGE`), so it can be re-run any time; a lesson saved again
@@ -1268,3 +1268,24 @@ MATCH (l:Lesson)-[:NEEDS]->(:Part {part_type_id:'lego-3626c'}) RETURN l.lesson_i
 
 Free-tier caveats: the instance reportedly pauses after about three days unused (resumed in the Aura console) and
 may be deleted after a long pause; nothing is lost, because the loader rebuilds it from the files.
+
+### 10.5 Self-managed on Hetzner (18 November 2026)
+
+The Aura Free instance kept pausing when unused (every request then failed with "Unable to retrieve routing
+information", and the server fell back to the files, taking about 60 s to load the lessons). The database now runs
+on our own server; the data and the code are unchanged.
+
+| | |
+|---|---|
+| Server | Hetzner Cloud **CX23** (x86, 2 vCPU, 4 GB RAM, 40 GB disk), Nuremberg (EU), Ubuntu; about €7.45 a month with its IPv4 address, billed by the hour |
+| Database | **Neo4j 5 Community Edition** (free) in Docker, `--restart unless-stopped`, data in `/srv/neo4j` on the server; heap 1 GB, page cache 512 MB |
+| Reached by | an **SSH tunnel** from the Mac (`deploy/neo4j/tunnel.sh`, key `~/.ssh/pinpoint_db`): `localhost:7687` on the Mac is Neo4j on the server, so `NEO4J_URI=bolt://localhost:7687` |
+| Closed | Neo4j listens only on the server itself (127.0.0.1); the Hetzner firewall lets in SSH only (checked from outside: 7687 and 7474 closed) |
+| Secrets | a generated 32-character password, only in `.env` (not in git) and on the server; the Aura settings stay in `.env`, commented out |
+| Started by | `research/recognition/lab/run.sh` opens the tunnel when `.env` has `PINPOINT_DB_HOST`; if it cannot, the server uses the files |
+| Loaded | `./pinpoint db load`: 1,255 parts (11,147 ports) and 77 lessons in 143 s; `./pinpoint db check`: every lesson and part read back exactly as in the files |
+| Result | the server loads the lessons in **3.7 s** (about 60 s with Aura paused) |
+
+Setup and day-to-day commands: `deploy/neo4j/README.md`. The phone app still talks only to our app server, never to
+the database (§10.4 step 6). For an Android app used anywhere, the app server itself has to go online too: the same
+Hetzner server can run it next to Neo4j (no tunnel then), behind HTTPS.

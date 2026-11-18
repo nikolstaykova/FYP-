@@ -2094,6 +2094,42 @@ as from the files (the validator in about 5 s, fetching the store in three queri
 
 **Next:** the file store for the step pictures and learners' photos.
 
+## R30. The database off Aura: self-managed Neo4j on a Hetzner server
+
+**Date:** 18 November 2026 · **Status:** done, the app reads from it · **Code:** `deploy/neo4j/` ·
+**Design:** [`DATA_STRUCTURE.md`](./DATA_STRUCTURE.md) §10.5
+
+**Question:** the Aura Free instance (R29) pauses after a few days unused. Each time, every database call failed
+("Unable to retrieve routing information") until it was resumed by hand, and the server fell back to the files (about
+60 s to load the lessons). Where should Neo4j run instead, off the Mac and cheaply?
+
+| Option | For | Against |
+|---|---|---|
+| Aura Free (as before) | free, nothing to run | pauses when unused, may be deleted after a long pause |
+| Aura Professional | managed, never pauses | a monthly subscription well above a small server |
+| Neo4j Community on the Mac (Docker) | free, 5 minutes | the data stays on the Mac (the reason for R29) and is only there while the Mac is on |
+| Render + Supabase (as CircuitQuest) | free plans | Render's free plan has no disk and 512 MB (no room for Neo4j); Supabase is Postgres (the queries would be rewritten) and also pauses free projects after a week |
+| Oracle Cloud Always Free | free ARM server | sign-up with card checks; free ARM servers often "out of capacity" |
+| **Hetzner Cloud CX23** | EU, simple, always on, 4 GB for about €7.45 a month | not free |
+
+**Chosen:** Neo4j 5 Community Edition (free) in Docker on a Hetzner CX23 in Nuremberg. The cheaper Arm CAX11 was not
+available ("limited availability").
+
+**Security:** the database port is not open to the internet. Neo4j listens only on the server itself; the Hetzner
+firewall allows SSH only; the Mac reaches the database through an SSH tunnel with a key made for it, so the code
+still connects to `localhost:7687`. Checked from outside: ports 7687 and 7474 closed. A generated 32-character
+password, kept only in `.env` and on the server.
+
+**Moving the data:** nothing to copy from Aura. The files are still the source (R29: every element keeps where it came
+from), so `./pinpoint db load` rebuilt everything on the new server: 1,255 parts and 77 lessons in 143 s.
+`./pinpoint db check`: every lesson and part read back exactly as in the files.
+
+**Result:** the app server loads the lessons in **3.7 s** (about 60 s with Aura paused); the app's lesson list and a
+lesson (Blink, 6 steps) come from the new database.
+
+**Next:** for an Android app that works away from the Mac's Wi-Fi, the app server goes online too, on the same
+server next to Neo4j (no tunnel), behind HTTPS (a free Let's Encrypt certificate needs a domain name).
+
 ## Next steps
 
 - [x] Lessons from 3D models for LEGO (R23)
@@ -2102,6 +2138,7 @@ as from the files (the validator in about 5 s, fetching the store in three queri
 - [x] Compile-check every Arduino sketch (`arduino-cli`): 90 of 95 (R24)
 - [ ] Finish the full LEGO lesson run with the final method, then fix the kinds of leftovers it shows (R24)
 - [x] Choose the database: Neo4j AuraDB (graph) + an EU file store for pictures (R29)
+- [x] The database off Aura (it kept pausing): self-managed Neo4j on a Hetzner server (R30)
 - [ ] Integrate the database: instance, loader, code reading from it, step pictures to file storage (R29)
 - [ ] Reusable builds table
 - [ ] The checker: VLM reads a photo of the build, code compares with the step's expected state, adaptive feedback; then AR
