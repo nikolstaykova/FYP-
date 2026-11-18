@@ -102,7 +102,7 @@ def rows_of(meta):
 
 
 def _ref_file(board_id):
-    for d in (REFS, LOCAL_REFS):
+    for d in (LOCAL_REFS, REFS):  # a local reference (better photo) replaces the repo's one of the same board
         if (d / f"{board_id}.json").exists():
             return d / f"{board_id}.json"
     return None
@@ -112,7 +112,8 @@ def _load_refs():
     global _refs
     if _refs is None:
         _refs = []
-        for j in sorted(list(REFS.glob("*.json")) + list(LOCAL_REFS.glob("*.json"))):
+        local = {j.stem for j in LOCAL_REFS.glob("*.json")}
+        for j in sorted([j for j in REFS.glob("*.json") if j.stem not in local] + list(LOCAL_REFS.glob("*.json"))):
             meta = json.loads(j.read_text())
             im = cv2.imread(str(j.with_suffix(".jpg")))
             if im is None:

@@ -477,3 +477,15 @@ breadboard.
   shape may be up to 2.4 : 1 (the Mega is 2.06 : 1), and a board must be "busy" (edge density at least 0.06: the
   learner's Arduinos 0.11-0.26, dark clothing that matched the colour 0.01-0.03). The 21 photos without an Arduino:
   none found; the 55 with one: 52 found.
+
+### 14.3 Uno R3 and a straight Uno R4 WiFi (18 November)
+
+- **Uno R3** (the most common board, card `arduino-uno`) and **Uno R4 WiFi**: references from straight-down product
+  photos the learner pasted (licence unknown: kept out of git in `data/board_refs/local_refs/`). Both rows fitted
+  with the tight comb (the loose one slid the Uno's digital row a whole opening, past pin 0); every pin checked by eye
+  against the printed labels.
+- A local reference **replaces** a repo reference of the same board: the R4 WiFi's angled Commons photo (whose power
+  row was one opening off) is no longer used when the straight one is there.
+- **Recognition:** six references, six synthetic phone photos each (tilted, turned 0-290 degrees, blurred,
+  darkened): 36/36 recognised as the right board. The learner's 55 Duemilanove photos: 53 Duemilanove, 2 no board
+  found (as before), never the Uno R3, although the two boards look alike.
