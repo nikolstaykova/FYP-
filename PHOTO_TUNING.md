@@ -435,3 +435,28 @@ boards of that kind share, and overlay to find the board's rotation.
 The one left is a frame with the Arduino almost out of the picture (no reading: right). The second read is off
 again (`PINPOINT_PIN_TWICE=1` turns it on). Only the Duemilanove has a reference so far; another board needs one
 reference photo and a few clicked photos (the check works as before without one).
+
+### 14.1 More boards (18 November)
+
+The database has 44 boards. By how a wire meets them: **Uno-shaped with female headers** (Uno R3, R4 Minima/WiFi,
+Uno WiFi Rev2, Leonardo, Duemilanove, Zero, Due, Yún, Mega: this overlay); **plugged into the breadboard** (Nano
+family, ESP32 DevKits, Pi Pico, MKR, Pro Mini, Blue Pill...: the wires go into breadboard columns, so the breadboard
+geometry already covers them); **Raspberry Pi** (2x20 male pins: needs its own template); micro:bit and Opta (rare).
+
+References from openly licensed top-down photos on Wikimedia Commons (`code/graph/parts/arduino/refs/CREDITS.md`),
+made without clicked photos: the two ends of the header row read once off a pixel grid, then the comb finds the
+openings (`uno_overlay.build_from_row`). Header layouts per board (`LAYOUTS`): Duemilanove 16 openings (AREF..8 |
+7..0); Uno R3 and later 18 (SCL, SDA, AREF, GND, 13..8 | 7..0).
+
+| Board | Reference | Recognised (synthetic phone photos: any rotation, scale, slant, blur, darker) | Labels at the openings |
+|---|---|---|---|
+| Duemilanove | learner's photos | all 11 of the learner's photos with the board in view picked it (none mistaken for another) | — |
+| Due | Commons, Arduino SA | 6/6 | 6/6 |
+| Leonardo | Commons | 6/6 | 6/6 |
+| Uno R4 WiFi | Commons (slightly angled: faint openings) | 6/6 | 0/6 within 0.4 opening (about 0.4 off along the row) |
+
+Not yet: the Uno R3 and the Mega 2560 (Commons has them only at an angle or as a clone); the R4 WiFi needs a straighter
+photo. On the learner's Duemilanove, the step check scored 11/12, 11/12 and 9/12 on three runs: the labels were right on
+the miss (the connector leans over the next opening and the model took that one). Next: code tells which opening the
+connector covers (the plastic between openings it hides; its base is at the end away from the wire), as on the
+breadboard.

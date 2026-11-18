@@ -23,8 +23,28 @@ import numpy as np
 from validator import board as _board
 
 REFS = pathlib.Path(__file__).resolve().parents[1] / "graph" / "parts" / "arduino" / "refs"
-ORDER = ["AREF", "GND", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0"]
-IDX = {p: (i if i <= 7 else i + 0.6) for i, p in enumerate(ORDER)}  # 0.16" between 8 and 7 = 1.6 pitches
+# the digital header, block by block; between blocks 0.16" = 1.6 pitches (the Arduino's odd spacing between 8 and 7)
+LAYOUTS = {
+    "duemilanove": [["AREF", "GND", "13", "12", "11", "10", "9", "8"], ["7", "6", "5", "4", "3", "2", "1", "0"]],
+    "uno-r3": [["SCL", "SDA", "AREF", "GND", "13", "12", "11", "10", "9", "8"], ["7", "6", "5", "4", "3", "2", "1", "0"]],
+}
+GAP = 1.6
+
+
+def layout(name):
+    """(order, {pin: position in pitches from the first opening})"""
+    order, idx, k = [], {}, 0.0
+    for b, block in enumerate(LAYOUTS[name]):
+        if b:
+            k += GAP - 1
+        for pin in block:
+            order.append(pin)
+            idx[pin] = k
+            k += 1
+    return order, idx
+
+
+ORDER, IDX = layout("duemilanove")
 EDGE = 1400
 MIN_INLIERS = 25
 _sift = None
@@ -102,15 +122,19 @@ def analyse(photo_path):
         return None
     ref, H, inl = got
     flat = cv2.warpPerspective(c, H, (ref["image"].shape[1], ref["image"].shape[0]))
+    order, idx = layout(ref.get("layout", "duemilanove"))
     pins = {p: np.array(v, float) for p, v in ref["pins"].items()}
-    a, b = pins["AREF"], pins["0"]
+    a, b = pins[order[0]], pins[order[-1]]
     u = (b - a) / np.linalg.norm(b - a)
     nrm = np.array([-u[1], u[0]])
     mid = np.array([flat.shape[1] / 2, flat.shape[0] / 2])
     if (a - mid) @ nrm < 0:  # the labels go on the outer side of the header, away from the board's middle
         nrm = -nrm
-    pitch = np.linalg.norm(b - a) / IDX["0"]
-    comb = openings(flat, a, u, nrm, pitch)
+    pitch = np.linalg.norm(b - a) / idx[order[-1]]
+    if ref.get("layout"):  # a reference made from a straight-down photo marks the openings themselves: look near them
+        comb = openings(flat, a, u, nrm, pitch, order, idx, across_range=(-0.6, 0.6), spread=0.06, along_range=0.8)
+    else:  # made from clicks on the connectors, which stand out from the openings: look further in
+        comb = openings(flat, a, u, nrm, pitch, order, idx)
     if comb is not None:  # the openings themselves, found in this photo
         pins, fit = comb
     else:
@@ -128,27 +152,29 @@ def analyse(photo_path):
     return {"board": ref["board"], "inliers": inl, "image": buf.tobytes(), "openings": fit}
 
 
-def openings(flat, a, u, nrm, pitch):
+def openings(flat, a, u, nrm, pitch, order=None, idx=None, across_range=(-0.6, 1.6), spread=0.1, along_range=2.5):
     """The header's 16 openings in the straightened photo: a comb of known shape (equal spacing, 1.6 spacings between
     8 and 7) slid along the header row until its teeth sit on the dark openings and the gaps between them on the
     lighter plastic. Searched: how far across the row (the header's top looks shifted against the print), along it,
     and the spacing (±10%). Returns ({pin: (x, y)}, {"contrast", ...}) or None when no clear row of openings is seen."""
+    order, idx = order or ORDER, idx or IDX
     g = cv2.GaussianBlur(cv2.cvtColor(flat, cv2.COLOR_BGR2GRAY), (5, 5), 0).astype(np.float32)
     Hh, Ww = g.shape
-    ks = np.array([IDX[p] for p in ORDER])
-    gaps = np.array([(IDX[ORDER[i]] + IDX[ORDER[i + 1]]) / 2 for i in range(len(ORDER) - 1)])
+    ks = np.array([idx[p] for p in order])
+    gaps = np.array([(idx[order[i]] + idx[order[i + 1]]) / 2 for i in range(len(order) - 1)])
+    big = [i for i in range(len(order) - 1) if idx[order[i + 1]] - idx[order[i]] > 1.2]
     # past each end of the header, and the middle of the wider gap between 8 and 7, there is no opening: a comb slid
     # by a whole socket still has most teeth on openings, but then one end tooth falls off the header
-    ends = np.array([-1.0, IDX["0"] + 1.0, (IDX["8"] + IDX["7"]) / 2])
+    ends = np.array([-1.0, idx[order[-1]] + 1.0] + [(idx[order[i]] + idx[order[i + 1]]) / 2 for i in big])
 
     def val(pts):
         x = np.clip(pts[:, 0].round().astype(int), 0, Ww - 1)
         y = np.clip(pts[:, 1].round().astype(int), 0, Hh - 1)
         return g[y, x]
     best = None
-    for across in np.arange(-0.6, 1.6, 0.08) * pitch:  # the openings' row, from the learned (connector) row inwards
-        for p in np.arange(0.9, 1.101, 0.02) * pitch:
-            for along in np.arange(-2.5, 2.51, 0.06) * pitch:
+    for across in np.arange(across_range[0], across_range[1], 0.08) * pitch:  # the openings' row (default: from
+        for p in np.arange(1 - spread, 1 + spread + 0.001, 0.01) * pitch:   # the learned connector row inwards)
+            for along in np.arange(-along_range, along_range + 0.01, 0.06) * pitch:
                 o = a + u * along - nrm * across
                 teeth = val(o + np.outer(ks * p, u))
                 between = val(o + np.outer(gaps * p, u))
@@ -160,9 +186,36 @@ def openings(flat, a, u, nrm, pitch):
     score, o, p, across, along = best
     if score < 12:  # no clear row of dark openings between lighter plastic
         return None
-    pins = {pn: o + u * IDX[pn] * p for pn in ORDER}
+    pins = {pn: o + u * idx[pn] * p for pn in order}
     return pins, {"contrast": round(score, 1), "spacing": round(float(p), 1), "across": round(float(across), 1),
                   "along": round(float(along), 1)}
+
+
+def build_from_row(board_id, photo, layout_name, first, last, source="", tight=False):
+    """A reference from a straight-down photo of the board (no parallax): `first` and `last` are roughly where the
+    first and last openings of the digital header are in the cropped reference (as `crop` makes it, read off a grid
+    once); the comb finds the openings exactly."""
+    REFS.mkdir(parents=True, exist_ok=True)
+    ref, _, _ = crop(_board.load(photo))
+    order, idx = layout(layout_name)
+    a, b = np.array(first, float), np.array(last, float)
+    u = (b - a) / np.linalg.norm(b - a)
+    nrm = np.array([-u[1], u[0]])
+    if (a - np.array([ref.shape[1] / 2, ref.shape[0] / 2])) @ nrm < 0:
+        nrm = -nrm
+    pitch = np.linalg.norm(b - a) / idx[order[-1]]
+    got = openings(ref, a, u, nrm, pitch, order, idx, across_range=(-0.15, 0.15) if tight else (-0.4, 0.4),
+                   spread=0.015 if tight else 0.05, along_range=0.25 if tight else 1.0)
+    if got is None:
+        raise ValueError(f"{board_id}: no clear row of openings near the row given")
+    pins, fit = got
+    cv2.imwrite(str(REFS / f"{board_id}.jpg"), ref, [cv2.IMWRITE_JPEG_QUALITY, 92])
+    meta = {"photo": pathlib.Path(photo).name, "source": source, "layout": layout_name, "fit": fit,
+            "pins": {p: [round(float(v), 1) for v in pins[p]] for p in order}}
+    (REFS / f"{board_id}.json").write_text(json.dumps(meta, indent=1))
+    global _refs
+    _refs = None
+    return meta
 
 
 def build(board_id, ref_photo, clicked):
