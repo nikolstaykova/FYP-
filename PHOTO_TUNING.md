@@ -351,3 +351,17 @@ edge of the photo (AREF here).
 The one left: a spare frame with the Arduino almost out of the picture (no reading: right to say so). Tuning score
 on 9 photos; fresh photos needed. Also fixed: the live camera missed the learner's Duemilanove in warm light (its
 dark blue reaches V 10–20; the range began at 25): found in 8/9 frames with it, 0 without.
+
+### 11.1 Fair test on new photos (18 November)
+
+43 new photos of the Arduino with a wire (15 different pins: 0–12, GND, AREF; the Arduino in different places in
+the frame), labelled by clicking (`data/arduino_pins/board/labels.json`), none of them used to find the rule.
+`research/recognition/arduino_pin_eval2.py`: the step check's Arduino close-up (Haiku box, cut from the full photo),
+then the pin question with or without the rule (`arduino.PIN_HOW`).
+
+| Model | Before (no rule) | With the rule (count the header's openings; the one under the connector's end at the header) |
+|---|---|---|
+| **Opus 5.5** | 39/43 (all 4 misses one socket towards 0) · $1.14 | **43/43** · $1.25 |
+| Haiku 5.5 | 25/43 (12 one socket off; also "12" read as "2": the digits are printed stacked) · $0.07 | 35/43 · $0.08 |
+
+The rule holds on photos it was not tuned on. Opus stays first for step checks; Haiku is not good enough for pins.
