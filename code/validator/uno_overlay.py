@@ -23,12 +23,30 @@ import numpy as np
 from validator import board as _board
 
 REFS = pathlib.Path(__file__).resolve().parents[1] / "graph" / "parts" / "arduino" / "refs"
+LOCAL_REFS = pathlib.Path(__file__).resolve().parents[2] / "data" / "board_refs" / "local_refs"  # not in git
 # the digital header, block by block; between blocks 0.16" = 1.6 pitches (the Arduino's odd spacing between 8 and 7)
 LAYOUTS = {
     "duemilanove": [["AREF", "GND", "13", "12", "11", "10", "9", "8"], ["7", "6", "5", "4", "3", "2", "1", "0"]],
     "uno-r3": [["SCL", "SDA", "AREF", "GND", "13", "12", "11", "10", "9", "8"], ["7", "6", "5", "4", "3", "2", "1", "0"]],
+    "mega": [["SCL", "SDA", "AREF", "GND", "13", "12", "11", "10", "9", "8"], ["7", "6", "5", "4", "3", "2", "1", "0"],
+             ["14", "15", "16", "17", "18", "19", "20", "21"]],
+    # the bottom edge: power, then analog (A0 at the far end from the USB)
+    "power-analog-6": [["RESET", "3V3", "5V", "GND.", "GND..", "VIN"], ["A0", "A1", "A2", "A3", "A4", "A5"]],
+    "power-analog-8": [["NC", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"], ["A0", "A1", "A2", "A3", "A4", "A5"]],
+    "power-analog-mega": [["NC", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"],
+                          ["A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7"],
+                          ["A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15"]],
+    "power-analog-due": [["NC", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"],
+                         ["A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7"],
+                         ["A8", "A9", "A10", "A11", "DAC0", "DAC1", "CANRX", "CANTX"]],
 }
+# every GND is the same GND: "GND." and "GND.." are the power header's two (names must be unique in a row)
 GAP = 1.6
+# a layout whose gaps between blocks are not all 1.6 pitches: [gap after block 1, after block 2, ...]; the Mega's
+# communication block (14-21) starts 0.2" after pin 0 (fitted: 2.0 beat 1.6 and 1.8 on its photo), the analog header
+# 0.2" after VIN
+GAPS = {"mega": [1.6, 2.0], "power-analog-6": [2.0], "power-analog-8": [2.0], "power-analog-mega": [2.0, 2.0],
+        "power-analog-due": [2.0, 2.0]}
 
 
 def layout(name):
@@ -36,7 +54,7 @@ def layout(name):
     order, idx, k = [], {}, 0.0
     for b, block in enumerate(LAYOUTS[name]):
         if b:
-            k += GAP - 1
+            k += (GAPS.get(name) or [GAP] * 9)[b - 1] - 1
         for pin in block:
             order.append(pin)
             idx[pin] = k
@@ -75,17 +93,32 @@ def crop(img):
     return cv2.resize(c, None, fx=s, fy=s, interpolation=cv2.INTER_AREA), bx[:2], s
 
 
+def rows_of(meta):
+    """A reference's header rows: [{"layout", "pins", "from": "openings" | "connectors"}] (older files: one row)."""
+    if meta.get("rows"):
+        return meta["rows"]
+    return [{"layout": meta.get("layout", "duemilanove"), "pins": meta["pins"],
+             "from": "openings" if meta.get("layout") else "connectors"}]
+
+
+def _ref_file(board_id):
+    for d in (REFS, LOCAL_REFS):
+        if (d / f"{board_id}.json").exists():
+            return d / f"{board_id}.json"
+    return None
+
+
 def _load_refs():
     global _refs
     if _refs is None:
         _refs = []
-        for j in sorted(REFS.glob("*.json")):
+        for j in sorted(list(REFS.glob("*.json")) + list(LOCAL_REFS.glob("*.json"))):
             meta = json.loads(j.read_text())
             im = cv2.imread(str(j.with_suffix(".jpg")))
             if im is None:
                 continue
             k, d = _features(cv2.cvtColor(im, cv2.COLOR_BGR2GRAY))
-            _refs.append({"board": j.stem, "image": im, "kp": k, "des": d, **meta})
+            _refs.append({"board": j.stem, "image": im, "kp": k, "des": d, **meta, "rows": rows_of(meta)})
     return _refs
 
 
@@ -122,34 +155,39 @@ def analyse(photo_path):
         return None
     ref, H, inl = got
     flat = cv2.warpPerspective(c, H, (ref["image"].shape[1], ref["image"].shape[0]))
-    order, idx = layout(ref.get("layout", "duemilanove"))
-    pins = {p: np.array(v, float) for p, v in ref["pins"].items()}
-    a, b = pins[order[0]], pins[order[-1]]
-    u = (b - a) / np.linalg.norm(b - a)
-    nrm = np.array([-u[1], u[0]])
-    mid = np.array([flat.shape[1] / 2, flat.shape[0] / 2])
-    if (a - mid) @ nrm < 0:  # the labels go on the outer side of the header, away from the board's middle
-        nrm = -nrm
-    pitch = np.linalg.norm(b - a) / idx[order[-1]]
-    if ref.get("layout"):  # a reference made from a straight-down photo marks the openings themselves: look near them
-        comb = openings(flat, a, u, nrm, pitch, order, idx, across_range=(-0.6, 0.6), spread=0.06, along_range=0.8)
-    else:  # made from clicks on the connectors, which stand out from the openings: look further in
-        comb = openings(flat, a, u, nrm, pitch, order, idx)
-    if comb is not None:  # the openings themselves, found in this photo
-        pins, fit = comb
-    else:
-        fit = None
     out = flat.copy()
-    for p, xy in pins.items():
-        tip = xy + nrm * pitch * 0.6
-        lab = xy + nrm * pitch * 1.9
-        cv2.line(out, tuple(int(v) for v in tip), tuple(int(v) for v in (xy + nrm * pitch * 1.3)), (0, 230, 255), 2)
-        (tw, th), _ = cv2.getTextSize(p, cv2.FONT_HERSHEY_SIMPLEX, 0.55, 2)
-        x, y = int(lab[0] - tw / 2), int(lab[1] + th / 2)
-        cv2.rectangle(out, (x - 3, y - th - 3), (x + tw + 3, y + 4), (0, 230, 255), -1)
-        cv2.putText(out, p, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 0), 2, cv2.LINE_AA)
+    mid = np.array([flat.shape[1] / 2, flat.shape[0] / 2])
+    fits = []
+    for row in ref["rows"]:
+        order, idx = layout(row["layout"])
+        pins = {p: np.array(v, float) for p, v in row["pins"].items()}
+        a, b = pins[order[0]], pins[order[-1]]
+        u = (b - a) / np.linalg.norm(b - a)
+        nrm = np.array([-u[1], u[0]])
+        if (a - mid) @ nrm < 0:  # the labels go on the outer side of the header, away from the board's middle
+            nrm = -nrm
+        pitch = np.linalg.norm(b - a) / idx[order[-1]]
+        if row.get("from") == "openings":  # made from a straight-down photo: the openings themselves, look near them
+            comb = openings(flat, a, u, nrm, pitch, order, idx, across_range=(-0.6, 0.6), spread=0.06, along_range=0.8)
+        else:  # made from clicks on the connectors, which stand out from the openings: look further in
+            comb = openings(flat, a, u, nrm, pitch, order, idx)
+        if comb is not None:  # the openings themselves, found in this photo
+            pins, fit = comb
+        else:
+            fit = None
+        fits.append({"layout": row["layout"], **(fit or {"found": False})})
+        for p, xy in pins.items():
+            name = p.rstrip(".")  # "GND." -> "GND"
+            tip = xy + nrm * pitch * 0.6
+            lab = xy + nrm * pitch * 1.9
+            cv2.line(out, tuple(int(v) for v in tip), tuple(int(v) for v in (xy + nrm * pitch * 1.3)), (0, 230, 255), 2)
+            (tw, th), _ = cv2.getTextSize(name, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
+            x, y = int(lab[0] - tw / 2), int(lab[1] + th / 2)
+            cv2.rectangle(out, (x - 3, y - th - 3), (x + tw + 3, y + 4), (0, 230, 255), -1)
+            cv2.putText(out, name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2, cv2.LINE_AA)
     ok, buf = cv2.imencode(".jpg", out, [cv2.IMWRITE_JPEG_QUALITY, 90])
-    return {"board": ref["board"], "inliers": inl, "image": buf.tobytes(), "openings": fit}
+    return {"board": ref["board"], "inliers": inl, "image": buf.tobytes(), "openings": fits[0] if fits else None,
+            "rows": fits}
 
 
 def openings(flat, a, u, nrm, pitch, order=None, idx=None, across_range=(-0.6, 1.6), spread=0.1, along_range=2.5):
@@ -191,12 +229,7 @@ def openings(flat, a, u, nrm, pitch, order=None, idx=None, across_range=(-0.6, 1
                   "along": round(float(along), 1)}
 
 
-def build_from_row(board_id, photo, layout_name, first, last, source="", tight=False):
-    """A reference from a straight-down photo of the board (no parallax): `first` and `last` are roughly where the
-    first and last openings of the digital header are in the cropped reference (as `crop` makes it, read off a grid
-    once); the comb finds the openings exactly."""
-    REFS.mkdir(parents=True, exist_ok=True)
-    ref, _, _ = crop(_board.load(photo))
+def _fit_row(ref, layout_name, first, last, tight):
     order, idx = layout(layout_name)
     a, b = np.array(first, float), np.array(last, float)
     u = (b - a) / np.linalg.norm(b - a)
@@ -207,15 +240,39 @@ def build_from_row(board_id, photo, layout_name, first, last, source="", tight=F
     got = openings(ref, a, u, nrm, pitch, order, idx, across_range=(-0.15, 0.15) if tight else (-0.4, 0.4),
                    spread=0.015 if tight else 0.05, along_range=0.25 if tight else 1.0)
     if got is None:
-        raise ValueError(f"{board_id}: no clear row of openings near the row given")
+        raise ValueError(f"{layout_name}: no clear row of openings near the row given")
     pins, fit = got
-    cv2.imwrite(str(REFS / f"{board_id}.jpg"), ref, [cv2.IMWRITE_JPEG_QUALITY, 92])
-    meta = {"photo": pathlib.Path(photo).name, "source": source, "layout": layout_name, "fit": fit,
+    return {"layout": layout_name, "from": "openings", "fit": fit,
             "pins": {p: [round(float(v), 1) for v in pins[p]] for p in order}}
-    (REFS / f"{board_id}.json").write_text(json.dumps(meta, indent=1))
+
+
+def build_from_row(board_id, photo, layout_name, first, last, source="", tight=False, local=False):
+    """A reference from a straight-down photo of the board (no parallax): `first` and `last` are roughly where the
+    first and last openings of the digital header are in the cropped reference (as `crop` makes it, read off a grid
+    once); the comb finds the openings exactly. local: a photo of unknown licence, kept out of git."""
+    out_dir = LOCAL_REFS if local else REFS
+    out_dir.mkdir(parents=True, exist_ok=True)
+    ref, _, _ = crop(_board.load(photo))
+    row = _fit_row(ref, layout_name, first, last, tight)
+    cv2.imwrite(str(out_dir / f"{board_id}.jpg"), ref, [cv2.IMWRITE_JPEG_QUALITY, 92])
+    meta = {"photo": pathlib.Path(photo).name, "source": source, "rows": [row]}
+    (out_dir / f"{board_id}.json").write_text(json.dumps(meta, indent=1))
     global _refs
     _refs = None
     return meta
+
+
+def add_row(board_id, layout_name, first, last, tight=False):
+    """Another header row (the power and analog header) on an existing reference, its two ends read off a grid."""
+    j = _ref_file(board_id)
+    meta = json.loads(j.read_text())
+    ref = cv2.imread(str(j.with_suffix(".jpg")))
+    rows = [r for r in rows_of(meta) if r["layout"] != layout_name] + [_fit_row(ref, layout_name, first, last, tight)]
+    meta = {k: v for k, v in meta.items() if k not in ("pins", "layout", "fit")} | {"rows": rows}
+    j.write_text(json.dumps(meta, indent=1))
+    global _refs
+    _refs = None
+    return rows[-1]
 
 
 def build(board_id, ref_photo, clicked):

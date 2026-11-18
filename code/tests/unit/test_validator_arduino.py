@@ -163,7 +163,10 @@ def test_the_live_outline_finds_the_boards_and_the_arduinos_corners(tmp_path):
         for row in list(range(5)) + list(range(7, 12)):
             x, y = 420 + col * 20, 280 + row * 20
             cv2.rectangle(im, (x - 4, y - 4), (x + 4, y + 4), (30, 30, 30), -1)
-    cv2.rectangle(im, (40, 300), (300, 500), (120, 60, 20), -1)  # a blue Arduino (BGR)
+    cv2.rectangle(im, (40, 300), (300, 500), (120, 60, 20), -1)  # a blue Arduino (BGR), with its print and parts
+    for k in range(9):
+        cv2.putText(im, "ARDUINO 13 12 ~11", (50, 320 + k * 20), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (235, 235, 235), 1)
+    cv2.rectangle(im, (150, 400), (230, 470), (20, 20, 20), -1)
     f = tmp_path / "frame.jpg"
     cv2.imwrite(str(f), im)
     h = board.frame_outline(str(f), arduino=True)

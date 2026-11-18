@@ -341,8 +341,9 @@ def look(photos, plan_, state=None, model=FIRST, keys=None, zoomed=None):
                     "a close-up of the breadboard around this step's parts (read the columns here)")
     if z.get("arduino_numbered"):
         images.append(z["arduino_numbered"])
-        said.append("the Arduino straightened by code, with every digital pin's name in yellow just outside the "
-                    "header, its little line pointing at that pin's opening (found by code in this photo): the pin a "
+        said.append("the Arduino straightened by code, with every pin's name in yellow just outside its header (the "
+                    "digital header, and the power and analog header: 5V, GND, 3V3, VIN, A0...), its little line "
+                    "pointing at that pin's opening (found by code in this photo): the pin a "
                     "wire is in is the name whose line points at the opening under the connector's end that meets the "
                     "header")
     if z.get("arduino"):

@@ -460,3 +460,20 @@ photo. On the learner's Duemilanove, the step check scored 11/12, 11/12 and 9/12
 the miss (the connector leans over the next opening and the model took that one). Next: code tells which opening the
 connector covers (the plastic between openings it hides; its base is at the end away from the wire), as on the
 breadboard.
+
+### 14.2 The Mega, both header rows, and teal boards (18 November)
+
+- **Mega 2560** (newer teal print): a reference from a straight-down product photo the learner found (licence unknown,
+  so it is kept out of git: `data/board_refs/local_refs/`, loaded with the repo's references). Its main row is 26
+  openings: SCL..8 | 7..0 | 14..21; the gap before 14 is 2.0 spacings (fitted: 2.0 put the row's ends on the header,
+  1.6 slid it a whole opening). Turned 170 degrees in a synthetic phone photo: recognised, both rows labelled right.
+- **Both header rows.** References now hold several rows: the digital header and the power + analog header
+  (Duemilanove: RESET, 3V3, 5V, GND, GND, VIN | A0-A5; Uno R3 / Leonardo / R4: NC, IOREF, RESET, 3V3, 5V, GND, GND,
+  VIN | A0-A5; Mega: ... | A0-A7 | A8-A15; Due: ... | A0-A7 | A8-A11, DAC0, DAC1, CANRX, CANTX). Checked by eye on each
+  reference: right on the Due, Leonardo and Mega; the R4 WiFi's power block looks one opening off (its photo is
+  angled).
+- **Which way round:** the overlay finds the board at any rotation, upside down included.
+- **Finding the board in the live camera:** the colour range now starts at hue 84 (teal boards, Mega Rev3: 89), the
+  shape may be up to 2.4 : 1 (the Mega is 2.06 : 1), and a board must be "busy" (edge density at least 0.06: the
+  learner's Arduinos 0.11-0.26, dark clothing that matched the colour 0.01-0.03). The 21 photos without an Arduino:
+  none found; the 55 with one: 52 found.

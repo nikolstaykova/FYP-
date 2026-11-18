@@ -214,7 +214,7 @@ def arduino_box(im):
     fractions of the frame and whether it touches an edge, or None (no big blue patch: not in the photo, or a board
     of another colour). The breadboard's thin blue rail lines are opened away."""
     hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
-    blue = cv2.inRange(hsv, (96, 45, 10), (128, 255, 235))  # dark blue PCB (Duemilanove: H 104, S 85-106, V 41-84; in shade V down to 15)
+    blue = cv2.inRange(hsv, (84, 45, 10), (128, 255, 235))  # dark blue PCB (Duemilanove: H 104, S 85-106, V 41-84; in shade V down to 15); from 84: the newer teal boards (Mega 2560 Rev3: H 89)
     k = max(5, int(min(im.shape[:2]) * 0.02)) | 1
     blue = cv2.morphologyEx(blue, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (k, k)))  # its printing
     blue = cv2.morphologyEx(blue, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7)))  # the rail lines
@@ -226,7 +226,12 @@ def arduino_box(im):
         if area < 0.012 * W * H or w * h > 0.3 * W * H:
             continue
         solid, aspect = area / (w * h), max(w, h) / max(1, min(w, h))
-        if solid < 0.55 or aspect > 2.0:
+        if solid < 0.55 or aspect > 2.4:  # up to the Mega (2.06 : 1 with its headers)
+            continue
+        # a circuit board is busy (printed text, chips, pads); dark blue or teal cloth is not. Edge density: the
+        # learner's Arduinos 0.11-0.26, clothing that passed the colour 0.01-0.03 (18 Nov)
+        g = cv2.cvtColor(im[y:y + h, x:x + w], cv2.COLOR_BGR2GRAY)
+        if (cv2.Canny(g, 60, 160) > 0).mean() < 0.06:
             continue
         if best is None or area > best[4]:
             best = (x, y, w, h, area, i)
