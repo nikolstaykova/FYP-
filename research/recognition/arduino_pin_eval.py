@@ -30,9 +30,10 @@ def one(path, want):
     keep.mkdir(parents=True, exist_ok=True)
     step = "step-4" if want == "GND" else "step-3"
     r = arduino.check("blink", step, [str(path)], keep=keep)
-    pin = next((v.get("pin") for v in (r.get("readings") or {}).values() if v.get("pin")), None)
-    why = next((v.get("why") for v in (r.get("readings") or {}).values() if v.get("pin")), "")
+    rd = next((v for v in (r.get("readings") or {}).values() if v.get("pin")), {})
+    pin, why, sure = rd.get("pin"), rd.get("why") or "", rd.get("sure") is not False
     return {"photo": f"{path.parent.name}/{path.name}", "want": want, "read": norm(pin), "right": norm(pin) == want,
+            "sure": sure, "sure_wrong": sure and bool(pin) and norm(pin) != want,
             "why": why, "cost_usd": r.get("cost_usd")}
 
 
@@ -43,10 +44,10 @@ def main():
     with cf.ThreadPoolExecutor(4) as ex:
         rows = list(ex.map(lambda x: one(*x), todo))
     for r in rows:
-        print(f"{'ok ' if r['right'] else 'BAD'} {r['photo']:28} want {r['want']:4} read {r['read']:4}  {r['why']}")
+        print(f"{'ok ' if r['right'] else 'BAD'}{'' if r['sure'] else '?'} {r['photo']:28} want {r['want']:4} read {r['read']:4}  {r['why']}")
     n = sum(r["right"] for r in rows)
     cost = sum(r["cost_usd"] or 0 for r in rows)
-    print(f"pins right {n}/{len(rows)}  ${cost:.2f}  {OUT}")
+    print(f"pins right {n}/{len(rows)}, sure and wrong {sum(r['sure_wrong'] for r in rows)}  ${cost:.2f}  {OUT}")
     (OUT / "results.json").write_text(json.dumps(rows, indent=1))
 
 

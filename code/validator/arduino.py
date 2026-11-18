@@ -193,8 +193,9 @@ def prompt(plan_, state=None):
         sh = x["shares"]
         if x["kind"] == "pin":
             pin = their(where, "pin", x["lesson"])
-            items.append(f"- {x['key']}: {x['who']}. Which Arduino pin socket is it in? The lesson wants "
-                         f"{say_place('pin', pin)}. Give \"pin\". " + PIN_HOW)
+            # no "the lesson wants ..." here: it pulled readings towards the lesson's pin (18 Nov: 13 read for 11);
+            # code compares with the lesson afterwards
+            items.append(f"- {x['key']}: {x['who']}. Which Arduino pin socket is it in? Give \"pin\". " + PIN_HOW)
         elif x["kind"] == "rail":
             items.append(f"- {x['key']}: {x['who']}. Which power rail is it in? The lesson wants "
                          f"{RAILS.get(their(where, 'rail', x['lesson']), x['lesson'])}. Give \"rail\".")
@@ -498,6 +499,11 @@ def _asks(res):
     return out
 
 
+def _pin_norm(pin):
+    p = str(pin or "").strip().upper().lstrip("~D").replace("PIN", "").strip()
+    return "GND" if p.startswith("GND") else p
+
+
 def _hidden_leg(plan_, readings):
     """An LED seen from above hides its legs under its body: when one leg is read for sure and the other is unsure but
     read one or two columns from it, in the same half (an LED's legs are 2.54 mm apart, one column), that is where it
@@ -666,6 +672,15 @@ def check(lesson_id, step, photos, state=None, keep=None):
              {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if isinstance(v, tuple)) + " close-ups + whole photo)" if any(isinstance(v, tuple) for v in zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     snapped = _snap(p, readings, geo)
     hidden = _hidden_leg(p, readings)
+    pin_keys = [x["key"] for x in p["legs"] if x["kind"] == "pin" and (readings.get(x["key"]) or {}).get("pin")]
+    if pin_keys:  # a pin is read twice; the reads must agree (one read wavered between 11 and 12 on the same photo)
+        again, _, st_again = look(photos, p, state, keys=pin_keys, zoomed=zoomed)
+        steps.append({"what": "pin read again", **{k: st_again.get(k) for k in ("model", "seconds", "cost_usd")}})
+        for k in pin_keys:
+            a, b = _pin_norm(readings[k].get("pin")), _pin_norm((again.get(k) or {}).get("pin"))
+            if b and a != b:
+                readings[k].update(sure=False, candidates=[a, b],
+                                   why=f"two reads disagree: pin {a} or pin {b}? Ask which one it is.")
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
     if unsure and SECOND != FIRST:  # the same photo, the bigger model, only those legs
