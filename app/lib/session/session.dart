@@ -95,6 +95,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   // the frames taken while lining up where the board was found (with how sharp each was): when the photo takes itself
   // the sharpest others go with it, so the check can read the best one and needs no retake for a blurry frame
   final List<(Shot, num)> _burst = [];
+  Map<String, List<double>>? _outline; // where the outlines are drawn (fractions of the screen = of the frame sent)
   List<Shot> _burstExtras = [];
   int _okRun = 0;
   int _softRun = 0; // frames where all is fine but no (blue) Arduino was seen: after a few, take it anyway
@@ -531,7 +532,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _framing = true;
     try {
       final shot = Shot(await (await c.takePicture()).readAsBytes(), _visible.value);
-      final r = await _api.validateFrame(shot, arduino: _stepArduino);
+      final r = await _api.validateFrame(shot, arduino: _stepArduino, outline: _outline);
       if (!mounted || !_stepPending || _checkingStep) return;
       _softRun = r['soft'] == true ? _softRun + 1 : 0;
       final ok = r['ok'] == true || _softRun >= 3;
@@ -1004,7 +1005,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       color: Colors.black,
       child: SafeArea(child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
-          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready) : null)
+          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready, onOutline: (o) => _outline = o) : null)
         else
           Center(
             child: _camError == null

@@ -117,7 +117,7 @@ class _GuidePainter extends CustomPainter {
 /// when the step wires to the Arduino, the Arduino's place beside it (one photo with both: the server cuts out each).
 /// [hint] is what the live check says ("Closer", "Hold still"); [ready] turns the outline green.
 class BoardOutline extends StatefulWidget {
-  const BoardOutline({super.key, this.arduino = false, this.hint, this.ready = false, this.board, this.uno});
+  const BoardOutline({super.key, this.arduino = false, this.hint, this.ready = false, this.board, this.uno, this.onOutline});
 
   final bool arduino;
   final String? hint;
@@ -127,6 +127,10 @@ class BoardOutline extends StatefulWidget {
   /// screen (top-left, top-right, bottom-right, bottom-left), or null. Drawn over them, gliding as the phone moves.
   final List<Offset>? board;
   final List<Offset>? uno;
+
+  /// Where the outlines are, as fractions of the screen ({"board": [x0, y0, x1, y1], "arduino": [...]}), whenever the
+  /// screen's size or the outline changes: the live check wants the board inside its outline (roughly).
+  final void Function(Map<String, List<double>> outline)? onOutline;
 
   static bool full = true; // a full-size board (about 3 : 1) or a half one (about 1.5 : 1)
 
@@ -162,8 +166,27 @@ class _BoardOutlineState extends State<BoardOutline> with SingleTickerProviderSt
     super.dispose();
   }
 
+  String _told = '';
+
+  void _report(Size size) {
+    final cb = widget.onOutline;
+    if (cb == null || size.isEmpty) return;
+    final (r, uno) = _OutlinePainter.rects(size, BoardOutline.full ? 3.0 : 1.5, widget.arduino);
+    List<double> f(Rect x) => [x.left / size.width, x.top / size.height, x.right / size.width, x.bottom / size.height];
+    final out = {'board': f(r), 'arduino': ?(uno == null ? null : f(uno))};
+    final key = out.toString();
+    if (key == _told) return;
+    _told = key;
+    WidgetsBinding.instance.addPostFrameCallback((_) => cb(out));
+  }
+
   @override
-  Widget build(BuildContext context) => Stack(fit: StackFit.expand, children: [
+  Widget build(BuildContext context) => LayoutBuilder(builder: (context, box) {
+        _report(box.biggest);
+        return _stack(context);
+      });
+
+  Widget _stack(BuildContext context) => Stack(fit: StackFit.expand, children: [
         IgnorePointer(
           child: AnimatedBuilder(
             animation: _glide,
@@ -288,7 +311,8 @@ class _OutlinePainter extends CustomPainter {
   }
 
   /// Nothing found yet: the outline the board should fill (and the Arduino's place).
-  void _paintGuide(Canvas canvas, Size s) {
+  /// Where the board's outline (and the Arduino's) are drawn on a screen of size [s]: (board, Arduino or null).
+  static (Rect, Rect?) rects(Size s, double ratio, bool arduino) {
     final wide = s.width >= s.height;
     // as big as the screen allows: the words at the top, the shutter row at the bottom
     final area = Rect.fromLTRB(s.width * 0.02, 72, s.width * 0.98, s.height - (wide ? 100 : 130));
@@ -315,6 +339,12 @@ class _OutlinePainter extends CustomPainter {
       final w = math.min(area.width - short - 8, short * 1.4), h = w * 1.35;
       uno = Rect.fromLTWH(r.left - 8 - w, r.top, w, h);
     }
+    return (r, uno);
+  }
+
+  void _paintGuide(Canvas canvas, Size s) {
+    final wide = s.width >= s.height;
+    final (r, uno) = rects(s, ratio, arduino);
     final hole = Path()..addRRect(RRect.fromRectAndRadius(r, const Radius.circular(10)));
     if (uno != null) hole.addRRect(RRect.fromRectAndRadius(uno, const Radius.circular(10)));
     canvas.drawPath(Path.combine(PathOperation.difference, Path()..addRect(Offset.zero & s), hole),

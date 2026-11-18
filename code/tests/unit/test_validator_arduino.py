@@ -185,3 +185,30 @@ def test_of_a_few_frames_the_sharp_one_geometry_knows_is_read_and_a_blurry_one_n
     assert "blurry" not in order and "3 sent, 2 good enough" in m["photos"]
     order, ok, *_ = A._pick(["blurry"])
     assert not ok  # only when none will do: take it again
+
+
+def test_an_led_leg_hidden_under_its_body_next_to_the_other_leg_is_worked_out():
+    p = A.plan("blink", "step-2")
+    r = {"L1": leg("L1", column=33, half="top"), "L2": {"key": "L2", "column": 35, "half": "top", "sure": False}}
+    assert A._hidden_leg(p, r) == ["L2"] and r["L2"]["sure"] is True and r["L2"]["by"] == "worked out"
+    far = {"L1": leg("L1", column=33, half="top"), "L2": {"key": "L2", "column": 40, "half": "top", "sure": False}}
+    assert A._hidden_leg(p, far) == [] and far["L2"]["sure"] is False  # not next to it: still asked
+    wire = A.plan("blink", "step-3")
+    assert A._hidden_leg(wire, {"L2": {"key": "L2", "column": 30, "sure": False}}) == []  # only LEDs
+
+
+def test_the_live_check_wants_the_board_inside_its_outline_not_exactly_on_it(tmp_path):
+    import cv2
+    import numpy as np
+    from validator import board
+    im = np.full((900, 1200, 3), 210, np.uint8)
+    for col in range(40):
+        for row in list(range(5)) + list(range(7, 12)):
+            x, y = 200 + col * 20, 300 + row * 20
+            cv2.rectangle(im, (x - 4, y - 4), (x + 4, y + 4), (30, 30, 30), -1)
+    f = tmp_path / "frame.jpg"
+    cv2.imwrite(str(f), im)
+    inside = board.frame_hint(str(f), outline={"board": [0.14, 0.3, 0.86, 0.66]})
+    assert "Move" not in inside["hint"]
+    off = board.frame_hint(str(f), outline={"board": [0.4, 0.3, 0.98, 0.66]})  # outline further right than the board
+    assert off["hint"] == "Move the phone left" and not off["ok"]

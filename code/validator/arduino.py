@@ -498,6 +498,37 @@ def _asks(res):
     return out
 
 
+def _hidden_leg(plan_, readings):
+    """An LED seen from above hides its legs under its body: when one leg is read for sure and the other is unsure but
+    read one or two columns from it, in the same half (an LED's legs are 2.54 mm apart, one column), that is where it
+    is. Which leg is the long one the photo cannot show either: the long one is the leg the model read for sure only
+    if it said so; otherwise both columns stand and the lesson's order is kept. Returns the keys worked out."""
+    done = []
+    by_part = {}
+    for x in plan_["legs"]:
+        if x["kind"] == "strip" and "led" in (x["part"] + " " + x["who"]).lower():
+            by_part.setdefault(x["part"], []).append(x)
+    for legs in by_part.values():
+        if len(legs) != 2:
+            continue
+        a, b = (readings.get(x["key"]) for x in legs)
+        if not a or not b:
+            continue
+        for sure, other, x in ((a, b, legs[1]), (b, a, legs[0])):
+            if sure.get("sure") is False or other.get("sure") is not False:
+                continue
+            try:
+                c1, c2 = int(sure.get("column")), int(other.get("column"))
+            except (TypeError, ValueError):
+                continue
+            same_half = str(sure.get("half") or "")[:1] == str(other.get("half") or sure.get("half") or "")[:1]
+            if same_half and 1 <= abs(c2 - c1) <= 2:
+                other.update(sure=True, half=sure.get("half"), by="worked out",
+                             why=f"hidden under the LED's body, next to its other leg: column {c2}")
+                done.append(x["key"])
+    return done
+
+
 def _pick(photos):
     """The frames in the order to use them: those good enough to read (board.quality), the ones geometry knows the
     board on first, sharpest first. Returns (photos, ok, why, measure of the first, geometry of the first)."""
@@ -509,7 +540,22 @@ def _pick(photos):
         except Exception:
             ok, why, m = True, "", {}
         rated.append({"photo": ph, "ok": ok, "why": why, "m": m, "i": i})
-    good = sorted([r for r in rated if r["ok"]], key=lambda r: -(r["m"].get("sharp") or 0))
+    for r in rated:  # how sharp the Arduino is too (a frame sharp on the board can be blurry on the Arduino)
+        try:
+            import cv2
+            img = board.load(r["photo"])
+            f = 1200 / max(img.shape[:2])
+            im = cv2.resize(img, None, fx=f, fy=f, interpolation=cv2.INTER_AREA)
+            a = board.arduino_box(im)
+            r["m"]["arduino_sharp"] = round(board._sharp(im, a["box"])) if a else None
+        except Exception:
+            pass
+
+    def score(r):  # the weaker of the two, each against what reads well
+        b = (r["m"].get("sharp") or 0) / board.FRAME_SHARP
+        a = r["m"].get("arduino_sharp")
+        return min(b, a / board.ARDUINO_SHARP) if a is not None else b
+    good = sorted([r for r in rated if r["ok"]], key=lambda r: -score(r))
     if not good:
         return photos, False, rated[0]["why"], rated[0]["m"], {}
     best, geo = good[0], {}
@@ -594,7 +640,15 @@ def check(lesson_id, step, photos, state=None, keep=None):
     if geo.get("trusted") and geo.get("closeup") and not pins:
         zoomed, zcost = {"board": None, "arduino": None}, 0  # geometry's close-up: no need to ask Haiku where it is
     else:
+        # Haiku's tight box on the header (43/43 pins with it, 18 Nov); when it finds no Arduino, code cuts the whole
+        # Arduino out by its blue board instead
         zoomed, zcost = zoom(photos[0], p)
+        if pins and not zoomed.get("arduino"):
+            try:
+                from validator import board as _board
+                zoomed["arduino"] = _board.arduino_crop(photos[0])
+            except Exception:
+                pass
     if geo.get("trusted"):
         zoomed = {"numbered": (geo["numbered"], "image/jpeg"), **zoomed}
         if geo.get("closeup"):
@@ -611,6 +665,7 @@ def check(lesson_id, step, photos, state=None, keep=None):
               "photos": m.get("photos")},
              {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if isinstance(v, tuple)) + " close-ups + whole photo)" if any(isinstance(v, tuple) for v in zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     snapped = _snap(p, readings, geo)
+    hidden = _hidden_leg(p, readings)
     res = judge(p, readings, state)
     unsure = [r["key"] for r in res["legs"] if r["status"] == "unsure"]
     if unsure and SECOND != FIRST:  # the same photo, the bigger model, only those legs
@@ -619,10 +674,11 @@ def check(lesson_id, step, photos, state=None, keep=None):
         readings.update(more)
         moved += moved2
         snapped += _snap(p, readings, geo)
+        hidden += _hidden_leg(p, readings)
         res = judge(p, readings, state)
     steps.insert(1, {"what": "geometry (the board straightened, columns numbered, connectors found)",
                      "used": bool(geo.get("trusted")), "why": geo.get("why", ""), "connectors": len(geo.get("ends") or []),
-                     "set_by_geometry": snapped, "cost_usd": 0})
+                     "set_by_geometry": snapped, "worked_out": hidden, "cost_usd": 0})
     good = [r for r in res["legs"] if r["status"] in ("ok", "moved")]
     say = {"pass": "Everything in this step is in the right place.",
            "harmless": "All right: " + ", ".join(res["turned_round"]) + " is turned round, which is fine for it.",

@@ -326,7 +326,42 @@ def board_corners(c, pitch):
     return out
 
 
-def frame_hint(photo_path, arduino=False, min_pitch=18):
+FRAME_SHARP = 500     # board, Laplacian variance at 1200 px: photos the step check found blurry were 302 and 418
+ARDUINO_SHARP = 1500  # the Arduino's box: blurry 1,083; readable 3,300 and more (18 Nov, learner's photos)
+
+
+def _sharp(im, box):
+    H, W = im.shape[:2]
+    x0, y0, x1, y1 = box
+    g = cv2.cvtColor(im[int(y0 * H):int(y1 * H) + 1, int(x0 * W):int(x1 * W) + 1], cv2.COLOR_BGR2GRAY)
+    return float(cv2.Laplacian(g, cv2.CV_64F).var()) if g.size else 0.0
+
+
+def arduino_crop(photo_path, edge=1600, margin=0.12):
+    """The Arduino cut from the full-size photo by its blue board (found by code, no model): its box with a margin
+    (the header and the labels beside it), enlarged to `edge` and sharpened, as (JPEG, "image/jpeg"); or None."""
+    import io
+    from PIL import Image, ImageFilter
+    img = load(photo_path)
+    f = min(1.0, 1200 / max(img.shape[:2]))
+    a = arduino_box(cv2.resize(img, None, fx=f, fy=f, interpolation=cv2.INTER_AREA) if f < 1 else img)
+    if a is None:
+        return None
+    H, W = img.shape[:2]
+    x0, y0, x1, y1 = a["box"]
+    mx, my = (x1 - x0) * margin, (y1 - y0) * margin
+    box = (int(max(0, (x0 - mx) * W)), int(max(0, (y0 - my) * H)), int(min(W, (x1 + mx) * W)), int(min(H, (y1 + my) * H)))
+    c = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).crop(box)
+    s_ = edge / max(c.size)
+    if s_ > 1:
+        c = c.resize((round(c.width * s_), round(c.height * s_)), Image.LANCZOS)
+    c = c.filter(ImageFilter.UnsharpMask(radius=2, percent=80, threshold=2))
+    buf = io.BytesIO()
+    c.save(buf, "JPEG", quality=90)
+    return buf.getvalue(), "image/jpeg"
+
+
+def frame_hint(photo_path, arduino=False, min_pitch=18, outline=None):
     """For the live camera (a frame about once a second): is the board ready to be photographed, and if not, what
     to do, in two or three words. Uses only what is reliable on real photos: the holes found (how many, how far
     apart = how close the board is, where they are = how much of the frame the board fills and whether it is in
@@ -360,7 +395,15 @@ def frame_hint(photo_path, arduino=False, min_pitch=18):
     cut = [(x0 / W < edge, "Move left"), (x1 / W > 1 - edge, "Move right"), (y0 / H < edge, "Move up"), (y1 / H > 1 - edge, "Move down")]
     if any(c for c, _ in cut):
         return {"ok": False, "hint": next(h for c, h in cut if c), "measure": m}
-    if not arduino and (abs(cx) > 0.22 or abs(cy) > 0.22):  # alone, roughly in the middle (geometry finds it anywhere)
+    ob = (outline or {}).get("board")
+    if ob:  # the board roughly inside its outline (code finds its exact edges afterwards)
+        tol = 0.07
+        ext = (x0 / W, y0 / H, x1 / W, y1 / H)
+        out = [(ext[0] < ob[0] - tol, "Move the phone left"), (ext[2] > ob[2] + tol, "Move the phone right"),
+               (ext[1] < ob[1] - tol, "Move the phone up"), (ext[3] > ob[3] + tol, "Move the phone down")]
+        if any(c for c, _ in out):
+            return {"ok": False, "hint": next(h for c, h in out if c), "measure": m}
+    elif not arduino and (abs(cx) > 0.22 or abs(cy) > 0.22):  # alone, roughly in the middle
         hint = ("Move left" if cx < 0 else "Move right") if abs(cx) >= abs(cy) else ("Move up" if cy < 0 else "Move down")
         return {"ok": False, "hint": hint, "measure": m}
     if arduino:  # the Arduino must be in the photo too, whole: found by its blue board (free)
@@ -370,7 +413,15 @@ def frame_hint(photo_path, arduino=False, min_pitch=18):
             return {"ok": False, "hint": "Get the Arduino in too", "soft": True, "measure": m}
         if a["cut"]:
             return {"ok": False, "hint": "Move back: the Arduino is cut off", "measure": m}
-    if m["sharp"] < MIN_SHARP:
+        oa = (outline or {}).get("arduino")
+        if oa:  # roughly in its outline: its middle inside the outline (with a margin)
+            mx, my = (a["box"][0] + a["box"][2]) / 2, (a["box"][1] + a["box"][3]) / 2
+            if not (oa[0] - 0.1 <= mx <= oa[2] + 0.1 and oa[1] - 0.1 <= my <= oa[3] + 0.1):
+                return {"ok": False, "hint": "Put the Arduino in its outline", "measure": m}
+        m["arduino_sharp"] = round(_sharp(im, a["box"]))
+        if m["arduino_sharp"] < ARDUINO_SHARP:
+            return {"ok": False, "hint": "Hold still, tap the Arduino to focus", "measure": m}
+    if m["sharp"] < FRAME_SHARP:  # the live photo is taken only when it is sharp (MIN_SHARP is for any photo)
         return {"ok": False, "hint": "Hold still, tap to focus", "measure": m}
     return {"ok": True, "hint": "Hold still", "measure": m}
 

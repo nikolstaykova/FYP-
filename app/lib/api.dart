@@ -161,9 +161,9 @@ class Api {
   }
 
   /// The live camera: is the board ready to photograph? {'ok', 'hint'} (free, no model).
-  Future<Map<String, dynamic>> validateFrame(Shot frame, {bool arduino = false}) async =>
-      (await _post('/api/validate/frame', {'photo': _dataUrl(frame.bytes), 'crop': ?frame.cropOrNull, 'arduino': arduino}))
-          as Map<String, dynamic>;
+  Future<Map<String, dynamic>> validateFrame(Shot frame, {bool arduino = false, Map<String, List<double>>? outline}) async =>
+      (await _post('/api/validate/frame',
+          {'photo': _dataUrl(frame.bytes), 'crop': ?frame.cropOrNull, 'arduino': arduino, 'outline': ?outline})) as Map<String, dynamic>;
 
     /// The legs a photo could not show: where the learner says they are, judged like a photo.
   Future<Map<String, dynamic>> validateTold(String lesson, int step, Map<String, dynamic> state,

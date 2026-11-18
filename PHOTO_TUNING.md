@@ -385,3 +385,18 @@ the converted copies no longer counted twice):
 
 Safe (1 confident mistake in 23) but it reads only about a third of these far photos; close-ups (§ earlier: 5/7)
 do much better. Other values are untested: the Wikimedia download was rate-limited after 5 photos.
+
+---
+
+## 13. Whole-flow test, 18 November: blur, the LED's hidden leg, the outline
+
+From the learner's run (blink steps 1–4, 15 live frames, 7 checks):
+
+| Seen | Why | Fix |
+|---|---|---|
+| Steps 3 and 4 "unsure" first ("pin header blurry"), right on the retake | The photo took itself when the **board** was sharp; nothing looked at the Arduino. Sharpness (Laplacian, 1200 px): unreadable photos board 302 / Arduino 1,083; readable ≥ ~800 / ≥ ~3,300 | The live check also measures the Arduino's box; the photo takes itself only with board ≥ 500 and Arduino ≥ 1,500 ("Hold still, tap the Arduino to focus"). Spare frames are ranked by the weaker of the two |
+| LED short leg never read | From above the LED's body covers both legs | `_hidden_leg`: an LED leg read unsure one or two columns from its sure other leg, same half, is taken (its legs are one column apart). Re-run of step 2: the short leg worked out (column 35), step passes |
+| The board/Arduino had to match the outline | — | The app sends where its outlines are; the live check only wants the board's holes inside the board outline (7% margin) and the Arduino's middle inside its outline; code finds the exact edges in the photo afterwards (geometry; the Arduino by its blue board) |
+| — | — | When Haiku's header box finds no Arduino, code cuts the Arduino out by its blue board (Haiku's tight header crop stays first: it is what scored 43/43) |
+
+Open: two step-3 photos taken 30 s apart read pin 12 and pin 11 (asked the learner which it was).
