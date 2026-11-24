@@ -366,15 +366,16 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   /// A check result for Pip: the facts, and the learner's versions the check found (their wire colours).
   Map<String, dynamic> _told(Map<String, dynamic> st) {
     final wires = [for (final p in s.parts) if ((p.type ?? '').contains('wire')) ...p.values];
-    final found = wireSwaps(wires, st);
+    final leds = [for (final p in s.parts) if (RegExp(r'\bled\b').hasMatch((p.type ?? '').toLowerCase())) ...p.values];
+    final found = {...wireSwaps(wires, st), ...ledSwaps(leds, st)};
     final added = {for (final e in found.entries) if (!_swaps.containsKey(e.key)) e.key: e.value};
     if (added.isNotEmpty) setState(() => _swaps.addAll(added));
     return {
       ...summary(st),
       if (_swaps.isNotEmpty) 'their_versions': _swaps,
       if (added.isNotEmpty)
-        'note': 'Their wires are other colours: the step cards now say ${added.values.join(' and ')}. '
-            'Tell them any colour works, and call each wire their way from now on.',
+        'note': 'Theirs are other colours: the step cards now say ${added.values.join(' and ')}. '
+            'Tell them any colour works, and call each part their way from now on.',
     };
   }
 

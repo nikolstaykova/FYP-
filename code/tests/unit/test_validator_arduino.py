@@ -190,10 +190,12 @@ def test_of_a_few_frames_the_sharp_one_geometry_knows_is_read_and_a_blurry_one_n
     assert not ok  # only when none will do: take it again
 
 
-def test_an_led_leg_hidden_under_its_body_next_to_the_other_leg_is_worked_out():
+def test_an_led_leg_hidden_under_its_body_stays_a_guess_and_is_asked():
+    # 24 Nov: a hidden leg guessed one column off was called sure; legs bend apart, so the learner is asked
     p = A.plan("blink", "step-2")
     r = {"L1": leg("L1", column=33, half="top"), "L2": {"key": "L2", "column": 35, "half": "top", "sure": False}}
-    assert A._hidden_leg(p, r) == ["L2"] and r["L2"]["sure"] is True and r["L2"]["by"] == "worked out"
+    assert A._hidden_leg(p, r) == ["L2"] and r["L2"]["sure"] is False and r["L2"]["by"] == "guessed"
+    assert "probably column 35" in r["L2"]["why"]
     far = {"L1": leg("L1", column=33, half="top"), "L2": {"key": "L2", "column": 40, "half": "top", "sure": False}}
     assert A._hidden_leg(p, far) == [] and far["L2"]["sure"] is False  # not next to it: still asked
     wire = A.plan("blink", "step-3")

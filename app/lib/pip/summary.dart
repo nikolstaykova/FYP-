@@ -20,7 +20,9 @@ Map<String, dynamic> summary(Map<String, dynamic> st) {
     final bad = uses.where((x) => x['ok'] == false).firstOrNull;
     switch (_kind('${r['status']}')) {
       case 'have':
-        have.add('${r['part']}');
+        // what was seen too ("LED: Green 5 mm LED"), so Pip knows their colour and value
+        final seen = haves.map((h) => '${h['object'] ?? ''}').where((o) => o.isNotEmpty).toSet();
+        have.add(seen.isEmpty ? '${r['part']}' : '${r['part']}: ${seen.join(', ')}');
       case 'swap':
         instead.add({'part': r['part'], 'use': u?['object'], 'why': u?['why']});
       case 'check':

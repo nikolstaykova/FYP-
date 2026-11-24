@@ -180,6 +180,10 @@ class Api {
   Future<dynamic> lookup(String lesson, String tool, Map<String, dynamic> args) async =>
       _post('/api/tutor/lookup', {'lesson': lesson, 'tool': tool, 'args': args});
 
+  /// One line of Pip's conversation for the server's transcript (runs/lab/pip-<day>.txt).
+  Future<void> tutorLog(String lesson, String who, String text) async =>
+      _post('/api/tutor/log', {'lesson': lesson, 'who': who, 'text': text});
+
   /// A server path ("/files/...", "/viewer/...") as a full link with the key.
   String link(String path) {
     final u = Uri.parse(path);

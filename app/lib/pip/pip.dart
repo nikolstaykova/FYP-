@@ -118,6 +118,7 @@ class Pip extends ChangeNotifier {
     if (append && _open != null && _open!.who == who) {
       _open!.text += text;
     } else {
+      if (_open != null) _log(_open!.who, _open!.text);
       _open = PipLine(who, text);
       lines.add(_open!);
       if (lines.length > 60) lines.removeAt(0);
@@ -183,7 +184,15 @@ class Pip extends ChangeNotifier {
   /// What the learner did on the screen, or typed. While Pip is talking it waits: anything sent to Gemini
   /// mid-sentence cuts Pip off, so it goes when Pip has finished (several taps go together).
   /// now: send it even while Pip talks (a photo just arrived: Pip must not ask for it again).
+  /// Each finished caption line, the app's notes and Pip's tool calls go to the server's transcript (for looking
+  /// into what Pip heard and did after a run; never blocks).
+  void _log(String who, String text) {
+    if (text.trim().isEmpty) return;
+    _api.tutorLog(host.lessonId, who, text).catchError((_) {});
+  }
+
   void tell(String text, {bool now = false}) {
+    _log('app', text);
     _active();
     if (!on) return;
     if (mode == PipMode.live && _talking && !now) {
@@ -438,6 +447,7 @@ class Pip extends ChangeNotifier {
     final calls = ((m['toolCall'] as Map?)?['functionCalls'] as List?) ?? const [];
     for (final fc in calls.cast<Map<String, dynamic>>()) {
       final name = fc['name'] as String;
+      _log('tool', '$name ${jsonEncode(fc['args'] ?? {})}');
       host.runTool(name, (fc['args'] as Map?)?.cast<String, dynamic>() ?? {}).then((result) {
         final r = {
           'id': fc['id'],

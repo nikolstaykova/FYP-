@@ -430,6 +430,12 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send(200, fn(body['lesson'], arg))
                 except Exception as e:
                     return self.send(200, {'error': f'could not look that up: {e}'})
+            if u.path == '/api/tutor/log':  # one line of Pip's conversation: what it heard, said, was told, did
+                line = f"{time.strftime('%H:%M:%S')} {body.get('lesson', '')} {str(body.get('who', ''))[:10]}: " \
+                       f"{' '.join(str(body.get('text', '')).split())[:4000]}\n"
+                with open(RUNS / f"pip-{time.strftime('%Y%m%d')}.txt", 'a') as fh:
+                    fh.write(line)
+                return self.send(200, {'ok': True})
             if u.path == '/api/tutor/session':  # a Gemini Live session for the voice tutor (single-use token)
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),

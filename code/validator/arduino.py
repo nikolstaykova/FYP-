@@ -536,8 +536,11 @@ def _hidden_leg(plan_, readings):
                 continue
             same_half = str(sure.get("half") or "")[:1] == str(other.get("half") or sure.get("half") or "")[:1]
             if same_half and 1 <= abs(c2 - c1) <= 2:
-                other.update(sure=True, half=sure.get("half"), by="worked out",
-                             why=f"hidden under the LED's body, next to its other leg: column {c2}")
+                # a guess, not a reading: legs are bent apart under the body (24 Nov: guessed 27, it was in 28), so
+                # it stays unsure and the learner is asked, with the guess as the likely place
+                other.update(sure=False, half=sure.get("half"), by="guessed",
+                             why=f"hidden under the LED's body; probably column {c2}, about one or two columns "
+                                 f"from its other leg (column {c1})")
                 done.append(x["key"])
     return done
 

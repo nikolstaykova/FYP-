@@ -101,3 +101,21 @@ String applyEdits(String text, List<Edit> edits) {
   b.write(text.substring(at));
   return b.toString();
 }
+
+/// From a check result: the lesson's LED colour when theirs is another one ("red LED" → "green LED"), so the step
+/// text and Pip say their colour. lessonColours: the lesson's LED values, e.g. [red].
+Map<String, String> ledSwaps(List<String> lessonColours, Map<String, dynamic> result) {
+  final want = [for (final c in lessonColours) c.toLowerCase().trim()].where(wireColours.contains).toList();
+  if (want.isEmpty) return {};
+  final rows = (result['parts'] as List? ?? const []).cast<Map<String, dynamic>>();
+  final row = rows.where((r) => RegExp(r'\bled\b').hasMatch('${r['type']} ${r['part']}'.toLowerCase())).firstOrNull;
+  if (row == null) return {};
+  final seen = <String>[];
+  for (final h in [...(row['have'] as List? ?? const []), ...(row['use_instead'] as List? ?? const [])].cast<Map>()) {
+    for (final w in '${h['value'] ?? ''} ${h['object'] ?? ''}'.toLowerCase().split(RegExp('[^a-z]+'))) {
+      if (wireColours.contains(w) && !seen.contains(w)) seen.add(w);
+    }
+  }
+  if (seen.isEmpty || seen.any(want.contains)) return {};
+  return {for (final c in want) '$c led': '${seen.first} LED'};
+}

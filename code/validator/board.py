@@ -400,8 +400,16 @@ def frame_hint(photo_path, arduino=False, min_pitch=18, outline=None):
     cut = [(x0 / W < edge, "Move left"), (x1 / W > 1 - edge, "Move right"), (y0 / H < edge, "Move up"), (y1 / H > 1 - edge, "Move down")]
     if any(c for c, _ in cut):
         return {"ok": False, "hint": next(h for c, h in cut if c), "measure": m}
+    area = (outline or {}).get("area")  # one frame for the board and the Arduino: both anywhere inside it
     ob = (outline or {}).get("board")
-    if ob:  # the board roughly inside its outline (code finds its exact edges afterwards)
+    if area:
+        tol = 0.05
+        ext = (x0 / W, y0 / H, x1 / W, y1 / H)
+        out = [(ext[0] < area[0] - tol, "Move the phone left"), (ext[2] > area[2] + tol, "Move the phone right"),
+               (ext[1] < area[1] - tol, "Move the phone up"), (ext[3] > area[3] + tol, "Move the phone down")]
+        if any(c for c, _ in out):
+            return {"ok": False, "hint": next(h for c, h in out if c), "measure": m}
+    elif ob:  # the board roughly inside its outline (code finds its exact edges afterwards)
         tol = 0.07
         ext = (x0 / W, y0 / H, x1 / W, y1 / H)
         out = [(ext[0] < ob[0] - tol, "Move the phone left"), (ext[2] > ob[2] + tol, "Move the phone right"),
@@ -418,11 +426,12 @@ def frame_hint(photo_path, arduino=False, min_pitch=18, outline=None):
             return {"ok": False, "hint": "Get the Arduino in too", "soft": True, "measure": m}
         if a["cut"]:
             return {"ok": False, "hint": "Move back: the Arduino is cut off", "measure": m}
-        oa = (outline or {}).get("arduino")
-        if oa:  # roughly in its outline: its middle inside the outline (with a margin)
+        oa = (outline or {}).get("arduino") or area
+        if oa:  # roughly in its outline (or the one frame): its middle inside it (with a margin)
             mx, my = (a["box"][0] + a["box"][2]) / 2, (a["box"][1] + a["box"][3]) / 2
             if not (oa[0] - 0.1 <= mx <= oa[2] + 0.1 and oa[1] - 0.1 <= my <= oa[3] + 0.1):
-                return {"ok": False, "hint": "Put the Arduino in its outline", "measure": m}
+                return {"ok": False, "hint": "Put the Arduino in the frame" if area else "Put the Arduino in its outline",
+                        "measure": m}
         m["arduino_sharp"] = round(_sharp(im, a["box"]))
         if m["arduino_sharp"] < ARDUINO_SHARP:
             return {"ok": False, "hint": "Hold still, tap the Arduino to focus", "measure": m}

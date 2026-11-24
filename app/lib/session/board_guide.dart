@@ -173,7 +173,8 @@ class _BoardOutlineState extends State<BoardOutline> with SingleTickerProviderSt
     if (cb == null || size.isEmpty) return;
     final (r, uno) = _OutlinePainter.rects(size, BoardOutline.full ? 3.0 : 1.5, widget.arduino);
     List<double> f(Rect x) => [x.left / size.width, x.top / size.height, x.right / size.width, x.bottom / size.height];
-    final out = {'board': f(r), 'arduino': ?(uno == null ? null : f(uno))};
+    // with the Arduino: one frame for both, anywhere inside it (code finds each exactly in the photo)
+    final out = widget.arduino ? {'area': f(r)} : {'board': f(r), 'arduino': ?(uno == null ? null : f(uno))};
     final key = out.toString();
     if (key == _told) return;
     _told = key;
@@ -310,36 +311,21 @@ class _OutlinePainter extends CustomPainter {
     }
   }
 
-  /// Nothing found yet: the outline the board should fill (and the Arduino's place).
-  /// Where the board's outline (and the Arduino's) are drawn on a screen of size [s]: (board, Arduino or null).
+  /// Nothing found yet: where the board's outline is drawn on a screen of size [s] (with the Arduino: one frame for
+  /// both, as big as the screen allows; the learner's Arduino sits wherever it sits, often smaller than a fixed place
+  /// for it: 24 Nov, the board kept being "outside its outline"). Returns (outline, null).
   static (Rect, Rect?) rects(Size s, double ratio, bool arduino) {
     final wide = s.width >= s.height;
     // as big as the screen allows: the words at the top, the shutter row at the bottom
     final area = Rect.fromLTRB(s.width * 0.02, 72, s.width * 0.98, s.height - (wide ? 100 : 130));
-    // with the Arduino: the board takes about 60% of the short side, the Arduino the rest beside its first end
-    final share = arduino ? 0.6 : 1.0;
     var long = wide ? area.width : area.height, short = long / ratio;
-    final room = (wide ? area.height : area.width) * share;
+    final room = wide ? area.height : area.width;
     if (short > room) {
       short = room;
       long = short * ratio;
     }
-    final Rect r;
-    Rect? uno;
-    if (!arduino) {
-      r = Rect.fromCenter(center: area.center, width: wide ? long : short, height: wide ? short : long);
-    } else if (wide) {
-      // board along the bottom, the Arduino above its left end
-      r = Rect.fromLTWH(area.center.dx - long / 2, area.bottom - short, long, short);
-      final h = math.min(area.height - short - 8, short * 1.4), w = h * 1.35;
-      uno = Rect.fromLTWH(r.left, r.top - 8 - h, w, h);
-    } else {
-      // phone upright: board down the right, the Arduino beside its top end (as it usually sits)
-      r = Rect.fromLTWH(area.right - short, area.center.dy - long / 2, short, long);
-      final w = math.min(area.width - short - 8, short * 1.4), h = w * 1.35;
-      uno = Rect.fromLTWH(r.left - 8 - w, r.top, w, h);
-    }
-    return (r, uno);
+    if (arduino) return (area, null);
+    return (Rect.fromCenter(center: area.center, width: wide ? long : short, height: wide ? short : long), null);
   }
 
   void _paintGuide(Canvas canvas, Size s) {
@@ -367,11 +353,19 @@ class _OutlinePainter extends CustomPainter {
       }
     }
 
-    across(0.05, const Color(0xFFE5484D));
-    across(0.15, const Color(0xFF2A78D6));
-    across(0.85, const Color(0xFFE5484D));
-    across(0.95, const Color(0xFF2A78D6));
-    across(0.5, Colors.white, w: 6);
+    if (arduino) {
+      final tp = TextPainter(
+        text: const TextSpan(text: 'Breadboard + Arduino inside', style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w800)),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, Offset(r.center.dx - tp.width / 2, r.top + 10));
+    } else {
+      across(0.05, const Color(0xFFE5484D));
+      across(0.15, const Color(0xFF2A78D6));
+      across(0.85, const Color(0xFFE5484D));
+      across(0.95, const Color(0xFF2A78D6));
+      across(0.5, Colors.white, w: 6);
+    }
     if (uno != null) {
       canvas.drawRRect(RRect.fromRectAndRadius(uno, const Radius.circular(10)), edge);
       final tp = TextPainter(

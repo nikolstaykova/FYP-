@@ -36,4 +36,17 @@ void main() {
     const t = 'Put the 220 ohm resistor in.';
     expect(applyEdits(t, theirEdits(t, {}, {'220 ohm resistor': '330 ohm resistor'})), 'Put the 330 ohm resistor in.');
   });
+
+  test('their LED colour', () {
+    final r = {
+      'parts': [
+        {'type': 'led', 'part': 'LED', 'have': [{'object': 'Green 5 mm LED', 'value': 'green'}], 'use_instead': []},
+      ],
+    };
+    final sw = ledSwaps(['red'], r);
+    expect(sw, {'red led': 'green LED'});
+    const t = 'Push the red LED into the board.';
+    expect(applyEdits(t, theirEdits(t, {}, sw)), 'Push the green LED into the board.');
+    expect(ledSwaps(['green'], r), isEmpty);
+  });
 }
