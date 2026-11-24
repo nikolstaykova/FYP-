@@ -521,4 +521,22 @@ holes the legs go into. Tracing the thin grey legs in code found the right holes
 one column off or lost a leg in most: kept as research, not used.
 
 Notes: `analyse` is not thread-safe (it seeds OpenCV's random generator): straighten photos one at a time.
-Next: the app asks for the side photo only on a step with an LED whose leg is hidden.
+**In the app (24 Nov).** Only a step that puts an LED into the board asks for it (`arduino.shots` adds "side"):
+after the photo from above takes itself, the camera says "Now low from the side, aimed at the LED" and the side photo
+takes itself too (`board.side_hint`: the board's holes found, seen at a slant: the spacing across the rows over the
+spacing along them, from above 0.99-1.00, the learner's side photos 0.84-0.95, so at most 0.96; sharp at 200, as the
+side photo's far rows are out of focus: 227-864 all read right). The step check reads the LED's legs from both
+(`validator/led_side.py`) and puts the two columns on the legs: a leg read for sure from above keeps its column, the
+other leg takes the other; else the model's long leg; the side reading unsure changes nothing. Checked on two pairs
+through the whole step check: 20/23 and 41/44, right (about 5.5 cents a check).
+
+## 16. The Arduino read as another board (24 November run)
+
+One of the four step-3 photos was overlaid on the Leonardo's reference: 58 matched points, but along a line, so the
+fit was degenerate (the board squashed flat), and it won on point count; the Uno layout's names (SCL, SDA...) were
+drawn on a meaningless image. `uno_overlay._plausible` now rejects such fits: the reference mapped into the photo
+must be convex, of a sensible size (5%-400% of the crop) and not squashed (shortest side at least 15% of the
+longest). The four photos: all Duemilanove now. Recognition test (`research/recognition/overlay_refs_test.py`):
+the six references 6/6 each, the learner's 55 photos 53 Duemilanove and 2 not found, as before.
+The other three photos: the labels sat on the openings; the red wire's end, bent in from above, lands between 13
+and 12 (two photos) or near AREF (one): which opening it is in is the open question there.

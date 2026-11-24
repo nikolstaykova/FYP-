@@ -90,6 +90,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   // the live camera lines the board up by itself: a frame about once a second to the server's free check; when the
   // board is ready twice running, that frame is the photo
   bool _stepArduino = false; // the step wires to the Arduino: one photo with the board and the Arduino
+  bool _stepSide = false; // the step puts an LED in: a second photo, low from the side, shows the leg under its body
+  Shot? _topShot; // that step's photo from above, waiting for the side photo
+  List<Shot> _topExtras = [];
+  DateTime _sideSince = DateTime(0);
   String? _hint;
   bool _ready = false;
   // the frames taken while lining up where the board was found (with how sharp each was): when the photo takes itself
@@ -521,8 +525,15 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _hint = 'Line the board up with the outline';
     _burst.clear();
     _burstExtras = [];
+    _topShot = null;
+    _topExtras = [];
     _api.validateShots(s.id, _i + 1).then((x) {
-      if (mounted) setState(() => _stepArduino = x.contains('arduino'));
+      if (mounted) {
+        setState(() {
+          _stepArduino = x.contains('arduino');
+          _stepSide = x.contains('side');
+        });
+      }
     }).catchError((_) {});
     _frameTimer = Timer.periodic(const Duration(milliseconds: 800), (_) => _frameTick());
   }
@@ -533,12 +544,18 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     _framing = true;
     try {
       final shot = Shot(await (await c.takePicture()).readAsBytes(), _visible.value);
-      final r = await _api.validateFrame(shot, arduino: _stepArduino, outline: _outline);
+      final side = _topShot != null; // the photo from above is taken: now the one from the side
+      final r = side
+          ? await _api.validateFrame(shot, side: true)
+          : await _api.validateFrame(shot, arduino: _stepArduino, outline: _outline);
       if (!mounted || !_stepPending || _checkingStep) return;
-      _softRun = r['soft'] == true ? _softRun + 1 : 0;
-      final ok = r['ok'] == true || _softRun >= 3;
+      _softRun = !side && r['soft'] == true ? _softRun + 1 : 0;
+      // the side photo: not in the first moments (the phone is still where the photo from above was taken)
+      final ok = side
+          ? r['ok'] == true && DateTime.now().difference(_sideSince).inMilliseconds > 1500
+          : r['ok'] == true || _softRun >= 3;
       _okRun = ok ? _okRun + 1 : 0;
-      if ((r['measure'] as Map?)?['fill'] != null) {  // the board's holes were found in this frame
+      if (!side && (r['measure'] as Map?)?['fill'] != null) {  // the board's holes were found in this frame
         _burst.add((shot, ((r['measure'] as Map?)?['sharp'] as num?) ?? 0));
         if (_burst.length > 4) _burst.removeAt(0);
       }
@@ -547,16 +564,23 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         _hint = _okRun >= 1 ? 'Got it!' : '${r['hint'] ?? ''}';
       });
       if (_okRun >= 1) {  // one clear frame is enough: the frames before it go along as spares
-        _frameTimer?.cancel();
-        _burstExtras = ([..._burst.where((b) => !identical(b.$1, shot))]..sort((a, b) => b.$2.compareTo(a.$2)))
-            .take(2)
-            .map((b) => b.$1)
-            .toList();
+        if (!side) {
+          _burstExtras = ([..._burst.where((b) => !identical(b.$1, shot))]..sort((a, b) => b.$2.compareTo(a.$2)))
+              .take(2)
+              .map((b) => b.$1)
+              .toList();
+        }
         HapticFeedback.mediumImpact();
         setState(() => _flash = true);
         Future.delayed(const Duration(milliseconds: 140), () {
           if (mounted) setState(() => _flash = false);
         });
+        if (!side && _stepSide) {
+          _okRun = 0; // keep framing: the side photo next
+          _toSide(shot);
+          return;
+        }
+        _frameTimer?.cancel();
         await _gotPhoto(shot);
       }
     } catch (_) {
@@ -603,13 +627,32 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   /// A build step on an electronics lesson that puts something on the board: it can be checked from a photo.
   bool _checkable(LessonStep st) => !_lego && !st.isGather && st.kind != 'upload' && st.parts.isNotEmpty;
 
+  /// An LED step: the photo from above is taken; now the one low from the side (its legs under the body).
+  void _toSide(Shot top) {
+    setState(() {
+      _topShot = top;
+      _topExtras = _burstExtras;
+      _burstExtras = [];
+      _burst.clear();
+      _sideSince = DateTime.now();
+      _ready = false;
+      _hint = 'Now from the side: phone low at the near edge, aimed at the LED';
+    });
+    _tell('(The photo from above is taken. This step has an LED, so the camera now wants one more photo, low from '
+        'the side, at the board\'s near edge and aimed at the LED, to see its legs under the body: it takes itself. '
+        'Tell them in a few words.)');
+  }
+
   /// The step check: the photo to the server, the verdict on the step card, their columns from now on.
-  Future<Map<String, dynamic>> _validateStep(Shot photo) async =>
+  /// side: an LED step's photo low from the side (photo is then the one from above).
+  Future<Map<String, dynamic>> _validateStep(Shot photo, {Shot? side}) async =>
       _runStepCheck(() {
-        final extras = _burstExtras; // frames from lining up, when the photo took itself
+        final extras = side == null ? _burstExtras : _topExtras; // frames from lining up, when the photo took itself
         _burstExtras = [];
+        _topExtras = [];
+        _topShot = null;
         _burst.clear();
-        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where});
+        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where}, side: side == null ? null : [side]);
       });
 
   /// What the learner says about the legs the photo could not show, judged like a photo.
@@ -683,7 +726,16 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Future<void> _gotPhoto(Shot p) async {
     pip.wake(); // back from the phone's camera app: the browser paused Pip's sound, mic and connection
     if (_stepPending) {
-      final r = await _validateStep(p);
+      if (_stepSide && _topShot == null) {  // an LED step: this is the photo from above, the side one comes next
+        _toSide(p);
+        if (_frameTimer == null || !_frameTimer!.isActive) {
+          _frameTimer = Timer.periodic(const Duration(milliseconds: 800), (_) => _frameTick());
+        }
+        return;
+      }
+      final top = _topShot;
+      if (top != null) _frameTimer?.cancel();
+      final r = top != null ? await _validateStep(top, side: p) : await _validateStep(p);
       pip.tell('(The step check of the photo they have just taken: ${jsonEncode(r)}. Tell them what it means.)', now: true);
       return;
     }
@@ -901,7 +953,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   Widget _camera(Color c) {
     final q = _pending;
     final what = _stepPending
-        ? (_stepArduino
+        ? _topShot != null
+            ? 'Now low from the side, aimed at the LED, so its legs show: it takes the photo by itself'
+                '${_hint == null || _hint!.startsWith('Now from the side') ? '' : '\n$_hint'}'
+            : (_stepArduino
             ? 'The breadboard and the Arduino in the outlines: it takes the photo by itself'
             : 'Straight above, the breadboard in the outline: it takes the photo by itself')
         : _lookQuestion != null
@@ -1006,7 +1061,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       color: Colors.black,
       child: SafeArea(child: Stack(fit: StackFit.expand, children: [
         if (cam != null && cam.value.isInitialized)
-          CameraFill(controller: cam, visible: _visible, overlay: _stepPending ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready, onOutline: (o) => _outline = o) : null)
+          CameraFill(controller: cam, visible: _visible, overlay: _stepPending && _topShot == null ? BoardOutline(arduino: _stepArduino, hint: _hint, ready: _ready, onOutline: (o) => _outline = o) : null)
         else
           Center(
             child: _camError == null

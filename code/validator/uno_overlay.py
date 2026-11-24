@@ -123,6 +123,24 @@ def _load_refs():
     return _refs
 
 
+def _plausible(H, ref_shape, crop_shape):
+    """A real match: the reference board, mapped into the photo, is a proper four-sided shape (convex, not folded or
+    squashed) of a sensible size. 24 Nov: the Leonardo matched a Duemilanove photo with 58 points along a line, a
+    degenerate fit that squashed the board flat and won on point count (its pin names were drawn on the photo)."""
+    if abs(np.linalg.det(H)) < 1e-9:
+        return False
+    h, w = ref_shape[:2]
+    try:
+        q = cv2.perspectiveTransform(np.float32([[[0, 0], [w, 0], [w, h], [0, h]]]), np.linalg.inv(H))[0]
+    except np.linalg.LinAlgError:
+        return False
+    if not cv2.isContourConvex(q.astype(np.float32)):
+        return False
+    area = cv2.contourArea(q) / (crop_shape[0] * crop_shape[1])
+    sides = [np.linalg.norm(q[i] - q[(i + 1) % 4]) for i in range(4)]
+    return 0.05 <= area <= 4 and min(sides) > 0.15 * max(sides)
+
+
 def overlay(c):
     """The best reference for an Arduino crop: (ref, H crop -> reference, inliers) or None."""
     k, d = _features(cv2.cvtColor(c, cv2.COLOR_BGR2GRAY))
@@ -136,7 +154,7 @@ def overlay(c):
         src = np.float32([k[m.queryIdx].pt for m in good])
         dst = np.float32([ref["kp"][m.trainIdx].pt for m in good])
         H, mask = cv2.findHomography(src, dst, cv2.RANSAC, 6.0)
-        if H is None or int(mask.sum()) < MIN_INLIERS:
+        if H is None or int(mask.sum()) < MIN_INLIERS or not _plausible(H, ref["image"].shape, c.shape):
             continue
         if best is None or int(mask.sum()) > best[2]:
             best = (ref, H, int(mask.sum()))

@@ -331,6 +331,7 @@ def board_corners(c, pitch):
     return out
 
 
+SIDE_SHARP = 200      # the photo low from the side: its far rows are out of focus (24 Nov: 227-864 all read right)
 FRAME_SHARP = 500     # board, Laplacian variance at 1200 px: photos the step check found blurry were 302 and 418
 ARDUINO_SHARP = 1500  # the Arduino's box: blurry 1,083; readable 3,300 and more (18 Nov, learner's photos)
 
@@ -437,6 +438,52 @@ def frame_hint(photo_path, arduino=False, min_pitch=18, outline=None):
             return {"ok": False, "hint": "Hold still, tap the Arduino to focus", "measure": m}
     if m["sharp"] < FRAME_SHARP:  # the live photo is taken only when it is sharp (MIN_SHARP is for any photo)
         return {"ok": False, "hint": "Hold still, tap to focus", "measure": m}
+    return {"ok": True, "hint": "Hold still", "measure": m}
+
+
+def side_hint(photo_path, min_holes=300):
+    """For the live camera taking the photo low from the side (an LED step): ready when enough of the board's holes
+    are found (code straightens the board from them, at any angle), they are seen at a slant (the rows closer
+    together than the columns), and it is sharp. Returns {"ok", "hint", "measure"}. Free."""
+    img = load(photo_path)
+    f = min(1.0, 1200 / max(img.shape[:2]))
+    im = cv2.resize(img, None, fx=f, fy=f, interpolation=cv2.INTER_AREA) if f < 1 else img
+    c = holes(im)
+    m = {"holes": int(len(c))}
+    if len(c) < min_holes:
+        return {"ok": False, "hint": "Get the board in, low from the side", "measure": m}
+    x0, x1 = np.percentile(c[:, 0], [2, 98])
+    y0, y1 = np.percentile(c[:, 1], [2, 98])
+    g = cv2.cvtColor(im[int(y0):int(y1) + 1, int(x0):int(x1) + 1], cv2.COLOR_BGR2GRAY)
+    m["sharp"] = round(float(cv2.Laplacian(g, cv2.CV_64F).var()))
+    # how slanted: neighbouring holes are 2.54 mm apart both ways; seen at a slant the spacing across the rows
+    # shrinks while the spacing along them stays (24 Nov: from above 0.99-1.00; the learner's side photos, which
+    # read 10/10, 0.84-0.95)
+    pts = c.astype(float)
+    mu = pts.mean(0)
+    _, _, vt = np.linalg.svd(pts - mu, full_matrices=False)
+    u, v = vt[0], vt[1]  # along the board's long side, and across it
+    d = np.sqrt(((pts[:, None] - pts[None]) ** 2).sum(-1)) if len(pts) <= 2500 else None
+    if d is None:
+        return {"ok": False, "hint": "Hold still", "measure": m}
+    np.fill_diagonal(d, np.inf)
+    pitch = float(np.median(d.min(1)))
+    along, across = [], []
+    for i in range(len(pts)):
+        for j in np.nonzero(d[i] < 1.8 * pitch)[0]:
+            w = pts[j] - pts[i]
+            n = np.linalg.norm(w)
+            if abs(w @ u) / n > 0.94:
+                along.append(n)
+            elif abs(w @ v) / n > 0.94:
+                across.append(n)
+    if len(along) < 50 or len(across) < 50:
+        return {"ok": False, "hint": "Get the board in, low from the side", "measure": m}
+    m["slant"] = round(float(np.median(across) / np.median(along)), 2)
+    if m["slant"] > 0.96:
+        return {"ok": False, "hint": "Lower: from the side, aimed at the LED", "measure": m}
+    if m["sharp"] < SIDE_SHARP:
+        return {"ok": False, "hint": "Hold still, tap the LED to focus", "measure": m}
     return {"ok": True, "hint": "Hold still", "measure": m}
 
 

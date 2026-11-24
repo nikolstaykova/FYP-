@@ -453,7 +453,10 @@ class Handler(BaseHTTPRequestHandler):
                 f.parent.mkdir(parents=True, exist_ok=True)
                 try:
                     save_photo(body['photo'], f, body.get('crop'))
-                    h = board_check.frame_hint(str(f), arduino=bool(body.get('arduino')), outline=body.get('outline'))  # outline: where the app draws the board and Arduino (fractions)
+                    if body.get('side'):  # the photo low from the side: the board found and sharp is enough
+                        h = board_check.side_hint(str(f))
+                    else:
+                        h = board_check.frame_hint(str(f), arduino=bool(body.get('arduino')), outline=body.get('outline'))  # outline: where the app draws the board and Arduino (fractions)
                     print(f"frame: {h['hint']} {h['measure']}", flush=True)  # what the live camera was told
                     return self.send(200, h)
                 finally:
@@ -468,7 +471,12 @@ class Handler(BaseHTTPRequestHandler):
                     photos.append(str(d / f'photo_{i}.jpg'))
                 if not photos:
                     return self.send(400, {'error': 'no photo'})
-                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {}, keep=d)
+                side = []  # the photo low from the side (a step with an LED: its legs under the body)
+                for i, ph in enumerate(body.get('side') or [], 1):
+                    save_photo(ph['data'], d / f'side_{i}.jpg', ph.get('crop'))
+                    side.append(str(d / f'side_{i}.jpg'))
+                res = step_check.check(body['lesson'], body['step'], photos, body.get('state') or {}, keep=d,
+                                       side=side or None)
                 (d / 'result.json').write_text(json.dumps({'lesson': body['lesson'], 'step': body['step'], **res}, indent=1))
                 return self.send(200, res)
             if u.path == '/api/tutor/look':  # Pip's look tool: a photo and a question, Haiku answers

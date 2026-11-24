@@ -317,6 +317,9 @@ def shots(lesson_id, step):
     p = plan(lesson_id, step)
     kinds = {x["kind"] for x in p["legs"]}
     out = (["board"] if kinds - {"pin"} else []) + (["arduino"] if "pin" in kinds else [])
+    # an LED going into the board: its body hides a leg from above, so a second photo, low from the side
+    if any(x["kind"] == "strip" and "led" in (x["part"] + " " + x["who"]).lower() for x in p["legs"]):
+        out.append("side")
     return {"step": p["step"], "n": p["n"], "shots": out if p["legs"] else []}
 
 
@@ -635,7 +638,7 @@ def _snap(plan_, readings, geo):
     return done
 
 
-def check(lesson_id, step, photos, state=None, keep=None):
+def check(lesson_id, step, photos, state=None, keep=None, side=None):
     """The whole check of one step: plan, Haiku's look, the verdict. The legs Haiku cannot read go straight to Opus,
     on the same photo (no retake); only a leg Opus cannot read either asks the learner for a closer photo.
     Returns the verdict with `asks` (what to tell or ask the learner), `say` (for the tutor) and the cost.
@@ -689,6 +692,17 @@ def check(lesson_id, step, photos, state=None, keep=None):
               "photos": m.get("photos")},
              {"what": "step check" + (" (" + " + ".join(k for k, v in zoomed.items() if isinstance(v, tuple)) + " close-ups + whole photo)" if any(isinstance(v, tuple) for v in zoomed.values()) else " (whole photo)"), **{k: st.get(k) for k in ("model", "seconds", "cost_usd")}}]
     snapped = _snap(p, readings, geo)
+    from_side = []
+    if side:  # the LED's legs from the photo from above and the one from the side (led_side)
+        from validator import led_side
+        pair = led_side.read(photos[0], side[0])
+        from_side = led_side.merge(p, readings, pair)
+        steps.append({"what": "LED legs from the side photo", "model": led_side.MODEL if pair else None,
+                      "cost_usd": (pair or {}).get("cost_usd", 0), "columns": (pair or {}).get("columns"),
+                      "sure": (pair or {}).get("sure"), "used": bool(from_side)})
+        if keep and pair:
+            for name, b in zip(("led_top.jpg", "led_side.jpg"), pair["closeups"]):
+                (pathlib.Path(keep) / name).write_bytes(b)
     hidden = _hidden_leg(p, readings)
     pin_keys = [x["key"] for x in p["legs"] if x["kind"] == "pin" and (readings.get(x["key"]) or {}).get("pin")]
     import os

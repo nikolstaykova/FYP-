@@ -217,3 +217,27 @@ def test_the_live_check_wants_the_board_inside_its_outline_not_exactly_on_it(tmp
     assert "Move" not in inside["hint"]
     off = board.frame_hint(str(f), outline={"board": [0.4, 0.3, 0.98, 0.66]})  # outline further right than the board
     assert off["hint"] == "Move the phone left" and not off["ok"]
+
+
+def test_an_led_step_asks_for_a_side_photo_and_others_do_not():
+    assert "side" in A.shots("blink", "step-2")["shots"]
+    assert "side" not in A.shots("blink", "step-1")["shots"]
+
+
+def test_the_side_photo_puts_its_two_columns_on_the_led_legs():
+    from validator import led_side
+    p = A.plan("blink", "step-2")
+    longk = next(x["key"] for x in p["legs"] if "long" in x["who"].lower())
+    shortk = next(x["key"] for x in p["legs"] if "short" in x["who"].lower())
+    # the long leg read for sure from above in 41: it keeps it, the hidden short leg takes the other column
+    r = {longk: leg(longk, column=41, half="top"), shortk: {"key": shortk, "column": 43, "half": "top", "sure": False}}
+    pair = {"columns": [41, 44], "half": "top", "long": None, "sure": True, "why": ""}
+    assert sorted(led_side.merge(p, r, pair)) == sorted([longk, shortk])
+    assert r[longk]["column"] == 41 and r[shortk]["column"] == 44 and r[shortk]["sure"] is True
+    # nothing sure from above: the model's long leg decides
+    r = {longk: {"key": longk, "sure": False}, shortk: {"key": shortk, "sure": False}}
+    led_side.merge(p, r, {**pair, "long": 44})
+    assert r[longk]["column"] == 44 and r[shortk]["column"] == 41
+    # an unsure side reading changes nothing
+    r = {longk: {"key": longk, "column": 30, "sure": False}}
+    assert led_side.merge(p, r, {**pair, "sure": False}) == [] and r[longk]["column"] == 30

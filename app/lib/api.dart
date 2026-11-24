@@ -146,24 +146,31 @@ class Api {
 
   /// After a build step: photos of the board, and is every leg where it should be? (code/validator)
   /// state: the learner's places so far ({"where": {lesson place: theirs}}), sent back updated.
-  Future<Map<String, dynamic>> validateStep(String lesson, int step, List<Shot> photos, Map<String, dynamic> state) async =>
+  Future<Map<String, dynamic>> validateStep(String lesson, int step, List<Shot> photos, Map<String, dynamic> state,
+          {List<Shot>? side}) async =>
       (await _post('/api/validate/step', {
         'lesson': lesson,
         'step': step,
         'state': state,
         'photos': [for (final p in photos) {'data': _dataUrl(p.bytes), 'crop': ?p.cropOrNull}],
+        if (side != null) 'side': [for (final p in side) {'data': _dataUrl(p.bytes), 'crop': ?p.cropOrNull}],
       })) as Map<String, dynamic>;
 
-  /// Which photos a step check needs: ['board'], ['board', 'arduino'] (one photo with both), or [] (nothing to check).
+  /// Which photos a step check needs: ['board'], ['board', 'arduino'] (one photo with both), + 'side' (an LED:
+  /// a second photo low from the side), or [] (nothing to check).
   Future<List<String>> validateShots(String lesson, int step) async {
     final r = (await _post('/api/validate/shots', {'lesson': lesson, 'step': step})) as Map<String, dynamic>;
     return [for (final x in (r['shots'] as List? ?? const [])) '$x'];
   }
 
   /// The live camera: is the board ready to photograph? {'ok', 'hint'} (free, no model).
-  Future<Map<String, dynamic>> validateFrame(Shot frame, {bool arduino = false, Map<String, List<double>>? outline}) async =>
-      (await _post('/api/validate/frame',
-          {'photo': _dataUrl(frame.bytes), 'crop': ?frame.cropOrNull, 'arduino': arduino, 'outline': ?outline})) as Map<String, dynamic>;
+  /// side: the photo low from the side of an LED step (the board seen at a slant and sharp is enough).
+  Future<Map<String, dynamic>> validateFrame(Shot frame,
+          {bool arduino = false, Map<String, List<double>>? outline, bool side = false}) async =>
+      (await _post('/api/validate/frame', {
+        'photo': _dataUrl(frame.bytes), 'crop': ?frame.cropOrNull, 'arduino': arduino, 'outline': ?outline,
+        if (side) 'side': true,
+      })) as Map<String, dynamic>;
 
     /// The legs a photo could not show: where the learner says they are, judged like a photo.
   Future<Map<String, dynamic>> validateTold(String lesson, int step, Map<String, dynamic> state,
@@ -180,7 +187,7 @@ class Api {
   Future<dynamic> lookup(String lesson, String tool, Map<String, dynamic> args) async =>
       _post('/api/tutor/lookup', {'lesson': lesson, 'tool': tool, 'args': args});
 
-  /// One line of Pip's conversation for the server's transcript (runs/lab/pip-<day>.txt).
+  /// One line of Pip's conversation for the server's transcript (`runs/lab/pip-<day>.txt`).
   Future<void> tutorLog(String lesson, String who, String text) async =>
       _post('/api/tutor/log', {'lesson': lesson, 'who': who, 'text': text});
 
