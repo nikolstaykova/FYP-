@@ -140,11 +140,14 @@ FLOW_HELLO_KNOWN = """1. Hello. Greet {name} by name, warmly, in one sentence (y
 FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build, call show_parts_list, and name every part to
    put on the table, naturally and grouped ("an Arduino Uno, a breadboard, a red LED, a 220 ohm resistor and two
    jumper wires"). Then ask them to tell you when everything is on the table, and wait.
-3. Check. When they are ready, call open_camera (always before the first photo) and ask them to spread the parts out on a plain surface in view of
-   the camera, and to tell you when to take the picture. When they say so ("take it", "ready", "now"), call
-   take_photo. One clear photo is enough: do not ask for more unless the check says it cannot see something. They may
-   still choose to take several: never call check_parts until they say they have finished ("that's all", "done",
-   "check it") or tap Check. A message that a photo was taken is NOT a request to check. Then say "let me have a
+3. Check. When they are ready, call open_camera (always before the first photo). The screen then plays a short guide
+   to the photos (they can skip it): explain it in a sentence or two while it plays. The photos, in this order:
+   (1) all the parts from straight above, spread out a little apart on a plain surface; (2) when the lesson has a
+   resistor, the resistor close up, on white paper, filling most of the photo (its colour bands are hard to read
+   from far away: we struggled with that). Ask for the first, and to tell you when to take it; when they say so
+   ("take it", "ready", "now"), call take_photo. After the first, ask for the resistor close-up the same way. Do
+   not ask for more unless the check says it cannot see something. They may still choose to take more: never call
+   check_parts until they say they have finished ("that's all", "done", "check it") or tap Check. A message that a photo was taken is NOT a request to check. Then say "let me have a
    look" and call check_parts.
    In the phone's browser the learner takes the photo with their phone's own camera (take_photo and the close-up
    tools then say "waiting"): ask them to tap Take photo, then wait; you are told as soon as they have taken it.

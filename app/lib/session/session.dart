@@ -26,6 +26,7 @@ import '../widgets/bouncy.dart';
 import '../widgets/full_frame.dart';
 import 'board_guide.dart';
 import 'heard.dart';
+import 'photo_guide.dart';
 import 'theirs.dart';
 import 'viewer.dart';
 
@@ -92,6 +93,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   bool _stepArduino = false; // the step wires to the Arduino: one photo with the board and the Arduino
   bool _stepSide = false; // the step puts an LED in: a second photo, low from the side, shows the leg under its body
   Shot? _topShot; // that step's photo from above, waiting for the side photo
+  GuideKind? _guide; // the short guide to the photos, over the camera while Pip explains (skippable)
+  bool _gatherGuideShown = false;
+  bool get _hasResistor => s.parts.any((p) => '${p.type ?? ''} ${p.what}'.toLowerCase().contains('resistor'));
   List<Shot> _topExtras = [];
   DateTime _sideSince = DateTime(0);
   String? _hint;
@@ -489,6 +493,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
 
   // ---------------------------------------------------------------- the camera
   Future<void> _openCamera() async {
+    // the first photos of the parts: a short guide to them (all from above, then the resistor close up)
+    if (!_stepPending && !_lego && _pending == null && _lookQuestion == null && _photos.isEmpty && !_gatherGuideShown) {
+      _gatherGuideShown = true;
+      setState(() => _guide = GuideKind.gather);
+    }
     _go(Stage.camera);
     if (_stepPending) _startFraming();
     // the browser: the phone's own camera app, opened by a tap; but the live camera for a step check, to show the
@@ -637,6 +646,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       _sideSince = DateTime.now();
       _ready = false;
       _hint = 'Now from the side: phone low at the near edge, aimed at the LED';
+      _guide = GuideKind.ledSide; // how, while Pip explains (skippable)
     });
     _tell('(The photo from above is taken. This step has an LED, so the camera now wants one more photo, low from '
         'the side, at the board\'s near edge and aimed at the LED, to see its legs under the body: it takes itself. '
@@ -724,6 +734,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   }
 
   Future<void> _gotPhoto(Shot p) async {
+    if (_guide != null && !(_stepSide && _stepPending && _topShot == null)) setState(() => _guide = null);
     pip.wake(); // back from the phone's camera app: the browser paused Pip's sound, mic and connection
     if (_stepPending) {
       if (_stepSide && _topShot == null) {  // an LED step: this is the photo from above, the side one comes next
@@ -773,8 +784,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     }
     setState(() => _photos.add(p));
     _lastPhotoAt = DateTime.now();
-    _tell('(The learner added a photo of the parts: ${_photos.length} so far. They may take more: do not check yet, '
-        'and do not ask for another photo. Wait until they tap Check or say they are done.)');
+    _tell(_photos.length == 1 && _hasResistor
+        ? '(The learner took photo 1, all the parts from above. Now ask for photo 2: the resistor close up, on white '
+            'paper, filling the photo, so its colour bands can be read. Do not check yet.)'
+        : '(The learner added a photo of the parts: ${_photos.length} so far. They may take more: do not check yet, '
+            'and do not ask for another photo. Wait until they tap Check or say they are done.)');
   }
 
   /// The phone's own camera app: full screen, its autofocus, full quality.
@@ -865,7 +879,13 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     return switch (_stage) {
       Stage.hello => _hello(c),
       Stage.parts => _parts(c),
-      Stage.camera => _camera(c),
+      Stage.camera => Stack(fit: StackFit.expand, children: [
+          _camera(c),
+          if (_guide != null)
+            Positioned.fill(
+              child: PhotoGuide(kind: _guide!, resistor: _hasResistor, onDone: () => setState(() => _guide = null)),
+            ),
+        ]),
       Stage.result => _result(c),
       Stage.build => _build(c),
       Stage.done => _doneView(c),
@@ -965,7 +985,11 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             ? 'Close-up: ${q.message}'
             : _lego
                 ? 'Lay the pieces flat, a little apart'
-                : 'Lay the parts out so I can see them all';
+                : _photos.isEmpty
+                    ? 'Photo 1: all the parts, straight from above, a little apart'
+                    : _photos.length == 1 && _hasResistor
+                        ? 'Photo 2: the resistor close up, on white paper, filling the photo'
+                        : 'Another photo, or tap Check';
     final thumbs = _photos.isNotEmpty && q == null && _lookQuestion == null && !_stepPending;
     final checkBtn = q == null && _lookQuestion == null && !_stepPending;
     return kIsWeb && (!_stepPending || _camError != null)
