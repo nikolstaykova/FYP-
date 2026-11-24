@@ -297,6 +297,149 @@ def connectors(flat, info):
     return out
 
 
+def leds(flat, info, shift=(0, 0)):
+    """LEDs on the board, and where their legs go in even when the body hides them. The body is a coloured dome
+    (5 mm across, about 8.6 mm tall): a saturated blob two cells wide. Seen from above, its top leans away from the
+    point under the camera, so its base is the blob's end nearest that point, half its width in (as a connector's).
+    Its legs leave the base 2.54 mm apart, one column: half a column either side of the base's centre (an LED sits
+    across two columns, its legs along the row). Returns [{"columns": [a, b], "half", "sure", "base", "legs_x",
+    "outline"}]: sure when the base's centre falls clearly between two columns."""
+    cell = info["cell"]
+    hsv = cv2.cvtColor(flat, cv2.COLOR_BGR2HSV)
+    S, V = hsv[..., 1], hsv[..., 2]
+    body = ((S > max(90, float(np.median(S)) + 50)) & (V > 60)).astype(np.uint8) * 255
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(cell * 0.8),) * 2)  # thinner than this goes: wires, bands
+    body = cv2.morphologyEx(cv2.morphologyEx(body, cv2.MORPH_CLOSE, k), cv2.MORPH_OPEN, k)
+    cnts, _ = cv2.findContours(body, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    out = []
+    for c in cnts:
+        area = cv2.contourArea(c)
+        if not 1.5 * cell * cell <= area <= 12 * cell * cell:
+            continue
+        hull = cv2.contourArea(cv2.convexHull(c))
+        if hull <= 0 or area / hull < 0.8:
+            continue
+        (x, y), (w, h), _ = cv2.minAreaRect(c)
+        if max(w, h) > 3.2 * min(w, h):  # a dome leans into an oval, not a long strip
+            continue
+        pts = c.reshape(-1, 2).astype(float)
+        cx, cy = pts.mean(0)
+        pc = info.get("centre_flat")
+        base = np.array([cx, cy])
+        if pc is not None:
+            u = np.array(pc) - base
+            if np.linalg.norm(u) > 1:
+                u = u / np.linalg.norm(u)
+                v = np.array([-u[1], u[0]])
+                width = np.percentile(pts @ v, 95) - np.percentile(pts @ v, 5)
+                ends = pts[pts @ u > (pts @ u).max() - 0.3 * cell]
+                base = ends.mean(0) - u * width / 2
+        kh = info["half_of"](base[1])
+        if kh is None:
+            continue
+        i = base[0] / cell - 1  # hole column, fractional
+        legs = [i - 0.5, i + 0.5]
+        frac = i - np.floor(i)
+        half = ("bottom" if kh == 0 else "top") if info["upside_down"] else ("top" if kh == 0 else "bottom")
+        out.append({"columns": sorted(int(label(round(l), kh, shift)) for l in legs), "half": half,
+                    "sure": bool(abs(frac - 0.5) < 0.25), "base": (float(base[0]), float(base[1])),
+                    "legs_x": [float((l + 1) * cell) for l in legs], "outline": pts.tolist()})
+    return out
+
+
+def hole_x(col, k, info, shift=(0, 0)):
+    """A printed column on half k -> its x in the flat image (label's inverse)."""
+    i = col + LABEL_OFFSET + shift[0] if k == 0 else COLUMNS + 1 - (col + LABEL_OFFSET) + shift[1]
+    return (i + 1) * info["cell"]
+
+
+def led_legs_side(flat, info, shift=(0, 0), near=None):
+    """An LED's legs in a low photo from the side, straightened (flat_board works at any angle: the board is flat).
+    A leg's tip is at board level, so it lands on its true hole; the body is lifted, so it is smeared away from the
+    camera, and from low down the legs are seen under it: thin grey lines from the body into the board. Each leg is
+    the grey line touching the body; its end farthest from the body is in its hole (the nearest hole to that end).
+    near: the printed columns the photo from above saw the body over ([first, last]): the body must be there (a
+    red rail line is coloured too). Returns {"columns": [a, b], "half", "rows", "sure", "why", "debug": image} or
+    None (no body)."""
+    cell = info["cell"]
+    hsv = cv2.cvtColor(flat, cv2.COLOR_BGR2HSV)
+    S, V = hsv[..., 1], hsv[..., 2]
+    body = ((S > max(90, float(np.median(S)) + 50)) & (V > 50)).astype(np.uint8) * 255
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(cell * 0.8),) * 2)
+    body = cv2.morphologyEx(cv2.morphologyEx(body, cv2.MORPH_CLOSE, k), cv2.MORPH_OPEN, k)
+    n, lab, st, cen = cv2.connectedComponentsWithStats(body, 8)
+    def fits(i):
+        w, h = st[i, cv2.CC_STAT_WIDTH], st[i, cv2.CC_STAT_HEIGHT]
+        if not 1.5 * cell * cell <= st[i, cv2.CC_STAT_AREA] <= 30 * cell * cell or max(w, h) > 3.5 * min(w, h):
+            return False
+        if near:  # over the columns seen from above (either half: the side photo may be the other way round)
+            x = cen[i][0]
+            return any(min(hole_x(c, k, info, shift) for c in near) - 3 * cell <= x <=
+                       max(hole_x(c, k, info, shift) for c in near) + 3 * cell for k in (0, 1))
+        return True
+    blobs = [i for i in range(1, n) if fits(i)]
+    if not blobs:
+        return None
+    b = max(blobs, key=lambda i: st[i, cv2.CC_STAT_AREA])
+    bmask = (lab == b).astype(np.uint8)
+    bx, by = cen[b]
+    # the board's own brightness around each point, so shade does not count as a leg
+    gray = cv2.cvtColor(flat, cv2.COLOR_BGR2GRAY).astype(float)
+    local = cv2.medianBlur(gray.astype(np.uint8), int(cell * 1.5) | 1).astype(float)
+    dark = (gray < 0.78 * local) & (S < 80)
+    # the holes are dark too: blank a square at every hole (a leg's tip is at a hole's edge, its line runs between)
+    holes = np.zeros_like(bmask)
+    xs = [(i + 1) * cell for i in range(info["last"] - info["first"] + 3)]
+    rows_y = {}
+    for kh, (a, z) in info["yr"].items():
+        for r in range(5):
+            y = a + r * cell
+            rows_y[(kh, r)] = y
+            for x in xs:
+                h = int(cell * 0.27)
+                holes[int(y) - h:int(y) + h + 1, int(x) - h:int(x) + h + 1] = 1
+    legs = (dark & (holes == 0) & (cv2.dilate(bmask, np.ones((3, 3), np.uint8)) == 0)).astype(np.uint8)
+    legs = cv2.morphologyEx(legs, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+    # only next to the body: within 4 cells of it (the clear collar under the coloured dome breaks the line)
+    win = cv2.dilate(bmask, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(cell * 8),) * 2))
+    legs = legs & (win > 0).astype(np.uint8)
+    # a leg's pieces (cut by the blanked holes and highlights) joined into one line
+    joined = cv2.dilate(legs, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(cell * 0.5),) * 2))
+    near_body = cv2.dilate(bmask, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(cell * 2.2),) * 2))
+    m, ll, ls, _ = cv2.connectedComponentsWithStats(joined, 8)
+    found = []
+    for i in range(1, m):
+        comp = (ll == i) & (legs > 0)
+        size = int(comp.sum())
+        if size < 0.12 * cell * cell or not ((ll == i) & (near_body > 0)).any():
+            continue
+        ys, xs_ = np.nonzero(comp)
+        pts = np.c_[xs_, ys].astype(float)
+        far = pts[np.argmax(((pts - [bx, by]) ** 2).sum(1))]
+        reach = float(np.sqrt(((far - [bx, by]) ** 2).sum()))
+        found.append((reach, far, size))
+    dbg = flat.copy()
+    cv2.drawContours(dbg, cv2.findContours(bmask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0], -1, (255, 0, 255), 2)
+    dbg[legs > 0] = (0, 200, 255)
+    found.sort(key=lambda f: -f[2])
+    tips = []
+    for reach, far, area in found[:2]:
+        # the hole the tip is in: the nearest hole centre to the far end
+        best = min(((abs(x - far[0]) + abs(y - far[1]), x, y, kh, r) for (kh, r), y in rows_y.items() for x in xs))
+        _, x, y, kh, r = best
+        col = int(label(round(x / cell - 1), kh, shift))
+        tips.append((col, kh, r))
+        cv2.circle(dbg, (int(x), int(y)), int(cell * 0.4), (0, 0, 255), 3)
+    if len(tips) < 2:
+        return {"columns": None, "half": None, "rows": None, "sure": False, "why": f"{len(tips)} leg(s) seen",
+                "debug": dbg}
+    kh = tips[0][1]
+    half = ("bottom" if kh == 0 else "top") if info["upside_down"] else ("top" if kh == 0 else "bottom")
+    rows = ["ABCDE"[r] if k_ == 0 else "FGHIJ"[r] for _, k_, r in tips]
+    sure = tips[0][1] == tips[1][1] and tips[0][0] != tips[1][0]
+    return {"columns": sorted(t[0] for t in tips), "half": half, "rows": rows, "sure": sure, "why": "", "debug": dbg}
+
+
 def read_ends(photo_path):
     """Every wire end code can find: [{"column", "half": "top"/"bottom", "sure", "candidates", "at": flat point}].
     sure = the connector's middle, its end away from the wire and its base (camera geometry) give the same column.
@@ -400,7 +543,7 @@ def numbered_from(flat, info, shift=(0, 0)):
     return buf.tobytes()
 
 
-def analyse(photo_path, cell=30, closeup_cell=56):
+def analyse(photo_path, cell=30, closeup_cell=56, around=None):
     """Geometry for one step photo, from one grid: {"trusted", "why", "numbered" (the whole board straightened with
     every column's number, JPEG), "closeup" (the part of it where things sit, cut from the full-size photo, bigger,
     numbered, JPEG), "ends" (read_ends' list), "shift", "marks"}. trusted: the board has this board's 65 columns and
@@ -435,6 +578,17 @@ def analyse(photo_path, cell=30, closeup_cell=56):
     out["numbered"] = numbered_from(flat, info, shift)
     # the close-up: the columns where something sits (both halves), 4 columns either side, from the full-size photo
     busy = np.where(np.maximum(occ[0], occ[1]) > 0.08)[0]
+    if around:  # printed columns to centre on (an LED seen in another photo), on whichever half they are
+        opts = []
+        for k in (0, 1):  # the half where something sits over those columns
+            ix = np.array(sorted({int(round(hole_x(c, k, info, shift) / info["cell"] - 1)) - 1 for c in around}))
+            ix = ix[(ix >= 0) & (ix < len(occ[0]))]
+            opts.append((float(np.maximum(occ[0], occ[1])[ix].sum()) if len(ix) else -1, k, ix))
+        # an LED's coloured body in this photo says which: in a photo from the side the lifted body smears over
+        # the far half, so where things "sit" is not enough there
+        seen = [l["base"][0] / info["cell"] - 2 for l in leds(flat, info, shift)]
+        near_led = [o for o in opts if len(o[2]) and any(o[2].min() - 3 <= x <= o[2].max() + 3 for x in seen)]
+        busy = (near_led[0] if len(near_led) == 1 else max(opts, key=lambda o: o[0]))[2]
     try:
         hi, hinfo = flat_board(photo_path, cell=closeup_cell, g=g, src=full, flip=flip)
         pic = cv2.imdecode(np.frombuffer(numbered_from(hi, hinfo, shift), np.uint8), cv2.IMREAD_COLOR)

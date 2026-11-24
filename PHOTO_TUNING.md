@@ -489,3 +489,36 @@ breadboard.
 - **Recognition:** six references, six synthetic phone photos each (tilted, turned 0-290 degrees, blurred,
   darkened): 36/36 recognised as the right board. The learner's 55 Duemilanove photos: 53 Duemilanove, 2 no board
   found (as before), never the Uno R3, although the two boards look alike.
+
+## 15. The LED leg hidden under the body: a second photo from the side (24 November)
+
+**The problem.** From above, an LED's body hides a leg. In the whole-flow run of 24 November the hidden leg was
+guessed as column 27 (one column from the read leg, "an LED's legs are one column apart") and called sure; the next
+step's photo showed it in 28. The guess now stays unsure and the learner is asked (`arduino._hidden_leg`).
+
+**Geometry from above alone does not settle it.** 15 learner photos of an LED, both legs labelled
+(`data/leds/led_labels.json`, `research/recognition/led_eval.py`):
+- the learner's LED legs are 3-5 columns apart, not 1: one leg is usually bent out (seen), the other goes straight
+  down under the body, and the bent leg tilts the body, so it does not stand over its own base;
+- `geometry.leds` (the coloured body, its base from the lean away from the camera, legs half a column either side):
+  both legs right 0/13; the hidden leg in the predicted pair 3/9; under or next to the body always (13/13 bodies
+  found of 14): a short list of 3-5 columns, not an answer.
+
+**Two photos of the same position: from above, and low from the side (30-45 degrees, from the near long edge).**
+The board is flat, so its hole grid straightens from any angle: all 10 side photos straightened and matched the
+printed numbers (`geometry.analyse`). A leg's tip is at board level, so in the straightened side photo it lands on
+its true hole; from low down the legs are seen under the body. 10 positions (`data/leds/pairs/labels.json`):
+
+| Read by | Both legs right | Of those, sure |
+|---|---|---|
+| Opus, the photo from above alone (straightened, numbered) | 9/10 | 1 |
+| Opus, both photos (straightened, numbered, centred on the LED) | **10/10** | **10** |
+| code alone, tracing the legs in the side photo (`geometry.led_legs_side`) | 2/10 | - |
+
+About 2 cents a position. Code finds and straightens both photos and centres both close-ups on the LED (the
+body found from above: `analyse(..., around=columns)`, the half chosen by where the body is); the model reads the
+holes the legs go into. Tracing the thin grey legs in code found the right holes visually in several photos but was
+one column off or lost a leg in most: kept as research, not used.
+
+Notes: `analyse` is not thread-safe (it seeds OpenCV's random generator): straighten photos one at a time.
+Next: the app asks for the side photo only on a step with an LED whose leg is hidden.
