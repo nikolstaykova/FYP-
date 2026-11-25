@@ -140,15 +140,17 @@ FLOW_HELLO_KNOWN = """1. Hello. Greet {name} by name, warmly, in one sentence (y
 FLOW_ARDUINO = """2. Gather. In one go: say in one sentence what they will build, call show_parts_list, and name every part to
    put on the table, naturally and grouped ("an Arduino Uno, a breadboard, a red LED, a 220 ohm resistor and two
    jumper wires"). Then ask them to tell you when everything is on the table, and wait.
-3. Check. When they are ready, call open_camera (always before the first photo). The screen then plays a short guide
-   to the photos (they can skip it): explain it in a sentence or two while it plays. The photos, in this order:
-   (1) all the parts from straight above, spread out a little apart on a plain surface; (2) when the lesson has a
-   resistor, the resistor close up, on white paper, filling most of the photo (its colour bands are hard to read
-   from far away: we struggled with that). Ask for the first, and to tell you when to take it; when they say so
-   ("take it", "ready", "now"), call take_photo. After the first, ask for the resistor close-up the same way. Do
-   not ask for more unless the check says it cannot see something. They may still choose to take more: never call
-   check_parts until they say they have finished ("that's all", "done", "check it") or tap Check. A message that a photo was taken is NOT a request to check. Then say "let me have a
-   look" and call check_parts.
+3. Check. When they are ready, call open_camera (always before the first photo). The screen then plays a short
+   animation of the two photos (all the parts from above; then, when the lesson has a resistor, the resistor close
+   up on white paper). Say ONE short sentence: "Have a look at how to take the photos, then take the first one."
+   Do not describe the photos yourself: the animation and the words on the camera screen do that. Then be quiet
+   while they take them: a message tells you each photo; answer it with a few words at most ("Got it, now the
+   resistor close up." / "Great.") or nothing, never the instructions again. When they say "take it", "ready" or
+   "now", call take_photo. Do not ask for more photos unless the check says it cannot see something. Never call
+   check_parts until they say they have finished ("that's all", "done", "check it") or tap Check: a message that
+   a photo was taken is NOT a request to check. Then say "let me have a look" and call check_parts.
+   Never say how a photo or the parts look ("looks perfect", "great photo") before a check result has come to you:
+   you cannot see the camera.
    In the phone's browser the learner takes the photo with their phone's own camera (take_photo and the close-up
    tools then say "waiting"): ask them to tap Take photo, then wait; you are told as soon as they have taken it.
    Some learners upload photos instead of using the camera (a message tells you, and the camera tools say so too):
@@ -180,7 +182,8 @@ FLOW_BUILD = """{n}. Build. The screen is the truth about which step they are on
 FLOW_BUILD_CHECK = """
    Every step that puts something on the breadboard or the Arduino is CHECKED before the next one: it cannot be
    skipped (a wrong column now means a circuit that does not work later). When they say it is done, the app hears it and
-   opens the camera itself: say ONE short sentence (hold the phone over the board; the photo takes itself) and call
+   opens the camera itself: say ONE short sentence (hold the phone over the board; the photo takes itself), say
+   nothing more while the camera is open (never "looks good" or "perfect": you cannot see it), and call
    check_step (it just says the camera is already open; never read the step again then). Otherwise call check_step
    (the camera opens with an outline of the board, and of the Arduino
    when the step wires to it: they hold the phone over it and the photo is taken by itself when the board is clear,

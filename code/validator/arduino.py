@@ -212,6 +212,11 @@ def prompt(plan_, state=None):
             items.append(f"- {x['key']}: {x['who']}. Which column and which half is it in? (The lesson suggests "
                          f"{say_place('strip', x['lesson'])}, but any free column is fine.) Give \"column\" and \"half\".")
     note = f"\nAbout this step: {plan_['note']}" if plan_.get("note") else ""
+    theirs = {str(k): str(v) for k, v in ((state or {}).get("theirs") or {}).items() if k and v}
+    if theirs:  # the learner's own wires and parts (25 Nov: no black wire, so the model took their green signal wire
+        # for the ground wire; theirs was red)
+        note += ("\nThe learner uses their own: " + "; ".join(f"their {v} for the lesson's {k}" for k, v in theirs.items())
+                 + ". Look for theirs in the photo, and say them that way.")
     return LOOK.format(text=plan_["text"], earlier=earlier, items="\n".join(items), note=note)
 
 

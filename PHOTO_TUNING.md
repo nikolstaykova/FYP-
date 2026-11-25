@@ -540,3 +540,36 @@ longest). The four photos: all Duemilanove now. Recognition test (`research/reco
 the six references 6/6 each, the learner's 55 photos 53 Duemilanove and 2 not found, as before.
 The other three photos: the labels sat on the openings; the red wire's end, bent in from above, lands between 13
 and 12 (two photos) or near AREF (one): which opening it is in is the open question there.
+
+## 17. The Arduino's pin labels a socket off; the learner's wire colours (25 November run)
+
+Run of 25 Nov: step 4 (signal wire) passed as pin 13, step 5 (ground wire) was finally passed as GND, but the red
+ground wire was in AREF (the learner). Two causes:
+
+1. **The pin labels were drawn in the wrong place.** The comb that finds the header's openings in each photo searched
+   up to 2.5 sockets along the row, and the Duemilanove's reference row was where the connectors had been clicked
+   (their tops, about half a socket from the openings). The header is black plastic with black openings, so a comb
+   slid by one or more sockets often scored best: even on the reference photo itself it slid 2.5 sockets. The
+   printed labels on this board are also about 0.7 of a socket from their openings.
+   Fix: the reference row rebuilt on the openings themselves (`add_row`, tight, from the reference photo), and in a
+   photo the comb only nudges the row by under half a socket (it can no longer jump to the next opening; the SIFT
+   overlay already puts the row within a few pixels).
+
+   | The 43 clicked photos: the pin label nearest the click | |
+   |---|---|
+   | Before (connector-click row, comb ±2.5 sockets) | 28/43 (the misses one socket towards AREF, a few 1.5) |
+   | **After** (openings row, comb ±0.4) | **43/43** |
+
+2. **The step check did not know the learner's wire colours.** The lesson's ground wire is black; the learner's was
+   red (their green was the signal wire). With no black wire in the photo, Opus took the green one for the ground wire
+   ("No black wire; assumed the green wire"). The app now sends its colour swaps with the step check
+   (`state.theirs`: "black wire" → "red wire") and the prompt names them.
+
+   Step 5 re-checked (both photos): before GND / 12, with the new labels only GND / GND (the wrong wire), with the
+   labels and the colours **AREF** (last photo) and **11** (first photo): both "not GND", as the learner said.
+   About 7¢ a check.
+
+Also from this run: the outlines are two again (breadboard and Arduino), but only roughly: beside the Arduino the
+board's middle has to be inside its outline (its holes' extent is pulled towards the Arduino by the Arduino's own
+dots), and the Arduino's middle inside its box. On the run's 12 step photos, framed for the old single frame, 7 would
+have taken themselves (4 of the others are steps without an Arduino wire, where it is not asked for).

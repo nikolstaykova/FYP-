@@ -410,6 +410,14 @@ def frame_hint(photo_path, arduino=False, min_pitch=18, outline=None):
                (ext[1] < area[1] - tol, "Move the phone up"), (ext[3] > area[3] + tol, "Move the phone down")]
         if any(c for c, _ in out):
             return {"ok": False, "hint": next(h for c, h in out if c), "measure": m}
+    elif ob and arduino:  # beside the Arduino: the board's middle inside its outline (its holes' extent is pulled
+        # towards the Arduino by the Arduino's own dots, so the edges are not used); code finds its edges afterwards
+        mx, my = cx + 0.5, cy + 0.5
+        tol = 0.04
+        out = [(mx < ob[0] - tol, "Move the phone left"), (mx > ob[2] + tol, "Move the phone right"),
+               (my < ob[1] - tol, "Move the phone up"), (my > ob[3] + tol, "Move the phone down")]
+        if any(c for c, _ in out):
+            return {"ok": False, "hint": next(h for c, h in out if c), "measure": m}
     elif ob:  # the board roughly inside its outline (code finds its exact edges afterwards)
         tol = 0.07
         ext = (x0 / W, y0 / H, x1 / W, y1 / H)
@@ -430,7 +438,7 @@ def frame_hint(photo_path, arduino=False, min_pitch=18, outline=None):
         oa = (outline or {}).get("arduino") or area
         if oa:  # roughly in its outline (or the one frame): its middle inside it (with a margin)
             mx, my = (a["box"][0] + a["box"][2]) / 2, (a["box"][1] + a["box"][3]) / 2
-            if not (oa[0] - 0.1 <= mx <= oa[2] + 0.1 and oa[1] - 0.1 <= my <= oa[3] + 0.1):
+            if not (oa[0] - 0.12 <= mx <= oa[2] + 0.12 and oa[1] - 0.12 <= my <= oa[3] + 0.12):
                 return {"ok": False, "hint": "Put the Arduino in the frame" if area else "Put the Arduino in its outline",
                         "measure": m}
         m["arduino_sharp"] = round(_sharp(im, a["box"]))

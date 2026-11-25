@@ -438,6 +438,7 @@ class Pip extends ChangeNotifier {
       final said = (sc['outputTranscription'] as Map?)?['text'] as String?;
       if (said != null && said.isNotEmpty) caption('tutor', said, append: true);
       if (sc['turnComplete'] == true || sc['interrupted'] == true) {
+        if (_open != null) _log(_open!.who, _open!.text); // the turn's last line (the next one would not log it)
         _open = null;
         _lastActive = DateTime.now();
         _modelTurn = false;

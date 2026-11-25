@@ -120,6 +120,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   CameraController? _cam;
   String? _camError;
   bool _flash = false;
+  bool _torch = false; // the phone's light, on while lining up (dark rooms: the board's holes and the header show)
+  String? _torchNote;
 
   LessonSummary get s => widget.summary;
   bool get _lego => s.isLego;
@@ -228,7 +230,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         return {'shown': true, 'parts': [for (final p in s.parts) '${p.count}x ${p.what}']};
       case 'open_camera':
         await _openCamera();
-        if (kIsWeb) return {'camera': 'ready', 'tell_them': 'tap Take photo: their phone camera opens full screen; one clear photo from above is enough'};
+        if (kIsWeb) return {'camera': 'ready', 'tell_them': 'look at the animation, then tap Take photo (their phone camera opens full screen)'};
         return _cam != null ? {'mode': 'camera', 'camera': 'open'} : {'camera': 'not available', 'tell_them': 'they can pick photos from the gallery'};
       case 'take_photo':
         if (_stage != Stage.camera) await _openCamera();
@@ -599,7 +601,30 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     }
   }
 
+  /// The phone's light on or off (the live camera only; the phone's own camera app has its own flash button).
+  Future<void> _toggleTorch() async {
+    final c = _cam;
+    if (c == null || !c.value.isInitialized) return;
+    final on = !_torch;
+    try {
+      await c.setFlashMode(on ? FlashMode.torch : FlashMode.off);
+      setState(() {
+        _torch = on;
+        _torchNote = null;
+      });
+    } catch (_) {
+      setState(() => _torchNote = kIsWeb
+          ? "This browser can't turn the light on: tap Phone camera to use its flash"
+          : "This camera has no light");
+      Future.delayed(const Duration(seconds: 4), () {
+        if (mounted) setState(() => _torchNote = null);
+      });
+    }
+  }
+
   void _stopCamera() {
+    _torch = false;
+    _torchNote = null;
     _frameTimer?.cancel();
     _frameTimer = null;
     _hint = null;
@@ -648,9 +673,9 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       _hint = 'Now from the side: phone low at the near edge, aimed at the LED';
       _guide = GuideKind.ledSide; // how, while Pip explains (skippable)
     });
-    _tell('(The photo from above is taken. This step has an LED, so the camera now wants one more photo, low from '
-        'the side, at the board\'s near edge and aimed at the LED, to see its legs under the body: it takes itself. '
-        'Tell them in a few words.)');
+    _tell('(The photo from above is taken. An animation on the screen now shows the one more photo this LED step '
+        'needs: low from the side, aimed at the LED, so its legs show. Say ONE short sentence, like "Now one from the '
+        'side, like in the animation." Then be quiet: it takes itself.)');
   }
 
   /// The step check: the photo to the server, the verdict on the step card, their columns from now on.
@@ -662,7 +687,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         _topExtras = [];
         _topShot = null;
         _burst.clear();
-        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where}, side: side == null ? null : [side]);
+        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where, if (_swaps.isNotEmpty) 'theirs': _swaps},
+            side: side == null ? null : [side]);
       });
 
   /// What the learner says about the legs the photo could not show, judged like a photo.
@@ -785,10 +811,10 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
     setState(() => _photos.add(p));
     _lastPhotoAt = DateTime.now();
     _tell(_photos.length == 1 && _hasResistor
-        ? '(The learner took photo 1, all the parts from above. Now ask for photo 2: the resistor close up, on white '
-            'paper, filling the photo, so its colour bands can be read. Do not check yet.)'
-        : '(The learner added a photo of the parts: ${_photos.length} so far. They may take more: do not check yet, '
-            'and do not ask for another photo. Wait until they tap Check or say they are done.)');
+        ? '(Photo 1 taken. The screen already asks for the resistor close up: say at most "Got it, now the resistor '
+            'close up". Do not explain it again, do not check yet.)'
+        : '(Photo ${_photos.length} taken. Say at most one or two words, or nothing. Do not check yet, do not ask for '
+            'another photo: wait until they tap Check or say they are done.)');
   }
 
   /// The phone's own camera app: full screen, its autofocus, full quality.
@@ -1107,6 +1133,29 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15, shadows: [Shadow(blurRadius: 8, color: Colors.black54)])),
         ),
+        if (cam != null && cam.value.isInitialized)
+          Positioned(
+            top: kIsWeb && _stepPending ? 74 : 34,
+            right: 8,
+            child: Material(
+              color: _torch ? const Color(0xFFFFD54F) : Colors.black45,
+              shape: const CircleBorder(),
+              child: IconButton(
+                tooltip: _torch ? 'Light off' : 'Light on',
+                onPressed: _toggleTorch,
+                icon: Icon(_torch ? Icons.flash_on_rounded : Icons.flash_off_rounded, color: _torch ? Colors.black : Colors.white),
+              ),
+            ),
+          ),
+        if (_torchNote != null)
+          Positioned(
+            top: kIsWeb && _stepPending ? 126 : 86,
+            right: 12,
+            left: 60,
+            child: Text(_torchNote!,
+                textAlign: TextAlign.right,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, shadows: [Shadow(blurRadius: 8, color: Colors.black)])),
+          ),
         if (kIsWeb && _stepPending)
           Positioned(
             top: 34,

@@ -187,7 +187,7 @@ def analyse(photo_path):
             nrm = -nrm
         pitch = np.linalg.norm(b - a) / idx[order[-1]]
         if row.get("from") == "openings":  # made from a straight-down photo: the openings themselves, look near them
-            comb = openings(flat, a, u, nrm, pitch, order, idx, across_range=(-0.6, 0.6), spread=0.06, along_range=0.8)
+            comb = openings(flat, a, u, nrm, pitch, order, idx, across_range=(-0.6, 0.6), spread=0.04, along_range=0.4)
         else:  # made from clicks on the connectors, which stand out from the openings: look further in
             comb = openings(flat, a, u, nrm, pitch, order, idx)
         if comb is not None:  # the openings themselves, found in this photo
