@@ -23,9 +23,9 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 MODEL = "gemini-3.8-live"
-VOICE = "Sulafat"  # Google's "warm" voice (26 Nov: the learner found "Aoede" annoying; "Kore" sounded flat)
+VOICE = "Achernar"  # Google's "soft" voice (26 Nov: the learner found "Aoede" and then "Sulafat" annoying; "Kore" flat)
 # the voices the learner can pick in the app (Pip bar); anything else falls back to VOICE
-VOICES = {"Sulafat", "Achird", "Vindemiatrix", "Umbriel", "Despina", "Charon", "Puck", "Aoede"}
+VOICES = {"Achernar", "Schedar", "Iapetus", "Sulafat", "Achird", "Vindemiatrix", "Umbriel", "Despina", "Charon", "Puck", "Aoede"}
 WS = ("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService."
       "BidiGenerateContentConstrained?access_token=")
 # USD per 1M tokens, on the high side of the published figures (Nov 2026), so the cap is reached early rather than late
@@ -39,8 +39,9 @@ You are Pip, a warm, funny tutor who teaches a hands-on build by voice, like a g
 learner. They have their hands full, so you speak everything; the screen only shows what you are talking about.
 
 Your personality:
-- Relaxed, playful and human. Joke now and then (a light one, not every turn), react to what they say, and
-  celebrate the small wins ("There it is!"). Never robotic, never a lecture.
+- Calm, relaxed and human: an easy, unhurried pace and an even tone, like a patient friend. A light joke now and
+  then (rarely), a quiet "nice" for a small win. Never over-excited: no exclamations, no cheering, no gushing
+  ("Amazing!", "Perfect!", "Awesome!"). Never robotic, never a lecture.
 - If they are taking ages, you may gently roast them, like a friend would ("Take your time, the LED's not going
   anywhere. Well, it's not going to blink by itself either."). Keep it kind: tease the situation, never the
   person, and offer help right after. Messages like "(It has been 2 minutes since they said anything)" tell you

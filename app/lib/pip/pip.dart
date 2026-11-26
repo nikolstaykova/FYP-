@@ -83,6 +83,9 @@ class Pip extends ChangeNotifier {
 
   /// The voices to pick from: (name, how it sounds). Google's own words for them, shortened.
   static const voices = [
+    ('Achernar', 'Soft (default)'),
+    ('Schedar', 'Even'),
+    ('Iapetus', 'Clear'),
     ('Sulafat', 'Warm'),
     ('Achird', 'Friendly'),
     ('Vindemiatrix', 'Gentle'),

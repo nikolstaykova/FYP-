@@ -116,7 +116,7 @@ class PipBar extends StatelessWidget {
             ListTile(
               title: Text(name, style: const TextStyle(fontWeight: FontWeight.w700)),
               subtitle: Text(how),
-              trailing: (Pip.voice.isEmpty ? 'Sulafat' : Pip.voice) == name
+              trailing: (Pip.voice.isEmpty ? 'Achernar' : Pip.voice) == name
                   ? const Icon(Icons.check_rounded, color: Pq.have)
                   : null,
               onTap: () {
