@@ -33,6 +33,9 @@ UNO = {
         "power-analog-8": {"y": 100, "x": dict(zip(["NC", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"],
                                                    range(1000, 1701, 100))) | dict(zip([f"A{i}" for i in range(6)],
                                                                                       range(1900, 2401, 100)))},
+        "power-analog-boot": {"y": 100, "x": dict(zip(["BOOT", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"],
+                                                      range(1000, 1701, 100))) | dict(zip([f"A{i}" for i in range(6)],
+                                                                                         range(1900, 2401, 100)))},
         "power-analog-6": {"y": 100, "x": dict(zip(["RESET", "3V3", "5V", "GND.", "GND..", "VIN"], range(1200, 1701, 100)))
                            | dict(zip([f"A{i}" for i in range(6)], range(1900, 2401, 100)))},
     },
@@ -41,7 +44,7 @@ FORMS = {"uno": UNO}
 # each board: its form and its rows (what is printed on it); a board not here but Uno-shaped: "uno", uno-r3 rows
 BOARDS = {
     "arduino-uno": ("uno", ["uno-r3", "power-analog-8"]),
-    "arduino-uno-r4-minima": ("uno", ["uno-r3", "power-analog-8"]),
+    "arduino-uno-r4-minima": ("uno", ["uno-r3", "power-analog-boot"]),
     "arduino-uno-r4-wifi": ("uno", ["uno-r3", "power-analog-8"]),
     "arduino-uno-wifi-rev2": ("uno", ["uno-r3", "power-analog-8"]),
     "arduino-leonardo": ("uno", ["uno-r3", "power-analog-8"]),

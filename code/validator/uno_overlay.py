@@ -33,6 +33,8 @@ LAYOUTS = {
     # the bottom edge: power, then analog (A0 at the far end from the USB)
     "power-analog-6": [["RESET", "3V3", "5V", "GND.", "GND..", "VIN"], ["A0", "A1", "A2", "A3", "A4", "A5"]],
     "power-analog-8": [["NC", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"], ["A0", "A1", "A2", "A3", "A4", "A5"]],
+    # the Uno R4 Minima prints BOOT where the others have NC
+    "power-analog-boot": [["BOOT", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"], ["A0", "A1", "A2", "A3", "A4", "A5"]],
     "power-analog-mega": [["NC", "IOREF", "RESET", "3V3", "5V", "GND.", "GND..", "VIN"],
                           ["A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7"],
                           ["A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15"]],
@@ -45,7 +47,7 @@ GAP = 1.6
 # a layout whose gaps between blocks are not all 1.6 pitches: [gap after block 1, after block 2, ...]; the Mega's
 # communication block (14-21) starts 0.2" after pin 0 (fitted: 2.0 beat 1.6 and 1.8 on its photo), the analog header
 # 0.2" after VIN
-GAPS = {"mega": [1.6, 2.0], "power-analog-6": [2.0], "power-analog-8": [2.0], "power-analog-mega": [2.0, 2.0],
+GAPS = {"mega": [1.6, 2.0], "power-analog-6": [2.0], "power-analog-8": [2.0], "power-analog-boot": [2.0], "power-analog-mega": [2.0, 2.0],
         "power-analog-due": [2.0, 2.0]}
 
 

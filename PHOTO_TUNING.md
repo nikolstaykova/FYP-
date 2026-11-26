@@ -618,3 +618,14 @@ so 15 → 24) and gives Pip the step in the learner's columns (`step_their_way`)
   on 7 photos of the Duemilanove measured against the real reference; the check let some bad ones through. Not good
   enough to name a pin, so it is not switched on (`research/recognition/board_ref_auto.py`). A new board still needs a
   straight photo and its two row ends read once (`uno_overlay.build_from_row`), then it goes into the database.
+
+### 19.1 Photos from Wikimedia Commons for the boards without one (26 November)
+
+Openly licensed, straight-down photos found on Commons and made into references (row ends read once off a grid, the
+comb fits tight): **Uno R4 Minima** (Arduino, CC BY-SA 3.0; its first power socket is printed BOOT, so it has its own
+row layout `power-analog-boot`), **Yún** (Arduino SA, CC BY-SA 3.0), and a straight **Uno R4 WiFi** (Arduino,
+CC BY-SA 3.0), which replaces the product photo of unknown licence (now in git). Fits: contrast 81–111 (the
+Duemilanove's dark header: 22–32); the names drawn on each photo sit on their openings and match the print.
+Recognition, synthetic phone photos of each reference: all 8 boards 6/6; the learner's 55 Duemilanove photos: 53
+Duemilanove, 2 no board, none taken for another. Not on Commons: the Uno WiFi Rev2 and the Zero (numbers only), and
+the Uno R3 only angled or as a clone.
