@@ -627,5 +627,6 @@ row layout `power-analog-boot`), **Yún** (Arduino SA, CC BY-SA 3.0), and a stra
 CC BY-SA 3.0), which replaces the product photo of unknown licence (now in git). Fits: contrast 81–111 (the
 Duemilanove's dark header: 22–32); the names drawn on each photo sit on their openings and match the print.
 Recognition, synthetic phone photos of each reference: all 8 boards 6/6; the learner's 55 Duemilanove photos: 53
-Duemilanove, 2 no board, none taken for another. Not on Commons: the Uno WiFi Rev2 and the Zero (numbers only), and
-the Uno R3 only angled or as a clone.
+Duemilanove, 2 no board, none taken for another. Not on Commons: the Uno WiFi Rev2 and the Zero, and the Uno R3 only angled or as a clone. The **Uno WiFi Rev2**: a
+straight product photo the learner pasted (licence unknown, kept out of git): contrast 173 / 86, names on their
+openings; with it all 9 boards 6/6, the Duemilanove photos unchanged (53, 2 no board). The Zero: numbers only.
