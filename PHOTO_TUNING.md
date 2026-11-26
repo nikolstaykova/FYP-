@@ -595,3 +595,26 @@ longer matched the resistor's "bottom".
 Also from this run: Pip worked out the LED's short-leg column itself (29, the resistor's own column). The app now
 fills in the lesson's other columns from the checked ones (10 → 29 and 14 → 25: the same shift the other way round,
 so 15 → 24) and gives Pip the step in the learner's columns (`step_their_way`); Pip is told never to work one out.
+
+## 19. Board geometry in the database; layout as numbers; new boards (26 November)
+
+- **In the database.** Every board's geometry sits under its part: `(:Part)-[:HAS_GEOMETRY]->(:BoardGeometry)`
+  (`graph/parts/arduino/board_geometry.py`): its header rows and where each pin's opening is on its reference photo,
+  which photo, kept where (repo, or local for unknown licence / the learner's own), source and licence, how it was
+  made. `./pinpoint db geometry` loads them (`db load` and `db check` include them); a reference made or changed is
+  saved straight away; the overlay reads the database, the files as the fallback. 6 boards with a photo.
+- **The layout as numbers** (the learner's idea: metadata, not pictures). Every Uno-shaped board follows Arduino's
+  shield standard, so its rows are stored as numbers too: the form ("uno") and each opening in mils from the board's
+  edges (`validator/board_layout.py`), also for boards with no photo (R4 Minima, Uno WiFi Rev2, Yún, Zero: 4 more,
+  status "standard").
+- **Can the numbers place the pins in a photo by themselves?** Measured on 47 photos of the learner's Duemilanove
+  against its photo overlay: from the blue board's outline, the pins land **1–2 openings off** on average, and a
+  third of the photos came out turned round (the USB end mistaken). Measured on the straight reference photos, the
+  same pin sits up to half an opening differently against the found outline from board to board (rounded corners,
+  the outline not exact). So no: the photo overlay (the board's own print, matched point by point) is what places the
+  pins to a few pixels; the numbers are the layout itself.
+- **A reference made automatically from a learner's photo** (Opus reads the row ends on a pixel grid, code fits the
+  openings, Opus checks the drawn names on close-ups of the ends): 0.3–0.8 openings off on average, worst pin up to 1.8,
+  on 7 photos of the Duemilanove measured against the real reference; the check let some bad ones through. Not good
+  enough to name a pin, so it is not switched on (`research/recognition/board_ref_auto.py`). A new board still needs a
+  straight photo and its two row ends read once (`uno_overlay.build_from_row`), then it goes into the database.

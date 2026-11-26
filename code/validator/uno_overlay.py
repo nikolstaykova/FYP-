@@ -108,19 +108,50 @@ def _ref_file(board_id):
     return None
 
 
+def _metas():
+    """{board: (meta, photo file)}: from the database (each board's BoardGeometry, its photo a file in the repo's refs
+    or the local ones), and from the files for any board the database does not have (or when it is not in use)."""
+    out = {}
+    local = {j.stem for j in LOCAL_REFS.glob("*.json")}
+    for j in sorted([j for j in REFS.glob("*.json") if j.stem not in local] + list(LOCAL_REFS.glob("*.json"))):
+        try:
+            out[j.stem] = (json.loads(j.read_text()), j.with_suffix(".jpg"))
+        except ValueError:
+            continue
+    try:
+        from graph.parts.arduino import board_geometry
+        db = board_geometry.read() or {}
+    except Exception:
+        db = {}
+    for b, meta in db.items():
+        img = (LOCAL_REFS if meta.get("kept") == "local" else REFS) / f"{b}.jpg"
+        if img.exists():
+            out[b] = (meta, img)
+    return out
+
+
 def _load_refs():
     global _refs
     if _refs is None:
         _refs = []
-        local = {j.stem for j in LOCAL_REFS.glob("*.json")}
-        for j in sorted([j for j in REFS.glob("*.json") if j.stem not in local] + list(LOCAL_REFS.glob("*.json"))):
-            meta = json.loads(j.read_text())
-            im = cv2.imread(str(j.with_suffix(".jpg")))
+        for b, (meta, img) in sorted(_metas().items()):
+            im = cv2.imread(str(img))
             if im is None:
                 continue
             k, d = _features(cv2.cvtColor(im, cv2.COLOR_BGR2GRAY))
-            _refs.append({"board": j.stem, "image": im, "kp": k, "des": d, **meta, "rows": rows_of(meta)})
+            _refs.append({"board": b, "image": im, "kp": k, "des": d, **meta, "rows": rows_of(meta)})
     return _refs
+
+
+def _saved(board_id):
+    """A reference made or changed: the overlay loads it again, and it goes into the database under its part."""
+    global _refs
+    _refs = None
+    try:
+        from graph.parts.arduino import board_geometry
+        board_geometry.save(board_id)
+    except Exception:
+        pass
 
 
 def _plausible(H, ref_shape, crop_shape):
@@ -276,8 +307,7 @@ def build_from_row(board_id, photo, layout_name, first, last, source="", tight=F
     cv2.imwrite(str(out_dir / f"{board_id}.jpg"), ref, [cv2.IMWRITE_JPEG_QUALITY, 92])
     meta = {"photo": pathlib.Path(photo).name, "source": source, "rows": [row]}
     (out_dir / f"{board_id}.json").write_text(json.dumps(meta, indent=1))
-    global _refs
-    _refs = None
+    _saved(board_id)
     return meta
 
 
@@ -289,8 +319,7 @@ def add_row(board_id, layout_name, first, last, tight=False):
     rows = [r for r in rows_of(meta) if r["layout"] != layout_name] + [_fit_row(ref, layout_name, first, last, tight)]
     meta = {k: v for k, v in meta.items() if k not in ("pins", "layout", "fit")} | {"rows": rows}
     j.write_text(json.dumps(meta, indent=1))
-    global _refs
-    _refs = None
+    _saved(board_id)
     return rows[-1]
 
 
@@ -326,5 +355,5 @@ def build(board_id, ref_photo, clicked):
     meta = {"photo": pathlib.Path(ref_photo).name, "fitted_from": len(pts),
             "pins": {p: [round(float(v), 1) for v in coef[0] + coef[1] * IDX[p]] for p in ORDER}}
     (REFS / f"{board_id}.json").write_text(json.dumps(meta, indent=1))
-    _refs = None
+    _saved(board_id)
     return meta

@@ -18,6 +18,8 @@ The graph (the plan in Pinpoint Lesson Data §1, simplified 4 Nov 2026: the part
       (about 10 pieces a card, made once with the lesson: graph/lego_gather.py; its pieces are those steps')
   (:Instance)-[:JOINED|CONTACT|ELECTRICAL {u_port, v_port, method, made_in}]->(:Instance)   the physical graph
   (:Instance)-[:IS_A]->(:Part {part_type_id})-[:HAS_PORT]->(:Port)                         the parts catalogue
+  (:Part)-[:HAS_GEOMETRY]->(:BoardGeometry)   an Arduino board's reference for the step check's overlay: its header
+      rows and where each pin's opening is on its reference photo (graph/parts/arduino/board_geometry.py)
 Nodes of a lesson are keyed by `uid` = "<lesson_id>/<id>" (ids like b1 or step-1 are in many lessons); a part by its
 part_type_id (old ids resolved through redirects.json first), a port by "<part_type_id>:<port id>".
 Neo4j properties are numbers, strings, booleans or flat lists of them: anything nested is stored as JSON text
@@ -27,6 +29,7 @@ Needs NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD (and NEO4J_DATABASE) in .env.
 Run: ./pinpoint db load [lesson ids...]     everything (parts, then all lessons), or only the lessons named
      ./pinpoint db check                    counts, and every lesson and part read back, against the JSON files
      ./pinpoint db stats                    what is in the database
+     ./pinpoint db geometry                 the boards' geometry references only (parts/arduino/board_geometry.py)
 """
 import json
 import os
@@ -567,6 +570,9 @@ def main(argv=None):
             if not a:
                 n, p = load_parts(d)
                 print(f"parts: {n} parts, {p} ports")
+                from graph.parts.arduino import board_geometry
+                g, linked = board_geometry.load(d)
+                print(f"board geometry: {g} references, {linked} linked to their part")
             total = {"nodes": 0, "links": 0, "not_linked": 0}
             for lid in a or lesson_ids():
                 r = load_lesson(d, lid)
@@ -584,12 +590,19 @@ def main(argv=None):
             bad = roundtrip(d)
             print("read back: every lesson and part is exactly as in the files" if not bad else
                   f"read back: {len(bad)} differ: {bad[:10]}")
+            from graph.parts.arduino import board_geometry
+            bad = board_geometry.check(d)
+            print("board geometry: every reference is as in the files" if not bad else f"board geometry: {bad}")
+        elif cmd == "geometry":  # the boards' geometry references only (graph/parts/arduino/board_geometry.py)
+            from graph.parts.arduino import board_geometry
+            g, linked = board_geometry.load(d)
+            print(f"board geometry: {g} references, {linked} linked to their part")
         elif cmd == "stats":
             labels, rels = stats(d)
             print("nodes:", ", ".join(f"{r['label']} {r['n']}" for r in labels) or "none")
             print("links:", ", ".join(f"{r['type']} {r['n']}" for r in rels) or "none")
         else:
-            raise SystemExit("use: load [lesson ids] | check | stats")
+            raise SystemExit("use: load [lesson ids] | check | stats | geometry")
 
 
 if __name__ == "__main__":
