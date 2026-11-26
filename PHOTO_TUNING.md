@@ -630,3 +630,30 @@ Recognition, synthetic phone photos of each reference: all 8 boards 6/6; the lea
 Duemilanove, 2 no board, none taken for another. Not on Commons: the Uno WiFi Rev2 and the Zero, and the Uno R3 only angled or as a clone. The **Uno WiFi Rev2**: a
 straight product photo the learner pasted (licence unknown, kept out of git): contrast 173 / 86, names on their
 openings; with it all 9 boards 6/6, the Duemilanove photos unchanged (53, 2 no board). The Zero: numbers only.
+
+### 19.2 A new board's reference found on the web by code (26 November)
+
+When the parts check sees an Uno-shaped board with no reference, `validator/board_ref_web.py` looks for one in the
+background: Wikimedia Commons is searched (free licences only; titles that say angled, back, side, enclosure left
+out); Opus looks at each candidate on a pixel grid (is it this board, straight from above, where each header row's
+first and last openings are); code fits each row's openings, both ways round (the gap between blocks is off-centre,
+so the wrong way scores lower: the Yún prints no labels by its headers and one run read its row backwards); a row
+whose openings do not stand out (contrast under 32) is dropped, the digital row must be there, the rows must run the
+same way and agree on the spacing, Opus checks the drawn names on close-ups of the ends, and no known board may be
+mixed up with it. Then it is saved to the repo's references (with its credit) and the database (status "auto").
+Nothing usable: looked for again after 30 days.
+
+Measured on the 5 Commons photos made into references by hand (two runs, about 25¢ each):
+
+| Board | Rows kept | Worst pin, run 1 / run 2 (openings) |
+|---|---|---|
+| Due | digital (power row dropped: contrast 26, it was 0.85 off) | 0.04 / 0.16 |
+| Leonardo | both | 0.16 / 0.15 |
+| Uno R4 Minima | both | 0.16 / 0.22 |
+| Uno R4 WiFi | both | 0.12 / 0.15 |
+| Yún | both | 0.09 / 0.09 |
+
+Before the rules above: Opus's own check passed the Due's power row 0.85 off, and a backwards Yún row (17 openings
+at its ends); the contrast and both-ways fit are what stop those. End to end on Commons for the Leonardo: 6 free
+photos found, the first refused (not straight), the second kept: the one chosen by hand (about 8¢). The Zero: no
+photo on Commons.

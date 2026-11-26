@@ -385,6 +385,22 @@ def investigate_board(name, value, store, ask=True):
     return tid
 
 
+def _board_geometry(objs, cat):
+    """An Uno-shaped board seen with no geometry reference: one is looked for on Wikimedia Commons in the background
+    and, when a photo passes every check, added to the database under its part (validator/board_ref_web.py)."""
+    try:
+        from graph.arduino import pins
+        from validator import board_ref_web
+        facts = json.loads(pins.FOUND.read_text()) if pins.FOUND.exists() else {}
+        for o in objs:
+            t = o.get("type")
+            if t and is_board(cat, t):
+                name = (cat.get(t) or {}).get("display_name") or o.get("name") or t
+                board_ref_web.in_background(t, name, uno_layout=bool((facts.get(t) or {}).get("uno_layout")))
+    except Exception:
+        pass  # never let this break the parts check
+
+
 # ---- 3 compare + 4 substitute + 5 research -----------------------------------------------------------------------
 def check(lesson_id, photos, model="opus", research=True, seen=None):
     """The whole parts check. `seen` skips the photo call (tests and re-runs)."""
@@ -415,6 +431,8 @@ def check(lesson_id, photos, model="opus", research=True, seen=None):
         objs.append({**s, "type": t, "matched_by": how, "left": s["count"]})
     if added:
         cat = {**catalogue(), **INVESTIGATED}  # with what was added (the rebuild runs in the background)
+    if DESCRIBE:
+        _board_geometry(objs, cat)
 
     report, board_in_use = [], None
     rows.sort(key=lambda r: not is_board(cat, r["type"]))  # boards first: other checks depend on the board in use
