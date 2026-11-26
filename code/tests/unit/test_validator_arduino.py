@@ -182,7 +182,7 @@ def test_of_a_few_frames_the_sharp_one_geometry_knows_is_read_and_a_blurry_one_n
     q = {"blurry": (False, "The photo is blurry.", {"sharp": 10}), "ok": (True, "", {"sharp": 120}),
          "sharp": (True, "", {"sharp": 400})}
     monkeypatch.setattr(board, "quality", lambda ph: q[ph])
-    monkeypatch.setattr(A, "_geometry", lambda ph: {"trusted": ph == "ok"})
+    monkeypatch.setattr(A, "_geometry", lambda ph, orient=None: {"trusted": ph == "ok"})
     order, ok, why, m, geo = A._pick(["blurry", "sharp", "ok"])
     assert ok and order[0] == "ok" and geo["trusted"]  # geometry knows the board on it: read that one
     assert "blurry" not in order and "3 sent, 2 good enough" in m["photos"]
@@ -241,3 +241,22 @@ def test_the_side_photo_puts_its_two_columns_on_the_led_legs():
     # an unsure side reading changes nothing
     r = {longk: {"key": longk, "column": 30, "sure": False}}
     assert led_side.merge(p, r, {**pair, "sure": False}) == [] and r[longk]["column"] == 30
+
+
+def test_which_way_up_is_set_once_then_kept_by_the_rails(monkeypatch):
+    import numpy as np
+    from validator import geometry as G
+    quiet = {0: np.zeros(65), 1: np.zeros(65)}
+    parts_low = {0: np.zeros(65), 1: np.r_[np.zeros(30), np.full(4, 0.4), np.zeros(31)]}
+    monkeypatch.setattr(G, "blocks", lambda pl: [])
+    # first photo: the parts clearly on the lower half -> turned round; the rails (upright) are remembered with it
+    monkeypatch.setattr(G, "upside_down", lambda *a, **k: False)
+    flip, orient = G.orientation({"img": None, "places": None}, parts_low)
+    assert flip is True and orient == {"same": False}
+    # a later photo, nothing clear (a thin resistor, a warm light): the rails say which way, as before
+    assert G.orientation({"img": None, "places": None}, quiet, orient) == (True, orient)
+    monkeypatch.setattr(G, "upside_down", lambda *a, **k: True)  # phone held the other way round
+    assert G.orientation({"img": None, "places": None}, quiet, orient)[0] is False
+    # no rails seen and nothing clear: the old rule (no turn)
+    monkeypatch.setattr(G, "upside_down", lambda *a, **k: None)
+    assert G.orientation({"img": None, "places": None}, quiet, None)[0] is False

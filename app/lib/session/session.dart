@@ -82,6 +82,15 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   final Map<int, Set<int>> _got = {}; // ticked pieces per card
   final Set<int> _partsGot = {};
   final Map<String, String> _cols = {}; // breadboard columns: the lesson's → the learner's (use_column)
+  Map<String, dynamic>? _orient; // which way up their board is, from the step check (kept for the next photos)
+
+  /// Their columns, with the lesson's other columns filled in the same way: when the checked columns all moved by
+  /// one shift (and maybe ran the other way: 10 → 29, 14 → 25), the lesson's 15 becomes their 24, beside 25
+  /// (26 Nov: Pip worked one out itself and put the LED's short leg in the resistor's column).
+  Map<String, String> get _colsAll => theirColumns(_cols);
+
+  /// A step's words as the learner sees them: their columns, their wire colours and parts.
+  String _theirWay(String text) => applyEdits(text, theirEdits(text, _colsAll, _swaps));
   final Map<String, String> _swaps = {}; // their versions: "orange wire" → "blue wire" (use_instead, or the check)
 
   // the step check (code/validator): after a build step, a photo of the board
@@ -168,7 +177,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
   /// Another step is on the screen: Pip stops talking about the old one and is told the new one, with its words.
   void _toldStep(String how, int n) {
     final st = _b?.steps[n - 1];
-    final what = st == null ? '' : ' It says: "${st.title}${st.text.isNotEmpty ? ': ${st.text}' : ''}".';
+    final what = st == null ? '' : ' It says (their columns and parts): "${st.title}${st.text.isNotEmpty ? ': ${_theirWay(st.text)}' : ''}".';
     pip.moveOn('($how: the screen now shows ${_lego ? 'card' : 'step'} $n.$what Talk only about this one now; '
         'forget what you were saying about the other step.)');
   }
@@ -358,7 +367,15 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
           _showStep(stop);
           return {'screen_shows_step': stop, 'note': 'step $stop has not been checked yet: it must be checked (check_step) before going on'};
         }
-        return {'screen_shows_step': _showStep(want)};
+        final shown = _showStep(want);
+        final sst = _b?.steps[shown - 1];
+        return {
+          'screen_shows_step': shown,
+          if (sst != null && sst.text.isNotEmpty) 'step_their_way': _theirWay(sst.text),
+          if (_colsAll.isNotEmpty)
+            'note': 'step_their_way has THEIR columns and parts: say those numbers exactly; never work out a column '
+                'yourself and never call use_column for a column the check or this text already gives'
+        };
       case 'lesson_info' || 'step_info' || 'part_info':
         try {
           final r = await _api.lookup(s.id, name, args);
@@ -687,7 +704,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         _topExtras = [];
         _topShot = null;
         _burst.clear();
-        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where, if (_swaps.isNotEmpty) 'theirs': _swaps},
+        return _api.validateStep(s.id, _i + 1, [photo, ...extras], {'where': _where, if (_swaps.isNotEmpty) 'theirs': _swaps, 'orient': ?_orient},
             side: side == null ? null : [side]);
       });
 
@@ -715,6 +732,8 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
       final where = ((r['state'] as Map?)?['where'] as Map?)?.cast<String, dynamic>() ?? {};
       final cols = (r['columns'] as Map?)?.cast<String, dynamic>() ?? {};
       final ok = const ['pass', 'harmless', 'moved'].contains(r['verdict']);
+      final orient = (r['state'] as Map?)?['orient'];
+      if (orient is Map) _orient = orient.cast<String, dynamic>();
       setState(() {
         if (ok) {  // only a step that passed changes the learner's places
           _where
@@ -1332,7 +1351,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
         const SizedBox(height: 4),
         Text(st.title, style: t.headlineMedium),
         const SizedBox(height: 8),
-        _ColText(text: st.text, cols: _cols, swaps: _swaps, style: t.bodyLarge?.copyWith(height: 1.4)),
+        _ColText(text: st.text, cols: _colsAll, swaps: _swaps, style: t.bodyLarge?.copyWith(height: 1.4)),
         if ((st.goal ?? '').isNotEmpty) ...[
           const SizedBox(height: 10),
           Container(
@@ -1341,7 +1360,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Icon(Icons.flag_rounded, color: c, size: 20),
               const SizedBox(width: 8),
-              Expanded(child: _ColText(text: st.goal!, cols: _cols, swaps: _swaps, style: const TextStyle(fontWeight: FontWeight.w600))),
+              Expanded(child: _ColText(text: st.goal!, cols: _colsAll, swaps: _swaps, style: const TextStyle(fontWeight: FontWeight.w600))),
             ]),
           ),
         ],
@@ -1448,7 +1467,7 @@ class _SessionScreenState extends State<SessionScreen> implements PipHost {
                 title: const Text('Stuck? Hints', style: TextStyle(fontWeight: FontWeight.w700)),
                 children: [
                   for (final h in st.hints)
-                    ListTile(dense: true, leading: const Text('•'), title: _ColText(text: h, cols: _cols, swaps: _swaps)),
+                    ListTile(dense: true, leading: const Text('•'), title: _ColText(text: h, cols: _colsAll, swaps: _swaps)),
                 ],
               ),
             ),

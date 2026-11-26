@@ -79,6 +79,20 @@ class Pip extends ChangeNotifier {
 
   static String name = '';
   static String level = ''; // beginner, some, advanced
+  static String voice = ''; // Gemini Live voice the learner picked ('' = the server's default)
+
+  /// The voices to pick from: (name, how it sounds). Google's own words for them, shortened.
+  static const voices = [
+    ('Sulafat', 'Warm'),
+    ('Achird', 'Friendly'),
+    ('Vindemiatrix', 'Gentle'),
+    ('Umbriel', 'Easy-going'),
+    ('Despina', 'Smooth'),
+    ('Charon', 'Calm, clear'),
+    ('Puck', 'Upbeat'),
+    ('Aoede', 'Breezy (the old one)'),
+  ];
+  String? _afterSetup; // said to the new session once it is ready (a new voice says hello)
 
   bool get on => state != PipState.off;
 
@@ -92,12 +106,14 @@ class Pip extends ChangeNotifier {
     final p = await SharedPreferences.getInstance();
     name = p.getString('quest.name') ?? '';
     level = p.getString('quest.level') ?? '';
+    voice = p.getString('quest.voice') ?? '';
   }
 
   static Future<void> saveMe() async {
     final p = await SharedPreferences.getInstance();
     await p.setString('quest.name', name);
     await p.setString('quest.level', level);
+    await p.setString('quest.voice', voice);
   }
 
   // ---- shared
@@ -173,6 +189,25 @@ class Pip extends ChangeNotifier {
       await _tts.stop();
     } catch (_) {}
     _speaking = false;
+  }
+
+  /// Another voice: remembered; when Pip is talking, the session is swapped for one in the new voice (the
+  /// conversation carries on, resumed) and Pip says one short sentence in it.
+  Future<void> setVoice(String v) async {
+    voice = v;
+    await saveMe();
+    notifyListeners();
+    if (!on || mode != PipMode.live) return;
+    _player.flush();
+    final old = _ws;
+    _ws = null;
+    _afterSetup = '(The learner just picked a new voice for you. Say one short sentence in it, like "How does this '
+        'voice sound?", then carry on where you were.)';
+    try {
+      await _openLive(null, resumed: _handle != null);
+    } finally {
+      await old?.sink.close();
+    }
   }
 
   void setMuted(bool v) {
@@ -368,7 +403,8 @@ class Pip extends ChangeNotifier {
   Future<void> _openLive(String? first, {required bool resumed}) async {
     _openedAt = DateTime.now();
     final s = await _api.tutorSession(host.lessonId,
-        resume: _handle, speakers: speakers, name: name.isEmpty ? null : name, level: level.isEmpty ? null : level);
+        resume: _handle, speakers: speakers, name: name.isEmpty ? null : name, level: level.isEmpty ? null : level,
+        voice: voice.isEmpty ? null : voice);
     cap = (s['cap_usd'] as num?)?.toDouble() ?? cap;
     warn = (s['warn_usd'] as num?)?.toDouble() ?? warn;
     _prices = (s['prices'] as Map?)?.cast<String, dynamic>();
@@ -396,6 +432,11 @@ class Pip extends ChangeNotifier {
   void _onLive(Map<String, dynamic> m, String? first, bool resumed) {
     if (m.containsKey('setupComplete')) {
       _set(PipState.listening);
+      final after = _afterSetup;
+      if (after != null) {
+        _afterSetup = null;
+        _ws?.sink.add(jsonEncode({'realtimeInput': {'text': after}}));
+      }
       if (!resumed) {
         final again = lines.any((l) => l.who == 'tutor'); // a fresh session in the middle of the lesson
         _ws?.sink.add(jsonEncode({

@@ -119,3 +119,30 @@ Map<String, String> ledSwaps(List<String> lessonColours, Map<String, dynamic> re
   if (seen.isEmpty || seen.any(want.contains)) return {};
   return {for (final c in want) '$c led': '${seen.first} LED'};
 }
+
+/// Their columns ([cols]: lesson → theirs, from the checks and use_column), with every other column filled in the same
+/// way when the known ones all fit one shift, either way round (theirs = a + s × (lesson − b), s = 1 or −1): the
+/// lesson's other parts then go beside theirs as in the lesson. Fewer than two, or no single shift: as given.
+Map<String, String> theirColumns(Map<String, String> cols, {int last = 63}) {
+  final pairs = [
+    for (final e in cols.entries)
+      if (int.tryParse(e.key) != null && int.tryParse(e.value) != null) (int.parse(e.key), int.parse(e.value))
+  ];
+  if (pairs.length < 2) return cols;
+  final (l0, t0) = pairs.first;
+  int? s;
+  for (final (l, t) in pairs.skip(1)) {
+    if (l == l0) continue;
+    final k = (t - t0) / (l - l0);
+    if (k != 1 && k != -1) return cols;
+    if (s != null && s != k) return cols;
+    s = k.toInt();
+  }
+  if (s == null) return cols;
+  final out = <String, String>{};
+  for (var c = 0; c <= last; c++) {
+    final t = t0 + s * (c - l0);
+    if (t >= 0 && t <= last) out['$c'] = '$t';
+  }
+  return {...out, ...cols};
+}

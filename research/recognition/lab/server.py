@@ -439,7 +439,8 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == '/api/tutor/session':  # a Gemini Live session for the voice tutor (single-use token)
                 from tutor import live
                 return self.send(200, live.session(body['lesson'], body.get('resume'), bool(body.get('speakers')),
-                                                   body.get('name') or None, body.get('level') or None))
+                                                   body.get('name') or None, body.get('level') or None,
+                                                   body.get('voice') or None))
             if u.path == '/api/validate/told':  # the legs a photo could not show: what the learner says about them
                 from validator import arduino as step_check
                 return self.send(200, step_check.told(body['lesson'], body['step'], body.get('state') or {},
@@ -489,7 +490,8 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == '/api/tutor/reply':  # the free-voices mode: Haiku writes the tutor's next words
                 from tutor import live
                 return self.send(200, live.reply(body['lesson'], body.get('history') or [], body.get('text') or '',
-                                                 body.get('name') or None, body.get('level') or None))
+                                                 body.get('name') or None, body.get('level') or None,
+                                                   body.get('voice') or None))
             if u.path.startswith('/api/flow/'):
                 action = u.path.rsplit('/', 1)[1]
                 if action not in ('first', 'closeup', 'closeup_all', 'dismiss', 'state') or \

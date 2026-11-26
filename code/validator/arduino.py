@@ -553,7 +553,7 @@ def _hidden_leg(plan_, readings):
     return done
 
 
-def _pick(photos):
+def _pick(photos, orient=None):
     """The frames in the order to use them: those good enough to read (board.quality), the ones geometry knows the
     board on first, sharpest first. Returns (photos, ok, why, measure of the first, geometry of the first)."""
     from validator import board
@@ -584,24 +584,25 @@ def _pick(photos):
         return photos, False, rated[0]["why"], rated[0]["m"], {}
     best, geo = good[0], {}
     for r in good[:3]:
-        g = _geometry(r["photo"])
+        g = _geometry(r["photo"], orient)
         if g.get("trusted"):
             best, geo = r, g
             break
         if not geo:
             geo = g if r is good[0] else geo
     if not geo:
-        geo = _geometry(best["photo"])
+        geo = _geometry(best["photo"], orient)
     order = [best["photo"]] + [r["photo"] for r in good if r is not best]
     m = dict(best["m"], photos=f"{len(photos)} sent, {len(good)} good enough, frame {best['i'] + 1} read")
     return order, True, "", m, geo
 
 
-def _geometry(photo):
-    """validator.geometry.analyse, never breaking a check (a photo it can't read just isn't helped)."""
+def _geometry(photo, orient=None):
+    """validator.geometry.analyse, never breaking a check (a photo it can't read just isn't helped). orient: which way
+    up this lesson's board was taken before (geometry.orientation)."""
     try:
         from validator import geometry
-        return geometry.analyse(photo)
+        return geometry.analyse(photo, orient=orient)
     except Exception as e:
         return {"trusted": False, "why": f"error: {e}", "ends": []}
 
@@ -654,7 +655,7 @@ def check(lesson_id, step, photos, state=None, keep=None, side=None):
                 "say": "Nothing to check on the board in this step.", "step": p["step"], "n": p["n"]}
     # the camera may send a few frames taken while lining up: the best one is read (sharp, and geometry knows the
     # board), one more goes along as a second view; "take it again" only when none of them will do (free, no model)
-    photos, ok, why, m, geo = _pick(photos)
+    photos, ok, why, m, geo = _pick(photos, (state or {}).get("orient"))
     if not ok:
         return {"verdict": "retake", "legs": [], "asks": [{"key": "", "kind": "retake", "message": why}], "say": why,
                 "state": state or {"where": {}}, "readings": {}, "steps": [], "cost_usd": 0, "photo": m,
@@ -700,7 +701,7 @@ def check(lesson_id, step, photos, state=None, keep=None, side=None):
     from_side = []
     if side:  # the LED's legs from the photo from above and the one from the side (led_side)
         from validator import led_side
-        pair = led_side.read(photos[0], side[0])
+        pair = led_side.read(photos[0], side[0], (state or {}).get("orient") or geo.get("orient"))
         from_side = led_side.merge(p, readings, pair)
         steps.append({"what": "LED legs from the side photo", "model": led_side.MODEL if pair else None,
                       "cost_usd": (pair or {}).get("cost_usd", 0), "columns": (pair or {}).get("columns"),
@@ -732,6 +733,10 @@ def check(lesson_id, step, photos, state=None, keep=None, side=None):
     steps.insert(1, {"what": "geometry (the board straightened, columns numbered, connectors found)",
                      "used": bool(geo.get("trusted")), "why": geo.get("why", ""), "connectors": len(geo.get("ends") or []),
                      "set_by_geometry": snapped, "worked_out": hidden, "cost_usd": 0})
+    # which way up this lesson's board is (geometry.orientation), kept for the next step's photos
+    orient = geo.get("orient") if geo.get("trusted") and geo.get("orient") else (state or {}).get("orient")
+    if orient:
+        res["state"] = {**res["state"], "orient": orient}
     good = [r for r in res["legs"] if r["status"] in ("ok", "moved")]
     say = {"pass": "Everything in this step is in the right place.",
            "harmless": "All right: " + ", ".join(res["turned_round"]) + " is turned round, which is fine for it.",

@@ -573,3 +573,25 @@ Also from this run: the outlines are two again (breadboard and Arduino), but onl
 board's middle has to be inside its outline (its holes' extent is pulled towards the Arduino by the Arduino's own
 dots), and the Arduino's middle inside its box. On the run's 12 step photos, framed for the old single frame, 7 would
 have taken themselves (4 of the others are steps without an Arduino wire, where it is not asked for).
+
+## 18. Which half is "top": set once per lesson, kept by the rails (26 November run)
+
+The resistor was in the half the learner calls top (A–E as they hold it), columns 25 and 29; the check said
+"bottom half". This board is printed the same both ways round (each half has A–E at one end and F–J at the other),
+so "top" is a choice: geometry picked the half with the parts. A warm light over one end of the board counted as
+"parts" in the other half (the colour test compared with the whole board), the board was turned round, and the
+resistor came out on the bottom. The next photos (the LED) came out the other way, so the LED was "top" and no
+longer matched the resistor's "bottom".
+
+- Parts are now found against the board right around them (coloured and dark against the next few columns), so a
+  warm light or a broad shadow no longer counts.
+- Which way up is set once per lesson and kept: the first clear photo (parts clearly in one half) decides; the
+  rails (blue line above red, `upside_down`) say the same physical half in every later photo, and the decision goes
+  back and forth with the app (`state.orient`). The LED's side photo uses it too, and the LED's half comes from the
+  step check.
+- Replayed on all 15 step photos of 24, 25 and 26 November in order: every one the same way up as the parts (the 26 Nov
+  resistor now in the top half).
+
+Also from this run: Pip worked out the LED's short-leg column itself (29, the resistor's own column). The app now
+fills in the lesson's other columns from the checked ones (10 → 29 and 14 → 25: the same shift the other way round,
+so 15 → 24) and gives Pip the step in the learner's columns (`step_their_way`); Pip is told never to work one out.

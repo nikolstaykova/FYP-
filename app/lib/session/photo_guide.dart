@@ -10,6 +10,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../theme.dart';
+import 'guide_3d.dart';
 
 /// How the first picture turns into the second one.
 enum GuideMove { none, zoom, tilt }
@@ -172,56 +173,47 @@ class _PhotoGuideState extends State<PhotoGuide> with SingleTickerProviderStateM
     ]);
   }
 
-  /// The pictures and the phone, at moment [u] of the round.
+  late final GuideScene _world = widget.kind == GuideKind.gather ? GuideScene.gather() : GuideScene.ledSide();
+
+  /// The scene in 3D at moment [u] of the round: the phone flies to each place and takes the photo (a flash); the
+  /// photo it took (the learner's own example) pops out as a print in the corner.
   Widget _scene(double u, bool two) {
-    final a = _pages.first;
-    final b = two ? _pages[1] : null;
     final m = two ? GuideTimeline.move(u) : 0.0;
-    final f = two ? GuideTimeline.fade(u) : 0.0;
-    // the first photo: settles in after its flash, then moves with the phone (zooms into the part, or tilts away)
-    final settle = Curves.easeOut.transform((u / GuideTimeline.snap1).clamp(0.0, 1.0));
-    Matrix4 first;
-    switch (two ? guideMove(widget.kind) : GuideMove.none) {
-      case GuideMove.zoom:
-        first = Matrix4.identity()..scaleByDouble(1 + 2.2 * m, 1 + 2.2 * m, 1, 1);
-      case GuideMove.tilt:
-        first = Matrix4.identity()
-          ..setEntry(3, 2, 0.0015)
-          ..rotateX(-0.75 * m)
-          ..scaleByDouble(1 + 0.25 * m, 1 + 0.25 * m, 1, 1);
-      case GuideMove.none:
-        first = Matrix4.identity()..scaleByDouble(1.08 - 0.08 * settle, 1.08 - 0.08 * settle, 1, 1);
-    }
-    final tilt = b == null ? a.tilt : a.tilt + (b.tilt - a.tilt) * m;
-    final close = b == null ? (a.close ? 1.0 : 0.0) : ((a.close ? 1.0 : 0.0) + ((b.close ? 1.0 : 0.0) - (a.close ? 1.0 : 0.0)) * m);
+    final flash = GuideTimeline.flash(u, two: two);
+    final pose = PhonePose.lerp(_world.first, _world.second, m);
+    // the print: the first photo from its flash on, the second from its flash (until the round starts again)
+    final second = two && u >= GuideTimeline.snap2 && u < GuideTimeline.backFrom + 0.05;
+    final since = second ? u - GuideTimeline.snap2 : u - GuideTimeline.snap1;
+    final shown = since >= 0 && (two || u >= GuideTimeline.snap1);
+    final pop = Curves.easeOutBack.transform((since / 0.05).clamp(0.0, 1.0));
+    final page = _pages[second ? 1 : 0];
     return Stack(fit: StackFit.expand, children: [
-      const ColoredBox(color: Color(0xFFEDEAE3)),
-      Transform(
-        alignment: a.focus,
-        transform: first,
-        child: Image.asset(a.image, fit: BoxFit.cover, alignment: a.focus),
-      ),
-      if (b != null && f > 0)
-        Opacity(
-          opacity: f,
-          child: Transform.scale(scale: 1.06 - 0.06 * f, child: Image.asset(b.image, fit: BoxFit.cover)),
+      CustomPaint(painter: Scene3dPainter(_world, u, pose, flash)),
+      if (shown)
+        Positioned(
+          left: 8,
+          top: 8,
+          width: 118,
+          child: Transform.rotate(
+            angle: (second ? 0.05 : -0.05) * pop,
+            child: Transform.scale(
+              scale: 0.4 + 0.6 * pop,
+              alignment: Alignment.topLeft,
+              child: Opacity(
+                opacity: pop.clamp(0.0, 1.0),
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(3), boxShadow: [
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 10, offset: const Offset(0, 3)),
+                  ]),
+                  child: AspectRatio(aspectRatio: 4 / 3, child: Image.asset(page.image, fit: BoxFit.cover)),
+                ),
+              ),
+            ),
+          ),
         ),
-      // the camera's flash at each photo
       IgnorePointer(
-        child: Opacity(
-          opacity: 0.75 * GuideTimeline.flash(u, two: two),
-          child: const ColoredBox(color: Colors.white),
-        ),
-      ),
-      Positioned(
-        right: 8,
-        bottom: 8,
-        width: 120,
-        height: 90,
-        child: DecoratedBox(
-          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(10)),
-          child: CustomPaint(painter: PhonePainter(tilt, close, flash: GuideTimeline.flash(u, two: two))),
-        ),
+        child: Opacity(opacity: 0.35 * flash, child: const ColoredBox(color: Colors.white)),
       ),
     ]);
   }

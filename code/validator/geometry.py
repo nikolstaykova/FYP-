@@ -185,8 +185,13 @@ def occupied(flat, info):
             out[h] = np.zeros(n)
             continue
         S, V = band[..., 1].astype(float), band[..., 2].astype(float)
-        colour = S > max(90, np.median(S) + 50)
-        dark = cv2.morphologyEx((V < 0.45 * np.median(V)).astype(np.uint8), cv2.MORPH_OPEN, k) > 0  # not holes
+        # coloured, and dark, against the board right around it (a few columns), not the whole board: a warm light
+        # over one end (26 Nov) or a broad shadow changes the board and its holes alike and was taken for parts
+        w = int(cell * 4) | 1
+        localS = cv2.medianBlur(np.clip(S, 0, 255).astype(np.uint8), min(w, 255)).astype(float)
+        colour = (S > localS + 50) & (S > 90)
+        local = cv2.medianBlur(np.clip(V, 0, 255).astype(np.uint8), min(w, 255)).astype(float)
+        dark = cv2.morphologyEx((V < 0.45 * local).astype(np.uint8), cv2.MORPH_OPEN, k) > 0  # not holes
         stuff = colour | dark
         col = np.array([stuff[:, int(i * cell):int((i + 1) * cell)].mean() for i in range(n)])
         out[h] = np.clip(col - np.median(col), 0, 1)
@@ -543,7 +548,32 @@ def numbered_from(flat, info, shift=(0, 0)):
     return buf.tobytes()
 
 
-def analyse(photo_path, cell=30, closeup_cell=56, around=None):
+def orientation(g, occ, orient=None):
+    """Which way up to straighten the board: (flip, orient). This board is printed the same both ways round, so which
+    half is the lesson's "top" is a choice, made once per lesson and kept: the half the parts are on (blink builds in
+    one half), and from then on the rails, which do not move during a lesson (their colours, blue line above red, read
+    by upside_down: the same physical half on top in every photo). orient: {"same": bool} from an earlier photo of this
+    lesson (rails upright = parts on top), or None. 26 Nov: a warm light over one end was taken for parts, the board
+    was turned the other way and the resistor called "bottom half" while it was in the same half as before."""
+    try:
+        r = upside_down(g["img"], g, blocks(g["places"]))
+    except Exception:
+        r = None
+    s0, s1 = (float(np.clip(occ[k] - 0.06, 0, 1).sum()) for k in (0, 1))
+    strong = max(s0, s1) > 0.15 and max(s0, s1) > 2.5 * min(s0, s1)  # clearly one half
+    same = (orient or {}).get("same")
+    if r is not None and same is not None:  # an earlier photo set the way up: the rails keep it
+        return bool(r if same else not r), {"same": same}
+    if strong:
+        flip = s1 > s0
+        return flip, ({"same": flip == r} if r is not None else orient)
+    if r is not None:  # no clear half yet: rails upright = top (this board's rails, all runs so far)
+        return bool(r), {"same": True}
+    old = bool(occ[1].sum() > 1.3 * occ[0].sum() and occ[1].max() > 0.08)
+    return old, orient
+
+
+def analyse(photo_path, cell=30, closeup_cell=56, around=None, orient=None):
     """Geometry for one step photo, from one grid: {"trusted", "why", "numbered" (the whole board straightened with
     every column's number, JPEG), "closeup" (the part of it where things sit, cut from the full-size photo, bigger,
     numbered, JPEG), "ends" (read_ends' list), "shift", "marks"}. trusted: the board has this board's 65 columns and
@@ -559,7 +589,7 @@ def analyse(photo_path, cell=30, closeup_cell=56, around=None):
         if flat is None:
             return {"trusted": False, "why": info, "numbered": None, "closeup": None, "ends": []}
         occ = occupied(flat, info)
-        flip = bool(occ[1].sum() > 1.3 * occ[0].sum() and occ[1].max() > 0.08)
+        flip, orient = orientation(g, occ, orient)
         if flip:
             flat, info = flat_board(photo_path, cell=cell, g=g, flip=True)
             occ = occupied(flat, info)
@@ -570,7 +600,7 @@ def analyse(photo_path, cell=30, closeup_cell=56, around=None):
     trusted = info["last"] - info["first"] + 1 == COLUMNS and bool(seen) and all(abs(s_) <= 1 for s_ in seen)
     why = "" if trusted else ("the printed numbers could not be found" if not seen else
                               f"the printed numbers are {shift} columns from where they should be")
-    out = {"trusted": trusted, "why": why, "shift": shift, "marks": marks, "flipped": flip, "ends": [],
+    out = {"trusted": trusted, "why": why, "shift": shift, "marks": marks, "flipped": flip, "orient": orient, "ends": [],
            "numbered": None, "closeup": None, "upside_down": False}
     if not trusted:
         return out

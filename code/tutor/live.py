@@ -23,7 +23,9 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 MODEL = "gemini-3.8-live"
-VOICE = "Aoede"  # light and warm ("Kore", the first choice, is Google's "firm" voice: it sounded flat and robotic)
+VOICE = "Sulafat"  # Google's "warm" voice (26 Nov: the learner found "Aoede" annoying; "Kore" sounded flat)
+# the voices the learner can pick in the app (Pip bar); anything else falls back to VOICE
+VOICES = {"Sulafat", "Achird", "Vindemiatrix", "Umbriel", "Despina", "Charon", "Puck", "Aoede"}
 WS = ("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService."
       "BidiGenerateContentConstrained?access_token=")
 # USD per 1M tokens, on the high side of the published figures (Nov 2026), so the cap is reached early rather than late
@@ -534,7 +536,7 @@ def _gemini_key():
     return k
 
 
-def session(lesson_id, resume=None, speakers=False, name=None, level=None):
+def session(lesson_id, resume=None, speakers=False, name=None, level=None, voice=None):
     """What the browser needs to open a Live session: a single-use token (30 minutes, a new session must start
     within 1), the socket address, and the setup message with the tutor's instructions. `resume`: the handle of a
     session to carry on (sessions end after about 10-15 minutes; the page reconnects with it). `speakers`: the
@@ -552,7 +554,7 @@ def session(lesson_id, resume=None, speakers=False, name=None, level=None):
     token = json.loads(urllib.request.urlopen(req, timeout=30).read())["name"]
     setup = {"model": f"models/{MODEL}",
              "generationConfig": {"responseModalities": ["AUDIO"],
-                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}},
+                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice if voice in VOICES else VOICE}}}},
              "systemInstruction": {"parts": [{"text": brief(lesson_id, name, level)}]},
              "tools": tools(steps(lesson_id)["lesson_type"]),
              "inputAudioTranscription": {}, "outputAudioTranscription": {},

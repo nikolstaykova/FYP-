@@ -118,13 +118,14 @@ class Api {
 
   /// A Gemini Live session for Pip: a single-use token and the setup (the key stays on the server).
   Future<Map<String, dynamic>> tutorSession(String lesson,
-          {String? resume, bool speakers = false, String? name, String? level}) async =>
+          {String? resume, bool speakers = false, String? name, String? level, String? voice}) async =>
       (await _post('/api/tutor/session', {
         'lesson': lesson,
         'resume': resume,
         'speakers': speakers,
         'name': name,
         'level': level,
+        'voice': ?voice,
       })) as Map<String, dynamic>;
 
   /// The free voice: Haiku writes Pip's next words (and one tool), the phone speaks them.

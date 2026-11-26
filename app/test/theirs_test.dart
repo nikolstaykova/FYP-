@@ -49,4 +49,15 @@ void main() {
     expect(applyEdits(t, theirEdits(t, {}, sw)), 'Push the green LED into the board.');
     expect(ledSwaps(['green'], r), isEmpty);
   });
+
+  test('their other columns follow the checked ones, the same shift either way round', () {
+    // 26 Nov: the resistor 10 -> 29, 14 -> 25 (their board's other way): the LED's 15 goes beside 25, in 24
+    final c = theirColumns({'10': '29', '14': '25'});
+    expect(c['15'], '24');
+    expect(c['10'], '29');
+    expect(theirColumns({'10': '20', '14': '24'})['15'], '25');
+    // one column, or no single shift: as given
+    expect(theirColumns({'10': '29'}), {'10': '29'});
+    expect(theirColumns({'10': '29', '14': '40'}), {'10': '29', '14': '40'});
+  });
 }

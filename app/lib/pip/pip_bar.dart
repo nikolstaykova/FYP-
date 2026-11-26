@@ -56,6 +56,11 @@ class PipBar extends StatelessWidget {
                       ]),
                     ),
                   ),
+                  IconButton(
+                    tooltip: "Pip's voice",
+                    onPressed: () => _voices(context),
+                    icon: const Icon(Icons.record_voice_over_rounded),
+                  ),
                   if (pip.on) ...[
                     IconButton(
                       tooltip: pip.muted ? 'Unmute' : 'Mute',
@@ -95,6 +100,39 @@ class PipBar extends StatelessWidget {
         PipState.listening => Pq.have,
         PipState.speaking => Pq.electronics,
       };
+
+  /// Pip's voice: a list to pick from; the new voice says hello straight away when Pip is on.
+  void _voices(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: ListView(shrinkWrap: true, children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
+            child: Text("Pip's voice", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          ),
+          for (final (name, how) in Pip.voices)
+            ListTile(
+              title: Text(name, style: const TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: Text(how),
+              trailing: (Pip.voice.isEmpty ? 'Sulafat' : Pip.voice) == name
+                  ? const Icon(Icons.check_rounded, color: Pq.have)
+                  : null,
+              onTap: () {
+                Navigator.pop(ctx);
+                pip.setVoice(name);
+              },
+            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+            child: Text(pip.on ? 'Pip says hello in the new voice.' : 'Start Pip to hear it.',
+                style: const TextStyle(color: Pq.muted)),
+          ),
+        ]),
+      ),
+    );
+  }
 
   void _type(BuildContext context) {
     final c = TextEditingController();

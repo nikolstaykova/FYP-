@@ -31,23 +31,23 @@ Answer ONLY with JSON: {"columns": [a, b], "half": "top" or "bottom", "long": a 
 "why": "a few words"}"""
 
 
-def _straight(path):
+def _straight(path, orient=None):
     full = board.load(str(path))
     g = G.best_grid(full)
     flat, info = G.flat_board(str(path), cell=CELL, g=g, src=full)
     if flat is None:
         return None, None, None
     occ = G.occupied(flat, info)
-    if occ[1].sum() > 1.3 * occ[0].sum() and occ[1].max() > 0.08:
+    if G.orientation(g, occ, orient)[0]:  # the same way up as the step check (this lesson's board)
         flat, info = G.flat_board(str(path), cell=CELL, g=g, src=full, flip=True)
     shift, _ = G.printed_shift(flat, info)
     return flat, info, shift
 
 
-def around(top_photo):
+def around(top_photo, orient=None):
     """The printed columns around the LED seen from above (4 either side of its body), or None."""
     with _lock:
-        flat, info, shift = _straight(top_photo)
+        flat, info, shift = _straight(top_photo, orient)
         if flat is None:
             return None
         found = G.leds(flat, info, shift)
@@ -59,12 +59,12 @@ def around(top_photo):
     return list(range(a - 4, b + 5))
 
 
-def read(top_photo, side_photo):
+def read(top_photo, side_photo, orient=None):
     try:
-        cols = around(top_photo)
+        cols = around(top_photo, orient)
         with _lock:
-            t = G.analyse(str(top_photo), around=cols)
-            s = G.analyse(str(side_photo), around=cols)
+            t = G.analyse(str(top_photo), around=cols, orient=orient)
+            s = G.analyse(str(side_photo), around=cols, orient=orient)
     except Exception:  # never let this break a check
         return None
     if not t.get("closeup") or not s.get("closeup") or not s.get("trusted"):
@@ -118,7 +118,9 @@ def merge(plan_, readings, pair):
         cl = col(longk)
         lc = a if cl is None or abs(cl - a) <= abs(cl - b) else b
     sc = b if lc == a else a
-    half = pair["half"] if pair["half"] in ("top", "bottom") else (readings.get(longk) or {}).get("half") or "top"
+    # the half as the step check read it (its board is turned the lesson's way up); the pair's own, else
+    halves = [str((readings.get(k) or {}).get("half") or "") for k in (longk, shortk)]
+    half = next((h for h in halves if h in ("top", "bottom")), None) or (pair["half"] if pair["half"] in ("top", "bottom") else "top")
     for k, c in ((longk, lc), (shortk, sc)):
         r = readings.setdefault(k, {"key": k})
         r.update(column=c, half=half, sure=True, by="side photo",
